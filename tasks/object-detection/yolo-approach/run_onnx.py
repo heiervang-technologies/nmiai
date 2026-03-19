@@ -123,7 +123,7 @@ def postprocess(output, orig_shape, ratio, pad, conf_thresh=0.001, iou_thresh=0.
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', required=True)
+    parser.add_argument('--input', required=True)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
 
@@ -134,7 +134,7 @@ def main():
     session = ort.InferenceSession(str(model_path), providers=providers)
     input_name = session.get_inputs()[0].name
 
-    images_dir = pathlib.Path(args.data)
+    images_dir = pathlib.Path(args.input)
     image_files = sorted(
         list(images_dir.glob('*.jpg')) + list(images_dir.glob('*.jpeg')) + list(images_dir.glob('*.png'))
     )

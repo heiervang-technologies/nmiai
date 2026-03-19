@@ -11,7 +11,7 @@
 
 ### 2. Sandbox Contract
 ```bash
-python run.py --data /data/images/ --output /output.json
+python run.py --input /data/images/ --output /predictions.json
 ```
 - `run.py` MUST be at ZIP root (not in a subfolder)
 - Only `--data` and `--output` args. No other args.
@@ -103,7 +103,7 @@ session = ort.InferenceSession(str(model_path), providers=providers)
 - [ ] Don't forget to handle empty prediction lists (images with no detections)
 - [ ] Don't use `indent=2` in json.dumps for large outputs (wastes time/space)
 - [ ] Don't forget letterbox padding inverse when scaling boxes back
-- [ ] Test with `python run.py --data <path> --output <path>` locally before uploading
+- [ ] Test with `python run.py --input <path> --output <path>` locally before uploading
 - [ ] Verify ZIP has run.py at root: `unzip -l submission.zip | head`
 
 ## Submission Checklist
@@ -114,7 +114,7 @@ Before every upload:
 3. [ ] No blocked imports (os, subprocess, socket, ctypes)
 4. [ ] Output format matches spec (image_id, predictions with bbox/category_id/confidence)
 5. [ ] bbox is COCO format [x, y, w, h] not [x1, y1, x2, y2]
-6. [ ] Tested locally: `python run.py --data <test_images> --output /tmp/test.json`
+6. [ ] Tested locally: `python run.py --input <test_images> --output /tmp/test.json`
 7. [ ] JSON output is valid: `python -c "import json; json.load(open('/tmp/test.json'))"`
 8. [ ] ZIP size under 420MB
 9. [ ] Exit code is 0
