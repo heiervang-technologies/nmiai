@@ -178,13 +178,13 @@ def compute_prior(height, width, initial_grid):
     cross_kernel = np.array([[0,1,0],[1,1,1],[0,1,0]])
     forest_interior = binary_erosion(forest_mask, cross_kernel)
 
-    # Prior means per initial cell type (from Codex recommendations)
-    PRIOR_SETTLEMENT = np.array([0.12, 0.48, 0.08, 0.22, 0.10, 0.00])
-    PRIOR_PORT       = np.array([0.08, 0.18, 0.55, 0.11, 0.08, 0.00])
-    PRIOR_FOREST_INT = np.array([0.18, 0.05, 0.01, 0.04, 0.72, 0.00])
-    PRIOR_FOREST_EDGE= np.array([0.20, 0.10, 0.02, 0.08, 0.60, 0.00])
-    PRIOR_PLAINS     = np.array([0.80, 0.10, 0.01, 0.04, 0.05, 0.00])
-    PRIOR_COASTAL    = np.array([0.72, 0.10, 0.08, 0.04, 0.06, 0.00])
+    # Empirical prior means from Round 1 data (n=11,250 cell observations)
+    PRIOR_SETTLEMENT = np.array([0.3931, 0.4151, 0.0126, 0.0252, 0.1541, 0.00])
+    PRIOR_PORT       = np.array([0.1250, 0.1250, 0.3750, 0.0000, 0.3750, 0.00])
+    PRIOR_FOREST_INT = np.array([0.0663, 0.1615, 0.0122, 0.0130, 0.7469, 0.00])
+    PRIOR_FOREST_EDGE= np.array([0.0663, 0.1615, 0.0122, 0.0130, 0.7469, 0.00])
+    PRIOR_PLAINS     = np.array([0.7748, 0.1620, 0.0126, 0.0113, 0.0394, 0.00])
+    PRIOR_COASTAL    = np.array([0.7748, 0.1620, 0.0126, 0.0113, 0.0394, 0.00])
 
     for y in range(height):
         for x in range(width):
