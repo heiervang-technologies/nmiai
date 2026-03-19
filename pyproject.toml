@@ -7,4 +7,13 @@ requires-python = ">=3.13"
 dependencies = [
     "numpy>=2.4.3",
     "requests>=2.32.5",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.17.1",
+]
+
+[tool.uv.workspace]
+members = [
+    "tasks/object-detection/data-creation",
+    "tasks/object-detection/yolo-approach",
+    "tasks/object-detection/sam3-approach",
 ]

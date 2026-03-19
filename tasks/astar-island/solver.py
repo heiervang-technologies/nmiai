@@ -129,13 +129,129 @@ def full_coverage_viewports():
     return viewports
 
 
+def cell_code_to_class(cell):
+    """Map simulator cell codes to prediction class indices."""
+    if cell in (0, 10, 11):
+        return 0  # Empty (ocean, plains, empty)
+    elif cell == 1:
+        return 1  # Settlement
+    elif cell == 2:
+        return 2  # Port
+    elif cell == 3:
+        return 3  # Ruin
+    elif cell == 4:
+        return 4  # Forest
+    elif cell == 5:
+        return 5  # Mountain
+    return 0
+
+
+def compute_prior(height, width, initial_grid):
+    """Compute informed Dirichlet prior mean and strength per cell.
+
+    Returns:
+        prior_mean: (H, W, 6) array of prior class probabilities
+        tau: (H, W) array of prior strength (total pseudo-count mass)
+    """
+    init = np.array(initial_grid)
+    prior_mean = np.zeros((height, width, 6), dtype=np.float64)
+    tau = np.zeros((height, width), dtype=np.float64)
+
+    # Precompute settlement and coast masks
+    settlement_mask = (init == 1)
+    port_mask = (init == 2)
+    ocean_mask = (init == 10)
+    mountain_mask = (init == 5)
+    forest_mask = (init == 4)
+
+    # Distance to nearest settlement or port (Manhattan approx via dilation)
+    from scipy.ndimage import distance_transform_cdt
+    civ_mask = settlement_mask | port_mask
+    settlement_dist = distance_transform_cdt(~civ_mask, metric='taxicab')
+
+    # Coast adjacency: non-ocean cell adjacent to ocean
+    from scipy.ndimage import binary_dilation
+    ocean_adjacent = binary_dilation(ocean_mask, np.ones((3, 3))) & ~ocean_mask
+
+    # Forest interior vs edge: erode forest mask with cross kernel (4-neighbor)
+    from scipy.ndimage import binary_erosion
+    cross_kernel = np.array([[0,1,0],[1,1,1],[0,1,0]])
+    forest_interior = binary_erosion(forest_mask, cross_kernel)
+
+    # Prior means per initial cell type (from Codex recommendations)
+    PRIOR_SETTLEMENT = np.array([0.12, 0.48, 0.08, 0.22, 0.10, 0.00])
+    PRIOR_PORT       = np.array([0.08, 0.18, 0.55, 0.11, 0.08, 0.00])
+    PRIOR_FOREST_INT = np.array([0.18, 0.05, 0.01, 0.04, 0.72, 0.00])
+    PRIOR_FOREST_EDGE= np.array([0.20, 0.10, 0.02, 0.08, 0.60, 0.00])
+    PRIOR_PLAINS     = np.array([0.80, 0.10, 0.01, 0.04, 0.05, 0.00])
+    PRIOR_COASTAL    = np.array([0.72, 0.10, 0.08, 0.04, 0.06, 0.00])
+
+    for y in range(height):
+        for x in range(width):
+            cell = init[y, x]
+            dist = settlement_dist[y, x]
+            is_coast = ocean_adjacent[y, x]
+
+            # Static cells: hardcoded, high tau
+            if cell == 5:  # Mountain
+                prior_mean[y, x] = [0.00, 0.00, 0.00, 0.00, 0.00, 1.00]
+                tau[y, x] = 100.0
+                continue
+            if cell == 10:  # Ocean
+                prior_mean[y, x] = [1.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+                tau[y, x] = 100.0
+                continue
+
+            # Assign prior mean based on initial type + features
+            if cell == 1:  # Settlement
+                prior_mean[y, x] = PRIOR_SETTLEMENT
+            elif cell == 2:  # Port
+                prior_mean[y, x] = PRIOR_PORT
+            elif cell == 4:  # Forest
+                if forest_interior[y, x]:
+                    prior_mean[y, x] = PRIOR_FOREST_INT
+                else:
+                    prior_mean[y, x] = PRIOR_FOREST_EDGE
+            elif is_coast:
+                prior_mean[y, x] = PRIOR_COASTAL
+            else:  # Plains/empty
+                prior_mean[y, x] = PRIOR_PLAINS
+
+            # Adjust prior for cells near settlements (more dynamic)
+            if dist <= 1:
+                prior_mean[y, x] = prior_mean[y, x] * 0.5 + PRIOR_SETTLEMENT * 0.5
+
+            # Non-mountain cells: zero out mountain class
+            prior_mean[y, x, 5] = 0.0
+            # Non-coastal cells: suppress port class
+            if not is_coast:
+                prior_mean[y, x, 2] = 0.0
+
+            # Renormalize prior mean
+            s = prior_mean[y, x].sum()
+            if s > 0:
+                prior_mean[y, x] /= s
+
+            # Assign tau based on zone (hot/warm/cold)
+            if dist <= 2 or cell in (1, 2):
+                tau[y, x] = 4.0  # hot
+            elif dist <= 4 or is_coast or (cell == 4 and not forest_interior[y, x]):
+                tau[y, x] = 2.0  # warm
+            else:
+                tau[y, x] = 0.75  # cold
+
+    return prior_mean, tau
+
+
 def build_prediction(height, width, initial_grid, observations):
-    """Build probability distribution from initial state + observations.
+    """Build probability distribution using informed Dirichlet priors.
 
     observations: list of (grid_2d, vx, vy) tuples, each from one simulate call
     """
+    # Compute informed prior
+    prior_mean, tau = compute_prior(height, width, initial_grid)
+
     # Count observations per cell per class
-    # Classes: 0=Empty, 1=Settlement, 2=Port, 3=Ruin, 4=Forest, 5=Mountain
     counts = np.zeros((height, width, 6), dtype=np.float64)
     obs_count = np.zeros((height, width), dtype=np.int32)
 
@@ -144,47 +260,21 @@ def build_prediction(height, width, initial_grid, observations):
             for dx, cell in enumerate(row):
                 y, x = vy + dy, vx + dx
                 if 0 <= y < height and 0 <= x < width:
-                    # Map cell codes to prediction classes
-                    if cell == 10 or cell == 11 or cell == 0:
-                        cls = 0  # Empty
-                    elif cell == 1:
-                        cls = 1  # Settlement
-                    elif cell == 2:
-                        cls = 2  # Port
-                    elif cell == 3:
-                        cls = 3  # Ruin
-                    elif cell == 4:
-                        cls = 4  # Forest
-                    elif cell == 5:
-                        cls = 5  # Mountain
-                    else:
-                        cls = 0  # Default to empty
+                    cls = cell_code_to_class(cell)
                     counts[y, x, cls] += 1
                     obs_count[y, x] += 1
 
-    # Build prediction
-    pred = np.full((height, width, 6), 1.0 / 6)  # uniform prior
+    # Posterior = counts + tau * prior_mean
+    # For static cells (tau=100), prior dominates completely
+    # For observed cells, data blends with prior based on tau strength
+    alpha = tau[:, :, np.newaxis] * prior_mean  # (H, W, 6) pseudo-counts from prior
+    posterior = counts + alpha
+    pred = posterior / posterior.sum(axis=2, keepdims=True)
 
-    # For cells with observations, use empirical distribution
-    observed = obs_count > 0
-    if observed.any():
-        # Empirical frequencies with Laplace smoothing (add 0.5 pseudo-count per class)
-        smoothed = counts.copy()
-        smoothed[observed] += 0.5  # Laplace smoothing
-        totals = smoothed.sum(axis=2, keepdims=True)
-        pred[observed] = (smoothed / totals)[observed]
+    # For unobserved non-static cells, prediction is just the prior mean
+    # (already handled: counts=0 so posterior = alpha, which normalizes to prior_mean)
 
-    # For static cells from initial state (even without observations)
-    init = np.array(initial_grid)
-    for y in range(height):
-        for x in range(width):
-            cell = init[y, x]
-            if cell == 5:  # Mountain - static
-                pred[y, x] = [0.01, 0.01, 0.01, 0.01, 0.01, 0.95]
-            elif cell == 10:  # Ocean - static
-                pred[y, x] = [0.95, 0.01, 0.01, 0.01, 0.01, 0.01]
-
-    # Floor and renormalize
+    # Floor at 0.01 and renormalize (safety against KL infinity)
     pred = np.maximum(pred, 0.01)
     pred /= pred.sum(axis=2, keepdims=True)
 
