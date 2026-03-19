@@ -2,9 +2,9 @@
 
 ## Executive Summary
 
-**VERDICT: SAM3 is NOT viable as the primary model for this competition.**
+**VERDICT: SAM3 is NOT viable as the submission model, but is our SECRET WEAPON for synthetic training data generation.**
 
-The `facebook/sam3` checkpoint is **3.3GB** — far exceeding the **420MB ZIP limit**. SAM3 cannot be shipped in the submission. However, SAM3 has strong value as an **offline tool** for training data augmentation and as a research baseline to inform our YOLO strategy.
+The `facebook/sam3` checkpoint is **3.3GB** — far exceeding the **420MB ZIP limit**. SAM3 cannot be shipped in the submission. However, SAM3's primary value is as an **offline synthetic data factory**: using it locally to segment reference product images, extract clean cutouts, and composite them onto shelf backgrounds to generate thousands of high-quality synthetic training images with automatic COCO annotations. With only 248 real training images, this synthetic data pipeline could be the difference between a good and winning score.
 
 ---
 
@@ -148,32 +148,84 @@ Run SAM3 on training images and compare its masks with ground truth boxes to:
 **Estimated effort:** 1-2 hours
 **Expected impact:** Marginal (COCO annotations are usually decent)
 
-### 4D. SAM3 for Synthetic Data Generation
+### 4D. SAM3 Synthetic Data Factory (PRIMARY USE CASE)
 
-Use SAM3 to:
-1. Segment every product from every training image
-2. Re-compose products into new shelf arrangements
-3. Generate novel training images with known annotations
+This is the highest-impact use of SAM3 for this competition. We have 248 training images but SAM3 lets us manufacture thousands more.
 
-This is more ambitious than 4A but could generate much more diverse training data.
+**Pipeline Overview:**
+```
+Phase 1: Extract Assets
+  [327 Reference Product Images] --SAM3 text="product"--> [327 Product Cutouts (RGBA PNGs)]
+  [248 Training Images] --SAM3 auto mask gen--> [Shelf Background Templates + Product Masks]
+  [248 Training Images] --inpainting/masking--> [Empty Shelf Backgrounds]
 
-**Estimated effort:** 4-8 hours
-**Expected impact:** +3-7% mAP if done well
+Phase 2: Generate Synthetic Images
+  [Empty Shelf Backgrounds] + [Product Cutouts] --compositor--> [Synthetic Shelf Images]
+  [Compositor] --automatic--> [COCO Annotations (bbox + category_id)]
+
+Phase 3: Train
+  [248 Real Images] + [2000+ Synthetic Images] --YOLO training--> [Better Model]
+```
+
+**Step-by-step:**
+
+1. **Segment reference products** (327 images):
+   - Run SAM3 with text prompt "product" on each reference image
+   - Reference images have studio backgrounds = clean segmentation
+   - Save as RGBA PNGs with transparent background
+   - Tag each cutout with its product barcode -> category_id mapping
+
+2. **Extract shelf backgrounds** from training images:
+   - Run SAM3 automatic mask generation on all 248 training images
+   - Identify and mask out all product regions
+   - Use simple inpainting (OpenCV) to fill masked regions with shelf texture
+   - Result: ~248 empty shelf background templates
+
+3. **Composite synthetic scenes:**
+   - For each synthetic image, pick a random shelf background
+   - Place 30-80 product cutouts in realistic shelf arrangements:
+     - Products sit on horizontal shelf lines (extract from training image geometry)
+     - Products are upright, touching the shelf surface
+     - Products don't overlap (much) — use grid-based placement
+     - Scale products realistically relative to shelf dimensions
+   - Apply per-product augmentation: slight rotation (+/-5 deg), brightness jitter, blur
+   - Apply global augmentation: lighting variation, camera angle simulation
+   - Auto-generate COCO annotations: bbox from cutout placement coordinates, category_id from product mapping
+
+4. **Quality controls:**
+   - Verify bbox annotations are correct by visual spot-check
+   - Ensure category distribution roughly matches real training data distribution
+   - Filter out unrealistic compositions (products floating, wrong scale)
+
+**Why this works:**
+- Copy-paste augmentation is proven: +9.7% on small objects in COCO (CVPR 2021)
+- Our reference images are studio-quality — SAM3 will produce near-perfect masks
+- Shelf scenes are relatively structured (grid layout) — easier to generate realistically than random scenes
+- We go from 248 -> 2000+ training images, dramatically reducing overfitting on 356 categories
+
+**Estimated effort:** 4-8 hours for pipeline, then automated generation
+**Expected impact:** +5-10% mAP (the single biggest improvement we can make given data scarcity)
+
+**Key risk:** If synthetic images look unrealistic, the model may learn artifacts. Mitigate with:
+- Mix ratio: ~70% synthetic, 30% real in training
+- Domain randomization: vary lighting, scale, position enough that model generalizes
+- Validate on held-out real images only
 
 ---
 
 ## 5. Recommended Strategy
 
-### Primary: Fine-tuned YOLO (for submission)
-- YOLO11x or YOLO26x as the competition model
+### Primary: SAM3 Synthetic Data Factory (offline, pre-training)
+- Use SAM3 locally to segment all 327 reference product images into clean RGBA cutouts
+- Extract shelf backgrounds from 248 training images
+- Generate 2000+ synthetic training images with automatic COCO annotations
+- This is our #1 force multiplier given only 248 real training images
+- Expected impact: +5-10% mAP
+
+### Submission Model: Fine-tuned YOLO (for inference)
+- YOLO11x or YOLO26x trained on real + synthetic data
 - Fits in 420MB, runs in <30s, pre-installed
 - Native 356-class detection + classification
-- See main approach README for details
-
-### Secondary: SAM3 as offline augmentation tool
-- Use SAM3 locally to generate copy-paste augmentation data
-- Segment reference product images for clean product cutouts
-- Augment YOLO training with copy-pasted products
 
 ### NOT recommended:
 - SAM3 as the submission model (size/speed blockers)
@@ -249,11 +301,11 @@ This is more ambitious than 4A but could generate much more diverse training dat
 
 ## 9. Action Items
 
-- [ ] **NOW:** Set up SAM3 locally for copy-paste augmentation pipeline
-- [ ] **NOW:** Segment all 327 reference product images with SAM3
-- [ ] **NOW:** Segment training images to extract shelf backgrounds
-- [ ] **LATER:** Generate augmented training dataset
-- [ ] **LATER:** Feed augmented data to YOLO training pipeline
+- [ ] **PRIORITY 1:** Segment all 327 reference product images with SAM3 -> RGBA cutouts tagged with category_id
+- [ ] **PRIORITY 2:** Run SAM3 auto mask gen on 248 training images -> extract shelf backgrounds
+- [ ] **PRIORITY 3:** Build compositor script: place product cutouts on shelf backgrounds with auto COCO annotations
+- [ ] **PRIORITY 4:** Generate 2000+ synthetic training images
+- [ ] **PRIORITY 5:** Train YOLO on combined real (248) + synthetic (2000+) dataset
 - [ ] **SKIP:** Any attempt to submit SAM3 as the inference model
 
 ---
