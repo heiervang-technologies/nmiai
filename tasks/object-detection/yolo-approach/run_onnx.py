@@ -156,7 +156,7 @@ def main():
             predictions.append({
                 'bbox': [round(v, 2) for v in box],
                 'category_id': int(cls_id),
-                'confidence': round(float(conf), 4),
+                'score': round(float(conf), 4),
             })
 
         results.append({

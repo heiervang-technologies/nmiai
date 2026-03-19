@@ -42,7 +42,7 @@ python run.py --input /data/images/ --output /predictions.json
 ```
 - `bbox`: COCO format [x_min, y_min, width, height] (NOT xyxy)
 - `category_id`: integer 0-355
-- `confidence`: float 0.0-1.0
+- `score: float 0.0-1.0
 - `image_id`: filename string including extension
 
 ### 5. ONNX Submission Pattern (RECOMMENDED)
