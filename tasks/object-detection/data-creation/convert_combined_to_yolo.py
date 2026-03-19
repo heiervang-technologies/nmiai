@@ -51,10 +51,11 @@ def main():
         img_anns[ann["image_id"]].append(ann)
 
     # Determine val image filenames from original YOLO val split
-    val_filenames = set()
+    # Match by stem to handle .jpg/.jpeg differences
+    val_stems = set()
     if ORIG_YOLO_VAL.exists():
-        val_filenames = {f.name for f in ORIG_YOLO_VAL.iterdir() if f.suffix == ".jpg"}
-    print(f"Val filenames from original split: {len(val_filenames)}")
+        val_stems = {f.stem for f in ORIG_YOLO_VAL.iterdir() if f.suffix in (".jpg", ".jpeg")}
+    print(f"Val image stems from original split: {len(val_stems)}")
 
     # Create output dirs
     for split in ["train", "val"]:
@@ -69,7 +70,7 @@ def main():
         img_h = img_info["height"]
 
         # Determine split: original val images stay val, everything else is train
-        if filename in val_filenames:
+        if Path(filename).stem in val_stems:
             split = "val"
         else:
             split = "train"
