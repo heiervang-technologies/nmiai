@@ -28,3 +28,19 @@ logs/
 dist/
 build/
 *.egg-info/
+
+# Model weights and large binaries
+*.pt
+*.pth
+*.onnx
+*.zip
+*.bin
+runs/
+downloads/
+taskpage*_files/
+taskpage*.html
+tasks/object-detection/yolo-approach/dataset/
+tasks/object-detection/yolo-approach/dataset_augmented/
+tasks/object-detection/data-creation/data/
+tasks/object-detection/data-creation/outputs/
+tasks/astar-island/.token

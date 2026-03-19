@@ -29,6 +29,11 @@ def load_dinov2(weights_path: Path, device: torch.device):
     if weights_path.exists():
         state_dict = torch.load(weights_path, map_location=device, weights_only=True)
         model.load_state_dict(state_dict, strict=False)
+    else:
+        # No local weights and no network — DINOv2 will have random weights
+        # Fall back to timm cache if available
+        import warnings
+        warnings.warn(f"DINOv2 weights not found at {weights_path}, using random initialization")
 
     model.eval().to(device)
 
@@ -41,6 +46,10 @@ def load_dinov2(weights_path: Path, device: torch.device):
 def load_ref_embeddings(path: Path, device: torch.device):
     """Load pre-computed reference embeddings.
 
+    Supports two formats:
+    1. Our format: {"embeddings": {cat_id: tensor [N_angles, embed_dim]}}
+    2. Data agent format: {"category_embeddings": tensor [356, 384], "category_ids": list}
+
     Returns:
         ref_embeddings: dict {category_id: tensor [N_angles, embed_dim]}
         ref_matrix: tensor [total_refs, embed_dim] flattened
@@ -48,18 +57,47 @@ def load_ref_embeddings(path: Path, device: torch.device):
     """
     data = torch.load(path, map_location=device, weights_only=False)
 
-    if isinstance(data, dict) and "embeddings" in data:
-        emb_dict = data["embeddings"]
-    else:
-        emb_dict = data
-
     ref_embeddings = {}
     ref_list = []
     cat_id_list = []
 
-    for cat_id, emb in emb_dict.items():
-        cat_id = int(cat_id)
-        if isinstance(emb, torch.Tensor):
+    # Format 2: data agent format with category_embeddings tensor
+    if isinstance(data, dict) and "category_embeddings" in data:
+        cat_embs = data["category_embeddings"].float().to(device)  # [356, 384]
+        cat_ids = data.get("category_ids", list(range(cat_embs.shape[0])))
+
+        for i, cat_id in enumerate(cat_ids):
+            cat_id = int(cat_id)
+            emb = F.normalize(cat_embs[i].unsqueeze(0), dim=-1)
+            ref_embeddings[cat_id] = emb
+            ref_list.append(emb)
+            cat_id_list.append(cat_id)
+
+        # Also incorporate reference_embeddings if available (product images)
+        if "reference_embeddings" in data and "barcode_to_category" in data:
+            ref_emb_tensor = data["reference_embeddings"].float().to(device)
+            barcodes = data.get("reference_barcodes", [])
+            b2c = data["barcode_to_category"]
+
+            for i, bc in enumerate(barcodes):
+                bc_str = str(bc)
+                if bc_str in b2c:
+                    cat_id = int(b2c[bc_str])
+                    emb = F.normalize(ref_emb_tensor[i].unsqueeze(0), dim=-1)
+                    if cat_id in ref_embeddings:
+                        ref_embeddings[cat_id] = torch.cat([ref_embeddings[cat_id], emb], dim=0)
+                    else:
+                        ref_embeddings[cat_id] = emb
+                    ref_list.append(emb)
+                    cat_id_list.append(cat_id)
+
+    # Format 1: our format with per-category embedding dict
+    elif isinstance(data, dict):
+        emb_dict = data.get("embeddings", data)
+        for cat_id, emb in emb_dict.items():
+            if not isinstance(emb, torch.Tensor):
+                continue
+            cat_id = int(cat_id)
             if emb.dim() == 1:
                 emb = emb.unsqueeze(0)
             emb = F.normalize(emb.float().to(device), dim=-1)

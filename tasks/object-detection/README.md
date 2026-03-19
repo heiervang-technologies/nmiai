@@ -271,6 +271,23 @@ Since we only have 248 images:
 
 ---
 
+## GPU Resources
+
+### Local (centurion)
+- **Host:** centurion (192.168.8.170, port 2405)
+- **GPU:** 1x NVIDIA RTX 3090 (24GB)
+- **Use for:** YOLO training, quick experiments
+- **Access:** `ssh centurion`
+
+### Remote (titan)
+- **Host:** titan (192.168.8.158)
+- **GPU:** 2x NVIDIA RTX 3090 (24GB each)
+- **Use for:** DINOv2 training, linear probe, heavy experiments
+- **Access:** `ssh me@192.168.8.158`
+- **Note:** Also runs llama-server and unsloth studio — check `nvidia-smi` before launching
+
+---
+
 ## Important Rules Reminders
 - Code must be open-sourced (MIT license) before deadline for prize eligibility
 - No network access during inference
