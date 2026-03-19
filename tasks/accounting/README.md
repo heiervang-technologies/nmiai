@@ -4,6 +4,25 @@
 
 Build an AI agent that completes accounting tasks in **Tripletex** (Norwegian cloud accounting software). The agent receives natural-language task prompts, executes Tripletex API calls, and gets scored on correctness and efficiency.
 
+## Sponsor Context (from Kickoff Presentation)
+
+**Tripletex** is Norway's most-used cloud accounting system:
+- 160,000 business customers, 400,000 monthly active users
+- 27 million invoices handled
+- 20 years in the market, 135 developers
+
+**AI already in production at Tripletex:**
+- Support assistant handles 70%+ of all support (email, phone) with 96%+ accuracy
+- 10+ AI agents in production: payroll insights, reporting, business tips
+- 63% of all code produced in February 2026 was AI-generated (primarily Claude)
+- Goal: 100% AI-generated code by end of 2026
+
+**Why this task exists:** Jan Strandbakke (head of development) emphasized this reflects "real challenges we work with daily." The task mirrors what Tripletex does internally with their production agents -- parsing natural language instructions and executing accounting operations via their own API. This is not an academic exercise; it's their active business problem.
+
+**Key quote from Jan:** "AI is not optional. You have to go all in. If you don't catch up as a developer, you're outdated tomorrow."
+
+**Task presentation note:** The task was described as having the agent "learn to use" Tripletex. Emphasis was on the agent actually understanding what it's doing (random variants per task prevent memorization).
+
 - **Dashboard**: https://app.ainm.no/submit/tripletex
 - **Task Docs**: https://app.ainm.no/docs/tripletex/overview
 - **Tripletex API Docs**: https://tripletex.no/v2-docs (Swagger/OpenAPI)

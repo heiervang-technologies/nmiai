@@ -6,6 +6,24 @@
 
 **Timeline:** March 19, 18:00 CET to March 22, 15:00 CET (69 hours)
 
+## Task Context (from Kickoff Presentation)
+
+### Origin Story
+Erik Nymo Bohne explained the genesis: "We sat in a meeting room with Tom Daniel [NorgesGruppen] and thought, how can we combine A-Star (pathfinding algorithm, our company namesake) with stores? We found the idea of sending bots into a store to shop for us." This became the Grocery Bot pre-game (447 teams, 89K games played). The concept then evolved into Astar Island -- a Norse civilization simulator where prediction replaces pathfinding.
+
+### Design Philosophy
+- "We can't just have industry problems. We must have fun too."
+- The task draws parallels to real-world probabilistic modeling: Erik explicitly compared it to epidemiology -- "Like during corona, when you needed to figure out how the virus spread."
+- The stochastic simulation means the same initial conditions produce different outcomes, requiring statistical reasoning rather than deterministic solutions.
+
+### Cinematic Presentation
+The task was introduced with a dramatic voiceover trailer describing Norse settlements, factions, raids, trade, and harsh winters. The visual presentation was designed to create excitement around what is fundamentally a probability distribution prediction problem.
+
+### Scoring Insight from Kickoff
+- The task uses entropy-weighted KL divergence, meaning high-uncertainty cells (where many outcomes are possible) count more toward your score
+- Ground truth is generated from hundreds of simulation runs per seed -- you're predicting probability distributions, not single outcomes
+- Each query costs 1 from a budget of 50 (shared across 5 seeds), creating an exploration-exploitation tradeoff
+
 ## Core Mechanics
 
 ### Map

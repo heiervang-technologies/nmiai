@@ -52,8 +52,8 @@ The competition is inspired by **DM i AI** (Danish National Championship in AI),
   - Livestreamed nationwide
 - **Final:** March 22, 2026
 - **Prize pool:** 1,000,000 NOK (20x increase from 2025)
-- **Expected participants:** 1,000+ (1,200 pre-registered as of mid-March)
-- **Pre-game:** "Grocery Bot" warm-up challenge on app.ainm.no (10,000 NOK prize), 250 teams participated
+- **Confirmed participants:** 2,500 registered (announced at kickoff; up from 1,200 reported in mid-March)
+- **Pre-game:** "Grocery Bot" warm-up challenge on app.ainm.no (10,000 NOK prize), 447 teams participated, 89,000 games played
 - **Opening keynote:** Nicolai Tangen (CEO of Norway's Oil Fund / Norges Bank Investment Management)
 
 ---
@@ -66,13 +66,18 @@ Three mandatory technical challenges covering:
 2. **Machine Learning** — classical ML tasks
 3. **NLP / Language Models** — natural language processing tasks
 
-**Important:** Winners are determined by **best combined/average score across all three tasks**. Teams cannot specialize in one area — balanced competency is required.
+**Important:** Winners are determined by **best combined/average score across all three tasks** (each normalized to 0-100, then averaged at ~33% each). Teams cannot specialize in one area -- balanced competency is required.
+
+### Task Categories (Confirmed at Kickoff)
+1. **Tripletex AI Accounting Agent** -- LLM Agent category (build an agent that performs accounting operations via API)
+2. **NorgesGruppen Data Object Detection** -- Computer Vision category (detect/classify products on store shelves)
+3. **Astar Island** -- ML/Statistics category (predict Norse civilization simulator outcomes as probability distributions)
 
 ### Case Providers (2026)
 Three case providers supply real-world problems:
 1. **Google** — providing GenAI capabilities and cloud infrastructure
 2. **Tripletex** — Platinum partner, Norway's largest cloud accounting platform (~150,000 businesses). Task reflects "real challenges we work with daily" (Martin Bø, Tripletex)
-3. **Third case provider** — TBD / not publicly confirmed at time of research
+3. **Astar Consulting** — providing their own "Astar Island" Norse civilization simulator challenge (ML/statistics category)
 
 ### Scoring System
 - Solutions submitted via API with **automatic scoring**

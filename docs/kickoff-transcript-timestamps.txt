@@ -1,0 +1,646 @@
+[705.0s - 709.4s]  Norge er et sted for mesterskaper. Vi liker å gjøre det bra, og vi liker å konkurrere når det er noe som virkelig teller. Vi skal til, vi... fra Klæmo her, som spinner opp denne bakken på helveldigviset. Det er kunst! Hvis du klarer å skape 20 % produktivitetsvekst på ett år ved å bruke disse verktøyene, i løpet av to-tre år så er du 50 % for å konkrete.
+[709.5s - 713.5s]  Hvis du ikke får dette inn i bedriftene, så er det feil.
+[715.7s - 719.0s]  God norsk kunstig intelligens er viktig for Norge.
+[719.1s - 724.5s]  Vi trenger kunnskap om hvordan vi kan bruke teknologien på en nyttig og trygg måte.
+[724.6s - 728.2s]  Vi trenger K både for å løse viktige samfunnsproblemer,
+[728.3s - 733.9s]  og for å effektivisere arbeidet både i offentlig og privat sektor helt inn i livet våre.
+[734.0s - 747.5s]  På en fornuftig måte som hører demokratiet vårt. Og så har vi OL bak oss, hvor vi tok flest medaljer i et stort mesterskap der.
+[747.6s - 751.7s]  Så la oss ta med den gløden inn når vi da har norgesmesterskapet i KI.
+[751.8s - 766.9s]  Jeg heier og sier og sier lykke til med mesterskapet. Velkommen.
+[768.5s - 773.5s]  Wow. ute, tusen takk for alle som har stilt opp hit.
+[773.5s - 778.3s]  Det er en ganske absurd verden vi lever i akkurat nå,
+[778.4s - 782.7s]  med alle som sitter på Clodkode, så vi har sittet nå med Clod ute kode i noen måneder,
+[782.8s - 785.9s]  og det eneste jeg har sett et tall på en skjerm.
+[785.9s - 791.1s]  Så å se det her, spille seg ut. Det er helt fantastisk.
+[794.7s - 799.1s]  Og så vil jeg også takke, for vi er her på Masjong Story i Oslo.
+[799.2s - 805.4s]  Men i Tromsø, Grimstad, Halden, Hamar og Kristiansand og i Trondheim,
+[805.5s - 811.2s]  så er det frivillige folk som har kontakta oss, kan vi arrangere en hu hos oss.
+[811.2s - 816.3s]  Og det viser egentlig bare at den arenaen vi prøver å skape med NM i AI,
+[816.3s - 818.9s]  det er et behov for det.
+[818.9s - 826.7s]  Så i høst i fjor tenkte vi at norgesmesterskapet i AI, hvordan kan vi gjøre det?
+[826.7s - 830.7s]  Da satt vi oss ned og tenkte vi at vi skal ha minst 1 000 deltakere.
+[830.7s - 835.2s]  Det skal være pensjonister, det skal være barneskoleelever,
+[835.2s - 839.0s]  det skal være droppouts, det skal være hvem som helst.
+[839.0s - 842.5s]  Og når vi har... Jeg har plass til det. Tusen takk.
+[842.7s - 846.0s]  Og når vi først har med og engasjert alle sammen,
+[846.0s - 850.8s]  kan vi ikke bare ha akademiske problemer. Vi må også ha næringslivsproblemer.
+[850.8s - 857.5s]  Og så må man alltid bringe inn en stor pengesum. Vi har klaga litt på ute ute ute.
+[857.6s - 862.9s]  Så må vi blaste det litt selv. Målet vårt er 1 millioner kroner i prispenger.
+[862.9s - 871.2s]  Det er vi klart. Og så ville vi hente to millioner, som vi kunne gjøre litt med sprell. Sånn som det her.
+[871.2s - 876.9s]  Den 19. mars. Det var datoen vi satt for det som føles ut som dritlenge siden.
+[876.9s - 878.4s]  Og hvordan har vi gjort det nå?
+[878.4s - 882.8s]  Det er et godt spørsmål. Vi overgikk i hvert fall med et par ganger,
+[882.8s - 889.6s]  så vi endte opp med 2 500 i skrivende stund, for en dag siden. Applaus for det.
+[889.7s - 894.1s]  Dette er da deltakere som, dis yngste er 15 år, var det ikke det?
+[894.1s - 899.5s]  Og eldste par av 70. Så her tror vi virkelig har fått inn noe.
+[899.5s - 903.4s]  Så har vi selv med oss trippeltex og Norgesgruppen Data, og oss selv,
+[903.5s - 905.2s]  som tar inn ekte oppgaver,
+[905.4s - 928.9s]  som vi mener folk kan bryne seg på den siste delen av i mot ekte problemer. Det er noe vi ønsker å kunne tilby. Man lærer jo ikke på skolen som droppout at næringslivet setter sine budsjetter allerede i oktober, november. Så da vi kom 27. november og sa 1 mill. kr til norgesmesterskapet,
+[928.9s - 934.9s]  så klarte vi da uansett å hente 690 000 kroner, og resten spytter vi ute selv.
+[934.9s - 938.9s]  Men tusen takk til alle partnere for det vi har klart å få til her.
+[938.9s - 949.2s]  Dette er ikke bare vårt eget initiativ, så jeg ønsker en liten applaus til for alle sammen.
+[953.6s - 959.4s]  Mange tolker sikkert det som at vi er gal. Det stemmer nok litt. Samtidig er det også andre gale folk i Norge.
+[959.6s - 965.5s]  Som vi så på E24 tidligere, så mener Nicolai Tangen at vi trenger litt gale folk i toppen.
+[965.5s - 971.8s]  For det kommer en ny modell nesten hver eneste uke fra de beste språkmodelleverandørene.
+[971.8s - 975.1s]  Da trenger vi å følge med, vi trenger å pushe grensene,
+[975.1s - 977.1s]  for det har aldri vært en så god tid å være galt på.
+[977.1s - 983.1s]  Så vi har lyst til å si stor tusen takk til Nicolai Tangen, som har tatt seg tid til å være her.
+[983.1s - 990.6s]  Og har lyst til å heie frem alle de 2500 deltakerne som sitter klar akkurat nå.
+[998.7s - 1002.7s]  Dette her er jo bare så utrolig gøy.
+[1003.0s - 1008.2s]  Vi får mange invitasjoner i oljefondet, men dette er rett og slett noe av det kuleste
+[1008.4s - 1015.1s]  vi har vært invitert til noensinne. Så det må vi nesten gi dere en applaus for, altså.
+[1017.2s - 1028.2s]  Og så må jo jeg si at jeg, som er og var og har alltid vært så utrolig dårlig i sport... Dette er jo min type NM.
+[1028.4s - 1033.4s]  Du mister liksom ikke stafettpinne, du har liksom ikke en dårlig svømmestart.
+[1033.5s - 1037.8s]  Eller jeg, som var håndbakegeper, skikkelig redd for ballen.
+[1037.9s - 1040.6s]  Her tror jeg at jeg kunne hatt det mye bedre.
+[1040.6s - 1043.6s]  Og så har de fått noe til noe helt spesielt her.
+[1043.7s - 1047.0s]  Å gå fra 120, som det var i fjor,
+[1047.1s - 1052.3s]  til 2500. Det står det skikkelig respekt av. Så well done.
+[1052.3s - 1056.2s]  Og så, en million i potten, det er da seks nuller.
+[1056.2s - 1061.8s]  Og er det noen som er glad i nuller, så er det også i oljefondet.
+[1061.8s - 1067.0s]  Vi elsker nuller. Og det er få steder hvor folk genuint blir så begeistret over nuller.
+[1067.1s - 1069.2s]  Så dette her syns vi er helt utrolig.
+[1069.3s - 1074.1s]  Og ikke bare det, men det at det er en million i potten her,
+[1074.2s - 1081.6s]  viser verdien av KI. Det viser at dette må vi ta på alvor.
+[1081.6s - 1087.0s]  Det som er helt opplagt, er at Norge trenger sånne som dere.
+[1087.1s - 1091.3s]  Norge trenger dere som er her i dag.
+[1096.5s - 1104.9s]  Og hvorfor har vi så gode forutsetninger i Norge for akkurat dette?
+[1104.9s - 1111.7s]  Jo, vi er digitale. Vi er høyt utdannet, og vi hater å jobbe.
+[1113.8s - 1116.5s]  Si og noen. I hvert fall er vi veldig glad i å være på hytta.
+[1116.5s - 1122.7s]  Og det å ha noen agenter som da liksom surrer og går i bakgrunnen, det er helt perfekt.
+[1122.7s - 1126.0s]  Jeg skal f.eks. gjøre det i morgen.
+[1127.2s - 1131.6s]  Folk sier stadig vekk mye dumme ting, ikke sant?
+[1131.6s - 1138.4s]  Det hører vi hele tiden. I 1943 sa styreformannen i IB:"
+[1138.4s - 1144.3s]  Vi kommer ikke til å trenge mer enn fem computere i hele verden.
+[1144.3s - 1149.4s]  I 1977, så sa grunnleggeren av noe som heter digital,
+[1149.4s - 1154.8s]  at det var ingen grunn til at folk skulle ha datamaskiner hjemme.
+[1154.8s - 1168.8s]  Så sent som i 2006 sa en av lederne i et stort amerikansk medieselskap at man trengte i hvert fall ikke noe særlig båndvidde hjemme.
+[1168.8s - 1174.1s]  Så det er jo klart at folk trodde kanskje at hjulet heller ikke var her for å bli.
+[1174.2s - 1177.8s]  Mange har sagt at internett er ikke her for å bli.
+[1177.8s - 1183.0s]  Det er ekstremt vanskelig å forstå ny teknologi når den kommer.
+[1183.0s - 1187.0s]  Og hvorfor er det så vanskelig å forstå den nye teknologien?
+[1187.2s - 1191.2s]  Jo, fordi det går så fort. For eksempel...
+[1191.2s - 1194.7s]  Hvor mange her er det som ser på OL?
+[1194.7s - 1201.9s]  Så fra det ene OL til det neste OL, så beveger mennesket seg 1 % fortere.
+[1201.9s - 1205.7s]  Mens teknologien er tus 000 ganger fortere.
+[1205.8s - 1211.3s]  Det er ti ganger med chips, det er ti ganger så god softe, og det er ti ganger så mye av dette.
+[1211.4s - 1217.1s]  Så det var én olympiade. Neste olympiade. Mennesket 1 %, 1 % til.
+[1217.1s - 1220.8s]  Teknologien 1 000 ganger til.
+[1220.9s - 1227.9s]  Kveldens første spørsmål. 1000 ganger ute. Hvorvor mye er det? Det er én million. OK. En olympiade til.
+[1227.9s - 1230.9s]  Tusen ganger til. Hva er 1 000 ganger en million?
+[1230.9s - 1238.6s]  Det er ute en milliard ute ganger kompleksitet.
+[1239.4s - 1243.6s]  Det er en sånn som vi aldri har sett.
+[1243.6s - 1249.2s]  Og teknologien går ikke sånn. Den fortsetter å krumme oppover.
+[1249.4s - 1251.6s]  Den fortsetter å akselerere oppover.
+[1251.6s - 1256.6s]  Vi har aldri sett en sånn teknologikurve som vi har nå.
+[1256.6s - 1261.0s]  Og det vi skaper med det, det vi kaller utehang.
+[1261.0s - 1266.1s]  Det er at mulighetene i teknologien langt overstiger det vi klarer å få til.
+[1266.1s - 1269.2s]  Det vi klarer å absorbere, det vi klarer å ta til oss.
+[1269.4s - 1273.8s]  Det er det som er den store utfordringen her nå.
+[1273.8s - 1276.2s]  Det er derfor vi må bare pushe hele tiden.
+[1276.2s - 1280.3s]  Non stopp må vi pushe.
+[1280.3s - 1284.3s]  Troppledere som jeg snakker med, og jeg snakker med en del toppledere.
+[1284.3s - 1290.4s]  De kaller jo dette for Red Alert. For mange mennesker som ikke kjører det.
+[1290.4s - 1292.5s]  Dere har skjønt det.
+[1292.5s - 1298.0s]  Her har vi teknologer, vi har hobbydatamennesker, vi har spesialister.
+[1298.0s - 1303.4s]  Dere står midt oppi en teknologisk revolusjon og har skjønt det.
+[1303.4s - 1312.5s]  Og nå går toget. Og da nytter det ikke å stå med lua i hånda. Hvorfor ikke det?
+[1312.5s - 1321.7s]  For den hånda skal du jo bruke til noe helt annet. Du skal bruke den på tastaturet ditt.
+[1321.8s - 1328.0s]  Og det er det vi gjør i oljefondet. Vi er all in. Vi har 100 % som er på Clod.
+[1328.1s - 1335.5s]  Vi har 70 % som er på Claud Cod. 70 % av en bedrift er nå på Clod.
+[1335.5s - 1341.3s]  Og vi var ikke engang en teknologibedrift. Nå er det. Det er kjempegøy.
+[1341.5s - 1349.2s]  Gir det resultater vanvittig. Vi tenker at vi er blitt 20 % mer effektive på ett år.
+[1349.2s - 1354.0s]  Og 20 % effektivitetsøkning høres kanskje ikke så mye ut.
+[1354.0s - 1359.6s]  Det er helt vanvittig mye. Samfunn sliter med å få 1 %, 20 % på ettår.
+[1359.7s - 1363.6s]  Hvis du har det i litt mer enn to år, så er du liksom opp i 50 %.
+[1363.6s - 1368.8s]  Hvis du er 50 % mer enn konkurrentene dine, de kan aldri ta deg igjen.
+[1368.8s - 1372.5s]  De er helt gone. Helt vanvittig.
+[1372.5s - 1376.5s]  Og vi bytter jo ikke ut folk med maskiner, og det tenker jeg ganske viktig.
+[1376.5s - 1380.8s]  Vi bare gjør menneskene våre mye mer effektiv.
+[1380.8s - 1383.2s]  Vi gir dem rett og slett en superpower.
+[1383.2s - 1386.5s]  Porteføljeforvalterne våre analyserer bedre.
+[1386.6s - 1392.4s]  Juristene våre kan behandle flere saker. Treiderne er mye bedre.
+[1392.4s - 1397.8s]  Det som også er vanvittig spennende, er hva dette gjør med bedriftene.
+[1397.9s - 1401.2s]  For fem år siden vår IT-avdeling, hva var det?
+[1401.2s - 1405.3s]  De var nede i kjelleren, i en boks.
+[1405.3s - 1408.9s]  Og de eneste gangene du tok kontakt med dem,
+[1408.9s - 1412.6s]  da det var noe feil med computeren din.
+[1412.6s - 1416.0s]  Nå er det liksom del av strategilandleggeren vår.
+[1416.0s - 1419.5s]  Vi bærer dem frem på gullstol. Det er de nye heltene.
+[1419.5s - 1423.0s]  Vi har snudd opp ned på organisasjonen.
+[1423.1s - 1425.8s]  Det andre er dette med alder.
+[1425.8s - 1431.8s]  I oljefondet for fem år siden, da vi tok inn studenter, hva var det for noe?
+[1432.0s - 1438.3s]  Pain in the ute. Fordi alle måtte bruke liksom to år på lærerjobb.
+[1438.4s - 1443.0s]  Og de var ubrukelige i mange år.
+[1443.0s - 1447.2s]  Nå er det i produksjon i løpet av 35 minutter.
+[1447.4s - 1450.4s]  Det er like lang tid som jeg bruker på å parkere bilen min.
+[1450.4s - 1456.8s]  Det er bare helt vanvittig. Så vi har snudd opp ned på teknologi og andre folk.
+[1456.8s - 1460.5s]  Og på hele aldersgreia.
+[1462.5s - 1467.8s]  Det som står meg, er at dere som lærer dere a-e, på en skikkelig måte,
+[1467.9s - 1470.7s]  der blir den viktigste personen i bedriften.
+[1470.7s - 1476.3s]  Hvordan folk samler seg rundt A-e-ressursene våre.
+[1476.3s - 1484.2s]  Og det som også er viktig å huske på, er det at du er aldri ferdig utlært.
+[1484.3s - 1490.6s]  Hvis du tror du er ferdig utlært, da er du ikke utlært. Da er du ferdig.
+[1493.7s - 1498.5s]  Det som er fint med A1 nå, at du slipper å gjøre kjedelige ting.
+[1498.5s - 1504.4s]  Altså kjedelige ting, det gjorde vi før. Nå driver vi ikke med kjedelige ting lenger.
+[1504.4s - 1507.3s]  Nå gjør vi bare gøye ting.
+[1507.4s - 1513.9s]  Og derfor ser jeg faktisk at vi har det mye gøyere på jobben enn det vi hadde før.
+[1513.9s - 1516.8s]  Fordi vi kan bruke disse verktøyene.
+[1516.8s - 1520.6s]  OK. Og så bare en siste sak.
+[1520.6s - 1525.8s]  I kveld, om fire timer, så skal jeg på debatten i NRK.
+[1525.8s - 1531.0s]  Hva skal jeg snakke om da? I.
+[1536.5s - 1540.4s]  Hvordan har jeg forberedt meg til den debatten? Selvfølgelig.
+[1540.4s - 1547.2s]  Jeg snakker med Claude, og jeg har fått de ti spørsmålene som de mener jeg kommer til å få.
+[1547.3s - 1551.4s]  Jeg skal vente på at jeg kommer til å få syv av de ti spørsmålene.
+[1551.4s - 1560.0s]  Dette her er bare så utrolig gøy. Så... i hvert fall, lykke til med de neste dagene.
+[1560.1s - 1563.8s]  Vi i oljefondet heier bare helt vanvittig på dere. Dette er så utrolig gøy.
+[1563.9s - 1589.9s]  Og så må jeg huske at hvis dere noen gang skal skifte jobb, søk hos oss. Tusen takk. OK, var det? Det håper jeg var ekstremt inspirerende.
+[1589.9s - 1595.4s]  Så får vi se om Claude har forberedt Nicolai godt nok i kveld.
+[1595.4s - 1597.2s]  Det blir spennende å se.
+[1597.2s - 1602.0s]  Vi har lyst til å takke de som har gjort dette arrangementet, er mulig.
+[1602.0s - 1606.6s]  Selv om vi har jobba reven av oss for å få det her i gang,
+[1606.6s - 1610.0s]  så har vi hatt med oss 13 partnere på laget.
+[1610.1s - 1613.8s]  Fordi, som vi så i stad, vi har ganske store ambisjoner.
+[1613.8s - 1618.7s]  Vi skal ha flere nuller i premapotten, og dette kunne vi ikke gjøre selv.
+[1618.7s - 1623.4s]  Så vi ønsker i første omgang å takke KI-Norge gjennom Digdir.
+[1623.4s - 1625.7s]  Tekn Norge, O-nettverket,
+[1625.7s - 1631.0s]  Mess community, Google Norway, Sob, som sitter opp på taket her.
+[1631.1s - 1634.7s]  Jeg håper noen av dere er der nå.
+[1634.7s - 1638.8s]  Og så har vi gullpartnerene våre.
+[1638.9s - 1642.5s]  Da har ills, DNV, Senter of AI Research.
+[1642.5s - 1645.9s]  Og de tre hovedpartnerne,
+[1646.0s - 1651.6s]  trippel-tex og Norgesgruppen data. Gi en stor applaus til disse!
+[1660.8s - 1664.7s]  Vi sikter selvfølgelig høyt ut med 1 million kroner premiepenger.
+[1664.7s - 1667.2s]  Det gjorde vi, jeg tror det var i november i fjor. 27. Vi sikter jo selvfølgelig høyt ut med 1 million kroner premiepenger.
+[1667.2s - 1669.3s]  Det gjorde vi 27. november i fjor. 27. november i fjor.
+[1669.4s - 1673.5s]  Og det som var ekstremt kult, da. Det var en skifteratikkel.
+[1673.5s - 1679.6s]  Og en dag senere fikk vi melding fra Trippeltex, som vi ikke kjente. Vi skal være med.
+[1679.7s - 1682.8s]  Da tenkte vi at dette kom til å gå dritbra.
+[1683.0s - 1687.0s]  Og så er det litt tregere. Vi har en veldig god relasjon med Norgesgruppen Data,
+[1687.2s - 1691.1s]  som vi har jobbet med gjennom Asia Konsulting.
+[1691.1s - 1695.9s]  Og det på en måte er det som har resultert i dag i dag.
+[1695.9s - 1699.8s]  Så har vi selvfølgelig mye strategiske partnere på bunnen her.
+[1699.9s - 1703.4s]  Eller på slutten her... så jeg har hørt det feil.
+[1703.4s - 1708.1s]  Som bidrar med publisitet, få opp kvinneandelen.
+[1708.3s - 1713.2s]  Når vi starta, så var den ned på 2 %, denne vi jobber med å få opp med ODA-nettverket.
+[1713.3s - 1718.7s]  Jeg tror vi er på 11 eller 12 %, nå. Det er bra.
+[1722.6s - 1726.0s]  Og selvfølgelig Masch Communityuity som hoster det stedet her,
+[1726.1s - 1730.6s]  ute Norge som kommuniserer for oss, Fanny Subsum er med og bringe talentene inn.
+[1730.8s - 1733.7s]  Og Google, som skaffer oss masse comput.
+[1733.8s - 1739.9s]  Hvis jeg har fått en google-aqant, så er det bare å brenne servere i helgen, altså.
+[1740.0s - 1741.7s]  Vi skal høre litt fra partnerne våre.
+[1741.7s - 1746.0s]  Tom Daniel Sivertsen fra Norges Gruppendata og Jan Strandbake.
+[1746.2s - 1751.2s]  Jan Strandbake ut først, og så er det en liten paneldebatt etterpå.
+[1751.4s - 1758.4s]  Så først skal vi se en video med Trippel-tex, og så kommer Jan Strandbakke på.
+[1758.4s - 1762.4s]  Jeg heter Emil Mortenason og jeg jobber som dataanalytiker.
+[1762.6s - 1766.3s]  Jeg heter Martin Bø og er 31 år og jobber som dataanalytiker.
+[1766.5s - 1772.9s]  Her fikk man virkelig mulighet til å teste på det siste og freshest innom ny teknologi.
+[1773.0s - 1775.8s]  Det er nesten ingen grenser til hva man kan få teste på her.
+[1775.9s - 1779.2s]  Ting som tok ukevis før, kan du jobbe på dager eller timer nå.
+[1779.3s - 1783.1s]  Og jeg tror Norge har mye å hente på bruk av hva i.
+[1783.2s - 1789.6s]  Nå er mulighetenes tid inne for å lage noe riktig kult og nytt og heftig og stort.
+[1789.8s - 1796.0s]  Det gjør meg skikkelig stolt at Chippeltex er med og sponsorer dette i ventet.
+[1796.2s - 1802.2s]  La folk prøve seg på en reell case der vi skal bruke Ai et regnskapssystem.
+[1802.4s - 1805.0s]  Egentlig spiller ikke kraften noen rolle, så lenge man faktisk gjør noe nytt og noe kult. Tenker de som er gode problemløsere, er det viktigste. Det er helt nydelig å være her.
+[1807.2s - 1807.3s]  Så lenge man faktisk gjør noe nytt og noe kult.
+[1811.1s - 1815.9s]  De som er gode problemløsere, er det viktigste.
+[1820.4s - 1820.5s]  Det er helt nydelig å være her. Det er jo ordentlig trøkk, ordentlig bra.
+[1822.7s - 1822.9s]  Det er ordentlig kult å høre Nicolai Tangen prate.
+[1825.4s - 1825.6s]  Så må jeg si litt om atppel-tex her,
+[1828.4s - 1834.1s]  men vi er Norges ledende økonomisystem. I morgen er det lønningsdag, så da får dere alle lønn lønn fra Trippeltex.
+[1834.2s - 1837.1s]  Noen av dere får det, i 20. Det er, i hvert fall vår dato.
+[1837.2s - 1841.3s]  Men vi har, som sagt, 160 000 bedrifter som kunder.
+[1841.4s - 1847.1s]  Vi har, 400 000 brukere som bruker trippel-tex månedlig. Vi håndterer 27 millioner fakturaer.
+[1847.1s - 1852.6s]  Og vi har vært i gamet i 20 år og vært en utfordrere og vært en rebell.
+[1852.7s - 1855.9s]  Så jeg syns det er veldig kult at dere tar tak her nå,
+[1856.0s - 1859.2s]  og virkelig arrangerer dette for Bedrifts-Norge.
+[1859.3s - 1862.5s]  Og at det blir over 2000 påmeldte. Det er ordentlig moro.
+[1862.5s - 1865.1s]  Men hva gjør vi med Ai i dag?
+[1872.9s - 1879.9s]  Vi har en supportassistent som håndterer over 70 % av all support vi har, inkludert e-post, telefon og alt. Den svarer altså på 70 %, og den svarer 96 % eller mer riktig.
+[1879.9s - 1883.6s]  Når jeg så på dette case for et års... eller halvt år siden,
+[1883.7s - 1887.7s]  så tenkte jeg det er jo helt umulig, men det er faktisk fullt mulig.
+[1887.8s - 1889.7s]  Og det er et super business case.
+[1889.7s - 1893.7s]  Vi har ti pluss agenter i produksjon. De håndterer lønnsinnsikt,
+[1893.8s - 1896.5s]  de håndterer rapportering, de gir det innsikt i butikken,
+[1896.5s - 1901.8s]  og de gir det tips om hva du bør gjøre for å drive bedriften din enda bedre.
+[1901.9s - 1910.3s]  Så det er ordentlig kult. Og 63 % av all kode,, våre 135 i produktutvikling, produsert i februar,
+[1910.3s - 1914.1s]  var skrevet av AI, primært Claude.
+[1914.2s - 1918.2s]  Det er jo helt ville tall. Utrolig kult at det er mulig
+[1918.2s - 1922.8s]  en bedrift som har så mange kunder som driver med økonomi.
+[1922.8s - 1925.3s]  Det er fullt mulig jeg har fått deg til for andre også.
+[1925.4s - 1929.8s]  Sånn ser det ut. Jeg skal ikke gå gjennom dette, men her ser dere hvordan vi popper opp med
+[1930.0s - 1936.2s]  informas, hvordan du oppretter ordrelinjer, hvordan du kan spørre hva du kan få av innsikt.
+[1936.2s - 1941.8s]  Jeg har lyst til å avslutte meg å si at de må tenke å holde ledere, spesielt, at AI er ingen opp...
+[1942.0s - 1947.0s]  Det er ikke valgfritt. Man må klinke til å si at A. AI er ikke valgfritt. Man må klinke til å si ute ute, og jeg har jo en T-skjorte.
+[1947.1s - 1951.6s]  Fikk du hvitt jenta, Nicolai. Det er helt nydelig!
+[1951.7s - 1956.0s]  Så jeg håper jeg ser denne på debatten i kveld, faktisk, at den har på denne.
+[1956.0s - 1965.8s]  Yes, takk for meg! Jeg heter Christian også. Tecklie i Norgesgruppen sin A-Lab.
+[1965.9s - 1973.1s]  Mitt navn er Erlend Christensen og jobber i Norgesgruppen data som AI utvikler i AI-laben.
+[1973.1s - 1977.4s]  A-laben i Norgesgruppen er laben i Norgesgruppen det er lab og en innovasjonshubb
+[1977.6s - 1980.3s]  som tester ut nye ideer med fokus på Ai.
+[1980.4s - 1984.3s]  Og Ai er jo det beste verktøyet å bruke til å optimalisere databruk
+[1984.5s - 1987.0s]  og hva man kan få ut av sånne store datamengder.
+[1987.1s - 1989.4s]  Det er jo helt gull for Norgesgruppen å ha en AI-avdeling.
+[1989.5s - 1993.9s]  Store bedrifter, som har holdt på i svært lang tid, sånn som oss,
+[1994.0s - 2000.3s]  må omstille oss, ta en bruk ny teknologi, være ute a head of the game.
+[2000.4s - 2005.8s]  Utforske måter å bruke computervisjon, sånn som vi gjør, i selvbetjentkassene.
+[2005.9s - 2010.1s]  Vi prøver klassisk maskinlæring når det gjelder prognoseanalyser.
+[2010.2s - 2014.1s]  Vi ser i Norgesgruppen at A1, noe som vi måtte satse på,
+[2014.2s - 2018.8s]  en ny modell som er blitt sluppet, nye paradigmer, ting skjer ekstremt raskt.
+[2018.9s - 2022.4s]  Ai er jo det mest revolusjonerende innenfor teknologi akkurat nå.
+[2022.6s - 2029.4s]  NMi er en viktig signalfaktor for Norge, for næringslivet, for studentene.
+[2029.5s - 2033.6s]  At det er ikke kun amerikanere og kinesere som skal ta i bruk det.
+[2033.7s - 2037.1s]  Og teknoniet for bruken og utviklingen av det.
+[2037.2s - 2041.6s]  Det å være med på denne revolusjonerende teknologiske utviklingen er veldig viktig.
+[2041.7s - 2048.4s]  Jeg tror vi kommer til å være sjokkert over hvem som gjør det bra i NMI.. Man må tørre å teste og prøve. Og at hvem som helst kan bli med.
+[2048.4s - 2051.6s]  Og utgjøre en forskjell. Gjør det beste og ikke vær redd for å prøve.
+[2051.7s - 2055.8s]  Man lærer ikke av å... Man lærer ikke ved minner ute å feile.
+[2055.8s - 2066.0s]  Oppfører absolutt alle som har lyst, har mulighet eller bare er nysgjerrig på å delta i NMiai, uansett ferdighetsnivå.
+[2072.6s - 2079.2s]  Hei, alle sammen. Jeg heter ute og kommer også fra ILaben i Norgesubben data.
+[2079.2s - 2083.1s]  Skal du si veldig kjapt om hvem vi er.
+[2083.1s - 2086.5s]  Vi er teknologidelen av Norges-cupen,
+[2086.5s - 2090.9s]  som vi leverer systemer til nå nesten 50 000 ansatte.
+[2090.9s - 2095.8s]  Vi har 2 100 butikker over hele landet.
+[2095.8s - 2102.1s]  8,3 millioner kunder innom hver uke.
+[2102.1s - 2109.6s]  Én million ordrelinjer hver eneste dag går ut av lagrene våre med mat.
+[2109.6s - 2117.6s]  Vi har et bærekraftig produksjonsanlegg som produserer mat og drikker over hele landet.
+[2117.6s - 2121.6s]  Og vi har kanskje Norges største logistikkorganisasjon,
+[2121.6s - 2128.0s]  med elektriske lastebiler, sjødroner og egen energiproduksjon.
+[2128.8s - 2134.6s]  I Norge som med data, utvikler, men også forvalter systemer som skal holde dette i gang.
+[2134.6s - 2141.8s]  Og sørge for matleveranser i hele landet fra Nordkapp til Lindesnes.
+[2141.8s - 2148.0s]  Så hva trenger vi AI til? Vi må jo ha effektive verdikjeder.
+[2148.0s - 2154.7s]  Så vi skal ha riktige produkter til riktig sted, til riktig tid, riktig mengde.
+[2154.7s - 2158.7s]  Vi skal sørge for åpne butikker i hele landet, også der hvor det bor få folk,
+[2158.8s - 2162.9s]  og hvor vi kanskje ikke kan ha ansatte i butikken hele åpningstida.
+[2163.0s - 2165.2s]  Vi skal sørge for friksjonsfriksjonsfri handleopplevelse,
+[2165.3s - 2170.6s]  at du skal kunne gå gjennom butikken vår sømløst og ha en god handleopplevelse.
+[2170.6s - 2173.7s]  Og så skal vi ha mindre matsvin.
+[2173.8s - 2178.6s]  Så vi har redusert matsvinn med 50 % eller mer siden 2015.
+[2178.6s - 2185.0s]  Og det skal vi redusere ytterligere. Kanskje vi kan bruke ute til å hjelpe også for brukerne og redusere matsyn?
+[2185.0s - 2187.8s]  Med det skal vi også ha klimanøytral drift innen 2030.
+[2187.8s - 2192.9s]  Det krever både teknologi, kompetanse, og det er arbeidsintensivt.
+[2193.0s - 2197.6s]  Og det er akkurat disse tingene vi tror vi kan bruke AI til.
+[2197.6s - 2202.2s]  Så det vi er opptatt av at AI er ikke bare noe som skjer på datamaskinen og digitalt,
+[2202.3s - 2210.1s]  men også i den fysiske verdikjeden. Vi har en stor fysisk veitatt av hvordan vi kan oversette dette.
+[2210.1s - 2215.2s]  Ved å digitalisere den fysiske verdikjeden med billige kameraer.
+[2215.2s - 2217.4s]  Og begynner å optimalisere.
+[2217.4s - 2222.6s]  Så jeg ikke å snakke mye om det nå, men jeg har lagd en lagt en videosnutt.
+[2222.8s - 2287.4s]  Og så har vi en stand der borte, så håper noen vi kommer bort og hører mer etterpå. Så da sier jeg ute. Lykke til i mesterskapet. OK, så ute har Norgesgruppen data fått godsnakke av seg selv, med masse flotte visjoner. Trippel-seks det samme.
+[2287.4s - 2292.1s]  Men de svarte ikke på hvorfor de er her, hvorfor de er med på NMIA.
+[2292.1s - 2296.1s]  Ja, det er mye data, hun bruker K og alt de greier der.
+[2296.1s - 2301.1s]  Men hvorfor når jeg og Michael kommer og sier at vi skal ha 1 mill. kr i premiepenger, hvorfor sier de ja?
+[2301.1s - 2304.5s]  Det skal vi finne ut av. Vi er så heldige med oss Alexandra Marie.
+[2304.6s - 2310.6s]  Jeg lærte at på NRK sier de påvirker. Jeg syns det var litt fett.
+[2310.8s - 2316.8s]  Takk-runda og student. Hun skal lede et panel med Tom Daniel, Jan,
+[2316.8s - 2328.0s]  og vår egen Michael Stenbuk. Så ta godt imot til panelsamtale.
+[2330.5s - 2335.6s]  Velkommen til panelsamtale. Dette har jeg gledet meg enormt mye til.
+[2335.7s - 2339.8s]  Vi har ikke så god tid, så jeg tenker at vi bare fyrer i gang med spørsmål.
+[2339.9s - 2347.2s]  Vi kan jo starte her, Jan, for dere i Trippeldex, dere hoppet inn og tok tredjeplass i NMI allerede i desember.
+[2347.2s - 2350.0s]  Og det var da ikke lenge etter lanseringen.
+[2350.1s - 2353.8s]  Du leder nå over 100 utviklere i trippeldex.
+[2353.8s - 2357.6s]  Hvorfor tenker du at det er så viktig at vi arrangerer NM i akkurat KI?
+[2357.6s - 2367.8s]  Det er jo et paradigmeskifte. Det er lett å implementere skjer rundt oss nå. Hvis man sitter og tenker at det er ute ute ute ute ute.
+[2367.9s - 2372.4s]  Det er lett å implementere deg i eget selskap, men vi må jo sette av noen premisser
+[2372.6s - 2377.7s]  for resten av Bedrifts-Norge også. Så vi må tenke at det er normalt,
+[2377.7s - 2381.3s]  der vi ser nå, de nye modellene fra Clod osv.
+[2381.5s - 2384.4s]  Det har så sinnssykt impakt i arbeidshverdagen.
+[2384.5s - 2388.5s]  Så folk opplever 40 % effektivisering.
+[2388.5s - 2393.2s]  Hvis man ikke tar det innover seg og får implementert i de brede lag i arbeidslivet,
+[2393.3s - 2398.6s]  så bommer vi grovt som nasjon. Derfor syns jeg det er jævlig kult med et NM, rett og slett.
+[2398.6s - 2401.3s]  Jeg støtter innunder det, og jeg syns det er veldig spennende,
+[2401.5s - 2406.7s]  at utviklingen skjer veldig raskt. Og at man nå har en slags ny type utvikler.
+[2406.7s - 2409.5s]  Tom, hva tenker du... du er jo fra Norgesgruppen,
+[2409.6s - 2413.9s]  og dere tok det et sted videre og kom på selve førsteplassen,
+[2414.0s - 2417.1s]  sammen med A-Star, på dette norgesmesterskapet.
+[2417.2s - 2421.1s]  Hva er det du ønsker å få ut av et norgesmesterskap?
+[2421.1s - 2425.6s]  I bunnen ligger det som vi hørte i stad,, ute for en enorm teknologirevolusjon.
+[2425.6s - 2429.2s]  Og så tror jeg vi har alle ingrediensene her til å lykkes med den.
+[2429.2s - 2433.9s]  Vi har jo talent, vi har kapital, energi og tillitssamfunn.
+[2433.9s - 2437.0s]  Men så har vi jo ikke den ledertrøya akkurat nå.
+[2437.0s - 2440.5s]  Den ligger kanskje i Kina eller USA et sted.
+[2440.5s - 2445.4s]  Så får det handler det litt om å rekke opp hånda og si at vi vil noe i det rommet her.
+[2445.4s - 2449.2s]  Vi ønsker å være med og bygge fremtiden.
+[2449.3s - 2454.6s]  Og så skjer det mye spennende i Norgesgruppen data og i verdikjent til Norgesgruppen.
+[2454.6s - 2458.6s]  Men vi er tidlig i den reisen, så vi ønsker å støtte opp om,
+[2458.8s - 2460.9s]  og bygge et bredere fagmiljø på dette.
+[2460.9s - 2465.0s]  Og som jeg nevnte også vise at dette er ikke bare chat-potter på PC-skjermen.
+[2470.1s - 2470.2s]  Dette er autonom transport, det er robotikk, det er computervisjon og ting som kan gjøre
+[2473.6s - 2473.6s]  den fysiske verden bedre, og som gjelder mange flere enn bare oss.
+[2477.1s - 2477.2s]  Akkurat det der tror jeg er veldig interessant.
+[2482.7s - 2482.8s]  At det virkelig er inn under veldig mange ulike industrier og fagfelt, og det er veldig viktig å tenke på.
+[2487.2s - 2487.3s]  Hva tenker du om at noen av de tyngste aktørene i Norge nå sitter og sier
+[2490.4s - 2490.5s]  at dette virkelig er et ekstremt viktig initiativ?
+[2495.5s - 2500.4s]  Du har jo selv droppet ut fra NTNU og satt i gang hele mesterskapet. Hva er det som var baktanken med hele initiativet?
+[2500.4s - 2505.1s]  Det er et veldig godt spørsmål. Det måtte jo kanskje Norges minste konsulentselskap til
+[2505.1s - 2509.8s]  for å skape Europas største teknologimesterskap.
+[2509.9s - 2515.1s]  Det var kanskje ikke noe man tenkte på da man droppet ut,
+[2515.1s - 2518.8s]  men det er jo et generasjonsskifte her.
+[2518.8s - 2522.5s]  Og spesielt? Nei da.
+[2522.7s - 2525.1s]  Jeg prøvde å treffe Tom litt også. Men hvis jeg skal reflektere litt over hva den unge garden er, da. Jeg prøvde å treffe Tom litt også.
+[2528.5s - 2534.3s]  Men hvis jeg skal prøve å reflektere over hva den unge garden er, hvis du går inn og høre på %, f.eks. Darioam og deg, apropos legale ledere.
+[2534.3s - 2537.1s]  Så er jo alle som sitter foran en PC-skjerm,
+[2537.1s - 2540.2s]  de er abstrahert av en språkmodell om 1-5 år.
+[2540.2s - 2545.0s]  Og da er spørsmålet hvem eier den teknologien, og hvem er det som går først ut?
+[2545.0s - 2549.7s]  Det tror jeg faktisk at det er en sannhet i at den yngre garde må tenke litt på
+[2549.8s - 2557.6s]  å prioritere hva de ønsker å studere, hva de ønsker å jobbe med og i det hele tatt hva man skal bidra med.
+[2557.6s - 2561.5s]  Så vi håper jo egentlig at dette mesterskapet treffes såpass bredt,
+[2561.5s - 2566.6s]  alle generasjoner, og se viktigheten i det budskapet vi prøver å få frem.
+[2566.6s - 2569.5s]  Absolutt. Jeg har veldig på åpne arrangementer for alle,
+[2569.6s - 2572.7s]  for det er viktig at alle i samfunnet virkelig er med på NRK i revolusjonen.
+[2572.7s - 2576.3s]  Tom, du nevnte jo her ledertrøye.
+[2576.4s - 2580.4s]  Og man kan vel kanskje ikke si at vi i Norge har fått en ledertrøya i Europa
+[2580.6s - 2583.0s]  når det kommer til kunstintliggelligens.
+[2583.2s - 2586.1s]  Hva tenker du ute for å ta på 5,5 millioner mennesker,
+[2586.3s - 2590.4s]  for å ta den posisjonen som vi virkelig burde gjøre,
+[2590.5s - 2594.6s]  og som vi klarer å ta i andre arenaer, sånn som vinter-OL?
+[2594.6s - 2601.0s]  Jeg tror kanskje at for å lykkes med teknologi og industribygging, på samme måte som i OL...
+[2601.0s - 2606.5s]  Jeg er litt mer åpne om hva vi jobber med, og hvilke problem vi prøver å løse på tvers.
+[2606.5s - 2612.3s]  Teknologien er jo åpenbart her. Vi har talentene og utfordringer har vi mer enn nok av.
+[2612.3s - 2614.5s]  Men de tre tingene må møtes.
+[2614.5s - 2621.1s]  Og de tre tingene møtes bare hvis hva vi kan, men også hva vi ikke kan.
+[2621.1s - 2623.2s]  Så jeg tror som i det rommet her og i det mestskapet,
+[2623.3s - 2625.0s]  finnes det enorm skaperkraft. Men vi må vise dere utfordringene våre, hva vi trenger det tilet ute finnes det enormt skaperkraft.
+[2625.0s - 2630.9s]  Men vi må vise dere utfordringene våre hva vi trenger det til å løse.
+[2631.1s - 2634.6s]  Og tror jeg vi klarer å utløse den skaperkraften, så vil det løfte oss alle.
+[2634.6s - 2638.0s]  Det tror jeg er veldig viktig at man virkelig kobler på næringslivet
+[2638.1s - 2641.3s]  med studenter og andre aktører i samfunnet.
+[2641.3s - 2643.8s]  Hvis vi viderefører litt med denne ledertrøya,
+[2643.9s - 2648.2s]  så har dere ganske store ambisjoner i trippel-tex om at dere ønsker å være
+[2648.4s - 2654.9s]  100-prosent a-genererte kode innen 2026. Det er jo ikke så lenge til.
+[2655.0s - 2659.1s]  Hvor tenker du at veien går for et norsk software-selskap?
+[2659.2s - 2663.2s]  Og hva må virkelig til i dagens samfunn for å bli en best mulig utvikler?
+[2663.2s - 2667.8s]  ute prosent er jo et mål. Det er mer et minset enn et tallmål.
+[2667.8s - 2672.6s]  Om det blir 80 eller 100 %, det vet vi ikke.
+[2672.7s - 2678.0s]  Men hva skal til for å bli best? Jo, jeg tror man må tenke ute en softver å utvikle lenger.
+[2678.1s - 2682.6s]  Man er en produktutvikler. Man lager noe større.
+[2682.7s - 2687.2s]  Jeg lager denne snurren, eller jeg ber Claute lage denne snurren, og så virker det hos kunden.
+[2687.2s - 2691.9s]  Det er det som må til for at du ikke skal stå igjen på perrangen og tenke at jeg lager algoritmer.
+[2691.9s - 2694.7s]  For det lager Claude ekstremt bra.
+[2694.8s - 2703.9s]  Jeg har akkurat blitt Clod-frelsst, så har jeg sett verdien det skaper.
+[2703.9s - 2707.0s]  Nå snakkes det mye om hva bedriftene kan gjøre.
+[2707.0s - 2709.9s]  Mika, hva tenker du at universitetene burde gjøre?
+[2710.0s - 2713.6s]  For burde ikke de også ha en rolle opp under det hele?
+[2713.7s - 2716.3s]  Og hva er ditt råd til de som fortsatt studerer?
+[2716.4s - 2719.4s]  For nå er det et ekstremt krevende arbeidsmarked for de nyutdannede.
+[2719.4s - 2723.8s]  Vi spilte inn en podkast med Tor Grande.
+[2723.8s - 2729.7s]  Og han fortalte jo som rektor på NTNU at han ukentlig blir utfordret på
+[2730.9s - 2738.4s]  på å kunne klare å garantere næringslivet at han utdanner relevante aktører til næringslivet.
+[2738.4s - 2743.4s]  Og det er utrolig vanskelig å svare på.
+[2743.4s - 2747.0s]  Og i hvert fall innenfor software er det ingen som vet det.
+[2747.0s - 2751.3s]  Jeg har også snakket med Malte Sørensen, som leder ekspertutvalget,
+[2751.4s - 2754.2s]  som skal fortelle regjeringen hvordan de skal implementere
+[2754.2s - 2758.1s]  kunstig intelligens hos disse utdannelsesinstitusjonene.
+[2758.1s - 2762.7s]  Og akkurat nå er det faktisk ingen som sitter med et svar på hvor dette går hen.
+[2762.7s - 2766.2s]  Hvis du ser på hockeystikken som Nicolai Tangen snakket om,
+[2766.3s - 2770.2s]  så kan den bli veldig stygg hvis ikke følge med i tidene.
+[2770.2s - 2776.3s]  Men jeg tror som et tips til en yngre garde, så er det bare å kaste seg på
+[2776.9s - 2783.5s]  før Elon Musks utsagn kommer om at den supersoniske tsunamien treffer oss alle.
+[2783.6s - 2785.6s]  Da burde vi faktisk være klare.
+[2785.6s - 2789.9s]  Veldig godt råd. Det skal jeg også notere meg.
+[2790.0s - 2795.8s]  Men det var interessant, det som ble nevnt her, Jan, om ute-generert kode.
+[2795.9s - 2801.0s]  Kan du fortelle litt mer om det? For jeg så det var veldig interesse i salen da du gikk ut med det utsagnet?
+[2801.1s - 2806.3s]  Når man stater deg som leder, så er det noen som tenker hva faen?
+[2806.5s - 2811.9s]  Men jeg tror man er en sinnssykt, radikal endring som skjer akkurat nå.
+[2812.0s - 2815.3s]  Hvis man ikke catch deg som utvikler, så er du i outdate i morgen.
+[2815.3s - 2818.4s]  Det er ekstremt viktig. Så man kan ikke jobbe imot,
+[2818.5s - 2827.2s]  og så verdien det gir, og så må man prøve at og investere i det. Nå, da vi så de to nye modellene som kom 45 og 4-6 fra Claude,
+[2827.3s - 2837.6s]  så selv den litt passive, negative senioren, så fy flate, dette nailer den jobben jeg er vant til å gjøre.
+[2837.8s - 2841.1s]  Så jeg må endre minsetet. Og det går om.
+[2841.2s - 2843.9s]  Og ta i bruk muligheten som er.
+[2844.0s - 2848.1s]  Om vi havner på 80-1 eller 100 % i løpet av 2006, er ikke viktig.
+[2848.1s - 2852.1s]  Men ute er kjempeviktig. Det tror jeg absolutt er alfa og mega.
+[2852.2s - 2855.3s]  Jeg likte også den tanken om at man skulle bytte ut de kjedelige oppgavene,
+[2855.4s - 2859.0s]  med bare å ha det gøy på jobb. Det går jeg for.
+[2859.1s - 2863.1s]  Tom, vi snakket allerede om prestasjoner innenfor idretten,
+[2863.2s - 2865.0s]  og hvordan det er veld sånn heiagjeng
+[2865.0s - 2867.5s]  rundt og støtte opp under idrettsutøvere?
+[2867.6s - 2875.6s]  Hvordan tenker du at vi også kan prøve å overføre noe av denne heiagjengmentaliteten
+[2875.8s - 2877.9s]  også innenfor teknologi?
+[2877.9s - 2883.0s]  Jeg har brukt mye tid i det siste på å rekruttere folk til å være med på NM i Ai.
+[2883.0s - 2887.0s]  Og sikkert gjør en goduttere folk til å være med på NMI.
+[2890.1s - 2895.0s]  Men den reaksjonen du ofte får, er liksom... Jeg kan jo ikke det.
+[2895.0s - 2899.4s]  Der tror jeg vi må tenke litt mer sånn som breddeidretten.
+[2899.4s - 2903.5s]  Vi er jo veldig opptatt av Holmenkollstafetten.
+[2903.5s - 2906.2s]  Og du er jo ikke med på Holmenkollstafetten fordi du er sinnssykt god til å løpe.
+[2906.2s - 2910.5s]  Det er jo fordi det er en morsom og sosial anledning til å løpe litt,
+[2910.6s - 2914.2s]  og kanskje bli litt sprekere enn det du var i går.
+[2914.4s - 2920.5s]  Så denne idrettsgleden er viktigere enn hvem som vinner akkurat der og da.
+[2920.5s - 2925.3s]  Med bredde og entusiasme kommer også toppresultatene.
+[2925.3s - 2930.7s]  Men så må vi selvfølgelig også feire å feire store prestasjoner,
+[2930.8s - 2935.1s]  slik man også gjør i idretten og la seg inspirere.
+[2935.2s - 2937.8s]  Men jeg henter litt av den balansen som vi er gode på i idrett,
+[2938.0s - 2939.6s]  kanskje også til næringslivet.
+[2939.6s - 2941.1s]  Det tenker jeg er gode tanker.
+[2941.2s - 2944.3s]  Det å vite at man også kan gå i mål i dette norgesmesterskapet,
+[2944.3s - 2948.2s]  det er greit å vite, for det er det jeg går for, da.
+[2948.4s - 2952.9s]  Men Mikael, hva tenker du at det skal til for at Norge også tør å sette seg i forsetet
+[2953.0s - 2955.9s]  med å utvikle denne teknologien som skal brukes?
+[2956.0s - 2960.8s]  At vi ikke bare bruker det som allerede eksisterer, og som ofte er fra USA eller Sina.
+[2960.8s - 2965.8s]  Vi bor jo i et land som, Hvis folk tar gamingreferansen,
+[2965.9s - 2970.4s]  som er desidert det største og beste på Pay to win.
+[2970.4s - 2976.0s]  Og 97 % av all software, hvis man skal høre på SINTEF, er jo amerikansk.
+[2976.0s - 2982.7s]  Språkmodellen er jo en historisk software-kanibal,
+[2982.7s - 2985.8s]  som vi nå sitter i et tidspunkt i verden
+[2985.9s - 2990.5s]  hvor vi kan fortere enn noen gang bygge vår egen teknologi,
+[2990.5s - 2995.6s]  som erstatter disse 97 % med kanskje litt mer enn 3 %.
+[2995.6s - 2999.8s]  Så det er det første, men det gjelder jo litt på kort sikt.
+[2999.9s - 3003.1s]  Statsministeren vår har rett i at vi eier ikke kunstintelligens,
+[3003.2s - 3005.8s]  men vi kan bli de beste på å bruke den.
+[3005.8s - 3008.9s]  Men det tror jeg kun er på kort sikt.
+[3008.9s - 3014.1s]  At man må faktisk utfordre og kanskje gjøre den janlige kunde-apporten.
+[3014.1s - 3018.7s]  Som utvikler Jepa og skal skal skalere denne.
+[3018.7s - 3025.7s]  Men å tørre å ta en fot frem, bygge, men også prøve å ta litt eierskap.
+[3025.7s - 3030.4s]  Det tror jeg er veldig viktig. Det er kult å se at det er en så stor samling
+[3030.5s - 3034.4s]  av folk som er interessert i dette, og som muligens klarer å utvikle den neste språkmodellen.
+[3034.4s - 3039.8s]  Vi går inn for landing. Alle gode samtaler går veldig fort.
+[3039.9s - 3043.8s]  Så vi kan avslutte litt oppsummerende her med at hver
+[3043.9s - 3046.3s]  om hva dere trenger
+[3046.5s - 3051.4s]  at norske bedrifter burde gjøre allerede fra i morgen for å henge med på denne utviklingen.
+[3051.4s - 3054.7s]  Sett bort fra å være med på det her, da, selvfølgelig.
+[3054.8s - 3059.0s]  Ja, jeg kan begynne. Jeg må jo si ais not option.
+[3059.1s - 3063.9s]  Håper jeg Tangen kommer med den inn på debatten i kveld, som sagt.
+[3064.0s - 3069.5s]  Men det gjelder alle roller. Det gjelder ledere, det gjelder gjelder ledere, det gjelder produktfolk. Alle må ta det i bruk.
+[3069.5s - 3073.1s]  Ekstremt viktig. Hvis vi ikke gjør det, så jobber vi for tregt.
+[3073.1s - 3078.0s]  Da vil vi havne bakpå. Så det tenker jeg liksom... Det siste trøkket.
+[3078.0s - 3081.3s]  Perfekt. Jeg håper dere selger de T-skjortene på Stan.
+[3081.4s - 3085.5s]  Det er bare to av dem i verden. Nei da.
+[3085.5s - 3092.1s]  Nydelig. Skaff verktøyene, sett av tid og begynne å leke.
+[3092.1s - 3095.1s]  Som du hørte, det er gøy, så det er verdt den innsatsen.
+[3095.1s - 3097.4s]  Ja, absolutt. Mikkel?
+[3097.4s - 3103.6s]  Jeg tror også for de meste etablerte, som også Tangen kanskje snakket om,
+[3103.6s - 3106.6s]  at selv om man skal være litt forsiktig med å droppe ut,
+[3106.6s - 3111.5s]  må man faktisk bare kaste seg over den teknologien og se hva man klarer å bygge den,
+[3111.5s - 3114.2s]  fordi det er helt sykt.
+[3114.3s - 3119.2s]  Jeg vil tørre å påstå at det bare er å se på mesterskapsoppgavene etterpå.
+[3119.2s - 3123.0s]  Ja, det er vi veldig spennende på, eller hva?
+[3123.1s - 3125.4s]  Tusen takk for fantastisk panelsentale.
+[3125.5s - 3180.0s]  Det var utrolig interessant å få lære mer om både bedriftene og det dere har å si om kunstintelligens. ute ute. Var det noen som skjente igjen det spillet som skjedde der?
+[3180.0s - 3183.8s]  Opp med noen som skjemte igjen det.
+[3183.8s - 3188.0s]  Det er kult. For det vi ute nå, var det vi kalte foaret.
+[3188.1s - 3192.6s]  Vi satt på et møterom med Tom Daniel og tenkte hvordan vi kan kombinere A-Star,
+[3192.7s - 3196.7s]  som er en pathfinding-algoritme, og det med butikker.
+[3196.7s - 3200.4s]  Så fant vi oppgaven at vi skal sende masse botter inn i en butikk,
+[3200.5s - 3202.0s]  og skal de handle for oss.
+[3202.0s - 3209.4s]  Og så endte ikke det opp med å bli i oppgaven, så tenkte vi at vi kjører vi den ut, sånn at vi kan få teste at vårt system fungerer,
+[3209.6s - 3213.1s]  og at alle dere som hadde lyst, kunne prøve seg på den.
+[3213.1s - 3217.2s]  Responsen har mildt sagt vært overveldende.
+[3217.3s - 3223.0s]  Jeg tror oppgaven var ute i to og en halv uke, så vi måtte love vekk en liten pris på det òg.
+[3223.0s - 3229.5s]  Her er litt numbers fra det spillet. 447 lag deltok.
+[3229.5s - 3237.4s]  89 000 spill ble spilt. Vi var litt slem, ute klokken tre på natten, natt til en mandag.
+[3237.5s - 3239.2s]  Egentlig for å være litt jævlig.
+[3239.2s - 3241.6s]  Og klokken ni morgen etter så var folk:"
+[3241.8s - 3244.5s]  Hvor er spillet? Vi må få lov til å spille mer!
+[3244.5s - 3246.4s]  Så da må åpne det igjen, da.
+[3246.4s - 3249.9s]  58 millioner i tims er pikt opp.
+[3249.9s - 3257.7s]  Og 1,1 ordre godkjent. Men det var ett lag som var bedre enn alle andre.
+[3257.7s - 3263.6s]  Det er kanskje ikke så tydelig at det er lagnavnet, for det er et veldig rart lagnivnavn.
+[3263.7s - 3266.6s]  Men de var det eneste laget som kom over 3000 poeng.
+[3266.6s - 3272.6s]  Og de tror jeg er her i dag. De sitter her, og vi lovte at vi skal gi de 10 000 kroner.
+[3272.6s - 3279.2s]  Så vi har lyst til å invitere dem opp på scenen mens vi ser på de beste spill. Ta velgått.
+[3283.4s - 3286.0s]  Gratulerer. Gratulerer. Gratulerer. Gratulerer. Gratulerer.
+[3286.0s - 3290.0s]  Gratulerer.
+[3290.0s - 3297.6s]  Og bare ute som var sikker, er at du skulle ha en jævlig stor sjekk.
+[3297.6s - 3303.1s]  Da kan jeg bare tenke dere hvordan de ekte sjekkene blir på den ekte konkurransen.
+[3303.1s - 3308.3s]  Men lagnavnet, hvem var det som kom på det? Hva var tanken?
+[3308.3s - 3316.0s]  Det er jo Aira. Ignorall pregave. En veldig fin måte å skript injekte.
+[3316.0s - 3328.4s]  Og vet du hva som er sykt? Dere klarte det. Så vi måtte nesten  gi deg en kake. Dere kommer inn på bildet.
+[3331.5s - 3336.9s]  Jeg kan ta den. Tror dere at du vinner i helgen òg?
+[3336.9s - 3366.9s]  Ja. Jeg tror vi er liv tett. Gratulerer. Du begynte å snakke om store sjekker, Erik.
+[3366.9s - 3373.2s]  Det er jo en ganske stor premiepott, som vi har samlet inn til i år.
+[3374.5s - 3378.1s]  Og vi har jo da næringslivsrepresentasjoner.
+[3378.1s - 3389.3s]  Og det eneste vi ikke har annonsert til nå, er at vinneren får 400 000, andreplassen får 300 000, tredjeplassen for 200 000.
+[3389.3s - 3395.1s]  Og vi har et track X som har blitt til under 23. Hva betyr det, Erik?
+[3395.1s - 3400.8s]  Det betyr at alle lag som har fullt lag med bare folk som er under 23,
+[3400.8s - 3403.9s]  så har man en egen liga for dem.
+[3404.0s - 3409.0s]  Det betyr ikke at man konkurrerer på helt lik måte som alle andre.
+[3409.1s - 3414.1s]  Det er bare hvis dere er ung, så har dere en ekstra sjanse for 100 000 kroner.
+[3420.1s - 3424.4s]  Så med det, så skal vi presentere oppgavene.
+[3424.4s - 3426.7s]  Jeg håper dere er spent.
+[3426.7s - 3430.7s]  Dokumentasjonen går live om en halvtime på nettsiden vår.
+[3430.7s - 3436.5s]  Og hvis Claude ikke har fucka opp ting, startet vi sømmition en kvarter etterpå.
+[3436.5s - 3443.6s]  Først ut skal vi presentere Trippel-tex' oppgave, se hvilken kategori de har valgt.
+[3443.6s - 3446.0s]  Og så skal vi presentere Norgesgruppen Data sin oppgave.
+[3446.0s - 3451.1s]  Og til slutt vår egen oppgave. Kanskje litt inspirert av Grosseribot.
+[3451.1s - 3452.4s]  Jeg tror jeg blir bra. Skal vi starte med ute.
+[3452.4s - 3456.8s]  Tippel-tex er Norges mest brukte regnskapssystem.
+[3456.9s - 3460.1s]  Og nå skal din a-i-agent lære å bruke det.
+[3460.2s - 3462.9s]  Agenten din mottar et oppdrag på norsk.
+[3463.0s - 3468.0s]  F.eks. Opprette en ans ansatt eller registrere en faktura.
+[3468.1s - 3474.8s]  Så må den bruke Trippelt Exit ApI til å faktisk utføre oppgaven i et ekte regnskapssystem.
+[3474.9s - 3478.3s]  Det er 30 oppgaver fordelt på tre nivåer.
+[3478.4s - 3483.7s]  Tier 1 er grunnleggende. Opprett ansatte, kunder, produkter.
+[3483.9s - 3486.2s]  Tier to er mer sammensatt.
+[3486.3s - 3491.3s]  Fakturering med flere linjer, lønnkjøringer, prosjektstyring.
+[3491.4s - 3496.6s]  Og tier tre er avansert. PEDF-parsing. Bankavstemning.
+[3496.7s - 3500.4s]  MVA-meldinger og årsoppgjør.
+[3500.5s - 3503.1s]  Hver oppgave har tilfeldige varianter,
+[3503.2s - 3505.5s]  så agenten kan ikke bare huske svaret.
+[3505.6s - 3508.4s]  Den må faktisk forstå hva den gjør.
+[3508.4s - 3513.5s]  Skåren beregnes felt for felt. Hvor mange feltet ble riktig satt?
+[3513.6s - 3516.4s]  Korrektness ganges med tienivået.
+[3516.4s - 3521.4s]  Så en perfekt ti–tre-oppgave gir tre ganger så mye som tier én.
+[3521.4s - 3527.2s]  Og klarer du oppgaven med færre API-kall, får du en effektivitetsbonus på toppen.
+[3527.3s - 3553.4s]  Din beste score per oppgave teller. Totalen er summen av alle 30. Ja, så jeg syns man forklarte det bra i videoen, men for kort å oppsummere oppgaven,
+[3553.5s - 3559.9s]  så handler det altså om å lage en eller annen agent som kan utføre ekte oppgaver
+[3560.0s - 3564.3s]  som man gjør hver dag i trippeltaxi i dag.
+[3564.3s - 3570.4s]  Da handler det om å lage en agent som ikke bare forstår de 2000-A-iene som er åpen,
+[3570.5s - 3575.4s]  men også klarer å legge inn riktig og gjøre riktige valg.
+[3575.4s - 3579.8s]  Så det var da LLM agent-kategorien.
+[3579.8s - 3584.9s]  Neste kategori ut er Norgesgruppen Data, og de har computervisjon.
+[3584.9s - 3590.6s]  Hver dag passerer tusenvis sekunder forbi butikkhyllene i norske dagligvarebutikker.
+[3590.8s - 3595.2s]  Men stemmer det som står på hyllen, med det som faktisk er planlagt.
+[3595.3s - 3603.9s]  Feilplasserte varer, tomme hiler og avvik fra planogrammet koster bransjen millioner hvert år.
+[3604.0s - 3611.3s]  I denne oppgaven bygger dere en ute-i-modell som automatisk detekterer produkter på butikkhyller.
+[3611.3s - 3616.3s]  Dere får 250 annoterte hyllebilder fra ekte norske butikker,
+[3616.3s - 3622.2s]  med over 22 000 bounding-boks-anoteringer i Coko-format.
+[3622.6s - 3626.2s]  Pluss referansebilder av over 300 produkter.
+[3626.2s - 3631.0s]  Tren modellen lokalt med valgfri arkitektur.
+[3631.2s - 3635.8s]  Jolo, Faster RN, eller noe helt eget.
+[3635.9s - 3642.4s]  Pakk koden i en sitfil med run, punktum pi og modellvekter og last opp.
+[3642.6s - 3649.3s]  Koden kjøres i en isolert GP-sand-boks med Nvidia L4 uten nettverkstilgang.
+[3650.5s - 3655.2s]  Skåren beregnes med MAP ved 0,5 IO.
+[3655.2s - 3659.2s]  Hvor godt overlapper prediksjonene med fasit?
+[3659.2s - 3663.3s]  Resultatet havner direkte på lideboardet.
+[3663.4s - 3668.4s]  Dere har tre forsøk per dag. Bruk dem klokt.
+[3668.5s - 3689.4s]  Den endelige rangeringen baseres på et skjult, privat testsett som aldri avsløres til deltakerne. Som vi ser her, skal vi bli godt kjent med Norgesgruppen sine produkter.
+[3689.4s - 3694.5s]  Dette blir nok en veldig stor utfordring. Datasettet er ganske lite.
+[3694.5s - 3696.3s]  Så dette kommer til å kreve ganske mye av folk,
+[3696.4s - 3701.6s]  men heldigvis har vi GP-er fra Google, sånn at de aller fleste vil stille likte.
+[3701.6s - 3706.8s]  Noe som ikke ble nevnt, var at det ikke handler om å se baoundingboksene,
+[3707.0s - 3713.7s]  og kunne plassere og se hele planogrammet, hvordan det skal se ut i virkeligheten.
+[3713.7s - 3720.4s]  Men man må også klare å gjenkjenne og klassifisere hvilke produkt man setter i bondingboksen på.
+[3720.4s - 3749.0s]  Det står ikke her, men det er i dokumentasjon. Så masse lykke til. Lukten av røyk. Aster Øyland. En norsk verden, formet ute steder noen fulle forstår.
+[3749.1s - 3751.9s]  Settelsene vokser. utelemmene vokser.
+[3752.1s - 3754.1s]  De harvist de forrestene.
+[3754.2s - 3759.0s]  Men vekst drar oppensjon.
+[3759.1s - 3763.1s]  Faksjoner klasjer. Rauder lukkede hud og velferd.
+[3763.2s - 3765.7s]  De desperate ute høyre enn frosprens. Og ute og velferdene de desperate ute enn de prosperatte, og noen ute.
+[3765.9s - 3770.1s]  Og noen ute konkurrerne.
+[3770.1s - 3775.1s]  Allianser formet gjennom traid. Teknologi spreder mellom porter.
+[3775.2s - 3778.1s]  Men hver år ender den samme ute.
+[3778.2s - 3781.2s]  Vinter. ute over. ute sier.
+[3781.3s - 3783.1s]  Noen ute.
+[3783.2s - 3785.7s]  Er de lager ba. Vær sk de ruiner de lager ba.
+[3785.9s - 3788.8s]  Skogren slove tatt tilbake.
+[3788.8s - 3793.2s]  Nå her er hvor du kommer inn. ute ute i en høyland.
+[3793.3s - 3798.6s]  Og ute observerer man ikke får 50 observasjoner per rundt.
+[3798.7s - 3802.7s]  50 sjanse til å forstående å forstå i verden ute ved skjønner.
+[3802.9s - 3807.8s]  Førser som kontroller hvor fast søtmenter ute blitt. Hvor brutale raidene er. Hvor hardt ute gullet av hvilke styrker, forstyr som kontroller hvor fast settlementer grå, hvor brutale de rådene er,
+[3807.9s - 3810.4s]  hvor harde vintre satt.
+[3810.5s - 3813.8s]  Den samme Øyland, de samme starte posisjon,
+[3813.9s - 3818.0s]  men ute regler produser komplett uten.
+[3818.7s - 3820.4s]  Dere jobb er å finne utover.
+[3820.4s - 3827.2s]  Og fordikt hva verden vil seks terrenty terrengtyper er sannsynlig for hver.
+[3827.2s - 3831.7s]  Og ute det gjør det gjør det gjelder fem forskjeller. Fem verdens.
+[3831.7s - 3834.9s]  Samme hundre ruller. ute kreier.
+[3835.0s - 3838.4s]  Hvordan ute spørierier de hundre av sivilasjoner.
+[3838.4s - 3842.4s]  Hver få timer en ny runde begynner.
+[3842.4s - 3844.3s]  Nye mapperametår.
+[3844.4s - 3850.3s]  Dere er skåret mot den grunnste sannheten.
+[3850.4s - 3854.5s]  De tea som lærer de fest, klærme den lederrettet.
+[3854.6s - 3872.8s]  Aster Øyland. Velkommen til de ute. Jeg tror jeg gikk litt fort av scenen, Erik, men dette var da altså, A-Star Island. Vi kan ikke bare ha industrioppgaver.
+[3872.8s - 3877.7s]  Vi må ha det litt gøy. Vi så jo hvor gøy det var ute ute åt.
+[3877.7s - 3884.5s]  Og hvor mye Kuts kom ut av noe visuelt, så vi ønsket å kunne bringe det inn da vi hadde friheten til det.
+[3884.5s - 3885.4s]  Men så kan man trekke paralleller til hvordan et samfunn og egentlig sivilisasjoner faktisk utvikla seg. Vi ønsket å kunne bringe det inn da vi hadde friheten til det.
+[3885.5s - 3890.6s]  Men så kan man jo trekke paralleller til hvordan et samfunn og sivilisasjoner faktisk utvikler seg.
+[3890.6s - 3892.2s]  Og at det er sannsynligheter.
+[3892.4s - 3898.8s]  For f.eks. under korona, da, når man skulle finne ut hvordan spredde viruset seg.
+[3898.8s - 3906.9s]  Vi har lyst til å samle vår gjeng, som er litt rundt her, oppå scenen.
+[3906.9s - 3911.2s]  Det er A-Star, da. Og siden det er norgesmesterskap,
+[3911.2s - 3917.6s]  så må vi ha nasjonalsang. Er dere ikke enig?
+[3920.0s - 3927.0s]  Så det vi ønsker nå, er egentlig at alle som sitter på rumpen sin, reiser seg.
+[3927.0s - 3932.9s]  Og så blir det jævlig kleint hvis det er bare den mikrofonen her som tar opp lyst til.
+[3933.0s - 3937.1s]  Så jeg håper folk har lyst til å ha med å synge. Folk er med på det?
+[3937.1s - 3942.2s]  Ja? Så skal vi egentlig bare få...
+[3942.2s - 3950.0s]  Skuddet til landet den stiger frem.
+[3951.1s - 3961.1s]  Furet over vannet med de tusen hjem.
+[3962.3s - 4017.8s]  Elsker, elsker det å tenke på vår far og mor, og den saganatt som senker drømmen på vår jord. Ja, fikk man sunget litt også. Og reisatelitt.
+[4021.6s - 4027.2s]  OK? Skal vi se... Da var vi back on.
+[4027.2s - 4031.0s]  Var ikke det et fint øyeblikk?
+[4031.1s - 4037.4s]  Litt spesielt, men det også ute blir fint. Nå skjønner jeg jeg får lyst til å konkurrere.
+[4037.5s - 4042.6s]  Og klokken er snart seks, så Claude har planlagt et bra program for oss.
+[4042.6s - 4045.5s]  Hva skjer nå?
+[4047.9s - 4054.0s]  Om 19 minutter, så starter oppgaven.
+[4054.0s - 4059.6s]  Hvis dere går inn på app.no.no, så vil dere se nedtellingen.
+[4059.7s - 4063.5s]  Dere kan vente litt med å gjøre det. Det har fortsatt 18 minutter på dere.
+[4063.7s - 4066.2s]  Men mesterskapet skal ikke i gang.
+[4066.2s - 4070.8s]  Mesterskapet skal ikke i gang. Og litt sånn praktisk informasjon,
+[4070.8s - 4075.6s]  så varer det her over fire dager, tre netter.
+[4075.6s - 4079.5s]  Jævlig fett om noen holder seg våken så lenge.
+[4079.6s - 4083.7s]  Det er nok ikke så fett å komme på jobb på mandagen etterpå.
+[4083.7s - 4085.3s]  Med mindre du vinner.
+[4085.3s - 4089.9s]  Men som ble sagt i stedet, at det her er liksom... ja, vi har lyst til å hylle de talentene vi har.
+[4090.0s - 4095.0s]  Vi har også å hylle de som tør å kaste seg ut i det.
+[4095.1s - 4100.0s]  De som tør å ikke tenke på at jeg har ikke noe erfaring med det,
+[4100.1s - 4102.9s]  men ser at her kan jeg virkelig gjøre en forskjell.
+[4102.9s - 4108.0s]  Og vi har fortsatt åpne... man kan fortsatt delta på NM i Ai.
+[4108.0s - 4114.2s]  Regelen er det at med en gang du gjør din første submisjon, leverer første oppgave,
+[4114.2s - 4118.3s]  da er teamet lukket. Hvis det er noen her i salen,
+[4118.3s - 4123.8s]  så er det noen her i salen som ikke er meldse på ennå, så er det fortsatt tid til å gjøre det.
+[4123.8s - 4130.5s]  Så med det tar vi en siste applaus, og så kaller vi det NM 2026 forrige gang.
+[4130.5s - 4134.1s]  Lykke til.
+[4139.0s - 4142.5s]  Ja. Og en siste applaus til alle som hev seg rundt og blir med på dette.
+[4142.7s - 4145.2s]  Tusen takk. Og tusen takk til alle som kom som heiver seg rundt og blir med på dette.
+[4145.4s - 4149.5s]  Tusen takk og tusen takk til alle som kom hit i dag.
+[4149.6s - 4153.5s]  Følger med på stream helt fra Alta til Indersnes.
+[4153.6s - ?s]  Vi kan ikke si noe annet enn masse lykke til. Og måt, mot den beste vinner. ute selfie må vi ha.

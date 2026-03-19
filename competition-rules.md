@@ -10,6 +10,7 @@
 - **Duration:** 69 hours, March 19 at 18:00 CET to March 22 at 15:00 CET
 - **Platform:** https://app.ainm.no
 - **Cost:** Free
+- **Registered participants:** 2,500+ (as of kickoff, March 19)
 - **Communication:** Official Slack workspace (primary), LinkedIn, email
 
 ---

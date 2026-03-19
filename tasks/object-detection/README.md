@@ -12,6 +12,27 @@
 
 **Dashboard:** https://app.ainm.no/submit/norgesgruppen-data
 
+## Sponsor Context (from Kickoff Presentation)
+
+**NorgesGruppen** is Norway's largest grocery retailer:
+- ~50,000 employees across 2,100 stores nationwide
+- 8.3 million customers per week
+- 1 million order lines per day leaving warehouses
+- Sustainable production with electric trucks, sea drones, own energy production
+
+**AI Lab focus areas** (presented by Tom Daniel Sivertsen):
+- Computer vision in self-checkout kiosks (active production use)
+- Planogram compliance: verifying shelf layouts match plans
+- Demand forecasting with classical ML
+- Food waste reduction (50%+ reduction since 2015, targeting more)
+- Autonomous transport and robotics
+
+**Why this task exists:** This directly maps to NorgesGruppen's planogram compliance problem. Tom Daniel emphasized: "AI is not just what happens on a computer screen -- it's also in the physical value chain." They are actively digitizing the physical retail environment with cameras to optimize operations. Detecting products on shelves, identifying misplaced items, and spotting empty shelves is real production work at NorgesGruppen.
+
+**Kickoff presentation note:** Erik specifically mentioned that classification is critical but not immediately obvious from the task video -- you must not only draw bounding boxes but also correctly identify which product is in each box. The dataset is described as "quite small" and "will require a lot from people." Google Cloud GPUs are available to level the playing field.
+
+**Real-world impact:** NorgesGruppen aims for climate-neutral operations by 2030 and wants AI to help with frictionless shopping, keeping rural stores open (possibly unmanned), and eliminating food waste.
+
 ---
 
 ## Competition Constraints
