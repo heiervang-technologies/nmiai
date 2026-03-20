@@ -1,6 +1,20 @@
 {
   "family": "supplier",
-  "keywords": ["leverandør", "supplier", "Lieferant", "fournisseur", "proveedor", "fornecedor", "leverandor"],
+  "keywords": [
+    "leverandør",
+    "supplier",
+    "Lieferant",
+    "fournisseur",
+    "proveedor",
+    "fornecedor",
+    "leverandor",
+    "supplier invoice",
+    "leverandørfaktura",
+    "received invoice from supplier",
+    "mottatt faktura",
+    "invoice from the supplier",
+    "factura del proveedor"
+  ],
   "description": "Register or update suppliers",
   "preflight": [],
   "endpoints": [

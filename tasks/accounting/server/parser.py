@@ -28,6 +28,25 @@ else:
 
 log.info(f"Parser using model: {MODEL}")
 
+
+def _extract_message_text(content) -> str:
+    """Handle providers that return null or structured content blocks."""
+    if content is None:
+        return ""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, str):
+                parts.append(item)
+            elif isinstance(item, dict):
+                text = item.get("text")
+                if text:
+                    parts.append(text)
+        return "\n".join(parts)
+    return str(content)
+
 SYSTEM_PROMPT = """You are an expert accounting task parser for the Tripletex accounting system.
 You receive a natural-language task description (possibly in Norwegian, English, Spanish, Portuguese, Nynorsk, German, or French).
 Your job is to extract a structured JSON task description.
@@ -81,7 +100,13 @@ async def parse_task(prompt: str, files: list = None) -> dict:
         temperature=0,
     )
 
-    text = response.choices[0].message.content.strip()
+    text = _extract_message_text(response.choices[0].message.content).strip()
+    if not text:
+        log.error("Parser model returned empty content")
+        task = {"task_type": "other", "fields": {}, "raw_response": "", "original_prompt": prompt}
+        if files:
+            task["files"] = [{"filename": f.filename, "mime_type": f.mime_type} for f in files]
+        return task
 
     # Strip markdown code fences if present
     if text.startswith("```"):

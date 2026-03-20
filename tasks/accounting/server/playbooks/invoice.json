@@ -1,6 +1,21 @@
 {
   "family": "invoice",
-  "keywords": ["faktura", "invoice", "Rechnung", "facture", "factura", "fatura"],
+  "keywords": [
+    "faktura",
+    "invoice",
+    "Rechnung",
+    "facture",
+    "factura",
+    "fatura",
+    "credit note",
+    "credit memo",
+    "kreditnota",
+    "reverser betaling",
+    "reverse payment",
+    "returned by the bank",
+    "send invoice",
+    "payment reversal"
+  ],
   "description": "Create invoices, register payments, create credit notes",
   "preflight": [
     "GET /company/>withLoginAccess to find company",

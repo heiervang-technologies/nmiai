@@ -54,7 +54,17 @@ async def action_discover_sandbox(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_employee(client: TripletexClient, args: dict) -> dict:
-    """Create an employee. Handles department lookup automatically."""
+    """Create an employee. Checks for existing by email first. Handles department lookup."""
+    # Check if employee already exists (avoid duplicates)
+    if args.get("email"):
+        try:
+            existing = await client.get("/employee", params={"email": args["email"], "count": 1})
+            if existing.get("values"):
+                log.info(f"Employee with email {args['email']} already exists, returning existing")
+                return {"value": existing["values"][0]}
+        except Exception:
+            pass
+
     # Get department ID
     deps = await client.get("/department", params={"count": 1})
     dep_id = deps["values"][0]["id"] if deps.get("values") else None
@@ -123,15 +133,7 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
     """Register a bank account on the company. Required before invoice creation."""
     bank_num = args.get("bankAccountNumber", "12345678903")
 
-    # Try multiple approaches to find and update the company
-    # Approach 1: company ID 0 (default for single-company setups)
-    try:
-        result = await client.put("/company/0", json={"bankAccountNumber": bank_num})
-        return result
-    except Exception as e1:
-        log.warning(f"Bank account via /company/0 failed: {e1}")
-
-    # Approach 2: Find company via withLoginAccess
+    # Approach 1: Find company via withLoginAccess, GET full object, PUT back with bank number
     try:
         companies = await client.get("/company/%3EwithLoginAccess")
         if companies.get("values"):
@@ -139,21 +141,36 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
             company_data = await client.get(f"/company/{company_id}")
             company_obj = company_data.get("value", company_data)
             company_obj["bankAccountNumber"] = bank_num
-            return await client.put(f"/company/{company_id}", json=company_obj)
-    except Exception as e2:
-        log.warning(f"Bank account via withLoginAccess failed: {e2}")
+            result = await client.put(f"/company/{company_id}", json=company_obj)
+            log.info(f"Bank account set via withLoginAccess company {company_id}")
+            return result
+    except Exception as e1:
+        log.warning(f"Bank account via withLoginAccess failed: {e1}")
 
-    # Approach 3: Try to create a ledger account for bank
+    # Approach 2: Try PUT /company with just the bank field
+    for company_id in [0, 1]:
+        try:
+            # GET first to get version
+            company_data = await client.get(f"/company/{company_id}")
+            company_obj = company_data.get("value", company_data)
+            if company_obj and company_obj.get("id"):
+                company_obj["bankAccountNumber"] = bank_num
+                result = await client.put(f"/company/{company_id}", json=company_obj)
+                log.info(f"Bank account set via company/{company_id}")
+                return result
+        except Exception as e:
+            log.warning(f"Bank account via company/{company_id} failed: {e}")
+
+    # Approach 3: Update the bank ledger account
     try:
-        # Just create the bank account in the chart of accounts
-        return await client.post("/ledger/account", json={
-            "number": 1920,
-            "name": "Bank",
-            "isBankAccount": True,
-            "bankAccountNumber": bank_num,
-        })
+        accounts = await client.get("/ledger/account", params={"number": "1920", "count": 1})
+        if accounts.get("values"):
+            acc = accounts["values"][0]
+            acc["isBankAccount"] = True
+            acc["bankAccountNumber"] = bank_num
+            return await client.put(f"/ledger/account/{acc['id']}", json=acc)
     except Exception as e3:
-        log.warning(f"Bank account via ledger failed: {e3}")
+        log.warning(f"Bank account via ledger account failed: {e3}")
 
     return {"warning": "Could not set bank account, invoice creation may fail"}
 
@@ -350,39 +367,51 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_activate_module(client: TripletexClient, args: dict) -> dict:
-    """Activate a Tripletex module."""
+    """Activate a Tripletex module. Returns success even if already active or forbidden."""
     module_name = args.get("moduleName", args.get("name", ""))
-    return await client.post("/company/salesmodules", json={"name": module_name})
+    try:
+        return await client.post("/company/salesmodules", json={"name": module_name})
+    except Exception as e:
+        # 403 = forbidden (already active or not available), not a real failure
+        log.warning(f"Module activation for {module_name} failed (non-fatal): {e}")
+        return {"warning": f"Module {module_name} activation failed, may already be active"}
 
 
 async def action_create_project(client: TripletexClient, args: dict) -> dict:
     """Create a project. Activates module if needed."""
-    # Try to activate project module
-    try:
-        await action_activate_module(client, {"name": "PROJECT"})
-    except Exception:
-        pass  # May already be active
+    # Try to activate project module (non-fatal if fails)
+    await action_activate_module(client, {"name": "PROJECT"})
 
     # Find project manager (first employee)
     manager_id = args.get("projectManagerId")
     if not manager_id:
-        emps = await client.get("/employee", params={"count": 1})
-        if emps.get("values"):
+        emps = await client.get("/employee", params={"count": 10})
+        for emp in emps.get("values", []):
+            # Prefer matching by email if provided
+            if args.get("projectManagerEmail") and emp.get("email") == args["projectManagerEmail"]:
+                manager_id = emp["id"]
+                break
+            elif args.get("projectManagerName") and args["projectManagerName"].lower() in emp.get("displayName", "").lower():
+                manager_id = emp["id"]
+                break
+        if not manager_id and emps.get("values"):
             manager_id = emps["values"][0]["id"]
 
     body = {
         "name": args["name"],
         "projectManager": {"id": manager_id},
         "isInternal": args.get("isInternal", False),
+        "startDate": args.get("startDate", TODAY),
     }
     if args.get("number"):
         body["number"] = str(args["number"])
     if args.get("customerId"):
         body["customer"] = {"id": args["customerId"]}
-    if args.get("startDate"):
-        body["startDate"] = args["startDate"]
     if args.get("endDate"):
         body["endDate"] = args["endDate"]
+    if args.get("fixedPrice") is not None:
+        body["isFixedPrice"] = True
+        body["fixedprice"] = float(args["fixedPrice"])
 
     return await client.post("/project", json=body)
 

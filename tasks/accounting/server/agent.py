@@ -201,123 +201,122 @@ agent = Agent(
 
 # --- Register tools ---
 
+async def _safe_action(action_name: str, client, args_dict: dict, max_len: int = 3000) -> str:
+    """Run an action with error handling. Never raises — returns error as string."""
+    try:
+        result = await ACTIONS[action_name](client, args_dict)
+        return json.dumps(result, ensure_ascii=False, default=str)[:max_len]
+    except Exception as e:
+        error_msg = str(e)
+        if hasattr(e, 'response'):
+            try:
+                error_msg = e.response.text[:500]
+            except Exception:
+                pass
+        log.warning(f"Action {action_name} failed: {error_msg[:200]}")
+        return json.dumps({"error": error_msg[:500]}, ensure_ascii=False)
+
+
 @agent.tool
 async def discover_sandbox(ctx: RunContext[AgentDeps], args: DiscoverSandboxArgs) -> str:
     """Discover what exists in the sandbox: employees, customers, invoices, departments, payment types."""
-    result = await ACTIONS["discover_sandbox"](ctx.deps.client, {})
-    return json.dumps(result, ensure_ascii=False, default=str)[:4000]
+    return await _safe_action("discover_sandbox", ctx.deps.client, {})
 
 
 @agent.tool
 async def create_employee(ctx: RunContext[AgentDeps], args: CreateEmployeeArgs) -> str:
     """Create an employee. Handles department lookup automatically."""
-    result = await ACTIONS["create_employee"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_employee", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_customer(ctx: RunContext[AgentDeps], args: CreateCustomerArgs) -> str:
     """Create a customer."""
-    result = await ACTIONS["create_customer"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_customer", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_supplier(ctx: RunContext[AgentDeps], args: CreateSupplierArgs) -> str:
     """Register a supplier."""
-    result = await ACTIONS["create_supplier"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_supplier", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_product(ctx: RunContext[AgentDeps], args: CreateProductArgs) -> str:
     """Create a product. vatTypeId defaults to 3 (25% MVA)."""
-    result = await ACTIONS["create_product"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_product", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_department(ctx: RunContext[AgentDeps], args: CreateDepartmentArgs) -> str:
     """Create a department."""
-    result = await ACTIONS["create_department"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_department", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_invoice(ctx: RunContext[AgentDeps], args: CreateInvoiceArgs) -> str:
     """Create an invoice. Handles bank account setup, customer lookup/creation, and order line formatting automatically."""
-    result = await ACTIONS["create_invoice"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+    return await _safe_action("create_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3000)
 
 
 @agent.tool
 async def create_order(ctx: RunContext[AgentDeps], args: CreateOrderArgs) -> str:
     """Create an order (not yet invoiced)."""
-    result = await ACTIONS["create_order"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+    return await _safe_action("create_order", ctx.deps.client, args.model_dump(exclude_none=True), 3000)
 
 
 @agent.tool
 async def register_payment(ctx: RunContext[AgentDeps], args: RegisterPaymentArgs) -> str:
     """Register payment on an invoice. Use negative amount for reversal. Finds invoice and payment type automatically."""
-    result = await ACTIONS["register_payment"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("register_payment", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_credit_note(ctx: RunContext[AgentDeps], args: CreateCreditNoteArgs) -> str:
     """Create a credit note to cancel an invoice. Finds the invoice automatically if invoiceId not provided."""
-    result = await ACTIONS["create_credit_note"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_credit_note", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_voucher(ctx: RunContext[AgentDeps], args: CreateVoucherArgs) -> str:
     """Create a journal entry / voucher. Postings must balance (sum to zero). Uses account numbers from chart of accounts."""
-    result = await ACTIONS["create_voucher"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_voucher", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def create_project(ctx: RunContext[AgentDeps], args: CreateProjectArgs) -> str:
     """Create a project. Activates the PROJECT module automatically."""
-    result = await ACTIONS["create_project"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("create_project", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def activate_module(ctx: RunContext[AgentDeps], args: ActivateModuleArgs) -> str:
     """Activate a Tripletex module (PROJECT, SMART_PROJECT, TIME_TRACKING, etc.)."""
-    result = await ACTIONS["activate_module"](ctx.deps.client, args.model_dump())
-    return json.dumps(result, ensure_ascii=False, default=str)[:1000]
+    return await _safe_action("activate_module", ctx.deps.client, args.model_dump(), 1000)
 
 
 @agent.tool
 async def create_accounting_dimension(ctx: RunContext[AgentDeps], args: CreateAccountingDimensionArgs) -> str:
     """Create a custom accounting dimension with values. Can optionally post a voucher linked to the dimension."""
-    result = await ACTIONS["create_accounting_dimension"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+    return await _safe_action("create_accounting_dimension", ctx.deps.client, args.model_dump(exclude_none=True), 3000)
 
 
 @agent.tool
 async def update_employee(ctx: RunContext[AgentDeps], args: UpdateEmployeeArgs) -> str:
     """Update an existing employee's details. Finds by name or ID."""
-    result = await ACTIONS["update_employee"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("update_employee", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def register_timesheet(ctx: RunContext[AgentDeps], args: RegisterTimesheetArgs) -> str:
     """Register hours on a timesheet for an employee on a project activity. Activates required modules automatically."""
-    result = await ACTIONS["register_timesheet"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+    return await _safe_action("register_timesheet", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
 async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
     """Fallback: make any Tripletex API call. Use only when no typed tool fits."""
-    result = await ACTIONS["generic_api_call"](ctx.deps.client, args.model_dump(exclude_none=True))
-    return json.dumps(result, ensure_ascii=False, default=str)[:4000]
+    return await _safe_action("generic_api_call", ctx.deps.client, args.model_dump(exclude_none=True), 4000)
 
 
 # --- Core prompt ---

@@ -1,0 +1,49 @@
+{
+  "family": "timesheet",
+  "keywords": [
+    "time tracking",
+    "timesheet",
+    "time sheet",
+    "registered hours",
+    "logged hours",
+    "log hours",
+    "hours",
+    "logg timer",
+    "registrer timer",
+    "registrer timar",
+    "timer",
+    "timar",
+    "før timer",
+    "før timar",
+    "timeregistrering",
+    "timeføring",
+    "timeforing",
+    "activity",
+    "aktivitet",
+    "hourly rate",
+    "timesats",
+    "timeliste",
+    "heures",
+    "stunden",
+    "horas"
+  ],
+  "description": "Register hours on projects and invoice from logged time",
+  "preflight": [
+    "GET /employee to find employee ID",
+    "GET /project to find project ID",
+    "GET /activity or POST /activity to resolve activity",
+    "POST /project/projectActivity to link activity to project if needed"
+  ],
+  "endpoints": [
+    "POST /timesheet/entry — body: {employee:{id}, project:{id}, activity:{id}, date, hours, comment}",
+    "POST /project/projectActivity — body: {project:{id}, activity:{id}, startDate}",
+    "PUT /order/{id}/:invoice — invoice project work after time registration"
+  ],
+  "required_fields": ["employee", "project", "activity", "hours"],
+  "common_errors": [
+    "Do not use /project/{id}/activity — the correct endpoints are /activity and /project/projectActivity",
+    "company/salesmodules may return 403 in competition sandboxes; treat module activation as best-effort",
+    "Project activity may need to be linked before posting timesheet entries"
+  ],
+  "tips": "For prompts that say to log hours and then invoice the customer, treat it as a timesheet workflow first and invoice second."
+}

@@ -1,6 +1,18 @@
 {
   "family": "voucher",
-  "keywords": ["bilag", "voucher", "Beleg", "pièce comptable", "asiento", "lønn", "salary", "payroll", "Gehalt", "salaire"],
+  "keywords": [
+    "bilag",
+    "voucher",
+    "Beleg",
+    "pièce comptable",
+    "asiento",
+    "journal entry",
+    "manual posting",
+    "accounting dimension",
+    "custom dimension",
+    "regnskapsdimensjon",
+    "dimension value"
+  ],
   "description": "Create journal entries / vouchers, manual salary postings",
   "preflight": [
     "GET /ledger/account to find account IDs for the relevant accounts"

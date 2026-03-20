@@ -1,0 +1,41 @@
+{
+  "family": "salary",
+  "keywords": [
+    "salary transaction",
+    "salary run",
+    "payroll run",
+    "payroll",
+    "salary",
+    "bonus",
+    "gross salary",
+    "grunnlønn",
+    "grunnlonn",
+    "lønn",
+    "lonn",
+    "køyr løn",
+    "kjor lon",
+    "pay slip",
+    "payslip",
+    "lønnskjøring",
+    "lonnskjoring",
+    "gehalt",
+    "salaire",
+    "nomina"
+  ],
+  "description": "Create salary transactions and payroll-related postings",
+  "preflight": [
+    "GET /employee to find employee ID",
+    "GET /salary/type to find salary type IDs",
+    "POST /salary/transaction to create the payroll transaction"
+  ],
+  "endpoints": [
+    "POST /salary/transaction — body: {date, payslips:[{employee:{id}, date, specifications:[{salaryType:{id}, amount, rate, count, description}]}]}",
+    "GET /salary/type — lookup salary types by name or number"
+  ],
+  "required_fields": ["employee", "salary type", "amount"],
+  "common_errors": [
+    "Salary tasks should use /salary/transaction, not generic vouchers, when the prompt is about payroll",
+    "Resolve employee and salary type IDs before posting the transaction"
+  ],
+  "tips": "If the prompt mentions base salary plus bonus, create one payslip with multiple specifications."
+}

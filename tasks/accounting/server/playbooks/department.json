@@ -1,6 +1,15 @@
 {
   "family": "department",
-  "keywords": ["avdeling", "department", "Abteilung", "département", "departamento"],
+  "keywords": [
+    "avdeling",
+    "avdelinger",
+    "department",
+    "departments",
+    "Abteilung",
+    "Abteilungen",
+    "département",
+    "departamento"
+  ],
   "description": "Create departments",
   "preflight": [],
   "endpoints": [

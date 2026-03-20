@@ -1,6 +1,21 @@
 {
   "family": "travel_expense",
-  "keywords": ["reiseregning", "travel expense", "Reisekostenabrechnung", "note de frais", "gastos de viaje", "despesas de viagem", "reiserekning"],
+  "keywords": [
+    "reiseregning",
+    "travel expense",
+    "Reisekostenabrechnung",
+    "note de frais",
+    "gastos de viaje",
+    "despesas de viagem",
+    "reiserekning",
+    "reiseutlegg",
+    "per diem",
+    "diett",
+    "expense report",
+    "utlegg",
+    "mileage allowance",
+    "kundebesøk"
+  ],
   "description": "Create, manage, or delete travel expenses",
   "preflight": [
     "May need to activate travel expense module",

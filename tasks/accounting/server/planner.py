@@ -6,6 +6,7 @@ First LLM call is cheap classification. Playbook is injected into executor conte
 import json
 import logging
 import os
+import re
 from pathlib import Path
 
 from openai import OpenAI
@@ -22,11 +23,35 @@ for f in PLAYBOOK_DIR.glob("*.json"):
 
 log.info(f"Loaded {len(PLAYBOOKS)} playbooks: {list(PLAYBOOKS.keys())}")
 
-# Build keyword index for fast matching
-KEYWORD_INDEX = {}
-for family, pb in PLAYBOOKS.items():
-    for kw in pb.get("keywords", []):
-        KEYWORD_INDEX[kw.lower()] = family
+# Prefer more specific families over broad ones like customer when scores tie.
+FAMILY_PRIORITY = {
+    "timesheet": 90,
+    "travel_expense": 85,
+    "salary": 80,
+    "project": 75,
+    "invoice": 70,
+    "supplier": 60,
+    "employee": 50,
+    "department": 40,
+    "voucher": 30,
+    "product": 20,
+    "customer": 10,
+}
+
+
+def _compile_keyword_pattern(keyword: str) -> re.Pattern[str]:
+    escaped = re.escape(keyword.lower()).replace(r"\ ", r"\s+")
+    return re.compile(rf"(?<!\w){escaped}(?!\w)", re.IGNORECASE)
+
+
+# Build keyword patterns for fast, boundary-aware matching.
+KEYWORD_PATTERNS = {
+    family: [
+        (kw.lower(), _compile_keyword_pattern(kw))
+        for kw in pb.get("keywords", [])
+    ]
+    for family, pb in PLAYBOOKS.items()
+}
 
 # Model setup (reuse from agent)
 if os.environ.get("OPENROUTER_API_KEY"):
@@ -57,15 +82,43 @@ def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
     """Fast keyword-based classification. Returns (family, confidence)."""
     prompt_lower = prompt.lower()
     matches = {}
-    for kw, family in KEYWORD_INDEX.items():
-        if kw in prompt_lower:
-            matches[family] = matches.get(family, 0) + 1
+
+    for family, patterns in KEYWORD_PATTERNS.items():
+        score = 0.0
+        for kw, pattern in patterns:
+            if pattern.search(prompt_lower):
+                # Multi-word phrases are more informative than generic single words.
+                score += 2.0 if " " in kw else 1.0
+        if score:
+            matches[family] = score
 
     if matches:
-        best = max(matches, key=matches.get)
-        confidence = "high" if matches[best] >= 2 else "medium"
+        best = max(
+            matches,
+            key=lambda family: (matches[family], FAMILY_PRIORITY.get(family, 0)),
+        )
+        confidence = "high" if matches[best] >= 3 else "medium"
         return best, confidence
     return None, "low"
+
+
+def _extract_message_text(content) -> str:
+    """Handle providers that return null or structured content blocks."""
+    if content is None:
+        return ""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, str):
+                parts.append(item)
+            elif isinstance(item, dict):
+                text = item.get("text")
+                if text:
+                    parts.append(text)
+        return "\n".join(parts)
+    return str(content)
 
 
 def classify_by_llm(prompt: str) -> tuple[str, str]:
@@ -83,7 +136,10 @@ def classify_by_llm(prompt: str) -> tuple[str, str]:
         ],
     )
 
-    text = response.choices[0].message.content.strip()
+    text = _extract_message_text(response.choices[0].message.content).strip()
+    if not text:
+        log.warning("Planner model returned empty content")
+        return "invoice", "low"
     if text.startswith("```"):
         text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
 

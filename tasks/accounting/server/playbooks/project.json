@@ -1,21 +1,42 @@
 {
   "family": "project",
-  "keywords": ["prosjekt", "project", "Projekt", "projet", "proyecto", "projeto"],
+  "keywords": [
+    "prosjekt",
+    "project",
+    "Projekt",
+    "projet",
+    "proyecto",
+    "projeto",
+    "fastpris",
+    "fixed price",
+    "delbetaling",
+    "part invoice",
+    "project invoice",
+    "invoice 50%",
+    "invoice 25%",
+    "on account",
+    "progress invoice",
+    "prosjektfaktura"
+  ],
   "description": "Create projects, register hours, project invoicing",
   "preflight": [
-    "POST /company/salesmodules body:{name:'PROJECT'} — activate project module",
+    "POST /company/salesmodules body:{name:'PROJECT'} — activate project module if permitted",
     "GET /employee to find project manager ID"
   ],
   "endpoints": [
     "POST /project — body: {name, projectManager:{id}, isInternal:false, customer:{id}}",
-    "POST /project/activity — body: {project:{id}, name}",
+    "POST /project/projectActivity — body: {project:{id}, activity:{id}, startDate}",
     "POST /timesheet/entry — body: {activity:{id}, employee:{id}, date, hours}",
+    "POST /project/hourlyRates or PUT /project/hourlyRates/updateOrAddHourRates — configure fixed price",
+    "POST /project/orderline — create billable project line",
     "PUT /order/{id}/:invoice — for project invoicing"
   ],
   "required_fields": ["name", "projectManager", "isInternal"],
   "common_errors": [
-    "PROJECT module must be activated first",
-    "projectManager must reference an existing employee"
+    "PROJECT module activation may return 403 in competition sandboxes; do not fail the task on that alone",
+    "projectManager must reference an existing employee",
+    "Project creation may require startDate",
+    "Use /project/projectActivity, not /project/{id}/activity"
   ],
   "tips": "For time registration + invoicing: create project, create activity, register hours, then create order from project and invoice it"
 }
