@@ -289,7 +289,7 @@ def train_model(n_epochs=600, lr=1e-3, n_steps=8, hidden=48, holdout_round=None)
     model = RecursiveCAModel(n_context=13, n_classes=N_CLASSES, hidden=hidden, n_steps=n_steps)
     model = model.to(DEVICE)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.0)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_epochs, eta_min=1e-5)
 
     best_val_loss = float('inf')

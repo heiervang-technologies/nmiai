@@ -6,8 +6,6 @@ Designed to be called by auto_watcher.sh
 
 import json
 import os
-import re
-import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -22,7 +20,6 @@ LOG_DIR = Path(__file__).parent / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 GT_DIR = Path(__file__).parent / "ground_truth"
 GT_DIR.mkdir(exist_ok=True)
-GEMINI_BIN = os.environ.get("GEMINI_BIN", "gemini")
 
 # Auth
 TOKEN = os.environ.get("AINM_TOKEN", "")
@@ -118,12 +115,15 @@ def compute_hotspot_scores(initial_grid, height, width):
 def select_viewports_adaptive(initial_grid, height, width, n_queries):
     scores = compute_hotspot_scores(initial_grid, height, width)
     ranked = sorted(scores.items(), key=lambda x: -x[1])
+    if not ranked or n_queries <= 0:
+        return []
 
     selected = []
     used_cells = set()
+    explore_budget = max(1, int(np.ceil(n_queries * 0.6))) if n_queries > 1 else 1
 
     for (vx, vy), _ in ranked:
-        if len(selected) >= n_queries:
+        if len(selected) >= explore_budget:
             break
 
         new_cells = set()
@@ -132,19 +132,27 @@ def select_viewports_adaptive(initial_grid, height, width, n_queries):
                 new_cells.add((vy + dy, vx + dx))
         overlap = len(new_cells & used_cells) / len(new_cells) if new_cells else 1.0
 
-        if len(selected) < max(1, n_queries // 2) and overlap > 0.3:
+        if len(selected) < max(1, explore_budget // 2) and overlap > 0.3:
             continue
-        if len(selected) >= max(1, n_queries // 2) and overlap > 0.95:
+        if len(selected) >= max(1, explore_budget // 2) and overlap > 0.95:
             continue
 
         selected.append((vx, vy, min(15, width - vx), min(15, height - vy)))
         used_cells |= new_cells
 
-    # If budget for this seed exceeds distinct good windows, repeat the hottest windows.
+    if not selected:
+        vx, vy = ranked[0][0]
+        selected.append((vx, vy, min(15, width - vx), min(15, height - vy)))
+
+    # Reserve the rest of the budget for repeated samples on the most dynamic windows.
+    repeat_pool_size = min(max(1, explore_budget // 2), max(1, len(ranked)))
+    repeat_pool = [
+        (vx, vy, min(15, width - vx), min(15, height - vy))
+        for (vx, vy), _ in ranked[:repeat_pool_size]
+    ]
     idx = 0
-    ranked_viewports = [(vx, vy, min(15, width - vx), min(15, height - vy)) for (vx, vy), _ in ranked[:max(1, n_queries)]]
-    while len(selected) < n_queries and ranked_viewports:
-        selected.append(ranked_viewports[idx % len(ranked_viewports)])
+    while len(selected) < n_queries:
+        selected.append(repeat_pool[idx % len(repeat_pool)])
         idx += 1
 
     return selected[:n_queries]
@@ -186,101 +194,23 @@ def heuristic_seed_scores(initial_states, height, width):
         summary = summarize_seed(seed_state["grid"], height, width)
         summaries.append(summary)
         score = (
-            3.0 * summary["settlements"]
-            + 6.0 * summary["ports"]
-            + 0.7 * summary["coastal_civ"]
-            + 0.22 * summary["near_civ_land"]
-            + 0.12 * summary["forest_edge"]
-            + 0.08 * summary["coast_land"]
-            + 0.02 * sum(summary["top_hotspots"])
+            3.5 * summary["settlements"]
+            + 8.0 * summary["ports"]
+            + 1.0 * summary["coastal_civ"]
+            + 0.28 * summary["near_civ_land"]
+            + 0.10 * summary["forest_edge"]
+            + 0.06 * summary["coast_land"]
+            + 0.03 * sum(summary["top_hotspots"])
         )
         scores.append(float(score))
     return summaries, np.array(scores, dtype=np.float64)
 
 
-def extract_json_object(text):
-    match = re.search(r"\{[\s\S]*\}", text)
-    if not match:
-        return None
-    try:
-        return json.loads(match.group(0))
-    except json.JSONDecodeError:
-        return None
-
-
-def query_gemini_seed_ranking(seed_summaries, remaining_queries):
-    prompt = {
-        "task": "Rank Astar Island seeds by expected information gain for simulator queries.",
-        "goal": "Prefer seeds with many settlements/ports, strong coastal trade potential, large dynamic frontiers near civ, and high hotspot scores. Static ocean/mountain heavy maps are less valuable.",
-        "remaining_queries": remaining_queries,
-        "return_schema": {
-            "ranked_seeds": [0, 1, 2, 3, 4],
-            "weights": [0.2, 0.2, 0.2, 0.2, 0.2],
-            "notes": ["short reason per seed order"]
-        },
-        "seed_summaries": [
-            {"seed": idx, **summary}
-            for idx, summary in enumerate(seed_summaries)
-        ],
-        "instruction": "Return only valid JSON. weights must be positive and sum to 1.0."
-    }
-
-    try:
-        proc = subprocess.run(
-            [
-                GEMINI_BIN,
-                "-p",
-                json.dumps(prompt),
-                "--model",
-                os.environ.get("GEMINI_MODEL", "gemini-2.5-pro"),
-                "--approval-mode",
-                "plan",
-            ],
-            capture_output=True,
-            text=True,
-            timeout=45,
-            check=False,
-        )
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return None
-
-    if proc.returncode != 0:
-        return None
-
-    parsed = extract_json_object(proc.stdout)
-    if not parsed:
-        return None
-
-    ranked = parsed.get("ranked_seeds")
-    weights = parsed.get("weights")
-    if not isinstance(ranked, list) or sorted(ranked) != list(range(len(seed_summaries))):
-        return None
-    if not isinstance(weights, list) or len(weights) != len(seed_summaries):
-        return None
-    weights = np.asarray(weights, dtype=np.float64)
-    if not np.all(np.isfinite(weights)) or np.any(weights <= 0):
-        return None
-    weights = weights / weights.sum()
-    return {
-        "ranked_seeds": [int(v) for v in ranked],
-        "weights": weights,
-        "notes": parsed.get("notes", []),
-        "raw": parsed,
-    }
-
-
 def allocate_queries_across_seeds(initial_states, height, width, remaining):
     seed_summaries, heuristic_scores = heuristic_seed_scores(initial_states, height, width)
     heuristic_weights = heuristic_scores / heuristic_scores.sum() if heuristic_scores.sum() > 0 else np.full(len(initial_states), 1.0 / len(initial_states))
-
-    gemini_plan = query_gemini_seed_ranking(seed_summaries, remaining)
-    if gemini_plan is not None:
-        combined_weights = 0.6 * heuristic_weights + 0.4 * gemini_plan["weights"]
-        ranked = gemini_plan["ranked_seeds"]
-    else:
-        combined_weights = heuristic_weights
-        ranked = list(np.argsort(-combined_weights))
-
+    combined_weights = heuristic_weights
+    ranked = [int(i) for i in np.argsort(-combined_weights)]
     combined_weights = combined_weights / combined_weights.sum()
     seed_count = len(initial_states)
     base = min(3, remaining // seed_count) if remaining >= seed_count else 0
@@ -303,7 +233,11 @@ def allocate_queries_across_seeds(initial_states, height, width, remaining):
         "combined_weights": [round(v, 4) for v in combined_weights.tolist()],
         "allocation": allocation.tolist(),
         "ranked_seeds": ranked,
-        "gemini": gemini_plan,
+        "strategy": {
+            "explore_fraction": 0.6,
+            "repeat_fraction": 0.4,
+            "repeat_top_hotspots": True,
+        },
     }
     return allocation.tolist(), plan
 
@@ -400,12 +334,6 @@ def main():
             f"sett={summary['settlements']} ports={summary['ports']} near_civ={summary['near_civ_land']} "
             f"coast_civ={summary['coastal_civ']} hotspots={summary['top_hotspots'][:3]}"
         )
-    if plan.get("gemini"):
-        print(f"  Gemini ranked seeds: {plan['gemini']['ranked_seeds']}")
-        if plan["gemini"].get("notes"):
-            for note in plan["gemini"]["notes"][:5]:
-                print(f"    note: {note}")
-
     for seed_idx in range(seeds_count):
         seed_queries = allocation[seed_idx]
         if seed_queries <= 0:
