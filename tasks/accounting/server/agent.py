@@ -181,13 +181,23 @@ class RegisterTimesheetArgs(BaseModel):
     comment: Optional[str] = None
 
 
+class ProcessSalaryArgs(BaseModel):
+    employeeName: Optional[str] = None
+    employeeEmail: Optional[str] = None
+    employeeId: Optional[int] = None
+    baseSalary: float = Field(description="Monthly base salary in NOK")
+    bonus: float = Field(default=0, description="One-time bonus in NOK")
+    date: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
+
+
 class RegisterSupplierInvoiceArgs(BaseModel):
     supplierName: str
     supplierOrgNumber: Optional[str] = None
     supplierId: Optional[int] = None
     invoiceNumber: Optional[str] = None
     amountIncludingVat: float = Field(description="Total amount including VAT")
-    accountNumber: Optional[int] = Field(default=None, description="Expense account number (e.g. 6300 for office, 7300 for travel)")
+    accountNumber: Optional[int] = Field(default=None, description="Expense account number (e.g. 6300 for office, 6590 for office services, 7140 for travel)")
+    description: Optional[str] = Field(default=None, description="Description of what the invoice is for")
     invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     dueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
 
@@ -329,6 +339,12 @@ async def register_timesheet(ctx: RunContext[AgentDeps], args: RegisterTimesheet
 
 
 @agent.tool
+async def process_salary(ctx: RunContext[AgentDeps], args: ProcessSalaryArgs) -> str:
+    """Process salary/payroll for an employee. Creates a voucher with salary cost, tax withholding, and bank payment postings."""
+    return await _safe_action("process_salary", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
+
+
+@agent.tool
 async def register_supplier_invoice(ctx: RunContext[AgentDeps], args: RegisterSupplierInvoiceArgs) -> str:
     """Register an incoming supplier invoice. Creates supplier if needed, posts the invoice as a voucher."""
     return await _safe_action("register_supplier_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3000)
@@ -351,6 +367,8 @@ KEY FACTS:
 - For admin/administrator roles: use userType="EXTENDED" in create_employee.
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
 - Dates must be YYYY-MM-DD format.
+- For received/incoming supplier invoices ("mottatt faktura fra leverandør"): ALWAYS use register_supplier_invoice, never generic_api_call.
+- For salary/payroll tasks ("kjør lønn", "process salary", "Gehalt"): ALWAYS use process_salary tool. Do NOT try /salary, /payroll, or /payslip endpoints — they don't work in competition sandboxes.
 - If a typed tool doesn't exist for what you need, use generic_api_call as fallback.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
 - If you see "403 Forbidden" or auth errors on multiple calls, STOP — the session may be invalid.

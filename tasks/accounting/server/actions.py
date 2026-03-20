@@ -133,46 +133,38 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
     """Register a bank account on the company. Required before invoice creation."""
     bank_num = args.get("bankAccountNumber", "12345678903")
 
-    # Approach 1: Find company via withLoginAccess, GET full object, PUT back with bank number
+    # Approach 1: Find company via >withLoginAccess (use unencoded >)
     try:
-        companies = await client.get("/company/%3EwithLoginAccess")
+        companies = await client.get("/company", params={"isMyCompany": "true", "count": 1})
+        if not companies.get("values"):
+            companies = await client.get("/company/>withLoginAccess")
         if companies.get("values"):
             company_id = companies["values"][0]["id"]
             company_data = await client.get(f"/company/{company_id}")
             company_obj = company_data.get("value", company_data)
             company_obj["bankAccountNumber"] = bank_num
             result = await client.put(f"/company/{company_id}", json=company_obj)
-            log.info(f"Bank account set via withLoginAccess company {company_id}")
+            log.info(f"Bank account set via company {company_id}")
             return result
     except Exception as e1:
-        log.warning(f"Bank account via withLoginAccess failed: {e1}")
+        log.warning(f"Bank account via company lookup failed: {e1}")
 
-    # Approach 2: Try PUT /company with just the bank field
-    for company_id in [0, 1]:
-        try:
-            # GET first to get version
-            company_data = await client.get(f"/company/{company_id}")
-            company_obj = company_data.get("value", company_data)
-            if company_obj and company_obj.get("id"):
-                company_obj["bankAccountNumber"] = bank_num
-                result = await client.put(f"/company/{company_id}", json=company_obj)
-                log.info(f"Bank account set via company/{company_id}")
-                return result
-        except Exception as e:
-            log.warning(f"Bank account via company/{company_id} failed: {e}")
-
-    # Approach 3: Find existing 1920 account and update it with bank number
+    # Approach 2: Find existing 1920 bank account in ledger and ensure it has bank number
     try:
         accounts = await client.get("/ledger/account", params={"count": 1000})
         for acc in accounts.get("values", []):
             if acc.get("number") == 1920:
-                acc["isBankAccount"] = True
-                acc["bankAccountNumber"] = bank_num
-                result = await client.put(f"/ledger/account/{acc['id']}", json=acc)
-                log.info(f"Bank account set via ledger account 1920")
-                return result
-    except Exception as e3:
-        log.warning(f"Bank account via ledger account failed: {e3}")
+                if not acc.get("bankAccountNumber"):
+                    acc["isBankAccount"] = True
+                    acc["bankAccountNumber"] = bank_num
+                    result = await client.put(f"/ledger/account/{acc['id']}", json=acc)
+                    log.info(f"Bank account set via ledger account 1920")
+                    return result
+                else:
+                    log.info("Bank account 1920 already has bank number set")
+                    return {"status": "already_set"}
+    except Exception as e2:
+        log.warning(f"Bank account via ledger account failed: {e2}")
 
     return {"warning": "Could not set bank account, invoice creation may fail"}
 
@@ -531,12 +523,9 @@ async def action_update_employee(client: TripletexClient, args: dict) -> dict:
 
 async def action_register_timesheet(client: TripletexClient, args: dict) -> dict:
     """Register hours on a timesheet for an employee on a project activity."""
-    # Activate project + timesheet modules
+    # Activate project + timesheet modules (non-fatal)
     for module in ["PROJECT", "TIME_TRACKING"]:
-        try:
-            await client.post("/company/salesmodules", json={"name": module})
-        except Exception:
-            pass
+        await action_activate_module(client, {"name": module})
 
     # Find or use provided IDs
     employee_id = args.get("employeeId")
@@ -670,33 +659,109 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
         log.warning(f"incomingInvoice failed, trying voucher approach: {e}")
 
     # Fallback: create a voucher with supplier reference
-    # Find leverandørgjeld account (2400)
-    credit_account_id = None
+    # Look up all needed accounts
+    account_cache = {}
     accounts = await client.get("/ledger/account", params={"count": 1000})
     for acc in accounts.get("values", []):
-        if acc.get("number") == 2400:
-            credit_account_id = acc["id"]
-            break
+        account_cache[acc["number"]] = acc["id"]
 
-    if not account_id or not credit_account_id:
-        return {"error": f"Missing accounts: expense={account_id}, credit={credit_account_id}"}
+    if not account_id and args.get("accountNumber"):
+        account_id = account_cache.get(int(args["accountNumber"]))
+
+    credit_account_id = account_cache.get(2400)  # Leverandørgjeld
+    vat_account_id = account_cache.get(2710)  # Inngående MVA
+
+    if not account_id:
+        # Default to 6300 (office services) if no account specified
+        account_id = account_cache.get(6300) or account_cache.get(6590)
+    if not credit_account_id:
+        return {"error": f"Missing leverandørgjeld account 2400"}
 
     # Calculate VAT split: 25% MVA means amount_ex_vat = amount / 1.25
-    amount_ex_vat = amount / 1.25
-    vat_amount = amount - amount_ex_vat
+    amount_ex_vat = round(amount / 1.25, 2)
+    vat_amount = round(amount - amount_ex_vat, 2)
 
+    # Balanced postings: expense debit + VAT debit = supplier credit
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": amount_ex_vat, "amountGrossCurrency": amount_ex_vat,
-         "supplier": {"id": supplier_id}, "vatType": {"id": 1}},  # Inngående 25% MVA
-        {"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount,
-         "supplier": {"id": supplier_id}},
+        {"row": 1, "account": {"id": account_id}, "amountGross": amount_ex_vat, "amountGrossCurrency": amount_ex_vat},
+        {"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount},
     ]
+    # Add VAT line if we have the account
+    if vat_account_id:
+        postings.append(
+            {"row": 3, "account": {"id": vat_account_id}, "amountGross": vat_amount, "amountGrossCurrency": vat_amount}
+        )
 
     voucher_body = {
         "date": invoice_date,
         "description": f"Supplier invoice {args.get('invoiceNumber', '')} from {args.get('supplierName', 'supplier')}",
         "postings": postings,
     }
+    return await client.post("/ledger/voucher", json=voucher_body)
+
+
+async def action_process_salary(client: TripletexClient, args: dict) -> dict:
+    """Process salary by creating a manual voucher. Salary API requires special setup,
+    so we use voucher postings on salary accounts (5000-series)."""
+    # Find employee
+    employee_id = args.get("employeeId")
+    if not employee_id:
+        emps = await client.get("/employee", params={"count": 10})
+        for emp in emps.get("values", []):
+            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
+                employee_id = emp["id"]
+                break
+            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
+                employee_id = emp["id"]
+                break
+
+    # Look up accounts
+    account_cache = {}
+    accounts = await client.get("/ledger/account", params={"count": 1000})
+    for acc in accounts.get("values", []):
+        account_cache[acc["number"]] = acc["id"]
+
+    base_salary = float(args.get("baseSalary", 0))
+    bonus = float(args.get("bonus", 0))
+    total_gross = base_salary + bonus
+
+    # Standard Norwegian salary posting:
+    # Debit 5000 (salary cost) for gross amount
+    # Debit 5000 (bonus) if applicable
+    # Credit 1920 (bank) for net pay
+    # Credit 2780 (withholding tax) for estimated tax (~30%)
+    estimated_tax = round(total_gross * 0.30, 2)
+    net_pay = round(total_gross - estimated_tax, 2)
+
+    salary_account = account_cache.get(5000) or account_cache.get(5001)
+    bank_account = account_cache.get(1920)
+    tax_account = account_cache.get(2780) or account_cache.get(2600)
+
+    if not salary_account or not bank_account:
+        return {"error": f"Missing accounts: salary={salary_account}, bank={bank_account}"}
+
+    postings = [
+        {"row": 1, "account": {"id": salary_account}, "amountGross": total_gross, "amountGrossCurrency": total_gross,
+         "description": f"Lønn {args.get('employeeName', '')}"},
+    ]
+    row = 2
+    if tax_account:
+        postings.append(
+            {"row": row, "account": {"id": tax_account}, "amountGross": -estimated_tax, "amountGrossCurrency": -estimated_tax,
+             "description": "Skattetrekk"}
+        )
+        row += 1
+    postings.append(
+        {"row": row, "account": {"id": bank_account}, "amountGross": -net_pay, "amountGrossCurrency": -net_pay,
+         "description": "Utbetaling"}
+    )
+
+    voucher_body = {
+        "date": args.get("date", TODAY),
+        "description": f"Lønn {args.get('employeeName', '')} - grunnlønn {base_salary}" + (f" + bonus {bonus}" if bonus else ""),
+        "postings": postings,
+    }
+
     return await client.post("/ledger/voucher", json=voucher_body)
 
 
@@ -741,6 +806,7 @@ ACTIONS = {
     "update_employee": action_update_employee,
     "register_timesheet": action_register_timesheet,
     "register_supplier_invoice": action_register_supplier_invoice,
+    "process_salary": action_process_salary,
     "create_invoice": action_create_invoice,
     "create_order": action_create_order,
     "register_payment": action_register_payment,
