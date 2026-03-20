@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Astar Island solver - Round 1
+"""Astar Island solver
 Every API call and response is logged to disk under logs/
 """
 
@@ -14,7 +14,7 @@ import numpy as np
 import requests
 
 BASE = "https://api.ainm.no"
-ROUND_ID = "71451d74-be9f-471f-aacd-a41f3b68a9cd"
+ROUND_ID = None  # Auto-detect active round
 LOG_DIR = Path(__file__).parent / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 
@@ -299,20 +299,105 @@ def save_prediction(seed_idx, prediction):
     print(f"  Saved prediction to {path}")
 
 
+def find_active_round():
+    """Find the currently active round."""
+    rounds = api_get("/astar-island/rounds")
+    for r in rounds:
+        if r["status"] == "active":
+            return r
+    return None
+
+
+def compute_hotspot_scores(initial_grid, height, width):
+    """Score each 15x15 viewport position by expected information value."""
+    init = np.array(initial_grid)
+    from scipy.ndimage import distance_transform_cdt, binary_dilation
+
+    civ_mask = (init == 1) | (init == 2)
+    ocean_mask = (init == 10)
+    mountain_mask = (init == 5)
+    forest_mask = (init == 4)
+
+    civ_dist = distance_transform_cdt(~civ_mask, metric='taxicab') if civ_mask.any() else np.full((height, width), 99)
+    coast_mask = binary_dilation(ocean_mask, np.ones((3, 3))) & ~ocean_mask
+    forest_edge = binary_dilation(forest_mask, np.ones((3, 3))) & ~forest_mask & ~ocean_mask & ~mountain_mask
+
+    # Score each possible viewport position
+    scores = {}
+    for vy in range(0, height - 4):  # min viewport 5
+        for vx in range(0, width - 4):
+            vw = min(15, width - vx)
+            vh = min(15, height - vy)
+            region_civ = civ_mask[vy:vy+vh, vx:vx+vw].sum()
+            region_near_civ = (civ_dist[vy:vy+vh, vx:vx+vw] <= 2).sum()
+            region_coast = coast_mask[vy:vy+vh, vx:vx+vw].sum()
+            region_forest_edge = forest_edge[vy:vy+vh, vx:vx+vw].sum()
+            region_static = (ocean_mask[vy:vy+vh, vx:vx+vw] | mountain_mask[vy:vy+vh, vx:vx+vw]).sum()
+
+            score = (1.0 * region_civ + 0.5 * region_near_civ +
+                     0.3 * region_coast + 0.4 * region_forest_edge -
+                     0.3 * region_static)
+            scores[(vx, vy)] = score
+
+    return scores
+
+
+def select_viewports_adaptive(initial_grid, height, width, n_queries):
+    """V2 adaptive strategy: reconnaissance + exploitation."""
+    scores = compute_hotspot_scores(initial_grid, height, width)
+
+    # Sort by score descending
+    ranked = sorted(scores.items(), key=lambda x: -x[1])
+
+    # Greedy selection: pick top viewports with some spacing
+    selected = []
+    used_cells = set()
+
+    for (vx, vy), score in ranked:
+        if len(selected) >= n_queries:
+            break
+        # Check overlap with already selected viewports
+        new_cells = set()
+        for dy in range(min(15, height - vy)):
+            for dx in range(min(15, width - vx)):
+                new_cells.add((vy + dy, vx + dx))
+        overlap = len(new_cells & used_cells) / len(new_cells) if new_cells else 1.0
+
+        # Recon phase: require low overlap for diversity. Exploit phase: allow repeats.
+        if len(selected) < n_queries // 2 and overlap > 0.3:
+            continue  # Skip overlapping viewports in recon phase
+        if len(selected) >= n_queries // 2 and overlap > 0.95:
+            continue  # Even in exploit, skip near-duplicates
+
+        selected.append((vx, vy, min(15, width - vx), min(15, height - vy)))
+        used_cells |= new_cells
+
+    return selected
+
+
 def main():
+    global ROUND_ID
+
     if not TOKEN:
         print("ERROR: No auth token. Set AINM_TOKEN env var or create tasks/astar-island/.token file")
         sys.exit(1)
 
-    # Load initial states
-    details_path = Path(__file__).parent / "round1_details.json"
-    if details_path.exists():
-        with open(details_path) as f:
-            details = json.load(f)
-    else:
-        details = get_round_details()
-        with open(details_path, "w") as f:
-            json.dump(details, f)
+    # Find active round
+    active = find_active_round()
+    if not active:
+        print("No active round found.")
+        sys.exit(0)
+
+    ROUND_ID = active["id"]
+    print(f"Active round: {active['round_number']} (ID: {ROUND_ID})")
+    print(f"Closes at: {active['closes_at']}")
+    print(f"Weight: {active['round_weight']}")
+
+    # Get round details with initial states
+    details = get_round_details()
+    details_path = LOG_DIR / f"round{active['round_number']}_details.json"
+    with open(details_path, "w") as f:
+        json.dump(details, f)
 
     height = details["map_height"]
     width = details["map_width"]
@@ -320,22 +405,37 @@ def main():
     initial_states = details["initial_states"]
 
     print(f"Map: {width}x{height}, Seeds: {seeds_count}")
-    print(f"Round closes at: {details['closes_at']}")
 
     # Check budget
     budget = check_budget()
-    print(f"Budget: {json.dumps(budget)}")
+    queries_remaining = budget.get("queries_max", 50) - budget.get("queries_used", 0)
+    print(f"Budget: {budget.get('queries_used', 0)}/{budget.get('queries_max', 50)} used, {queries_remaining} remaining")
 
-    # Phase 1: Full coverage - 9 queries per seed, 45 total
-    viewports = full_coverage_viewports()
-    print(f"\nViewport plan: {len(viewports)} viewports per seed = {len(viewports) * seeds_count} total queries")
+    if queries_remaining <= 0:
+        print("No queries remaining!")
+        sys.exit(0)
+
+    # V2 Strategy: adaptive viewport selection per seed
+    # Allocate queries: 10 per seed
+    queries_per_seed = queries_remaining // seeds_count
+    extra = queries_remaining % seeds_count
 
     all_observations = {i: [] for i in range(seeds_count)}
     queries_used = 0
+    budget_exhausted = False
 
     for seed_idx in range(seeds_count):
+        if budget_exhausted:
+            break
+
+        initial_grid = initial_states[seed_idx]["grid"]
+        n_q = queries_per_seed + (1 if seed_idx < extra else 0)
+
+        # Select viewports adaptively based on hotspot scores
+        viewports = select_viewports_adaptive(initial_grid, height, width, n_q)
+
         print(f"\n{'='*40}")
-        print(f"SEED {seed_idx} - querying {len(viewports)} viewports")
+        print(f"SEED {seed_idx} - {len(viewports)} adaptive viewports")
         print(f"{'='*40}")
 
         for vx, vy, vw, vh in viewports:
@@ -343,25 +443,21 @@ def main():
             if status != 200:
                 print(f"  ERROR: status {status}, data: {data}")
                 if status == 429:
-                    print("  Budget exhausted! Moving to prediction phase.")
+                    print("  Budget exhausted!")
+                    budget_exhausted = True
                     break
                 continue
 
             queries_used += 1
             grid = data.get("grid", [])
             all_observations[seed_idx].append((grid, vx, vy))
-
-            # Rate limit: max 5 req/sec, be safe with 250ms delay
             time.sleep(0.25)
 
         save_observations(seed_idx, all_observations[seed_idx])
 
-        if status == 429:
-            break
-
     print(f"\nTotal queries used: {queries_used}")
 
-    # Phase 2: Build and submit predictions
+    # Build and submit predictions for ALL seeds (even unobserved ones get prior)
     print(f"\n{'='*40}")
     print("BUILDING AND SUBMITTING PREDICTIONS")
     print(f"{'='*40}")
@@ -374,15 +470,13 @@ def main():
         prediction = build_prediction(height, width, initial_grid, observations)
         save_prediction(seed_idx, prediction)
 
-        # Submit
         result, status = submit_prediction(seed_idx, prediction)
         print(f"  Submit result: status={status}, data={result}")
         time.sleep(0.25)
 
-    print("\n=== DONE ===")
-    print(f"Submitted predictions for {seeds_count} seeds using {queries_used} queries")
+    print(f"\n=== DONE ===")
+    print(f"Round {active['round_number']}: Submitted {seeds_count} seeds using {queries_used} queries")
 
-    # Final budget check
     budget = check_budget()
     print(f"Final budget: {json.dumps(budget)}")
 
