@@ -139,12 +139,17 @@ async def handle_create_product(client: TripletexClient, fields: dict, task: dic
 
     if fields.get("number"):
         data["number"] = fields["number"]
-    if fields.get("priceExcludingVat") is not None:
-        data["priceExcludingVat"] = fields["priceExcludingVat"]
-    if fields.get("priceIncludingVat") is not None:
-        data["priceIncludingVat"] = fields["priceIncludingVat"]
+    # API uses priceExcludingVatCurrency / priceIncludingVatCurrency
+    price_ex = fields.get("priceExcludingVatCurrency") or fields.get("priceExcludingVat")
+    price_inc = fields.get("priceIncludingVatCurrency") or fields.get("priceIncludingVat")
+    if price_ex is not None:
+        data["priceExcludingVatCurrency"] = price_ex
+    if price_inc is not None:
+        data["priceIncludingVatCurrency"] = price_inc
     if fields.get("vatType"):
         data["vatType"] = fields["vatType"]
+    elif fields.get("vatTypeId"):
+        data["vatType"] = {"id": fields["vatTypeId"]}
 
     result = await client.create_product(data)
     return result.get("value", result)
@@ -160,7 +165,11 @@ async def handle_create_invoice(client: TripletexClient, fields: dict, task: dic
                 customer_id = c["id"]
                 break
 
-    # Build order with order lines
+    if not customer_id and fields.get("customer"):
+        if isinstance(fields["customer"], dict):
+            customer_id = fields["customer"].get("id")
+
+    # Build order lines
     order_lines = []
     for line in fields.get("orderLines", fields.get("lines", [])):
         ol = {"count": line.get("count", 1)}
@@ -170,32 +179,27 @@ async def handle_create_invoice(client: TripletexClient, fields: dict, task: dic
             ol["description"] = line["description"]
         if line.get("unitPriceExcludingVat") is not None:
             ol["unitPriceExcludingVatCurrency"] = line["unitPriceExcludingVat"]
+        if line.get("unitPriceExcludingVatCurrency") is not None:
+            ol["unitPriceExcludingVatCurrency"] = line["unitPriceExcludingVatCurrency"]
+        if line.get("vatType"):
+            ol["vatType"] = line["vatType"]
+        elif line.get("vatTypeId"):
+            ol["vatType"] = {"id": line["vatTypeId"]}
+        else:
+            ol["vatType"] = {"id": 3}  # Default 25% MVA
         order_lines.append(ol)
 
-    order_data = {
+    # Direct invoice creation (preferred - fewer API calls)
+    invoice_data = {
+        "invoiceDate": fields.get("invoiceDate", ""),
         "customer": {"id": customer_id},
-        "orderDate": fields.get("invoiceDate", fields.get("orderDate", "")),
-        "deliveryDate": fields.get("dueDate", fields.get("deliveryDate", "")),
         "orderLines": order_lines,
     }
+    if fields.get("dueDate") or fields.get("invoiceDueDate"):
+        invoice_data["invoiceDueDate"] = fields.get("invoiceDueDate") or fields.get("dueDate")
 
-    order_result = await client.create_order(order_data)
-    order = order_result.get("value", order_result)
-    order_id = order.get("id")
-
-    # Invoice the order
-    if order_id:
-        invoice_data = {
-            "invoiceDate": fields.get("invoiceDate", ""),
-            "orderId": order_id,
-        }
-        if fields.get("dueDate"):
-            invoice_data["invoiceDueDate"] = fields["dueDate"]
-
-        result = await client.post(f"/order/{order_id}/:invoice", json=invoice_data)
-        return result.get("value", result)
-
-    return order
+    result = await client.post("/invoice", json=invoice_data)
+    return result.get("value", result)
 
 
 async def handle_register_payment(client: TripletexClient, fields: dict, task: dict) -> dict:
@@ -207,14 +211,15 @@ async def handle_register_payment(client: TripletexClient, fields: dict, task: d
         if invoices:
             invoice_id = invoices[-1]["id"]  # Most recent
 
-    payment_data = {
-        "amount": fields.get("amount", 0),
+    # Payment uses PUT with query params per API reference
+    params = {
         "paymentDate": fields.get("paymentDate", ""),
+        "paidAmount": fields.get("amount", fields.get("paidAmount", 0)),
     }
     if fields.get("paymentTypeId"):
-        payment_data["paymentType"] = {"id": fields["paymentTypeId"]}
+        params["paymentTypeId"] = fields["paymentTypeId"]
 
-    result = await client.post(f"/invoice/{invoice_id}/:payment", json=payment_data)
+    result = await client.put(f"/invoice/{invoice_id}/:payment", params=params)
     return result.get("value", result)
 
 
@@ -292,7 +297,12 @@ async def handle_create_credit_note(client: TripletexClient, fields: dict, task:
             invoice_id = invoices[-1]["id"]
 
     if invoice_id:
-        result = await client.post(f"/invoice/{invoice_id}/:createCreditNote", json={})
+        params = {}
+        if fields.get("date"):
+            params["date"] = fields["date"]
+        if fields.get("comment"):
+            params["comment"] = fields["comment"]
+        result = await client.put(f"/invoice/{invoice_id}/:createCreditNote", params=params)
         return result.get("value", result)
     return {"error": "No invoice found"}
 

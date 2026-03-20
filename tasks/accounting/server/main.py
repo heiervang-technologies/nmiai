@@ -1,26 +1,31 @@
 """
 Tripletex AI Accounting Agent - /solve endpoint for NM i AI 2026.
 
-Receives natural-language accounting task prompts, parses them with an LLM,
-executes the corresponding Tripletex API calls, and returns completion status.
+Agentic approach: LLM with Tripletex API tools.
+Logs all requests/results for contextual bandit iteration.
 """
 
+import json
 import logging
 import os
+import time
+from datetime import datetime, timezone
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 
 from tripletex_client import TripletexClient
-from parser import parse_task
-from executor import execute_task
+from agent import run_agent
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-app = FastAPI(title="Tripletex AI Agent", version="0.1.0")
+app = FastAPI(title="Tripletex AI Agent", version="0.2.0")
 
 EXPECTED_API_KEY = os.environ.get("AGENT_API_KEY")
+LOG_DIR = Path(os.environ.get("LOG_DIR", "/tmp/accounting-logs"))
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class FileAttachment(BaseModel):
@@ -44,30 +49,71 @@ class SolveResponse(BaseModel):
     status: str = "completed"
 
 
+def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float):
+    """Log every request for bandit-style analysis."""
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    entry = {
+        "timestamp": ts,
+        "prompt": req.prompt,
+        "files": [{"filename": f.filename, "mime_type": f.mime_type} for f in req.files],
+        "base_url": req.tripletex_credentials.base_url,
+        "result": result,
+        "api_stats": stats,
+        "elapsed_seconds": round(elapsed, 1),
+    }
+    log_file = LOG_DIR / f"{ts}.json"
+    log_file.write_text(json.dumps(entry, ensure_ascii=False, indent=2, default=str))
+    log.info(f"Logged to {log_file}")
+
+    # Also append to a single summary file for quick review
+    summary_file = LOG_DIR / "summary.jsonl"
+    summary = {
+        "ts": ts,
+        "prompt_preview": req.prompt[:150],
+        "api_calls": stats.get("total_calls", 0),
+        "api_errors": stats.get("errors_4xx", 0),
+        "iterations": result.get("iterations", 0),
+        "elapsed": round(elapsed, 1),
+    }
+    with open(summary_file, "a") as f:
+        f.write(json.dumps(summary, ensure_ascii=False) + "\n")
+
+
 @app.post("/solve", response_model=SolveResponse)
 async def solve(req: SolveRequest, request: Request):
-    # Optional API key check
     if EXPECTED_API_KEY:
         auth = request.headers.get("Authorization", "")
         if auth != f"Bearer {EXPECTED_API_KEY}":
             log.warning("Invalid API key")
 
-    log.info(f"Received task: {req.prompt[:120]}...")
+    log.info(f"=== NEW TASK === {req.prompt[:120]}...")
 
     client = TripletexClient(
         base_url=req.tripletex_credentials.base_url,
         session_token=req.tripletex_credentials.session_token,
     )
 
+    start = time.time()
+    result = {}
     try:
-        task = await parse_task(req.prompt, req.files)
-        log.info(f"Parsed task type={task.get('task_type')} fields={list(task.get('fields', {}).keys())}")
+        # Prepare files for agent
+        files = None
+        if req.files:
+            files = [
+                {"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64}
+                for f in req.files
+            ]
 
-        result = await execute_task(client, task)
-        log.info(f"Execution result: {result}")
+        result = await run_agent(client, req.prompt, files)
+        log.info(f"Agent result: iterations={result.get('iterations')}, "
+                 f"api_calls={result.get('api_calls')}, errors={result.get('api_errors')}")
     except Exception as e:
-        log.error(f"Task execution failed: {e}", exc_info=True)
+        log.error(f"Agent failed: {e}", exc_info=True)
+        result = {"error": str(e)}
     finally:
+        stats = client.get_stats()
+        elapsed = time.time() - start
+        log_request(req, result, stats, elapsed)
         await client.close()
 
     return SolveResponse(status="completed")
@@ -76,6 +122,16 @@ async def solve(req: SolveRequest, request: Request):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/logs")
+async def get_logs():
+    """View recent submission logs."""
+    summary_file = LOG_DIR / "summary.jsonl"
+    if not summary_file.exists():
+        return {"logs": []}
+    lines = summary_file.read_text().strip().split("\n")
+    return {"logs": [json.loads(line) for line in lines[-20:]]}
 
 
 if __name__ == "__main__":

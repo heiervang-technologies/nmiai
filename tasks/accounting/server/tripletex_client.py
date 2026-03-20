@@ -1,13 +1,27 @@
 """
-Tripletex API client. All calls go through the provided proxy base_url.
+Tripletex API client with call tracking.
+All calls go through the provided proxy base_url.
 Auth: Basic auth with username=0, password=session_token.
 """
 
 import httpx
+import json as json_mod
 import logging
+from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from typing import Any
 
 log = logging.getLogger(__name__)
+
+
+def _split_path_params(path: str) -> tuple[str, dict]:
+    """If the LLM puts query params in the path, extract them."""
+    if "?" in path:
+        parts = path.split("?", 1)
+        params = dict(parse_qs(parts[1], keep_blank_values=True))
+        # parse_qs returns lists, flatten single values
+        params = {k: v[0] if len(v) == 1 else v for k, v in params.items()}
+        return parts[0], params
+    return path, {}
 
 
 class TripletexClient:
@@ -19,128 +33,84 @@ class TripletexClient:
             timeout=60.0,
             headers={"Content-Type": "application/json"},
         )
+        # Bandit tracking
+        self.call_count = 0
+        self.error_count = 0
+        self.calls_log = []
 
     async def close(self):
         await self._client.aclose()
 
+    def _log_call(self, method: str, path: str, status: int, error: str = None):
+        self.call_count += 1
+        if error or (400 <= status < 500):
+            self.error_count += 1
+        self.calls_log.append({
+            "method": method, "path": path,
+            "status": status, "error": error,
+        })
+
     async def get(self, path: str, params: dict | None = None) -> dict:
-        url = f"{self.base_url}{path}"
-        log.info(f"GET {url} params={params}")
-        resp = await self._client.get(url, params=params)
-        resp.raise_for_status()
-        return resp.json()
+        clean_path, path_params = _split_path_params(path)
+        merged_params = {**(path_params or {}), **(params or {})} or None
+        url = f"{self.base_url}{clean_path}"
+        log.info(f"GET {clean_path} params={merged_params}")
+        try:
+            resp = await self._client.get(url, params=merged_params)
+            self._log_call("GET", clean_path, resp.status_code)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPStatusError as e:
+            self._log_call("GET", clean_path, e.response.status_code, e.response.text[:500])
+            raise
 
     async def post(self, path: str, json: dict | None = None) -> dict:
-        url = f"{self.base_url}{path}"
-        log.info(f"POST {url}")
-        resp = await self._client.post(url, json=json)
-        resp.raise_for_status()
-        return resp.json()
+        clean_path, path_params = _split_path_params(path)
+        # If LLM put fields in query params instead of body, convert to body
+        if path_params and not json:
+            log.warning(f"POST {clean_path}: converting query params to body: {path_params}")
+            json = path_params
+        url = f"{self.base_url}{clean_path}"
+        log.info(f"POST {clean_path} body_keys={list((json or {}).keys())}")
+        try:
+            resp = await self._client.post(url, json=json)
+            self._log_call("POST", clean_path, resp.status_code)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPStatusError as e:
+            self._log_call("POST", clean_path, e.response.status_code, e.response.text[:500])
+            raise
 
-    async def put(self, path: str, json: dict | None = None) -> dict:
-        url = f"{self.base_url}{path}"
-        log.info(f"PUT {url}")
-        resp = await self._client.put(url, json=json)
-        resp.raise_for_status()
-        return resp.json()
+    async def put(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
+        clean_path, path_params = _split_path_params(path)
+        merged_params = {**(path_params or {}), **(params or {})} or None
+        url = f"{self.base_url}{clean_path}"
+        log.info(f"PUT {clean_path} params={merged_params}")
+        try:
+            resp = await self._client.put(url, json=json, params=merged_params)
+            self._log_call("PUT", clean_path, resp.status_code)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPStatusError as e:
+            self._log_call("PUT", clean_path, e.response.status_code, e.response.text[:500])
+            raise
 
-    async def delete(self, path: str) -> int:
-        url = f"{self.base_url}{path}"
-        log.info(f"DELETE {url}")
-        resp = await self._client.delete(url)
-        resp.raise_for_status()
-        return resp.status_code
+    async def delete(self, path: str) -> dict:
+        clean_path, _ = _split_path_params(path)
+        url = f"{self.base_url}{clean_path}"
+        log.info(f"DELETE {clean_path}")
+        try:
+            resp = await self._client.delete(url)
+            self._log_call("DELETE", clean_path, resp.status_code)
+            resp.raise_for_status()
+            return {"status": resp.status_code}
+        except httpx.HTTPStatusError as e:
+            self._log_call("DELETE", clean_path, e.response.status_code, e.response.text[:500])
+            raise
 
-    # --- Convenience methods ---
-
-    async def list_all(self, path: str, params: dict | None = None) -> list[dict]:
-        """Fetch all pages from a list endpoint."""
-        params = dict(params or {})
-        params.setdefault("count", 1000)
-        params.setdefault("from", 0)
-        result = await self.get(path, params)
-        return result.get("values", [])
-
-    async def search(self, path: str, **kwargs) -> list[dict]:
-        """Search endpoint with keyword args as query params."""
-        return await self.list_all(path, params=kwargs)
-
-    # --- Employee ---
-
-    async def create_employee(self, data: dict) -> dict:
-        return await self.post("/employee", json=data)
-
-    async def get_employees(self, **params) -> list[dict]:
-        return await self.list_all("/employee", params=params)
-
-    async def update_employee(self, employee_id: int, data: dict) -> dict:
-        return await self.put(f"/employee/{employee_id}", json=data)
-
-    # --- Customer ---
-
-    async def create_customer(self, data: dict) -> dict:
-        return await self.post("/customer", json=data)
-
-    async def get_customers(self, **params) -> list[dict]:
-        return await self.list_all("/customer", params=params)
-
-    # --- Product ---
-
-    async def create_product(self, data: dict) -> dict:
-        return await self.post("/product", json=data)
-
-    async def get_products(self, **params) -> list[dict]:
-        return await self.list_all("/product", params=params)
-
-    # --- Invoice ---
-
-    async def create_invoice(self, data: dict) -> dict:
-        return await self.post("/invoice", json=data)
-
-    async def get_invoices(self, **params) -> list[dict]:
-        return await self.list_all("/invoice", params=params)
-
-    async def create_order(self, data: dict) -> dict:
-        return await self.post("/order", json=data)
-
-    async def invoice_order(self, order_id: int) -> dict:
-        """Convert an order to an invoice."""
-        return await self.put(f"/invoice/{order_id}/:invoice")
-
-    async def register_payment(self, invoice_id: int, data: dict) -> dict:
-        return await self.post(f"/invoice/{invoice_id}/:payment", json=data)
-
-    # --- Project ---
-
-    async def create_project(self, data: dict) -> dict:
-        return await self.post("/project", json=data)
-
-    async def get_projects(self, **params) -> list[dict]:
-        return await self.list_all("/project", params=params)
-
-    # --- Department ---
-
-    async def create_department(self, data: dict) -> dict:
-        return await self.post("/department", json=data)
-
-    async def get_departments(self, **params) -> list[dict]:
-        return await self.list_all("/department", params=params)
-
-    # --- Travel Expense ---
-
-    async def create_travel_expense(self, data: dict) -> dict:
-        return await self.post("/travelExpense", json=data)
-
-    async def get_travel_expenses(self, **params) -> list[dict]:
-        return await self.list_all("/travelExpense", params=params)
-
-    async def delete_travel_expense(self, expense_id: int) -> int:
-        return await self.delete(f"/travelExpense/{expense_id}")
-
-    # --- Ledger ---
-
-    async def get_accounts(self, **params) -> list[dict]:
-        return await self.list_all("/ledger/account", params=params)
-
-    async def create_voucher(self, data: dict) -> dict:
-        return await self.post("/ledger/voucher", json=data)
+    def get_stats(self) -> dict:
+        return {
+            "total_calls": self.call_count,
+            "errors_4xx": self.error_count,
+            "calls": self.calls_log,
+        }
