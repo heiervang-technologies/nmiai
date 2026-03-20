@@ -636,16 +636,30 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     amount = float(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
-    # Use POST /incomingInvoice (BETA)
+    # Use POST /incomingInvoice (BETA) with correct schema
     body = {
-        "invoiceNumber": args.get("invoiceNumber", ""),
-        "invoiceDate": invoice_date,
-        "supplier": {"id": supplier_id},
-        "amount": amount,
-        "amountCurrency": amount,
+        "invoiceHeader": {
+            "invoiceNumber": args.get("invoiceNumber", ""),
+            "invoiceDate": invoice_date,
+            "vendorId": supplier_id,
+            "invoiceAmount": amount,
+        },
+        "orderLines": [],
     }
     if args.get("dueDate"):
-        body["dueDate"] = args["dueDate"]
+        body["invoiceHeader"]["dueDate"] = args["dueDate"]
+    if args.get("description"):
+        body["invoiceHeader"]["description"] = args["description"]
+
+    # Add order line if account is specified
+    if account_id:
+        body["orderLines"].append({
+            "description": args.get("description", "Supplier invoice"),
+            "account": {"id": account_id},
+            "amountExcludingVat": amount * 0.8,  # Estimate ex-VAT from inc-VAT at 25%
+            "amountExcludingVatCurrency": amount * 0.8,
+            "vatType": {"id": int(args.get("vatTypeId", 1))},  # id=1 = 25% inngående MVA
+        })
 
     try:
         result = await client.post("/incomingInvoice", json=body)
@@ -653,11 +667,8 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     except Exception as e:
         log.warning(f"incomingInvoice failed, trying voucher approach: {e}")
 
-    # Fallback: create a voucher manually
-    if not account_id:
-        return {"error": "Could not find account for supplier invoice"}
-
-    # Find 2400 (leverandørgjeld) account for credit side
+    # Fallback: create a voucher with supplier reference
+    # Find leverandørgjeld account (2400)
     credit_account_id = None
     accounts = await client.get("/ledger/account", params={"count": 1000})
     for acc in accounts.get("values", []):
@@ -665,15 +676,23 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
             credit_account_id = acc["id"]
             break
 
+    if not account_id or not credit_account_id:
+        return {"error": f"Missing accounts: expense={account_id}, credit={credit_account_id}"}
+
+    # Calculate VAT split: 25% MVA means amount_ex_vat = amount / 1.25
+    amount_ex_vat = amount / 1.25
+    vat_amount = amount - amount_ex_vat
+
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": amount, "amountGrossCurrency": amount},
+        {"row": 1, "account": {"id": account_id}, "amountGross": amount_ex_vat, "amountGrossCurrency": amount_ex_vat,
+         "supplier": {"id": supplier_id}, "vatType": {"id": 1}},  # Inngående 25% MVA
+        {"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount,
+         "supplier": {"id": supplier_id}},
     ]
-    if credit_account_id:
-        postings.append({"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount})
 
     voucher_body = {
         "date": invoice_date,
-        "description": f"Supplier invoice from {args.get('supplierName', 'supplier')}",
+        "description": f"Supplier invoice {args.get('invoiceNumber', '')} from {args.get('supplierName', 'supplier')}",
         "postings": postings,
     }
     return await client.post("/ledger/voucher", json=voucher_body)
