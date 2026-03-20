@@ -1,5 +1,7 @@
 #!/bin/bash
-# Background watcher: checks for new rounds every 3 minutes, runs solver
+# Background watcher: checks for new rounds every 3 minutes
+# ONLY runs queries and saves observations. Does NOT submit predictions.
+# Run predictor separately to build and submit predictions.
 # Usage: nohup ./auto_watcher.sh &
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -19,7 +21,7 @@ for r in rounds:
 " 2>/dev/null)
 
     if [ -z "$ACTIVE" ]; then
-        sleep 180  # No active round, check again in 3 min
+        sleep 180
         continue
     fi
 
@@ -29,11 +31,11 @@ for r in rounds:
     QUERIES_USED=$(echo "$BUDGET" | python3 -c "import json,sys; print(json.load(sys.stdin).get('queries_used', 0))" 2>/dev/null)
 
     if [ "$QUERIES_USED" = "0" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) NEW ROUND $ACTIVE detected, running solver" >> "$LOG_FILE"
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) NEW ROUND $ACTIVE detected, running query_runner (queries only, no predictions)" >> "$LOG_FILE"
         cd /home/me/ht/nmiai
-        uv run python3 tasks/astar-island/solver.py >> "$LOG_FILE" 2>&1
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Solver finished for $ACTIVE" >> "$LOG_FILE"
+        uv run python3 tasks/astar-island/query_runner.py >> "$LOG_FILE" 2>&1
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Query runner finished for $ACTIVE" >> "$LOG_FILE"
     fi
 
-    sleep 180  # Check again in 3 min
+    sleep 180
 done

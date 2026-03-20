@@ -281,9 +281,17 @@ def build_prediction(height, width, initial_grid, observations):
     return pred
 
 
-def save_observations(seed_idx, observations):
-    """Save raw observations to disk."""
-    path = LOG_DIR / f"observations_seed{seed_idx}.json"
+def get_round_dir(round_number):
+    """Get or create a per-round log directory."""
+    d = LOG_DIR / f"round{round_number}"
+    d.mkdir(exist_ok=True)
+    return d
+
+
+def save_observations(seed_idx, observations, round_number=None):
+    """Save raw observations to disk in per-round directory."""
+    d = get_round_dir(round_number) if round_number else LOG_DIR
+    path = d / f"observations_seed{seed_idx}.json"
     serializable = []
     for grid, vx, vy in observations:
         serializable.append({"grid": grid, "viewport_x": vx, "viewport_y": vy})
@@ -292,9 +300,10 @@ def save_observations(seed_idx, observations):
     print(f"  Saved {len(observations)} observations to {path}")
 
 
-def save_prediction(seed_idx, prediction):
-    """Save prediction tensor to disk."""
-    path = LOG_DIR / f"prediction_seed{seed_idx}.npy"
+def save_prediction(seed_idx, prediction, round_number=None):
+    """Save prediction tensor to disk in per-round directory."""
+    d = get_round_dir(round_number) if round_number else LOG_DIR
+    path = d / f"prediction_seed{seed_idx}.npy"
     np.save(path, prediction)
     print(f"  Saved prediction to {path}")
 
