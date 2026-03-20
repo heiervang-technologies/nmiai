@@ -26,6 +26,31 @@ Unknown or complex tasks get agentic fallback.
 
 ---
 
+## Corrected Tier Breakdown (from docs research)
+
+### TIER 1 (x1): Foundational single-entity tasks
+- Create employee, create customer, create invoice
+
+### TIER 2 (x2): Multi-step workflows
+- Invoice with payment, credit notes, project billing
+
+### TIER 3 (x3): Complex scenarios (opens early Saturday)
+- Bank reconciliation from CSV, error correction in ledger, year-end closing
+
+### Rate Limits
+| | Verified Teams | Unverified Teams |
+|---|---|---|
+| Concurrent submissions | 3 | 1 |
+| Per task per day | 10 | 3 |
+
+### Task Assignment
+Each submission picks a task **weighted toward less-attempted types** - so you'll see new tasks more often.
+
+### MCP Server
+`claude mcp add --transport http nmiai https://mcp-docs.ainm.no/mcp`
+
+---
+
 ## Task Type Analysis
 
 ### TIER 1 Tasks (x1 multiplier) - Available NOW
@@ -206,7 +231,40 @@ DELETE /travelExpense/{id}
 
 ### TIER 3 Tasks (x3 multiplier) - Unlocks early Saturday
 
-#### 12. Create Credit Note
+#### 12. Bank Reconciliation from CSV
+**Prompt pattern:** "Avstem bankkontoen med vedlagt CSV-fil..."
+**API flow (speculative):**
+```
+1. Decode base64 CSV file attachment
+2. Parse CSV rows (date, description, amount)
+3. GET /ledger/account (find bank account)
+4. POST /bank/reconciliation or POST /ledger/voucher for each row
+5. Match transactions to existing postings
+```
+**Notes:** This is complex - needs file parsing + accounting logic.
+The agent must understand CSV structure and create correct journal entries.
+
+#### 13. Error Correction in Ledger
+**Prompt pattern:** "Korriger feil i hovedboken: bilag [X] har feil konto..."
+**API flow (speculative):**
+```
+1. GET /ledger/voucher (find the incorrect voucher)
+2. Create reversing entry (credit what was debited, vice versa)
+3. Create correct entry
+```
+**Notes:** May need to understand double-entry bookkeeping.
+
+#### 14. Year-End Closing
+**Prompt pattern:** "Utfør årsavslutning for [year]..."
+**API flow (speculative):**
+```
+1. Close all open periods
+2. Transfer P&L to balance sheet
+3. Create closing vouchers
+```
+**Notes:** Most complex task. Requires understanding of Norwegian accounting year-end procedures.
+
+#### 15. Create Credit Note
 **Prompt pattern:** "Opprett en kreditnota for faktura [X]..."
 **API flow:**
 ```
@@ -214,11 +272,32 @@ GET /invoice                 (find the invoice)
 POST /invoice/{id}/:createCreditNote
 ```
 
-#### 13. Delete/Reverse Invoice
+#### 16. Delete/Reverse Invoice
 **Prompt pattern:** "Reverser/slett faktura [X]..."
 
-#### 14. Multi-step Corrections
-**Prompt pattern:** Complex scenarios combining create + update + delete
+---
+
+## Scoring Example (from docs)
+
+**"Create employee" task (max 10 points):**
+| Check | Points |
+|-------|--------|
+| Employee found | 2 |
+| Correct first name | 1 |
+| Correct last name | 1 |
+| Correct email | 1 |
+| Administrator role assigned | 5 |
+
+Note: Administrator role is worth **50% of the points** - easy to miss!
+
+**Efficiency bonus example (Tier 2):**
+| Scenario | Score |
+|----------|-------|
+| Failed all checks | 0.0 |
+| 80% checks passed | 1.6 |
+| Perfect, many errors | ~2.1 |
+| Perfect, efficient, few errors | ~2.6 |
+| Perfect, best efficiency, zero errors | 4.0 |
 
 ---
 
