@@ -473,7 +473,7 @@ To be eligible for prizes, a team must satisfy **both** of the following:
 
 Identity verification
 
-All team members must complete Vipps verification before the competition deadline. Vipps is linked to Norwegian BankID and confirms the participant's legal identity. Verified teams are indicated on the leaderboard.
+All team members must complete Vipps verification before the competition deadline. Each participant must verify with their own Vipps account — verifying on behalf of another person is not permitted. Vipps is linked to Norwegian BankID and confirms the participant's legal identity. Verified teams are indicated on the leaderboard.
 
 </div>
 
@@ -495,7 +495,7 @@ The team must make their code repository public and submit the URL through the p
 
 </div>
 
-Teams that do not meet these requirements will have their scores displayed on the leaderboard and retain their ranking, but will not be eligible for prize payouts. The next eligible team moves up for prize purposes.
+Non-eligible teams retain their leaderboard position; the next eligible team advances for prize purposes.
 
 Verification can be completed at any time before the deadline. Teams are strongly encouraged to verify early — verified teams benefit from higher submission rate limits, confirmed Google account eligibility, and avoid last-minute issues that could jeopardize prize eligibility.
 
@@ -671,7 +671,7 @@ The organizers will review submitted code to verify:
 - <span class="text-muted-foreground mt-1 shrink-0">•</span>No evidence of code sharing or collusion with other teams
 - <span class="text-muted-foreground mt-1 shrink-0">•</span>No hardcoded or pre-computed responses designed to game specific test cases
 
-Teams whose code does not pass verification, or who fail to provide a public repository URL before the deadline, are not eligible for prizes. Their scores remain on the leaderboard and the next eligible team moves up for prize purposes.
+Teams whose code does not pass verification, or who fail to provide a public repository URL before the deadline, are not eligible for prizes. Non-eligible teams retain their leaderboard position; the next eligible team advances for prize purposes.
 
 </div>
 
