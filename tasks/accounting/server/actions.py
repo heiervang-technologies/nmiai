@@ -606,6 +606,79 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
     return await client.post("/timesheet/entry", json=entry_body)
 
 
+async def action_register_supplier_invoice(client: TripletexClient, args: dict) -> dict:
+    """Register a supplier invoice (incoming invoice). Creates supplier if needed, then posts the invoice."""
+    # Find or create supplier
+    supplier_id = args.get("supplierId")
+    if not supplier_id and args.get("supplierName"):
+        suppliers = await client.get("/supplier", params={"count": 100})
+        for s in suppliers.get("values", []):
+            if args["supplierName"].lower() in s.get("name", "").lower():
+                supplier_id = s["id"]
+                break
+        if not supplier_id:
+            sup_body = {"name": args["supplierName"]}
+            if args.get("supplierOrgNumber"):
+                sup_body["organizationNumber"] = args["supplierOrgNumber"]
+            sup_result = await client.post("/supplier", json=sup_body)
+            supplier_id = sup_result.get("value", {}).get("id")
+
+    # Look up account
+    account_id = args.get("accountId")
+    if not account_id and args.get("accountNumber"):
+        accounts = await client.get("/ledger/account", params={"count": 1000})
+        for acc in accounts.get("values", []):
+            if acc.get("number") == int(args["accountNumber"]):
+                account_id = acc["id"]
+                break
+
+    # Create the incoming invoice via voucher
+    amount = float(args.get("amountIncludingVat", args.get("amount", 0)))
+    invoice_date = args.get("invoiceDate", TODAY)
+
+    # Use POST /incomingInvoice (BETA)
+    body = {
+        "invoiceNumber": args.get("invoiceNumber", ""),
+        "invoiceDate": invoice_date,
+        "supplier": {"id": supplier_id},
+        "amount": amount,
+        "amountCurrency": amount,
+    }
+    if args.get("dueDate"):
+        body["dueDate"] = args["dueDate"]
+
+    try:
+        result = await client.post("/incomingInvoice", json=body)
+        return result
+    except Exception as e:
+        log.warning(f"incomingInvoice failed, trying voucher approach: {e}")
+
+    # Fallback: create a voucher manually
+    if not account_id:
+        return {"error": "Could not find account for supplier invoice"}
+
+    # Find 2400 (leverandørgjeld) account for credit side
+    credit_account_id = None
+    accounts = await client.get("/ledger/account", params={"count": 1000})
+    for acc in accounts.get("values", []):
+        if acc.get("number") == 2400:
+            credit_account_id = acc["id"]
+            break
+
+    postings = [
+        {"row": 1, "account": {"id": account_id}, "amountGross": amount, "amountGrossCurrency": amount},
+    ]
+    if credit_account_id:
+        postings.append({"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount})
+
+    voucher_body = {
+        "date": invoice_date,
+        "description": f"Supplier invoice from {args.get('supplierName', 'supplier')}",
+        "postings": postings,
+    }
+    return await client.post("/ledger/voucher", json=voucher_body)
+
+
 # Generic fallback for unknown actions
 async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
     """Make a generic API call. Only used as fallback."""
@@ -636,6 +709,7 @@ ACTIONS = {
     "create_accounting_dimension": action_create_accounting_dimension,
     "update_employee": action_update_employee,
     "register_timesheet": action_register_timesheet,
+    "register_supplier_invoice": action_register_supplier_invoice,
     "create_invoice": action_create_invoice,
     "create_order": action_create_order,
     "register_payment": action_register_payment,

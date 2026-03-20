@@ -181,6 +181,17 @@ class RegisterTimesheetArgs(BaseModel):
     comment: Optional[str] = None
 
 
+class RegisterSupplierInvoiceArgs(BaseModel):
+    supplierName: str
+    supplierOrgNumber: Optional[str] = None
+    supplierId: Optional[int] = None
+    invoiceNumber: Optional[str] = None
+    amountIncludingVat: float = Field(description="Total amount including VAT")
+    accountNumber: Optional[int] = Field(default=None, description="Expense account number (e.g. 6300 for office, 7300 for travel)")
+    invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    dueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+
+
 class GenericApiCallArgs(BaseModel):
     """Fallback for any API call not covered by typed tools."""
     method: str = Field(description="HTTP method: GET, POST, PUT, DELETE")
@@ -311,6 +322,12 @@ async def update_employee(ctx: RunContext[AgentDeps], args: UpdateEmployeeArgs) 
 async def register_timesheet(ctx: RunContext[AgentDeps], args: RegisterTimesheetArgs) -> str:
     """Register hours on a timesheet for an employee on a project activity. Activates required modules automatically."""
     return await _safe_action("register_timesheet", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
+
+
+@agent.tool
+async def register_supplier_invoice(ctx: RunContext[AgentDeps], args: RegisterSupplierInvoiceArgs) -> str:
+    """Register an incoming supplier invoice. Creates supplier if needed, posts the invoice as a voucher."""
+    return await _safe_action("register_supplier_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3000)
 
 
 @agent.tool
