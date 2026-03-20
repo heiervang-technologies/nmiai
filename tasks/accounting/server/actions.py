@@ -121,21 +121,41 @@ async def action_create_department(client: TripletexClient, args: dict) -> dict:
 
 async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict:
     """Register a bank account on the company. Required before invoice creation."""
-    # Find company
-    companies = await client.get("/company/%3EwithLoginAccess")
-    if not companies.get("values"):
-        return {"error": "No company found"}
-    company = companies["values"][0]
-    company_id = company["id"]
-
-    # Get full company data
-    company_data = await client.get(f"/company/{company_id}")
-    company_obj = company_data.get("value", company_data)
-
-    # Set bank account
     bank_num = args.get("bankAccountNumber", "12345678903")
-    company_obj["bankAccountNumber"] = bank_num
-    return await client.put(f"/company/{company_id}", json=company_obj)
+
+    # Try multiple approaches to find and update the company
+    # Approach 1: company ID 0 (default for single-company setups)
+    try:
+        result = await client.put("/company/0", json={"bankAccountNumber": bank_num})
+        return result
+    except Exception as e1:
+        log.warning(f"Bank account via /company/0 failed: {e1}")
+
+    # Approach 2: Find company via withLoginAccess
+    try:
+        companies = await client.get("/company/%3EwithLoginAccess")
+        if companies.get("values"):
+            company_id = companies["values"][0]["id"]
+            company_data = await client.get(f"/company/{company_id}")
+            company_obj = company_data.get("value", company_data)
+            company_obj["bankAccountNumber"] = bank_num
+            return await client.put(f"/company/{company_id}", json=company_obj)
+    except Exception as e2:
+        log.warning(f"Bank account via withLoginAccess failed: {e2}")
+
+    # Approach 3: Try to create a ledger account for bank
+    try:
+        # Just create the bank account in the chart of accounts
+        return await client.post("/ledger/account", json={
+            "number": 1920,
+            "name": "Bank",
+            "isBankAccount": True,
+            "bankAccountNumber": bank_num,
+        })
+    except Exception as e3:
+        log.warning(f"Bank account via ledger failed: {e3}")
+
+    return {"warning": "Could not set bank account, invoice creation may fail"}
 
 
 async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
@@ -491,15 +511,6 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 employee_id = emp["id"]
                 break
 
-    activity_id = args.get("activityId")
-    if not activity_id and args.get("activityName"):
-        # Search for activity
-        activities = await client.get("/activity", params={"count": 100})
-        for act in activities.get("values", []):
-            if args["activityName"].lower() in act.get("name", "").lower():
-                activity_id = act["id"]
-                break
-
     project_id = args.get("projectId")
     if not project_id and args.get("projectName"):
         projects = await client.get("/project", params={"count": 100})
@@ -508,14 +519,32 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 project_id = proj["id"]
                 break
 
-    # Register hours
+    # Find or create activity (use /activity, NOT /project/{id}/activity)
+    activity_id = args.get("activityId")
+    if not activity_id and args.get("activityName"):
+        activities = await client.get("/activity", params={"count": 100})
+        for act in activities.get("values", []):
+            if args["activityName"].lower() in act.get("name", "").lower():
+                activity_id = act["id"]
+                break
+        # If not found, create it
+        if not activity_id:
+            act_body = {"name": args["activityName"]}
+            if project_id:
+                act_body["project"] = {"id": project_id}
+            act_result = await client.post("/activity", json=act_body)
+            activity_id = act_result.get("value", {}).get("id")
+
+    # Register hours via /timesheet/entry
     entry_body = {
         "employee": {"id": employee_id},
-        "activity": {"id": activity_id},
-        "project": {"id": project_id},
         "date": args.get("date", TODAY),
         "hours": float(args.get("hours", 0)),
     }
+    if activity_id:
+        entry_body["activity"] = {"id": activity_id}
+    if project_id:
+        entry_body["project"] = {"id": project_id}
     if args.get("comment"):
         entry_body["comment"] = args["comment"]
 

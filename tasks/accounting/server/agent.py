@@ -326,7 +326,7 @@ CORE_PROMPT = """You are an expert Tripletex accounting agent. Complete the task
 
 KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
-- Start with discover_sandbox to see what exists.
+- ONLY call discover_sandbox if you need to find existing entities (invoices, customers, etc). Skip it for simple creation tasks.
 - For invoices: create_invoice handles bank account setup and customer creation automatically.
 - For admin/administrator roles: use userType="EXTENDED" in create_employee.
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
