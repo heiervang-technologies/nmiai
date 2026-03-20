@@ -140,7 +140,7 @@ def run_inference(model_path, images_dir, output_path, imgsz=640, conf_thresh=0.
                 {
                     "bbox": [round(v, 2) for v in box],
                     "category_id": int(cls_id),
-                    "confidence": round(float(conf), 4),
+                    "score": round(float(conf), 4),
                 }
             )
 
@@ -162,9 +162,9 @@ def run_inference(model_path, images_dir, output_path, imgsz=640, conf_thresh=0.
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True, help="Path to ONNX model")
-    parser.add_argument("--data", required=True, help="Path to images directory")
+    parser.add_argument("--input", required=True, help="Path to images directory")
     parser.add_argument("--output", required=True, help="Output JSON path")
     parser.add_argument("--imgsz", type=int, default=640, help="Input image size")
     parser.add_argument("--conf", type=float, default=0.001, help="Confidence threshold")
     args = parser.parse_args()
-    run_inference(args.model, args.data, args.output, args.imgsz, args.conf)
+    run_inference(args.model, args.input, args.output, args.imgsz, args.conf)

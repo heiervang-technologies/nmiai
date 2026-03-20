@@ -476,3 +476,83 @@ if __name__ == '__main__':
 6. **Fallback is safe** — if DINOv2 doesn't help, we still have a competitive YOLO submission
 
 **The key insight:** This competition's 70/30 split means classification is the tiebreaker. Every team will have decent YOLO detection. The winner will be whoever cracks classification on 356 fine-grained grocery categories with minimal training data. DINOv2 + reference images is our answer.
+
+---
+
+## 12. Qwen3.5 VLM Training Pipeline (Experimental)
+
+### Strategy: Train → Export GGUF → llama.cpp CUDA Inference
+
+Use Qwen3.5 as a training-time tool to generate better classification, then export to a compact GGUF format for potential inclusion in the submission.
+
+### Pipeline
+
+```
+1. Fine-tune Qwen3.5-4B (native VLM) with LoRA on product crops
+   - Framework: Unsloth (1.5x faster, 50% less VRAM)
+   - Input: 22.7k product crops → "What product is this?" → category name
+   - Hardware: Titan GPU 0 (RTX 3090, 24GB)
+   - VRAM: ~16GB for 4B with LoRA + gradient checkpointing
+
+2. Export fine-tuned model to GGUF via Unsloth
+   - model.save_pretrained_gguf("dir", tokenizer, quantization_method="q4_k_m")
+   - Q4_K_M: ~2.5GB for 4B model
+
+3. Inference via llama.cpp with CUDA
+   - llama-mtmd-cli (multimodal CLI) for vision inference
+   - Or llama-server with /v1/chat/completions API
+   - Fast batched inference with CUDA acceleration
+```
+
+### Use Cases for Qwen3.5 in Submission
+
+**Option A: Training-time teacher only (no Qwen in ZIP)**
+- Generate pseudo-labels for hard/ambiguous crops
+- Distill knowledge into the DINOv2 linear probe
+- Re-classify low-confidence YOLO predictions on training data
+- Size impact: 0 MB (not in submission)
+
+**Option B: Include quantized GGUF in submission (if it fits)**
+- Q4_K_M Qwen3.5-4B: ~2.5GB → won't fit 420MB ZIP
+- Q4_K_M Qwen3.5-0.8B: ~500MB → won't fit 420MB ZIP
+- **Verdict: Too large for submission ZIP. Use as training-time tool only.**
+
+**Option C: llama.cpp as inference engine (if sandbox allows)**
+- Bundle llama.cpp binary + GGUF weights in ZIP
+- Problem: sandbox blocks `os`, `subprocess` — can't launch llama-server
+- Problem: sandbox blocks ELF binaries
+- **Verdict: Blocked by sandbox security restrictions.**
+
+### Realistic Qwen3.5 Value-Add
+
+The most practical use is **Option A**: fine-tune Qwen3.5, use it to:
+1. Re-label training data with higher-quality classifications
+2. Generate soft labels for knowledge distillation into the linear probe
+3. Classify ambiguous crops to create a better training signal
+4. Identify mislabeled training data
+
+### Framework Comparison
+
+| Framework | Qwen3.5 Vision | LoRA | GGUF Export | VRAM Efficiency |
+|---|---|---|---|---|
+| **Unsloth** | Yes | Yes | Yes (built-in) | Best (50% less) |
+| **LLaMA-Factory** | Yes | Yes | Via convert | Good |
+| **Qwen-VL-Finetune** | Yes | Yes | Manual | Standard |
+| **NeMo Automodel** | Yes | Yes | No | Enterprise |
+
+**Recommendation:** Unsloth for fine-tuning + GGUF export.
+
+### Titan Setup
+
+```bash
+# Already installed on titan (192.168.8.158)
+ssh me@192.168.8.158
+cd ~/nmiai-vlm/qwen-finetune
+CUDA_VISIBLE_DEVICES=0 uv run python qwen35_finetune.py
+```
+
+### llama.cpp on Titan
+
+llama.cpp is already built with CUDA at `~/ht/forks/ht-llama.cpp/build/bin/`.
+The multimodal library (libmtmd.so) exists but `llama-mtmd-cli` needs to be built.
+A llama-server is running on port 8080 with model swap support.
