@@ -291,7 +291,7 @@ from ultralytics import YOLO
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', required=True)
+    parser.add_argument('--input', required=True)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
 
@@ -350,13 +350,12 @@ def main():
                 'bbox': [float(bbox[0] - bbox[2]/2), float(bbox[1] - bbox[3]/2),
                          float(bbox[2]), float(bbox[3])],
                 'category_id': final_cls,
-                'confidence': yolo_conf
+                'score': yolo_conf
             })
 
-        results.append({
-            'image_id': img_path.name,
-            'predictions': predictions
-        })
+        for pred in predictions:
+            pred['image_id'] = img_path.name
+            results.append(pred)
 
     with open(args.output, 'w') as f:
         json.dump(results, f)

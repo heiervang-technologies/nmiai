@@ -92,29 +92,23 @@ submission.zip
 
 ### run.py Contract
 ```bash
-python run.py --data /data/images/ --output /output.json
+python run.py --input /data/images/ --output /predictions.json
 ```
+- **Args:** `--input` (NOT `--data`!) and `--output`
 - **Input:** JPEG images at `/data/images/` (format: `img_XXXXX.jpg`)
-- **Output:** JSON array at specified path
+- **Output:** Flat JSON array at specified path
 
-### Output JSON Format
+### Output JSON Format — FLAT COCO-STYLE
 ```json
 [
-  {
-    "image_id": "img_00042.jpg",
-    "predictions": [
-      {
-        "bbox": [x, y, width, height],
-        "category_id": 0,
-        "confidence": 0.95
-      }
-    ]
-  }
+  {"image_id": "img_00042.jpg", "bbox": [x, y, w, h], "category_id": 42, "score": 0.95},
+  {"image_id": "img_00042.jpg", "bbox": [x2, y2, w2, h2], "category_id": 5, "score": 0.87}
 ]
 ```
+- Each detection is its own entry — **NOT nested under "predictions"**
 - `bbox`: COCO format [x_min, y_min, width, height]
 - `category_id`: integer 0–355
-- `confidence`: float 0.0–1.0
+- `score`: float 0.0–1.0 (**NOT "confidence"**)
 
 ---
 

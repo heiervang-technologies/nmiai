@@ -14,7 +14,7 @@
 python run.py --input /data/images/ --output /predictions.json
 ```
 - `run.py` MUST be at ZIP root (not in a subfolder)
-- Only `--data` and `--output` args. No other args.
+- Args are `--input` and `--output`. **NOT `--data`!**
 - Exit code MUST be 0. Any non-zero = "evaluation failed"
 - Max 420MB ZIP, 300s timeout, NVIDIA L4 GPU (24GB VRAM)
 
@@ -33,23 +33,17 @@ python run.py --input /data/images/ --output /predictions.json
 
 **Use instead:** `pathlib` (not `os`), `json` (not `yaml`), `open()` directly for file I/O, `cv2.imread(str(path))` for images
 
-### 4. Output JSON Format
+### 4. Output JSON Format — FLAT COCO-STYLE (NOT NESTED)
 ```json
 [
-  {
-    "image_id": "img_00042.jpg",
-    "predictions": [
-      {
-        "bbox": [x, y, width, height],
-        "category_id": 0,
-        "confidence": 0.95
-      }
-    ]
-  }
+  {"image_id": "img_00042.jpg", "bbox": [x, y, width, height], "category_id": 0, "score": 0.95},
+  {"image_id": "img_00042.jpg", "bbox": [x2, y2, w2, h2], "category_id": 5, "score": 0.87}
 ]
 ```
+- Each detection is its own entry. **NOT nested under "predictions"!**
 - `bbox`: COCO format [x_min, y_min, width, height] (NOT xyxy)
 - `category_id`: integer 0-355
+- `score`: float 0.0-1.0 (**NOT "confidence"!**)
 - `score: float 0.0-1.0
 - `image_id`: filename string including extension
 
@@ -120,7 +114,7 @@ Before every upload:
 1. [ ] `run.py` at ZIP root
 2. [ ] Model weights file referenced correctly (relative to `__file__`)
 3. [ ] No blocked imports (os, subprocess, socket, ctypes)
-4. [ ] Output format matches spec (image_id, predictions with bbox/category_id/confidence)
+4. [ ] Output format is FLAT with fields: image_id, bbox, category_id, score
 5. [ ] bbox is COCO format [x, y, w, h] not [x1, y1, x2, y2]
 6. [ ] Tested locally: `python run.py --input <test_images> --output /tmp/test.json`
 7. [ ] JSON output is valid: `python -c "import json; json.load(open('/tmp/test.json'))"`
