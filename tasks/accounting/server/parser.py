@@ -19,10 +19,10 @@ if os.environ.get("OPENROUTER_API_KEY"):
         api_key=os.environ["OPENROUTER_API_KEY"],
         base_url="https://openrouter.ai/api/v1",
     )
-    MODEL = "openai/gpt-5.4"
+    MODEL = os.environ.get("LLM_MODEL", "z-ai/glm-5")
 elif os.environ.get("OPENAI_API_KEY"):
     client = OpenAI()
-    MODEL = "gpt-5.4"
+    MODEL = os.environ.get("LLM_MODEL", "gpt-5.4")
 else:
     raise RuntimeError("No LLM API key found. Set OPENROUTER_API_KEY or OPENAI_API_KEY.")
 
