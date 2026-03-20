@@ -161,14 +161,16 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
         except Exception as e:
             log.warning(f"Bank account via company/{company_id} failed: {e}")
 
-    # Approach 3: Update the bank ledger account
+    # Approach 3: Find existing 1920 account and update it with bank number
     try:
-        accounts = await client.get("/ledger/account", params={"number": "1920", "count": 1})
-        if accounts.get("values"):
-            acc = accounts["values"][0]
-            acc["isBankAccount"] = True
-            acc["bankAccountNumber"] = bank_num
-            return await client.put(f"/ledger/account/{acc['id']}", json=acc)
+        accounts = await client.get("/ledger/account", params={"count": 1000})
+        for acc in accounts.get("values", []):
+            if acc.get("number") == 1920:
+                acc["isBankAccount"] = True
+                acc["bankAccountNumber"] = bank_num
+                result = await client.put(f"/ledger/account/{acc['id']}", json=acc)
+                log.info(f"Bank account set via ledger account 1920")
+                return result
     except Exception as e3:
         log.warning(f"Bank account via ledger account failed: {e3}")
 
@@ -700,18 +702,28 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
 
 # Generic fallback for unknown actions
 async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
-    """Make a generic API call. Only used as fallback."""
+    """Make a generic API call. Auto-adds required params for known endpoints."""
     method = args.get("method", "GET").upper()
     path = args.get("path", "")
-    params = args.get("params")
+    params = args.get("params") or {}
     body = args.get("body")
 
+    # Auto-add required date params for endpoints that need them
     if method == "GET":
-        return await client.get(path, params=params)
+        if "/invoice" in path and "invoiceDateFrom" not in params:
+            params["invoiceDateFrom"] = "2020-01-01"
+            params["invoiceDateTo"] = "2030-12-31"
+        if "/order" in path and "orderDateFrom" not in params:
+            params["orderDateFrom"] = "2020-01-01"
+            params["orderDateTo"] = "2030-12-31"
+        if "/ledger/voucher" in path and "dateFrom" not in params:
+            params["dateFrom"] = "2020-01-01"
+            params["dateTo"] = "2030-12-31"
+        return await client.get(path, params=params or None)
     elif method == "POST":
         return await client.post(path, json=body)
     elif method == "PUT":
-        return await client.put(path, json=body, params=params)
+        return await client.put(path, json=body, params=params or None)
     elif method == "DELETE":
         return await client.delete(path)
     return {"error": f"Unknown method: {method}"}

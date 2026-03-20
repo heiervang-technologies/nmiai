@@ -214,6 +214,10 @@ agent = Agent(
 
 async def _safe_action(action_name: str, client, args_dict: dict, max_len: int = 3000) -> str:
     """Run an action with error handling. Never raises — returns error as string."""
+    # Circuit breaker: if too many errors already, warn the agent
+    if client.error_count >= 10:
+        return json.dumps({"error": f"Circuit breaker: {client.error_count} API errors so far. Check if auth is valid or adjust approach.", "hint": "Stop retrying failed patterns"})
+
     try:
         result = await ACTIONS[action_name](client, args_dict)
         return json.dumps(result, ensure_ascii=False, default=str)[:max_len]
@@ -348,6 +352,8 @@ KEY FACTS:
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
 - Dates must be YYYY-MM-DD format.
 - If a typed tool doesn't exist for what you need, use generic_api_call as fallback.
+- IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
+- If you see "403 Forbidden" or auth errors on multiple calls, STOP — the session may be invalid.
 
 Complete the task efficiently, then stop."""
 
