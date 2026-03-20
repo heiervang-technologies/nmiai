@@ -48,9 +48,9 @@ Competition entry for NM i AI 2026 (Norwegian Championship of AI).
 
 We communicate between agents via tmux panes. Each agent runs in its own pane.
 
-### Master orchestrator: pane %7
+### Master orchestrator: pane %2
 
-All agents report to the master orchestrator in pane %7.
+All agents report to the master orchestrator in pane %2.
 
 ### How to send messages to other agents
 
@@ -87,11 +87,11 @@ tmux send-keys -t %TARGET Enter
 
 Use the multi-agent XML protocol:
 ```bash
-tmux-tool send %7 '<agent id="YOUR_ID" role="YOUR_ROLE" pane="%YOUR_PANE">Your message</agent>'
+tmux-tool send %2 '<agent id="YOUR_ID" role="YOUR_ROLE" pane="%YOUR_PANE">Your message</agent>'
 sleep 0.5
-tmux send-keys -t %7 Enter
+tmux send-keys -t %2 Enter
 sleep 0.3
-tmux send-keys -t %7 Enter
+tmux send-keys -t %2 Enter
 ```
 
 ### Finding your pane ID
