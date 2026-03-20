@@ -128,6 +128,8 @@ Default sandbox contents:
 - 1 department ("Avdeling")
 - Full Norwegian chart of accounts
 - Active modules: WAGE, ELECTRONIC_VOUCHERS, TIME_TRACKING, API_V2
+- NO bank account registered on the company (must set one before creating invoices!)
+- Some tasks come with pre-populated customers, invoices, etc.
 
 ## TOOL USAGE EXAMPLES
 
@@ -161,16 +163,25 @@ POST /customer — body: {name} is required. Optional: email, phoneNumber, organ
 POST /product — body: {name, priceExcludingVatCurrency, vatType:{id:3}}
 ALWAYS set vatType. id=3 = 25% standard MVA.
 
+### BEFORE CREATING ANY INVOICE — Register bank account on company
+The sandbox has NO bank account. You MUST register one before creating invoices:
+1. GET /company/>withLoginAccess to find the company ID
+2. PUT /company/{id} with body including bankAccountNumber (use any valid Norwegian bank account, e.g. "12345678903")
+If you skip this, invoice creation will fail with "Faktura kan ikke opprettes før selskapet har registrert et bankkontonummer."
+
 ### Invoice (DIRECT — preferred, fewest API calls)
-POST /invoice — body: {invoiceDate, invoiceDueDate, customer:{id}, orderLines:[{description, count, unitPriceExcludingVatCurrency, vatType:{id:3}}]}
-Creates order + invoice in one call. ALWAYS set vatType on each order line.
+POST /invoice — body: {invoiceDate, invoiceDueDate, orders:[{customer:{id}, orderDate, deliveryDate, orderLines:[{description, count, unitPriceExcludingVatCurrency, vatType:{id:3}}]}]}
+NOTE: The invoice body needs "orders" array (not "orderLines" at top level). Each order needs customer, orderDate, deliveryDate.
+ALWAYS set vatType on each order line.
 
 ### Searching/Listing Invoices
 GET /invoice — REQUIRED params: invoiceDateFrom, invoiceDateTo (use wide range like 2020-01-01 to 2030-12-31)
 
 ### Payment on Invoice
 PUT /invoice/{id}/:payment — params: {paymentDate, paymentTypeId, paidAmount}
+IMPORTANT: The invoice {id} must be the correct internal ID. Use GET /invoice with date params to find invoices, then use the "id" field from the response "values" array.
 To find payment types: GET /invoice/paymentType
+For reversing a payment, use a negative paidAmount.
 
 ### Credit Note
 PUT /invoice/{id}/:createCreditNote — params: {date} (today's date YYYY-MM-DD). Optional: comment
@@ -192,8 +203,13 @@ POST /department — body: {name, departmentNumber}
 3. PUT /travelExpense/:deliver — params: {id}
 
 ### Voucher (Journal Entry)
-POST /ledger/voucher — body: {date, description, postings:[{account:{id}, amountGross:N, vatType:{id}}]}
-Use amountGross, NOT amount.
+POST /ledger/voucher — body: {date, description, postings:[{row:1, account:{id:ACCOUNT_ID}, amountGross:N, vatType:{id:VAT_ID}}, {row:2, ...}]}
+IMPORTANT:
+- Use amountGross, NOT amount
+- row numbers must start at 1 (row 0 is system-reserved)
+- account must be referenced by {id:NUMBER} — GET /ledger/account first to find IDs
+- Postings must balance (debits = credits)
+- For salary: use account 5000-series for costs, 1920 for bank
 
 ### Module Activation
 POST /company/salesmodules — body: {name:"PROJECT"} or {name:"SMART_PROJECT"}
