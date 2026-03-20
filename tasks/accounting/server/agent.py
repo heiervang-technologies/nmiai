@@ -140,6 +140,47 @@ class ActivateModuleArgs(BaseModel):
     name: str = Field(description="Module name: PROJECT, SMART_PROJECT, TIME_TRACKING, LOGISTICS, OCR, etc.")
 
 
+class DimensionVoucherPosting(BaseModel):
+    accountNumber: int = Field(description="Account number (e.g. 7300, 1920)")
+    amountGross: float = Field(description="Positive=debit, negative=credit")
+    vatTypeId: Optional[int] = None
+    dimensionValueName: Optional[str] = Field(default=None, description="Name of dimension value to link")
+
+
+class CreateAccountingDimensionArgs(BaseModel):
+    """Create a custom accounting dimension with values, optionally post a linked voucher."""
+    dimensionName: str = Field(description="Name of the dimension (e.g. 'Marked', 'Produktlinje')")
+    description: Optional[str] = None
+    values: list[str] = Field(description="Dimension value names (e.g. ['Offentlig', 'Privat'])")
+    voucherDate: Optional[str] = Field(default=None, description="YYYY-MM-DD for voucher, if posting requested")
+    voucherDescription: Optional[str] = None
+    voucherPostings: Optional[list[DimensionVoucherPosting]] = Field(default=None, description="If provided, creates a voucher linked to the dimension")
+
+
+class UpdateEmployeeArgs(BaseModel):
+    employeeId: Optional[int] = None
+    firstName: Optional[str] = Field(default=None, description="Search by first name if no ID")
+    lastName: Optional[str] = Field(default=None, description="Search by last name if no ID")
+    email: Optional[str] = None
+    phoneNumberMobile: Optional[str] = None
+    dateOfBirth: Optional[str] = None
+    userType: Optional[str] = None
+    address: Optional[dict] = None
+
+
+class RegisterTimesheetArgs(BaseModel):
+    employeeName: Optional[str] = None
+    employeeEmail: Optional[str] = None
+    employeeId: Optional[int] = None
+    projectName: Optional[str] = None
+    projectId: Optional[int] = None
+    activityName: Optional[str] = None
+    activityId: Optional[int] = None
+    hours: float
+    date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    comment: Optional[str] = None
+
+
 class GenericApiCallArgs(BaseModel):
     """Fallback for any API call not covered by typed tools."""
     method: str = Field(description="HTTP method: GET, POST, PUT, DELETE")
@@ -249,6 +290,27 @@ async def activate_module(ctx: RunContext[AgentDeps], args: ActivateModuleArgs) 
     """Activate a Tripletex module (PROJECT, SMART_PROJECT, TIME_TRACKING, etc.)."""
     result = await ACTIONS["activate_module"](ctx.deps.client, args.model_dump())
     return json.dumps(result, ensure_ascii=False, default=str)[:1000]
+
+
+@agent.tool
+async def create_accounting_dimension(ctx: RunContext[AgentDeps], args: CreateAccountingDimensionArgs) -> str:
+    """Create a custom accounting dimension with values. Can optionally post a voucher linked to the dimension."""
+    result = await ACTIONS["create_accounting_dimension"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+
+
+@agent.tool
+async def update_employee(ctx: RunContext[AgentDeps], args: UpdateEmployeeArgs) -> str:
+    """Update an existing employee's details. Finds by name or ID."""
+    result = await ACTIONS["update_employee"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def register_timesheet(ctx: RunContext[AgentDeps], args: RegisterTimesheetArgs) -> str:
+    """Register hours on a timesheet for an employee on a project activity. Activates required modules automatically."""
+    result = await ACTIONS["register_timesheet"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
 
 
 @agent.tool

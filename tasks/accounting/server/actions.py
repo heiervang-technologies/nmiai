@@ -367,6 +367,161 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
     return await client.post("/project", json=body)
 
 
+async def action_create_accounting_dimension(client: TripletexClient, args: dict) -> dict:
+    """Create a custom accounting dimension with values, optionally post a voucher linked to it."""
+    # Step 1: Create the dimension name
+    dim_body = {
+        "dimensionName": args["dimensionName"],
+        "active": True,
+    }
+    if args.get("description"):
+        dim_body["description"] = args["description"]
+
+    dim_result = await client.post("/ledger/accountingDimensionName", json=dim_body)
+    dim = dim_result.get("value", dim_result)
+    dim_index = dim.get("dimensionIndex")
+
+    # Step 2: Create dimension values
+    created_values = []
+    for val in args.get("values", []):
+        val_body = {
+            "displayName": val if isinstance(val, str) else val.get("name", val.get("displayName", "")),
+            "dimensionIndex": dim_index,
+            "active": True,
+        }
+        val_result = await client.post("/ledger/accountingDimensionValue", json=val_body)
+        created_values.append(val_result.get("value", val_result))
+
+    result = {
+        "dimension": dim,
+        "values": created_values,
+    }
+
+    # Step 3: If voucher posting requested, create it with the dimension
+    if args.get("voucherPostings"):
+        account_cache = {}
+        accounts_resp = await client.get("/ledger/account", params={"count": 1000})
+        for acc in accounts_resp.get("values", []):
+            account_cache[acc["number"]] = acc["id"]
+
+        postings = []
+        for i, p in enumerate(args["voucherPostings"], start=1):
+            account_number = p.get("accountNumber")
+            account_id = account_cache.get(int(account_number)) if account_number else p.get("accountId")
+
+            posting = {
+                "row": i,
+                "account": {"id": account_id},
+                "amountGross": float(p.get("amountGross", p.get("amount", 0))),
+            }
+            if p.get("vatTypeId"):
+                posting["vatType"] = {"id": int(p["vatTypeId"])}
+            # Link to dimension value
+            if p.get("dimensionValueId"):
+                posting[f"customDimension{dim_index}"] = {"id": p["dimensionValueId"]}
+            elif created_values and p.get("dimensionValueName"):
+                for cv in created_values:
+                    if cv.get("displayName") == p["dimensionValueName"]:
+                        posting[f"customDimension{dim_index}"] = {"id": cv["id"]}
+                        break
+            postings.append(posting)
+
+        voucher_body = {
+            "date": args.get("voucherDate", TODAY),
+            "description": args.get("voucherDescription", f"Voucher with dimension {args['dimensionName']}"),
+            "postings": postings,
+        }
+        voucher_result = await client.post("/ledger/voucher", json=voucher_body)
+        result["voucher"] = voucher_result.get("value", voucher_result)
+
+    return result
+
+
+async def action_update_employee(client: TripletexClient, args: dict) -> dict:
+    """Update an existing employee. Finds by name or ID, then updates fields."""
+    employee_id = args.get("employeeId")
+
+    if not employee_id:
+        # Search by name
+        params = {"count": 100}
+        if args.get("firstName"):
+            params["firstName"] = args["firstName"]
+        if args.get("lastName"):
+            params["lastName"] = args["lastName"]
+        emps = await client.get("/employee", params=params)
+        for emp in emps.get("values", []):
+            employee_id = emp["id"]
+            break
+
+    if not employee_id:
+        return {"error": "Employee not found"}
+
+    # Get full employee object
+    emp_data = await client.get(f"/employee/{employee_id}")
+    emp = emp_data.get("value", emp_data)
+
+    # Apply updates
+    for field in ["email", "phoneNumberMobile", "dateOfBirth", "userType"]:
+        if args.get(field) is not None:
+            emp[field] = args[field]
+    if args.get("address"):
+        emp["address"] = args["address"]
+
+    return await client.put(f"/employee/{employee_id}", json=emp)
+
+
+async def action_register_timesheet(client: TripletexClient, args: dict) -> dict:
+    """Register hours on a timesheet for an employee on a project activity."""
+    # Activate project + timesheet modules
+    for module in ["PROJECT", "TIME_TRACKING"]:
+        try:
+            await client.post("/company/salesmodules", json={"name": module})
+        except Exception:
+            pass
+
+    # Find or use provided IDs
+    employee_id = args.get("employeeId")
+    if not employee_id:
+        emps = await client.get("/employee", params={"count": 10})
+        for emp in emps.get("values", []):
+            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
+                employee_id = emp["id"]
+                break
+            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
+                employee_id = emp["id"]
+                break
+
+    activity_id = args.get("activityId")
+    if not activity_id and args.get("activityName"):
+        # Search for activity
+        activities = await client.get("/activity", params={"count": 100})
+        for act in activities.get("values", []):
+            if args["activityName"].lower() in act.get("name", "").lower():
+                activity_id = act["id"]
+                break
+
+    project_id = args.get("projectId")
+    if not project_id and args.get("projectName"):
+        projects = await client.get("/project", params={"count": 100})
+        for proj in projects.get("values", []):
+            if args["projectName"].lower() in proj.get("name", "").lower():
+                project_id = proj["id"]
+                break
+
+    # Register hours
+    entry_body = {
+        "employee": {"id": employee_id},
+        "activity": {"id": activity_id},
+        "project": {"id": project_id},
+        "date": args.get("date", TODAY),
+        "hours": float(args.get("hours", 0)),
+    }
+    if args.get("comment"):
+        entry_body["comment"] = args["comment"]
+
+    return await client.post("/timesheet/entry", json=entry_body)
+
+
 # Generic fallback for unknown actions
 async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
     """Make a generic API call. Only used as fallback."""
@@ -394,6 +549,9 @@ ACTIONS = {
     "create_supplier": action_create_supplier,
     "create_product": action_create_product,
     "create_department": action_create_department,
+    "create_accounting_dimension": action_create_accounting_dimension,
+    "update_employee": action_update_employee,
+    "register_timesheet": action_register_timesheet,
     "create_invoice": action_create_invoice,
     "create_order": action_create_order,
     "register_payment": action_register_payment,
