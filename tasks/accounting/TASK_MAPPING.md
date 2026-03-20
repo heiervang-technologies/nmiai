@@ -143,34 +143,34 @@ PUT /company/modules
 
 ### TIER 2 Tasks (x2 multiplier) - Unlocks early Friday
 
-#### 7. Create Invoice (via Order)
+#### 7. Create Invoice
 **Prompt pattern:** "Opprett en faktura til [kunde] for [produkt] x [antall]..."
-**API flow (multi-step):**
+**API flow - DIRECT method (preferred, fewer calls):**
 ```
 1. POST /customer          (if not exists)
-2. POST /product           (if not exists)
-3. POST /order             (create order with lines)
+2. POST /invoice           (with inline orderLines!)
    {
+     "invoiceDate": "2026-03-20",
+     "invoiceDueDate": "2026-04-20",
      "customer": {"id": customer_id},
-     "orderDate": "2026-03-20",
-     "deliveryDate": "2026-03-20",
      "orderLines": [
        {
-         "product": {"id": product_id},
+         "description": "Consulting",
          "count": 5,
-         "unitPriceExcludingVatCurrency": 1200.00
+         "unitPriceExcludingVatCurrency": 1200.00,
+         "vatType": {"id": 3}
        }
      ]
    }
-4. PUT /order/{id}/:invoice  (convert order to invoice)
-   {
-     "invoiceDate": "2026-03-20",
-     "invoiceDueDate": "2026-04-20"
-   }
+```
+**Alternative: Order-first method:**
+```
+POST /order → PUT /order/{id}/:invoice?invoiceDate=2026-03-20
 ```
 **Checked fields:** invoice exists, correct customer, correct line items, amounts
-**Min API calls:** 2-4 (depending on prerequisites)
-**KEY GOTCHA:** Tripletex invoicing goes through orders! You don't POST to /invoice directly.
+**Min API calls:** 1-2 (direct method, assuming customer exists)
+**KEY INSIGHT:** POST /invoice accepts inline orderLines - no pre-existing order needed!
+**KEY GOTCHA:** vatType MUST be set explicitly on each order line.
 
 #### 8. Register Payment on Invoice
 **Prompt pattern:** "Registrer betaling på faktura [X], beløp [Y]..."

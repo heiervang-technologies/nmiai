@@ -260,3 +260,35 @@ The agent can self-correct common errors:
 4. **Missing prerequisite** → Create the dependent entity (customer for invoice)
 
 This is the KEY advantage of the agentic approach - structured handlers just crash.
+
+---
+
+## Critical API Knowledge for Agent System Prompt
+
+These findings MUST be in the system prompt to avoid wasted API calls:
+
+1. **Invoice can include inline orderLines** - don't create order first
+2. **vatType must be explicit** on products, order lines, voucher postings
+3. **Voucher postings use amountGross** not amount
+4. **Travel expense is multi-step**: create → add costs → deliver → approve
+5. **Module activation**: POST /company/salesmodules with {name: "PROJECT"}
+6. **Employee employment** is separate: POST /employee/employment
+7. **Credit note**: PUT /invoice/{id}/:createCreditNote?date=X
+8. **Payment registration**: PUT /invoice/{id}/:payment?paymentDate=X&paymentTypeId=N&paidAmount=X
+9. **Delivery address** updates go through /deliveryAddress/{id}, not parent PUT
+10. **Update payloads need IDs** on nested objects too
+
+### First-call Discovery Pattern
+On every new sandbox, the agent should cache these lookups:
+```
+GET /ledger/vatType           → cache VAT type IDs
+GET /invoice/paymentType      → cache payment type IDs
+GET /ledger/account?count=1000 → cache chart of accounts
+GET /employee?count=100       → know what's pre-populated
+GET /customer?count=100       → know what's pre-populated
+```
+This costs 5 API calls but saves many more from trial-and-error.
+
+Alternatively, if tasks are simple enough, skip discovery and use
+known defaults (vatType.id=3 for 25% MVA). Risk: sandbox may have
+different IDs.
