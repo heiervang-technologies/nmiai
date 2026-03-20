@@ -38,13 +38,15 @@ VAL_DIR = DATA_ROOT / "stratified_split" / "val"
 OUTPUT_DIR = Path(__file__).parent / "training_output_multitask"
 
 NUM_CLASSES = 356
-CLS_BATCH_SIZE = 4
+CLS_BATCH_SIZE = 8
 DET_BATCH_SIZE = 1  # shelf images are large
-LR = 5e-5
-EPOCHS = 8
+LR = 3e-5  # Lower LR since we resume from 91% checkpoint
+EPOCHS = 1
 WARMUP_STEPS = 200
+RESUME_CHECKPOINT = Path(__file__).parent / "training_output" / "best" / "best.pt"
+CLS_ONLY = True  # Focus on classification - det handled by YOLO
 LOG_EVERY = 10
-SAVE_EVERY = 500
+SAVE_EVERY = 250
 DET_GRID = 14  # 14x14 grid for detection head
 DET_LOSS_WEIGHT = 1.0
 CLS_LOSS_WEIGHT = 1.0
@@ -138,6 +140,11 @@ class ShelfDetectionDataset(Dataset):
         img_info = self.id_to_file[img_id]
         img_path = self.images_dir / img_info["file_name"]
         img = Image.open(img_path).convert("RGB")
+        # Resize large shelf images to cap at 1024px to save VRAM
+        max_dim = max(img.size)
+        if max_dim > 1024:
+            scale = 1024 / max_dim
+            img = img.resize((int(img.width * scale), int(img.height * scale)), Image.LANCZOS)
         w, h = img.size
 
         # Convert COCO bbox [x,y,w,h] to normalized [cx, cy, w, h]
@@ -376,7 +383,7 @@ def train():
         trust_remote_code=True,
     )
     model = model.to(device)
-    model.gradient_checkpointing_enable()
+    # gradient_checkpointing slows training 4x - disabled since we cap images at 1024px
     hidden_size = model.config.text_config.hidden_size
     print(f"Hidden size: {hidden_size}")
 
@@ -386,17 +393,56 @@ def train():
     cls_head = ClassificationHead(hidden_size, NUM_CLASSES).to(device).to(torch.bfloat16)
     det_head = DetectionHead(hidden_size, DET_GRID).to(device).to(torch.bfloat16)
 
+    # Resume from best checkpoint (91% accuracy)
+    if RESUME_CHECKPOINT.exists():
+        print(f"Loading checkpoint from {RESUME_CHECKPOINT}...")
+        ckpt = torch.load(str(RESUME_CHECKPOINT), map_location=device, weights_only=False)
+        model.load_state_dict(ckpt["model_state"])
+        cls_head.load_state_dict(ckpt["cls_head_state"])
+        print(f"Resumed from epoch {ckpt.get('epoch', '?')}, step {ckpt.get('global_step', '?')}, acc={ckpt.get('accuracy', '?'):.3f}")
+        del ckpt
+        torch.cuda.empty_cache()
+    else:
+        print("WARNING: No checkpoint found, training from scratch!")
+
     backbone_params = sum(p.numel() for p in model.parameters())
     cls_params = sum(p.numel() for p in cls_head.parameters())
     det_params = sum(p.numel() for p in det_head.parameters())
     print(f"Backbone: {backbone_params/1e6:.1f}M | Cls head: {cls_params/1e6:.1f}M | Det head: {det_params/1e6:.1f}M")
     print(f"GPU memory: {torch.cuda.memory_allocated()/1024**3:.1f} GB")
 
-    # Datasets
+    # Datasets - use expanded 201K dataset if available
     print("Preparing datasets...")
+    expanded_file = DATA_ROOT / "extra_crops" / "combined_samples.json"
     cache_file = Path(__file__).parent / "cached_dataset" / "samples.json"
-    with open(cache_file) as f:
+    samples_file = expanded_file if expanded_file.exists() else cache_file
+    print(f"Using samples from: {samples_file}")
+    with open(samples_file) as f:
         crop_samples = json.load(f)
+    # Stratified subsample if dataset is very large (>50K) to fit overnight training
+    MAX_SAMPLES = 50000
+    if len(crop_samples) > MAX_SAMPLES:
+        print(f"Subsampling {MAX_SAMPLES} from {len(crop_samples)} (stratified)...")
+        from collections import Counter
+        by_cat = defaultdict(list)
+        for s in crop_samples:
+            by_cat[s["category_id"]].append(s)
+        # Proportional sampling per category
+        total = len(crop_samples)
+        subsampled = []
+        for cat_id, samples_in_cat in by_cat.items():
+            n = max(1, int(len(samples_in_cat) / total * MAX_SAMPLES))
+            n = min(n, len(samples_in_cat))
+            subsampled.extend(random.sample(samples_in_cat, n))
+        # Fill remaining quota randomly
+        remaining = MAX_SAMPLES - len(subsampled)
+        if remaining > 0:
+            used = set(id(s) for s in subsampled)
+            pool = [s for s in crop_samples if id(s) not in used]
+            subsampled.extend(random.sample(pool, min(remaining, len(pool))))
+        crop_samples = subsampled
+        print(f"Using {len(crop_samples)} subsampled crops")
+
     cls_dataset = CropClassificationDataset(crop_samples)
 
     det_dataset = ShelfDetectionDataset(COCO_ANNOTATIONS, COCO_IMAGES)
@@ -426,16 +472,20 @@ def train():
         drop_last=True,
     )
 
-    # Steps calculation based on the larger dataset
+    # Steps calculation
     cls_steps_per_epoch = len(cls_loader)
-    det_steps_per_epoch = len(det_loader)
+    det_steps_per_epoch = 0 if CLS_ONLY else len(det_loader)
     steps_per_epoch = cls_steps_per_epoch + det_steps_per_epoch
     total_steps = steps_per_epoch * EPOCHS
+    print(f"CLS_ONLY={CLS_ONLY}")
     print(f"Steps/epoch: {cls_steps_per_epoch} cls + {det_steps_per_epoch} det = {steps_per_epoch}")
     print(f"Total steps: {total_steps}")
 
     # Optimizer
-    all_params = list(model.parameters()) + list(cls_head.parameters()) + list(det_head.parameters())
+    if CLS_ONLY:
+        all_params = list(model.parameters()) + list(cls_head.parameters())
+    else:
+        all_params = list(model.parameters()) + list(cls_head.parameters()) + list(det_head.parameters())
     optimizer = torch.optim.AdamW(all_params, lr=LR, weight_decay=0.01)
 
     def lr_lambda(step):
@@ -465,10 +515,10 @@ def train():
         det_steps = 0
 
         cls_iter = iter(cls_loader)
-        det_iter = iter(det_loader)
+        det_iter = None if CLS_ONLY else iter(det_loader)
 
         # Interleave: for each det batch, do ~N cls batches (ratio ~ cls_steps/det_steps)
-        cls_per_det = max(1, cls_steps_per_epoch // max(1, det_steps_per_epoch))
+        cls_per_det = cls_steps_per_epoch if CLS_ONLY else max(1, cls_steps_per_epoch // max(1, det_steps_per_epoch))
 
         step_in_epoch = 0
         while True:
@@ -523,7 +573,9 @@ def train():
             if cls_iter is None:
                 break
 
-            # === Detection batch ===
+            # === Detection batch (skip if CLS_ONLY) ===
+            if CLS_ONLY or det_iter is None:
+                continue
             try:
                 det_batch = next(det_iter)
             except StopIteration:

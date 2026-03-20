@@ -555,7 +555,7 @@ def main():
             x1, y1, x2, y2 = box
             results.append(
                 {
-                    "image_id": image_path.name,
+                    "image_id": int(image_path.stem.replace("img_", "")),
                     "bbox": [float(x1), float(y1), float(x2 - x1), float(y2 - y1)],
                     "category_id": int(category_ids[idx]),
                     "score": float(final_scores[idx]),

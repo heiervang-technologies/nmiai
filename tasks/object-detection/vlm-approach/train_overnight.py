@@ -43,6 +43,13 @@ from PIL import Image
 
 print = functools.partial(print, flush=True)
 
+
+def get_base_model(model):
+    """Unwrap DDP to get the underlying model's .model attribute."""
+    m = model.module if hasattr(model, 'module') else model
+    return m.model
+
+
 # === PATHS ===
 PRUNED_DIR = Path(__file__).parent / "pruned"
 COMP_DATA = Path(__file__).parent / "cached_dataset"
@@ -303,7 +310,7 @@ def validate(model, cls_head, processor, val_dir, device, max_crops=500):
             crop = img.crop((x1, y1, x2, y2))
             inputs = process_batch([crop], processor, "classify", device)
             with torch.amp.autocast("cuda", dtype=torch.bfloat16):
-                out = model.model(**inputs, output_hidden_states=True)
+                out = get_base_model(model)(**inputs, output_hidden_states=True)
                 pred = cls_head(out.last_hidden_state).argmax(-1).item()
             if pred == cid: correct += 1
             total += 1
@@ -436,7 +443,7 @@ def run_stage(stage_num, model, processor, cls_head, det_head, device, rank, wor
             inputs = process_batch(images, processor, "classify", device)
 
             with torch.amp.autocast("cuda", dtype=torch.bfloat16):
-                outputs = model.model(**inputs, output_hidden_states=True)
+                outputs = get_base_model(model)(**inputs, output_hidden_states=True)
                 hidden = outputs.last_hidden_state
                 logits = cls_head_stage(hidden)
                 cls_loss = F.cross_entropy(logits, labels, weight=class_weights[:nc],
@@ -453,7 +460,7 @@ def run_stage(stage_num, model, processor, cls_head, det_head, device, rank, wor
 
                 det_inputs = process_batch(det_batch["images"], processor, "detect", device)
                 with torch.amp.autocast("cuda", dtype=torch.bfloat16):
-                    det_out = model.model(**det_inputs, output_hidden_states=True)
+                    det_out = get_base_model(model)(**det_inputs, output_hidden_states=True)
                     det_pred = det_head(det_out.last_hidden_state)
                     conf_t, bbox_t = build_det_targets(det_batch["boxes"], det_batch["classes"], 14, device)
                     det_loss = compute_det_loss(det_pred, conf_t, bbox_t)

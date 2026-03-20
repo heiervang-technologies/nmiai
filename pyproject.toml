@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "huggingface-hub>=1.7.1",
     "numpy>=2.4.3",
     "requests>=2.32.5",
     "scikit-learn>=1.8.0",

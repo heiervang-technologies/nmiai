@@ -20,7 +20,6 @@ SCRIPT_DIR = Path(__file__).parent
 MODEL_FILE = "best.onnx"
 DINO_WEIGHTS = "dinov2_vits14.pth"
 LINEAR_PROBE = "linear_probe.pth"
-REF_EMBEDDINGS = "ref_embeddings.pth"
 
 NUM_CLASSES = 356
 CONF_THRESH = 0.001
@@ -149,7 +148,7 @@ def load_linear_probe(device):
     probe_path = SCRIPT_DIR / LINEAR_PROBE
     if not probe_path.exists():
         return None
-    state = torch.load(probe_path, map_location=device, weights_only=False)
+    state = torch.load(probe_path, map_location=device, weights_only=True)
     if not isinstance(state, dict) or "weight" not in state:
         return None
     num_classes, embed_dim = state["weight"].shape
@@ -238,9 +237,35 @@ def main():
         if image_bgr is None:
             continue
 
+        # Original inference
         tensor, ratio, pad = preprocess_image(image_bgr, input_shape)
         outputs = session.run(None, {input_name: tensor})
         boxes, scores, labels = decode_yolo_output(outputs, ratio, pad, image_bgr.shape[:2])
+
+        # Horizontal flip TTA
+        flipped = cv2.flip(image_bgr, 1)
+        tensor_f, ratio_f, pad_f = preprocess_image(flipped, input_shape)
+        outputs_f = session.run(None, {input_name: tensor_f})
+        boxes_f, scores_f, labels_f = decode_yolo_output(outputs_f, ratio_f, pad_f, flipped.shape[:2])
+        if len(boxes_f) > 0:
+            # Mirror boxes back
+            img_w = image_bgr.shape[1]
+            flipped_back = boxes_f.copy()
+            flipped_back[:, 0] = img_w - boxes_f[:, 2]
+            flipped_back[:, 2] = img_w - boxes_f[:, 0]
+            boxes_f = flipped_back
+            # Merge with original detections
+            if len(boxes) > 0:
+                all_boxes = np.concatenate([boxes, boxes_f])
+                all_scores = np.concatenate([scores, scores_f])
+                all_labels = np.concatenate([labels, labels_f])
+            else:
+                all_boxes, all_scores, all_labels = boxes_f, scores_f, labels_f
+            # Re-run NMS on merged set
+            boxes, scores, labels = nms_by_class(all_boxes, all_scores, all_labels, NMS_IOU_THRESH)
+            if len(scores) > MAX_DET:
+                top = np.argsort(scores)[::-1][:MAX_DET]
+                boxes, scores, labels = boxes[top], scores[top], labels[top]
         if len(boxes) == 0:
             continue
 
