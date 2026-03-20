@@ -54,19 +54,21 @@ async def solve(req: SolveRequest, request: Request):
 
     log.info(f"Received task: {req.prompt[:120]}...")
 
-    # Build Tripletex client
     client = TripletexClient(
         base_url=req.tripletex_credentials.base_url,
         session_token=req.tripletex_credentials.session_token,
     )
 
-    # Parse the prompt into a structured task
-    task = await parse_task(req.prompt, req.files)
-    log.info(f"Parsed task: {task}")
+    try:
+        task = await parse_task(req.prompt, req.files)
+        log.info(f"Parsed task type={task.get('task_type')} fields={list(task.get('fields', {}).keys())}")
 
-    # Execute the task against Tripletex API
-    result = await execute_task(client, task)
-    log.info(f"Execution result: {result}")
+        result = await execute_task(client, task)
+        log.info(f"Execution result: {result}")
+    except Exception as e:
+        log.error(f"Task execution failed: {e}", exc_info=True)
+    finally:
+        await client.close()
 
     return SolveResponse(status="completed")
 

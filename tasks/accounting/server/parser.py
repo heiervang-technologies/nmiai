@@ -1,17 +1,32 @@
 """
 LLM-based task parser. Takes a natural-language prompt (in any of 7 languages)
 and extracts a structured task description with intent and fields.
+
+Uses OpenAI-compatible API (works with OpenAI, OpenRouter, etc.)
 """
 
 import json
 import logging
 import os
 
-import anthropic
+from openai import OpenAI
 
 log = logging.getLogger(__name__)
 
-client = anthropic.Anthropic()
+# Use OpenRouter if available, else OpenAI directly
+if os.environ.get("OPENROUTER_API_KEY"):
+    client = OpenAI(
+        api_key=os.environ["OPENROUTER_API_KEY"],
+        base_url="https://openrouter.ai/api/v1",
+    )
+    MODEL = "anthropic/claude-sonnet-4"
+elif os.environ.get("OPENAI_API_KEY"):
+    client = OpenAI()
+    MODEL = "gpt-4o"
+else:
+    raise RuntimeError("No LLM API key found. Set OPENROUTER_API_KEY or OPENAI_API_KEY.")
+
+log.info(f"Parser using model: {MODEL}")
 
 SYSTEM_PROMPT = """You are an expert accounting task parser for the Tripletex accounting system.
 You receive a natural-language task description (possibly in Norwegian, English, Spanish, Portuguese, Nynorsk, German, or French).
@@ -53,19 +68,20 @@ IMPORTANT:
 
 
 async def parse_task(prompt: str, files: list = None) -> dict:
-    """Parse a natural-language prompt into a structured task using Claude."""
+    """Parse a natural-language prompt into a structured task using an LLM."""
     log.info(f"Parsing prompt: {prompt[:100]}...")
 
-    messages = [{"role": "user", "content": prompt}]
-
-    response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+    response = client.chat.completions.create(
+        model=MODEL,
         max_tokens=2000,
-        system=SYSTEM_PROMPT,
-        messages=messages,
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0,
     )
 
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
 
     # Strip markdown code fences if present
     if text.startswith("```"):
