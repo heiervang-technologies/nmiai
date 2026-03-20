@@ -142,6 +142,8 @@ def main():
     results = []
     for img_path in image_files:
         img = cv2.imread(str(img_path))
+        if img is None:
+            continue
         orig_shape = img.shape[:2]
         img_lb, ratio, pad = letterbox(img, 1280)
         img_input = img_lb[:, :, ::-1].transpose(2, 0, 1)
