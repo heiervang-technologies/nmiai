@@ -150,7 +150,6 @@ def main():
         # Read image
         img = cv2.imread(str(img_path))
         if img is None:
-            results_list.append({'image_id': img_path.name, 'predictions': []})
             continue
 
         orig_h, orig_w = img.shape[:2]
@@ -164,10 +163,14 @@ def main():
         # Post-process
         predictions = postprocess(outputs, ratio, dw, dh, orig_h, orig_w)
 
-        results_list.append({
-            'image_id': img_path.name,
-            'predictions': predictions
-        })
+        # Flat format: each detection is its own entry
+        for pred in predictions:
+            results_list.append({
+                'image_id': img_path.name,
+                'bbox': pred['bbox'],
+                'category_id': pred['category_id'],
+                'score': pred['score']
+            })
 
     # Write output
     output_path = Path(args.output)

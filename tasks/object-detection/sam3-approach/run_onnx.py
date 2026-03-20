@@ -200,7 +200,6 @@ def main():
     for img_path in image_files:
         img_input, orig_shape, ratio, pad = preprocess(img_path, IMGSZ)
         if img_input is None:
-            results.append({"image_id": img_path.name, "predictions": []})
             continue
 
         outputs = session.run(None, {input_name: img_input})
@@ -208,12 +207,15 @@ def main():
             outputs, orig_shape, ratio, pad, CONF_THRESH, IOU_THRESH, MAX_DET
         )
 
-        results.append(
-            {
-                "image_id": img_path.name,
-                "predictions": predictions,
-            }
-        )
+        for pred in predictions:
+            results.append(
+                {
+                    "image_id": img_path.name,
+                    "bbox": pred["bbox"],
+                    "category_id": pred["category_id"],
+                    "score": pred["score"],
+                }
+            )
 
     with open(output_path, "w") as f:
         json.dump(results, f)

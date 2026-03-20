@@ -156,7 +156,7 @@ def validate_output(output_path: pathlib.Path) -> tuple[bool, list[str]]:
             if not isinstance(score, (int, float)) or not (0 <= score <= 1):
                 issues.append(f"Entry {i}: score {score} out of range 0-1")
         if "image_id" in entry and not isinstance(entry["image_id"], str):
-            issues.append(f"Entry {i}: image_id must be string")
+            issues.append(f"Entry {i}: image_id must be a filename string, not {type(entry['image_id']).__name__}")
 
     unique_images = len(set(e.get("image_id", "") for e in data))
     issues.append(f"INFO: {len(data)} detections across {unique_images} images")

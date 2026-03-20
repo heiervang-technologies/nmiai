@@ -70,10 +70,10 @@ def validate(path: pathlib.Path) -> tuple[bool, list[str]]:
                 issues.append(f"[{i}] missing '{field}'")
                 continue
 
-        # image_id: must be string
+        # image_id: must be filename string including extension
         img_id = entry.get("image_id")
         if not isinstance(img_id, str):
-            issues.append(f"[{i}] image_id must be string, got {type(img_id).__name__}")
+            issues.append(f"[{i}] image_id must be a string filename, got {type(img_id).__name__}: {img_id}")
 
         # bbox: must be list of 4 numbers
         bbox = entry.get("bbox")
