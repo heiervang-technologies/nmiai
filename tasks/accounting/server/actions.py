@@ -432,11 +432,23 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
         body["customer"] = {"id": customer_id}
     if args.get("endDate"):
         body["endDate"] = args["endDate"]
-    if args.get("fixedPrice") is not None:
-        body["isFixedPrice"] = True
-        body["fixedPrice"] = float(args["fixedPrice"])
 
-    return await client.post("/project", json=body)
+    result = await client.post("/project", json=body)
+
+    # Set fixed price via PUT after creation (fixedPrice is not valid on POST)
+    if args.get("fixedPrice") is not None:
+        project_id = result.get("value", {}).get("id")
+        if project_id:
+            try:
+                proj_data = await client.get(f"/project/{project_id}")
+                proj_obj = proj_data.get("value", proj_data)
+                proj_obj["isFixedPrice"] = True
+                proj_obj["fixedprice"] = float(args["fixedPrice"])
+                result = await client.put(f"/project/{project_id}", json=proj_obj)
+            except Exception as e:
+                log.warning(f"Failed to set fixed price on project {project_id}: {e}")
+
+    return result
 
 
 async def action_create_accounting_dimension(client: TripletexClient, args: dict) -> dict:
@@ -774,6 +786,8 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 "count": int(args["perDiemDays"]),
                 "rate": float(args["perDiemRate"]),
                 "overnightAccommodation": args.get("accommodation", "HOTEL"),
+                "location": args.get("destination", args.get("title", "Norway")),
+                "address": args.get("destination", ""),
             }
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
         except Exception as e:

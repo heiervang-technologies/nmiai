@@ -376,13 +376,45 @@ async def register_supplier_invoice(ctx: RunContext[AgentDeps], args: RegisterSu
 
 @agent.tool
 async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
-    """Fallback: make any Tripletex API call. Use only when no typed tool fits."""
+    """Fallback: make any Tripletex API call. Use only when no typed tool fits. Will reject calls that should use typed tools."""
+    path = args.path.lower()
+    # Redirect to typed tools
+    redirects = {
+        "/salary": "Use process_salary tool instead",
+        "/payroll": "Use process_salary tool instead",
+        "/travelexpense": "Use create_travel_expense tool instead",
+        "/incominginvoice": "Use register_supplier_invoice tool instead",
+        "/supplierinvoice": "Use register_supplier_invoice tool instead",
+        "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
+    }
+    for pattern, msg in redirects.items():
+        if pattern in path:
+            return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
     return await _safe_action("generic_api_call", ctx.deps.client, args.model_dump(exclude_none=True), 4000)
 
 
 # --- Core prompt ---
 
 CORE_PROMPT = """You are an expert Tripletex accounting agent. Complete the task by calling the available tools.
+
+MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_call for these tasks:
+- Supplier/incoming invoices → register_supplier_invoice
+- Salary/payroll → process_salary
+- Time tracking/hours → register_timesheet
+- Travel expenses → create_travel_expense
+- Projects (including fixed-price) → create_project
+- Invoices → create_invoice
+- Credit notes → create_credit_note
+- Payments/reversals → register_payment
+- Dimensions → create_accounting_dimension
+
+generic_api_call is ONLY for tasks with no matching typed tool above. If you use generic_api_call for any of the above, it will fail.
+
+MULTI-STEP TASK PATTERNS:
+- "Set fixed price on project + invoice X%": call create_project (with fixedPrice), THEN create_invoice with amount = fixedPrice * X/100
+- "Log hours + generate project invoice": call register_timesheet, THEN create_invoice for the total (hours * rate)
+- "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
+- "Payment was returned/reversed": call register_payment with NEGATIVE amount
 
 KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
@@ -391,13 +423,10 @@ KEY FACTS:
 - For admin/administrator roles: use userType="EXTENDED" in create_employee.
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
 - Dates must be YYYY-MM-DD format.
-- For received/incoming supplier invoices ("mottatt faktura fra leverandør"): ALWAYS use register_supplier_invoice, never generic_api_call.
-- For salary/payroll tasks ("kjør lønn", "process salary", "Gehalt"): ALWAYS use process_salary tool. Do NOT try /salary, /payroll, or /payslip endpoints — they don't work in competition sandboxes.
-- If a typed tool doesn't exist for what you need, use generic_api_call as fallback.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
 - If you see "403 Forbidden" or auth errors on multiple calls, STOP — the session may be invalid.
 
-Complete the task efficiently, then stop."""
+Complete the task efficiently with ONE tool call when possible, then stop."""
 
 
 def build_system_prompt(playbook: dict | None = None) -> str:
