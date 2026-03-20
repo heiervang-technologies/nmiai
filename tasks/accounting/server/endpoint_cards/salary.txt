@@ -1,0 +1,95 @@
+# SALARY API Endpoints
+
+GET /salary/taxDeduction/reconciliation/{reconciliationId}/overview — Get salary tax deduction data for the reconciliation table
+  Required params: reconciliationId (path, REQUIRED)
+
+GET /salary/taxDeduction/reconciliation/{reconciliationId}/paymentsOverview — Get salary tax deduction payment overview from start of year to the current reconciliation term
+  Required params: reconciliationId (path, REQUIRED)
+
+GET /salary/taxDeduction/reconciliation/{reconciliationId}/balanceAndOwedAmount — Get tax deduction details for a reconciliation
+  Required params: reconciliationId (path, REQUIRED)
+
+POST /salary/taxDeduction/reconciliation/context — Create a taxDeduction reconciliation context for a customer
+  Body: {customerId: integer, year: integer, term: integer}
+
+GET /salary/type/{id} — Find salary type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /salary/type — Find salary type corresponding with sent data.
+
+GET /salary/settings — Get salary settings of logged in company.
+
+PUT /salary/settings — Update settings of logged in company.
+  Body: {municipality: Municipality, payrollTaxCalcMethod: string}
+
+PUT /salary/settings/holiday/list — Update multiple holiday settings of current logged in company.
+
+POST /salary/settings/holiday/list — Create multiple holiday settings of current logged in company.
+
+DELETE /salary/settings/holiday/list — Delete multiple holiday settings of current logged in company.
+  Required params: ids (query, REQUIRED)
+
+GET /salary/settings/holiday — Find holiday settings of current logged in company.
+
+POST /salary/settings/holiday — Create a holiday setting of current logged in company.
+  Body: {id: integer, version: integer, changes: array, url: string, year: integer, days: number, vacationPayPercentage1: number, vacationPayPercentage2: number, isMaxPercentage2Amount6G: boolean}
+
+PUT /salary/settings/holiday/{id} — Update a holiday setting of current logged in company.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, year: integer, days: number, vacationPayPercentage1: number, vacationPayPercentage2: number, isMaxPercentage2Amount6G: boolean}
+
+GET /salary/settings/pensionScheme/{id} — Get Pension Scheme for a specific ID
+  Required params: id (path, REQUIRED)
+
+PUT /salary/settings/pensionScheme/{id} — Update a Pension Scheme
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, pensionSchemeId: integer, number: string, startDate: string, endDate: string}
+
+DELETE /salary/settings/pensionScheme/{id} — Delete a Pension Scheme
+  Required params: id (path, REQUIRED)
+
+PUT /salary/settings/pensionScheme/list — Update multiple Pension Schemes.
+
+POST /salary/settings/pensionScheme/list — Create multiple Pension Schemes.
+
+DELETE /salary/settings/pensionScheme/list — Delete multiple Pension Schemes.
+  Required params: ids (query, REQUIRED)
+
+GET /salary/settings/pensionScheme — Find pension schemes.
+
+POST /salary/settings/pensionScheme — Create a Pension Scheme.
+  Body: {id: integer, version: integer, changes: array, url: string, pensionSchemeId: integer, number: string, startDate: string, endDate: string}
+
+GET /salary/settings/standardTime/{id} — Find standard time by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /salary/settings/standardTime/{id} — Update standard time. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, company: Company, fromDate: string, hoursPerDay: number}
+
+GET /salary/settings/standardTime/byDate — Find standard time by date
+
+GET /salary/settings/standardTime — Get all standard times.
+
+POST /salary/settings/standardTime — Create standard time.
+  Body: {id: integer, version: integer, changes: array, url: string, company: Company, fromDate: string, hoursPerDay: number}
+
+GET /salary/transaction/{id} — Find salary transaction by ID.
+  Required params: id (path, REQUIRED)
+
+DELETE /salary/transaction/{id} — Delete salary transaction by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /salary/transaction/{id}/deleteAttachment — Delete attachment.
+  Required params: id (path, REQUIRED)
+
+POST /salary/transaction — Create a new salary transaction.
+  Body: {id: integer, version: integer, changes: array, url: string, date: string, year: integer, month: integer, isHistorical: boolean, paySlipsAvailableDate: string, payslips: array}
+
+POST /salary/transaction/{id}/attachment — Upload an attachment to a salary transaction
+  Required params: id (path, REQUIRED)
+  Body: {file: string}
+
+POST /salary/transaction/{id}/attachment/list — Upload multiple attachments to a salary transaction
+  Required params: id (path, REQUIRED)
+  Body: {file: array}

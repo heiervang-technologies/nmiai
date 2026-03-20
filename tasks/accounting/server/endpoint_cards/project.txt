@@ -1,0 +1,303 @@
+# PROJECT API Endpoints
+
+GET /project/{id} — Find project by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/{id} — [BETA] Update project.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, displayName: string, description: string, projectManager: Employee, department: Department, mainProject: Project, startDate: string, endDate: string, customer: Customer, isClosed: boolean, isReadyForInvoicing: }
+
+DELETE /project/{id} — [BETA] Delete project.
+  Required params: id (path, REQUIRED)
+
+PUT /project/list — [BETA] Update multiple projects.
+
+POST /project/list — [BETA] Register new projects. Multiple projects for different users can be sent in the same request.
+
+DELETE /project/list — [BETA] Delete projects.
+  Required params: ids (query, REQUIRED)
+
+GET /project — Find projects corresponding with sent data.
+
+POST /project — Add new project.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, displayName: string, description: string, projectManager: Employee, department: Department, mainProject: Project, startDate: string, endDate: string, customer: Customer, isClosed: boolean, isReadyForInvoicing: }
+
+DELETE /project — [BETA] Delete multiple projects.
+
+GET /project/number/{number} — Find project by number.
+  Required params: number (path, REQUIRED)
+
+GET /project/>forTimeSheet — Find projects applicable for time sheet registration on a specific day.
+
+POST /project/import — Upload project import file.
+  Required params: fileFormat (query, REQUIRED)
+  Body: {file: string}
+
+GET /project/category/{id} — Find project category by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/category/{id} — Update project category.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, displayName: string}
+
+GET /project/category/{id} — Find project category by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/category/{id} — Update project category.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, displayName: string}
+
+GET /project/category — Find project categories corresponding with sent data.
+
+POST /project/category — Add new project category.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, displayName: string}
+
+GET /project/category — Find project categories corresponding with sent data.
+
+POST /project/category — Add new project category.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, displayName: string}
+
+PUT /project/dynamicControlForm/{id}/:copyFieldValuesFromLastEditedForm — Into each section in the specified form that only has empty or default values, and copyFieldValuesByDefault set as true in the form's template, copy field values from the equivalent section in the most recently edited control form. Signed or completed forms will not be affected.
+  Required params: id (path, REQUIRED)
+
+GET /project/orderline/{id} — [BETA] Get order line by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/orderline/{id} — [BETA] Update project orderline.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+DELETE /project/orderline/{id} — Delete order line by ID.
+  Required params: id (path, REQUIRED)
+
+GET /project/orderline/{id} — [BETA] Get order line by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/orderline/{id} — [BETA] Update project orderline.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+DELETE /project/orderline/{id} — Delete order line by ID.
+  Required params: id (path, REQUIRED)
+
+POST /project/orderline/list — [BETA] Create multiple order lines.
+
+POST /project/orderline/list — [BETA] Create multiple order lines.
+
+GET /project/orderline/orderLineTemplate — [BETA] Get order line template from project and product
+  Required params: projectId (query, REQUIRED), productId (query, REQUIRED)
+
+GET /project/orderline/orderLineTemplate — [BETA] Get order line template from project and product
+  Required params: projectId (query, REQUIRED), productId (query, REQUIRED)
+
+GET /project/orderline — [BETA] Find all order lines for project.
+  Required params: projectId (query, REQUIRED)
+
+POST /project/orderline — [BETA] Create order line. When creating several order lines, use /list for better performance.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+GET /project/orderline — [BETA] Find all order lines for project.
+  Required params: projectId (query, REQUIRED)
+
+POST /project/orderline — [BETA] Create order line. When creating several order lines, use /list for better performance.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+GET /project/orderline/query — [BETA] Wildcard search.
+
+GET /project/orderline/query — [BETA] Wildcard search.
+
+POST /project/participant/list — [BETA] Add new project participant. Multiple project participants can be sent in the same request.
+
+DELETE /project/participant/list — [BETA] Delete project participants.
+  Required params: ids (query, REQUIRED)
+
+GET /project/participant/{id} — [BETA] Find project participant by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/participant/{id} — [BETA] Update project participant.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, employee: Employee, adminAccess: boolean}
+
+POST /project/participant — [BETA] Add new project participant.
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, employee: Employee, adminAccess: boolean}
+
+GET /project/batchPeriod/budgetStatusByProjectIds — Get the budget status for the projects in the specific period.
+  Required params: ids (query, REQUIRED)
+
+GET /project/batchPeriod/invoicingReserveByProjectIds — Get the invoicing reserve for the projects in the specific period.
+  Required params: ids (query, REQUIRED), dateFrom (query, REQUIRED), dateTo (query, REQUIRED)
+
+GET /project/{id}/period/budgetStatus — Get the budget status for the project period
+  Required params: id (path, REQUIRED)
+
+GET /project/{id}/period/hourlistReport — Find hourlist report by project period.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED), id (path, REQUIRED)
+
+GET /project/{id}/period/invoiced — Find invoiced info by project period.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED), id (path, REQUIRED)
+
+GET /project/{id}/period/invoicingReserve — Find invoicing reserve by project period.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED), id (path, REQUIRED)
+
+GET /project/{id}/period/monthlyStatus — Find overall status by project period.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED), id (path, REQUIRED)
+
+GET /project/{id}/period/overallStatus — Find overall status by project period.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED), id (path, REQUIRED)
+
+GET /project/projectActivity/{id} — Find project activity by id
+  Required params: id (path, REQUIRED)
+
+DELETE /project/projectActivity/{id} — Delete project activity
+  Required params: id (path, REQUIRED)
+
+DELETE /project/projectActivity/list — Delete project activities
+  Required params: ids (query, REQUIRED)
+
+POST /project/projectActivity — Add project activity.
+  Body: {id: integer, version: integer, changes: array, url: string, activity: Activity, project: Project, startDate: string, endDate: string, isClosed: boolean, budgetHours: number, budgetHourlyRateCurrency: number, budgetFeeCurrency: number}
+
+GET /project/controlForm/{id} — [BETA] Get project control form by ID.
+  Required params: id (path, REQUIRED)
+
+GET /project/controlForm — [BETA] Get project control forms by project ID.
+  Required params: projectId (query, REQUIRED)
+
+GET /project/controlFormType/{id} — [BETA] Get project control form type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /project/controlFormType — [BETA] Get project control form types
+
+GET /project/hourlyRates/{id} — Find project hourly rate by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/{id} — Update a project hourly rate.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, startDate: string, showInProjectOrder: boolean, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+DELETE /project/hourlyRates/{id} — Delete Project Hourly Rate 
+  Required params: id (path, REQUIRED)
+
+GET /project/hourlyRates/{id} — Find project hourly rate by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/{id} — Update a project hourly rate.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, startDate: string, showInProjectOrder: boolean, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+DELETE /project/hourlyRates/{id} — Delete Project Hourly Rate 
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/list — Update multiple project hourly rates.
+
+POST /project/hourlyRates/list — Create multiple project hourly rates.
+
+DELETE /project/hourlyRates/list — Delete project hourly rates.
+  Required params: ids (query, REQUIRED)
+
+PUT /project/hourlyRates/list — Update multiple project hourly rates.
+
+POST /project/hourlyRates/list — Create multiple project hourly rates.
+
+DELETE /project/hourlyRates/list — Delete project hourly rates.
+  Required params: ids (query, REQUIRED)
+
+DELETE /project/hourlyRates/deleteByProjectIds — Delete project hourly rates by project id.
+  Required params: ids (query, REQUIRED), date (query, REQUIRED)
+
+DELETE /project/hourlyRates/deleteByProjectIds — Delete project hourly rates by project id.
+  Required params: ids (query, REQUIRED), date (query, REQUIRED)
+
+GET /project/hourlyRates — Find project hourly rates corresponding with sent data.
+
+POST /project/hourlyRates — Create a project hourly rate. 
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, startDate: string, showInProjectOrder: boolean, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+GET /project/hourlyRates — Find project hourly rates corresponding with sent data.
+
+POST /project/hourlyRates — Create a project hourly rate. 
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, startDate: string, showInProjectOrder: boolean, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+PUT /project/hourlyRates/updateOrAddHourRates — Update or add the same project hourly rate from project overview.
+  Required params: ids (query, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, startDate: string, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+PUT /project/hourlyRates/updateOrAddHourRates — Update or add the same project hourly rate from project overview.
+  Required params: ids (query, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, startDate: string, hourlyRateModel: string, projectSpecificRates: array, fixedRate: number}
+
+GET /project/hourlyRates/projectSpecificRates/{id} — Find project specific rate by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/projectSpecificRates/{id} — Update a project specific rate.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, hourlyRate: number, hourlyCostPercentage: number, projectHourlyRate: ProjectHourlyRate, employee: Employee, activity: Activity}
+
+DELETE /project/hourlyRates/projectSpecificRates/{id} — Delete project specific rate 
+  Required params: id (path, REQUIRED)
+
+GET /project/hourlyRates/projectSpecificRates/{id} — Find project specific rate by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/projectSpecificRates/{id} — Update a project specific rate.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, hourlyRate: number, hourlyCostPercentage: number, projectHourlyRate: ProjectHourlyRate, employee: Employee, activity: Activity}
+
+DELETE /project/hourlyRates/projectSpecificRates/{id} — Delete project specific rate 
+  Required params: id (path, REQUIRED)
+
+PUT /project/hourlyRates/projectSpecificRates/list — Update multiple project specific rates.
+
+POST /project/hourlyRates/projectSpecificRates/list — Create multiple new project specific rates.
+
+DELETE /project/hourlyRates/projectSpecificRates/list — Delete project specific rates.
+  Required params: ids (query, REQUIRED)
+
+PUT /project/hourlyRates/projectSpecificRates/list — Update multiple project specific rates.
+
+POST /project/hourlyRates/projectSpecificRates/list — Create multiple new project specific rates.
+
+DELETE /project/hourlyRates/projectSpecificRates/list — Delete project specific rates.
+  Required params: ids (query, REQUIRED)
+
+GET /project/hourlyRates/projectSpecificRates — Find project specific rates corresponding with sent data.
+
+POST /project/hourlyRates/projectSpecificRates — Create new project specific rate. 
+  Body: {id: integer, version: integer, changes: array, url: string, hourlyRate: number, hourlyCostPercentage: number, projectHourlyRate: ProjectHourlyRate, employee: Employee, activity: Activity}
+
+GET /project/hourlyRates/projectSpecificRates — Find project specific rates corresponding with sent data.
+
+POST /project/hourlyRates/projectSpecificRates — Create new project specific rate. 
+  Body: {id: integer, version: integer, changes: array, url: string, hourlyRate: number, hourlyCostPercentage: number, projectHourlyRate: ProjectHourlyRate, employee: Employee, activity: Activity}
+
+GET /project/subcontract/{id} — Find project sub-contract by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /project/subcontract/{id} — Update project sub-contract.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, company: Company, budgetFeeCurrency: number, budgetExpensesCurrency: number, budgetIncomeCurrency: number, budgetNetAmountCurrency: number, displayName: string, name: string, description: string}
+
+DELETE /project/subcontract/{id} — Delete project sub-contract by ID.
+  Required params: id (path, REQUIRED)
+
+GET /project/subcontract — Find project sub-contracts corresponding with sent data.
+  Required params: projectId (query, REQUIRED)
+
+POST /project/subcontract — Add new project sub-contract.
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, company: Company, budgetFeeCurrency: number, budgetExpensesCurrency: number, budgetIncomeCurrency: number, budgetNetAmountCurrency: number, displayName: string, name: string, description: string}
+
+GET /project/subcontract/query — Wildcard search.
+
+GET /project/resourcePlanBudget — Get resource plan entries in the specified period.
+  Required params: periodStart (query, REQUIRED), periodEnd (query, REQUIRED), periodType (query, REQUIRED)
+
+GET /project/settings — Get project settings of logged in company.
+
+PUT /project/settings — Update project settings for company
+  Body: {approveHourLists: boolean, approveInvoices: boolean, markReadyForInvoicing: boolean, historicalInformation: boolean, projectForecast: boolean, budgetOnSubcontracts: boolean, projectCategories: boolean, referenceFee: boolean, sortOrderProjects: string, autoCloseInvoicedProjects: boolean, mustApproveR}
+
+GET /project/task — Find all tasks for project.
+  Required params: projectId (query, REQUIRED)
+
+GET /project/template/{id} — Get project template by ID.
+  Required params: id (path, REQUIRED)

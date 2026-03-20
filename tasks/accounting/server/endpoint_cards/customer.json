@@ -1,0 +1,262 @@
+{
+  "family": "customer",
+  "endpoint_count": 24,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/deliveryAddress/{id}",
+      "summary": "Get address by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/deliveryAddress/{id}",
+      "summary": "Update address.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, addressLine1: string, addressLine2: string, postalCode: string, city: string, country: Country, displayName: string, addressAsString: string, displayNameInklMatrikkel: string, knr: integer, gnr: integer, bnr: integer, fnr: integer, snr: integer, unitNumber: string, name: string, customerVendor: Company"
+    },
+    {
+      "method": "GET",
+      "path": "/deliveryAddress",
+      "summary": "Find addresses corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "addressLine1 (query)",
+        "addressLine2 (query)",
+        "postalCode (query)",
+        "city (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/contact/{id}",
+      "summary": "Get contact by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/contact/{id}",
+      "summary": "Update contact.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberWork: string, customer: Customer, department: Department, isInactive: boolean"
+    },
+    {
+      "method": "POST",
+      "path": "/contact/list",
+      "summary": "Create multiple contacts.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/contact/list",
+      "summary": "[BETA] Delete multiple contacts.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/contact",
+      "summary": "Find contacts corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "firstName (query)",
+        "lastName (query)",
+        "email (query)",
+        "customerId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/contact",
+      "summary": "Create contact.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberWork: string, customer: Customer, department: Department, isInactive: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/customer/{id}",
+      "summary": "Get customer by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/customer/{id}",
+      "summary": "Update customer. ",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, globalLocationNumber: integer, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, accountManager: Employee, department: Department, email: string, invoiceEmail: string, overdueNoticeEmail: string, bankAccounts: array, phoneNumber: string, phoneNumberMobile: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/customer/{id}",
+      "summary": "[BETA] Delete customer by ID",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/customer",
+      "summary": "Find customers corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "customerAccountNumber (query)",
+        "organizationNumber (query)",
+        "email (query)",
+        "invoiceEmail (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/customer",
+      "summary": "Create customer. Related customer addresses may also be created.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, globalLocationNumber: integer, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, accountManager: Employee, department: Department, email: string, invoiceEmail: string, overdueNoticeEmail: string, bankAccounts: array, phoneNumber: string, phoneNumberMobile: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/customer/list",
+      "summary": "[BETA] Update multiple customers. Addresses can also be updated.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/customer/list",
+      "summary": "[BETA] Create multiple customers. Related supplier addresses may also be created.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/customer/category/{id}",
+      "summary": "Find customer/supplier category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/customer/category/{id}",
+      "summary": "Update customer/supplier category.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string"
+    },
+    {
+      "method": "GET",
+      "path": "/customer/category/{id}",
+      "summary": "Find customer/supplier category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/customer/category/{id}",
+      "summary": "Update customer/supplier category.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string"
+    },
+    {
+      "method": "GET",
+      "path": "/customer/category",
+      "summary": "Find customer/supplier categories corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "number (query)",
+        "description (query)",
+        "type (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/customer/category",
+      "summary": "Add new customer/supplier category.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string"
+    },
+    {
+      "method": "GET",
+      "path": "/customer/category",
+      "summary": "Find customer/supplier categories corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "number (query)",
+        "description (query)",
+        "type (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/customer/category",
+      "summary": "Add new customer/supplier category.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string"
+    }
+  ]
+}

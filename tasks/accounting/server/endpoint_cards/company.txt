@@ -1,0 +1,26 @@
+# COMPANY API Endpoints
+
+GET /company/>withLoginAccess — Returns client customers (with accountant/auditor relation) where the current user has login access (proxy login).
+
+GET /company/{id} — Find company by ID.
+  Required params: id (path, REQUIRED)
+
+GET /company/divisions — [DEPRECATED] Find divisions.
+
+PUT /company — Update company information.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, startDate: string, endDate: string, organizationNumber: string, email: string, phoneNumber: string, phoneNumberMobile: string, faxNumber: string, address: Address, type: string, currency: Currency, account}
+
+GET /company/settings/altinn — Find Altinn id for login in company.
+
+PUT /company/settings/altinn — Update AltInn id and password.
+  Body: {altInnId: integer, altInnPassword: string}
+
+GET /company/salesmodules — [BETA] Get active sales modules.
+
+POST /company/salesmodules — [BETA] Add (activate) a new sales module.
+  Body: {name: string, costStartDate: string}
+
+GET /company/salesmodules — [BETA] Get active sales modules.
+
+POST /company/salesmodules — [BETA] Add (activate) a new sales module.
+  Body: {name: string, costStartDate: string}

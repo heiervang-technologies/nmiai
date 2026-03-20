@@ -1,0 +1,375 @@
+{
+  "family": "bank",
+  "endpoint_count": 32,
+  "endpoints": [
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/{id}/:adjustment",
+      "summary": "Add an adjustment to reconciliation by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/closedWithUnmatchedTransactions",
+      "summary": "Get the last closed reconciliation with unmached transactions by account ID.",
+      "required_params": [
+        "accountId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "start (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/transactions/unmatched:csv",
+      "summary": "Get all unmatched transactions in csv format",
+      "required_params": [],
+      "optional_params": [
+        "reconciliationId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/{id}",
+      "summary": "Get bank reconciliation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/{id}",
+      "summary": "Update a bank reconciliation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, account: Account, accountingPeriod: AccountingPeriod, voucher: Voucher, transactions: array, isClosed: boolean, type: string, bankAccountClosingBalanceCurrency: number, closedDate: string, closedByContact: Contact, closedByEmployee: Employee, approvable: boolean, autoPayReconciliation: boolean, attachment: Document"
+    },
+    {
+      "method": "DELETE",
+      "path": "/bank/reconciliation/{id}",
+      "summary": "Delete bank reconciliation by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/>last",
+      "summary": "Get the last created reconciliation by account ID.",
+      "required_params": [
+        "accountId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/>lastClosed",
+      "summary": "Get last closed reconciliation by account ID.",
+      "required_params": [
+        "accountId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "after (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation",
+      "summary": "Find bank reconciliation corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "accountingPeriodId (query)",
+        "accountId (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/bank/reconciliation",
+      "summary": "Post a bank reconciliation.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, account: Account, accountingPeriod: AccountingPeriod, voucher: Voucher, transactions: array, isClosed: boolean, type: string, bankAccountClosingBalanceCurrency: number, closedDate: string, closedByContact: Contact, closedByEmployee: Employee, approvable: boolean, autoPayReconciliation: boolean, attachment: Document"
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/match/count",
+      "summary": "Get the total number of matches",
+      "required_params": [
+        "bankReconciliationId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/match/{id}",
+      "summary": "Get bank reconciliation match by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/match/{id}",
+      "summary": "Update a bank reconciliation match by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, bankReconciliation: BankReconciliation, type: string, transactions: array, postings: array"
+    },
+    {
+      "method": "DELETE",
+      "path": "/bank/reconciliation/match/{id}",
+      "summary": "Delete a bank reconciliation match by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/match",
+      "summary": "Find bank reconciliation match corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "bankReconciliationId (query)",
+        "count (query)",
+        "approved (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/bank/reconciliation/match",
+      "summary": "Create a bank reconciliation match.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, bankReconciliation: BankReconciliation, type: string, transactions: array, postings: array"
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/match/query",
+      "summary": "[INTERNAL] Wildcard search.",
+      "required_params": [],
+      "optional_params": [
+        "bankReconciliationId (query)",
+        "approved (query)",
+        "count (query)",
+        "from (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/match/:suggest",
+      "summary": "Suggest matches for a bank reconciliation by ID.",
+      "required_params": [
+        "bankReconciliationId (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/matches/counter",
+      "summary": "[BETA] Get number of matches since last page access.",
+      "required_params": [
+        "bankReconciliationId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/bank/reconciliation/matches/counter",
+      "summary": "[BETA] Reset the number of matches after the page has been accessed.",
+      "required_params": [
+        "bankReconciliationId (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/paymentType/{id}",
+      "summary": "Get payment type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/paymentType",
+      "summary": "Find payment type corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/reconciliation/settings",
+      "summary": "Get bank reconciliation settings.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/bank/reconciliation/settings",
+      "summary": "Post bank reconciliation settings.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, numberOfMatchesPerPage: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/bank/reconciliation/settings/{id}",
+      "summary": "Update bank reconciliation settings.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, numberOfMatchesPerPage: string"
+    },
+    {
+      "method": "GET",
+      "path": "/bank/statement/{id}",
+      "summary": "Get bank statement.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/bank/statement/{id}",
+      "summary": "Delete bank statement by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/bank/statement/import",
+      "summary": "Upload bank statement file.",
+      "required_params": [
+        "bankId (query, REQUIRED)",
+        "accountId (query, REQUIRED)",
+        "fromDate (query, REQUIRED)",
+        "toDate (query, REQUIRED)",
+        "fileFormat (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "externalId (query)"
+      ],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "GET",
+      "path": "/bank/statement",
+      "summary": "Find bank statement corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "accountId (query)",
+        "fileFormats (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/statement/transaction/{id}",
+      "summary": "Get bank transaction by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/statement/transaction/{id}/details",
+      "summary": "Get additional details about transaction by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/bank/statement/transaction",
+      "summary": "Find bank transaction corresponding with sent data.",
+      "required_params": [
+        "bankStatementId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

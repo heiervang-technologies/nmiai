@@ -1,0 +1,535 @@
+{
+  "family": "timesheet",
+  "endpoint_count": 44,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/activity/{id}",
+      "summary": "Find activity by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/activity/list",
+      "summary": "Add multiple activities.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/activity/>forTimeSheet",
+      "summary": "Find applicable time sheet activities for an employee on a specific day.",
+      "required_params": [
+        "projectId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "employeeId (query)",
+        "date (query)",
+        "filterExistingHours (query)",
+        "query (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/activity",
+      "summary": "Find activities corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "number (query)",
+        "description (query)",
+        "isProjectActivity (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/activity",
+      "summary": "Add activity.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, activityType: string, isProjectActivity: boolean, isGeneral: boolean, isTask: boolean, isDisabled: boolean, isChargeable: boolean, rate: number, costPercentage: number, displayName: string, deletable: boolean"
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/{id}/:approve",
+      "summary": "Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry as approved. The hours will be copied to the time sheet if the relevant week/month is not approved, and there are no interfering time clocks that are active. A notification will be sent to the entry's employee if the entry's approval status or comment has changed.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "managerComment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/:approveList",
+      "summary": "Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry/entries as approved. The hours will be copied to the time sheet if the relevant weeks/months are not approved, and there are no interfering time clocks that are active. Notifications will be sent to the entries' employees if the entries' approval statuses or comments have changed. If IDs are provided, the other args are ignored.",
+      "required_params": [],
+      "optional_params": [
+        "ids (query)",
+        "employeeIds (query)",
+        "dateFrom (query)",
+        "dateTo (query)",
+        "managerComment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/allocated/{id}",
+      "summary": "Find allocated hour entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/{id}",
+      "summary": "Update allocated hour entry by ID. Note: Allocated hour entry object fields which are present but not set, or set to 0, will be nulled. Only holiday/vacation hours can receive comments. A notification will be sent to the entry's employee if the entry's comment has changed.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, date: string, hours: number, isApproved: boolean, managerComment: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/timesheet/allocated/{id}",
+      "summary": "Delete allocated hour entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/list",
+      "summary": "Update allocated hour entry. Multiple objects for different users can be sent in the same request. Note: Allocated hour entry object fields which are present but not set, or set to 0, will be nulled. Only holiday/vacation hours can receive comments. Notifications will be sent to the entries' employees if the entries' comments have changed.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/timesheet/allocated/list",
+      "summary": "Add new allocated hour entry. Multiple objects for several users can be sent in the same request. Only holiday/vacation hours can receive comments. Notifications will be sent to the entries' employees if the entries have comments.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/allocated",
+      "summary": "Find allocated hour entries corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "ids (query)",
+        "employeeIds (query)",
+        "projectIds (query)",
+        "activityIds (query)",
+        "dateFrom (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/timesheet/allocated",
+      "summary": "Add new allocated hour entry. Only one entry per employee/date/activity/project combination is supported. Only holiday/vacation hours can receive comments. A notification will be sent to the entry's employee if the entry has a comment.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, date: string, hours: number, isApproved: boolean, managerComment: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/{id}/:unapprove",
+      "summary": "Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry as unapproved. A notification will be sent to the entry's employee if the entry's approval status or comment has changed.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "managerComment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/allocated/:unapproveList",
+      "summary": "Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry/entries as unapproved. Notifications will be sent to the entries' employees if the entries' approval statuses or comments have changed. If IDs are provided, the other args are ignored.",
+      "required_params": [],
+      "optional_params": [
+        "ids (query)",
+        "employeeIds (query)",
+        "dateFrom (query)",
+        "dateTo (query)",
+        "managerComment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/entry/{id}",
+      "summary": "Find timesheet entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/entry/{id}",
+      "summary": "Update timesheet entry by ID. Note: Timesheet entry object fields which are present but not set, or set to 0, will be nulled.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, project: Project, activity: Activity, date: string, hours: number, chargeableHours: number, employee: Employee, timeClocks: array, comment: string, locked: boolean, chargeable: boolean, invoice: Invoice, hourlyRate: number, hourlyCost: number, hourlyCostPercentage: number, projectChargeableHours: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/timesheet/entry/{id}",
+      "summary": "Delete timesheet entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/entry/list",
+      "summary": "Update timesheet entry. Multiple objects for different users can be sent in the same request.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/timesheet/entry/list",
+      "summary": "Add new timesheet entry. Multiple objects for several users can be sent in the same request.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/entry",
+      "summary": "Find timesheet entry corresponding with sent data.",
+      "required_params": [
+        "dateFrom (query, REQUIRED)",
+        "dateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "projectId (query)",
+        "activityId (query)",
+        "comment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/timesheet/entry",
+      "summary": "Add new timesheet entry. Only one entry per employee/date/activity/project combination is supported.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, project: Project, activity: Activity, date: string, hours: number, chargeableHours: number, employee: Employee, timeClocks: array, comment: string, locked: boolean, chargeable: boolean, invoice: Invoice, hourlyRate: number, hourlyCost: number, hourlyCostPercentage: number, projectChargeableHours: number"
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/entry/>recentActivities",
+      "summary": "Find recently used timesheet activities.",
+      "required_params": [
+        "projectId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "employeeId (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/entry/>recentProjects",
+      "summary": "Find projects with recent activities (timesheet entry registered).",
+      "required_params": [],
+      "optional_params": [
+        "employeeId (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/entry/>totalHours",
+      "summary": "Find total hours registered on an employee in a specific period.",
+      "required_params": [],
+      "optional_params": [
+        "employeeId (query)",
+        "startDate (query)",
+        "endDate (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/month/:approve",
+      "summary": "approve month(s).  If id is provided the other args are ignored",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeIds (query)",
+        "monthYear (query)",
+        "approvedUntilDate (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/month/:complete",
+      "summary": "complete month(s).  If id is provided the other args are ignored",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeIds (query)",
+        "monthYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/month/{id}",
+      "summary": "Find monthly status entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/month/byMonthNumber",
+      "summary": "Find monthly status for given month.",
+      "required_params": [
+        "employeeIds (query, REQUIRED)",
+        "monthYear (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/month/byMonthNumberList",
+      "summary": "Find monthly status for given month list.",
+      "required_params": [
+        "employeeIds (query, REQUIRED)",
+        "monthYearList (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/month/:reopen",
+      "summary": "reopen month(s).  If id is provided the other args are ignored",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeIds (query)",
+        "monthYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/month/:unapprove",
+      "summary": "unapprove month(s).  If id is provided the other args are ignored",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeIds (query)",
+        "monthYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/timeClock/{id}",
+      "summary": "Find time clock entry by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/timeClock/{id}",
+      "summary": "Update time clock by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, timesheetEntry: TimesheetEntry, date: string, timeStart: string, timeStop: string, hoursStart: number, lunchBreakDuration: number, newTimeSheetEntryComment: string"
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/timeClock",
+      "summary": "Find time clock entries corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "projectId (query)",
+        "activityId (query)",
+        "dateFrom (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/timeClock/present",
+      "summary": "Find a user’s present running time clock.",
+      "required_params": [],
+      "optional_params": [
+        "employeeId (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/timeClock/:start",
+      "summary": "Start time clock.",
+      "required_params": [
+        "activityId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "employeeId (query)",
+        "projectId (query)",
+        "date (query)",
+        "lunchBreakDuration (query)",
+        "comment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/timeClock/{id}/:stop",
+      "summary": "Stop time clock.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)",
+        "comment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/week/:approve",
+      "summary": "Approve week. By ID or (ISO-8601 week and employeeId combination).",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "weekYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/week/:complete",
+      "summary": "Complete week. By ID or (ISO-8601 week and employeeId combination).",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "weekYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/week/:reopen",
+      "summary": "Reopen week. By ID or (ISO-8601 week and employeeId combination).",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "weekYear (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/timesheet/week",
+      "summary": "Find weekly status By ID, week/year combination, employeeId or an approver",
+      "required_params": [],
+      "optional_params": [
+        "ids (query)",
+        "employeeIds (query)",
+        "weekYear (query)",
+        "approvedBy (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/timesheet/week/:unapprove",
+      "summary": "Unapprove week. By ID or (ISO-8601 week and employeeId combination).",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "employeeId (query)",
+        "weekYear (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

@@ -1,186 +1,295 @@
 """
-Agentic executor: LLM with Tripletex API tools.
-The LLM reasons about what to do and calls API tools directly.
-Self-correcting on errors, handles any task type.
+Pydantic AI agent with typed action tools for Tripletex.
+The LLM provides structured args; Pydantic validates; code handles the API contract.
 """
 
 import json
 import logging
 import os
 import time
+from dataclasses import dataclass
+from typing import Optional
 
-from openai import OpenAI
+from pydantic import BaseModel, Field
+from pydantic_ai import Agent, RunContext
+from pydantic_ai.models.openrouter import OpenRouterModel
+
 from tripletex_client import TripletexClient
+from actions import ACTIONS
 
 log = logging.getLogger(__name__)
 
-# Model config
-if os.environ.get("OPENROUTER_API_KEY"):
-    client = OpenAI(
-        api_key=os.environ["OPENROUTER_API_KEY"],
-        base_url="https://openrouter.ai/api/v1",
-    )
-    MODEL = os.environ.get("LLM_MODEL", "openai/gpt-5.4")
-elif os.environ.get("OPENAI_API_KEY"):
-    client = OpenAI()
-    MODEL = os.environ.get("LLM_MODEL", "gpt-5.4")
-else:
-    raise RuntimeError("No LLM API key found. Set OPENROUTER_API_KEY or OPENAI_API_KEY.")
-
+MODEL = os.environ.get("LLM_MODEL", "openai/gpt-5.4")
 log.info(f"Agent using model: {MODEL}")
 
-TOOLS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "tripletex_get",
-            "description": "GET request to Tripletex API. Use for listing/searching entities. Returns {fullResultSize, values:[...]} for lists or {value:{...}} for single entities.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "API path, e.g. /employee, /customer, /ledger/vatType, /employee/123"
-                    },
-                    "params": {
-                        "type": "object",
-                        "description": "Query parameters, e.g. {\"firstName\": \"Ola\", \"count\": 10, \"fields\": \"id,name\"}"
-                    }
-                },
-                "required": ["path"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "tripletex_post",
-            "description": "POST request to create a new entity. Returns {value:{...created entity...}}. The body parameter is the JSON request body — do NOT put fields in the path as query parameters.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "API path only, no query params. E.g. /employee, /customer, /invoice"
-                    },
-                    "body": {
-                        "type": "object",
-                        "description": "REQUIRED JSON request body. E.g. {\"firstName\":\"Ola\",\"lastName\":\"Nordmann\",\"email\":\"ola@test.no\"}"
-                    }
-                },
-                "required": ["path", "body"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "tripletex_put",
-            "description": "PUT request to update an entity or trigger an action. For actions like /:invoice, /:payment, /:createCreditNote, use query params.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "API path, e.g. /employee/123, /order/456/:invoice"
-                    },
-                    "body": {
-                        "type": "object",
-                        "description": "JSON body (optional for action endpoints)"
-                    },
-                    "params": {
-                        "type": "object",
-                        "description": "Query parameters, e.g. {\"invoiceDate\": \"2026-03-20\"}"
-                    }
-                },
-                "required": ["path"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "tripletex_delete",
-            "description": "DELETE request to remove an entity.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "API path with ID, e.g. /travelExpense/789"
-                    }
-                },
-                "required": ["path"]
-            }
-        }
-    }
-]
 
-CORE_PROMPT = """You are an expert Tripletex accounting agent. You complete accounting tasks by calling the Tripletex API via tools.
+# --- Dependencies (injected into tools) ---
 
-## UNIVERSAL RULES
-1. For tripletex_post/put: data goes in "body" param as JSON. NEVER put fields in the path URL.
-2. ALWAYS set vatType on products, order lines, voucher postings (id=3 for 25% standard).
-3. GET /invoice REQUIRES params: invoiceDateFrom, invoiceDateTo (use "2020-01-01" to "2030-12-31").
-4. Preserve Norwegian characters exactly (ø, æ, å). Dates: YYYY-MM-DD. Amounts: numbers only.
-5. For updates: GET first (need id + version), then PUT full object with changes.
-6. Read API error messages carefully — they tell you exactly what field is wrong.
-7. Some tasks have pre-populated data (customers, invoices). Check what exists first.
-8. Create prerequisites before dependents (customer before invoice, employee before project).
+@dataclass
+class AgentDeps:
+    client: TripletexClient
 
-## SANDBOX DEFAULT STATE
-- 1 employee (account owner), 1 department, full chart of accounts
-- Active modules: WAGE, ELECTRONIC_VOUCHERS, TIME_TRACKING, API_V2
-- No bank account on company (must register one before creating invoices)
 
-## RESPONSE FORMAT
-List: {"fullResultSize": N, "values": [...]}
-Create/Update: {"value": {...entity with id...}}
+# --- Tool argument models (Pydantic enforces the schema) ---
 
-## VAT TYPES
-id=3: 25% standard, id=31: 15% food, id=32: 12% transport, id=5/6: 0% exempt
+class DiscoverSandboxArgs(BaseModel):
+    """No args needed — discovers what exists in the sandbox."""
+    pass
 
-Complete the task efficiently. When done, stop calling tools and briefly summarize what you did."""
+
+class CreateEmployeeArgs(BaseModel):
+    firstName: str
+    lastName: str
+    email: Optional[str] = None
+    userType: str = Field(default="STANDARD", description="STANDARD, EXTENDED (admin), or NO_ACCESS")
+    dateOfBirth: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    phoneNumberMobile: Optional[str] = None
+
+
+class CreateCustomerArgs(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phoneNumber: Optional[str] = None
+    organizationNumber: Optional[str] = None
+    isPrivateIndividual: Optional[bool] = None
+    postalAddress: Optional[dict] = Field(default=None, description='{"addressLine1":"...", "postalCode":"...", "city":"..."}')
+
+
+class CreateSupplierArgs(BaseModel):
+    name: str
+    email: Optional[str] = None
+    phoneNumber: Optional[str] = None
+    organizationNumber: Optional[str] = None
+
+
+class CreateProductArgs(BaseModel):
+    name: str
+    number: Optional[str] = None
+    priceExcludingVat: Optional[float] = None
+    priceIncludingVat: Optional[float] = None
+    vatTypeId: int = Field(default=3, description="3=25% standard, 31=15% food, 32=12% transport, 5=0%")
+
+
+class CreateDepartmentArgs(BaseModel):
+    name: str
+    departmentNumber: str
+
+
+class OrderLine(BaseModel):
+    description: str
+    count: float = 1
+    unitPrice: float = Field(description="Price per unit excluding VAT in NOK")
+    vatTypeId: int = Field(default=3, description="3=25%, 31=15%, 32=12%, 5=0%")
+    productNumber: Optional[str] = None
+
+
+class CreateInvoiceArgs(BaseModel):
+    customerName: Optional[str] = Field(default=None, description="Customer name to find or create")
+    customerId: Optional[int] = Field(default=None, description="Customer ID if already known")
+    customerOrgNumber: Optional[str] = None
+    invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
+    invoiceDueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    orderLines: list[OrderLine]
+
+
+class CreateOrderArgs(BaseModel):
+    customerName: Optional[str] = None
+    customerId: Optional[int] = None
+    orderDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    deliveryDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    orderLines: list[OrderLine]
+
+
+class RegisterPaymentArgs(BaseModel):
+    invoiceId: Optional[int] = Field(default=None, description="Invoice ID. If not provided, searches for invoices.")
+    amount: float = Field(description="Payment amount. Use negative for reversal.")
+    paymentDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
+    paymentTypeId: Optional[int] = Field(default=None, description="Payment type ID. Auto-detected if not provided.")
+
+
+class CreateCreditNoteArgs(BaseModel):
+    invoiceId: Optional[int] = Field(default=None, description="Invoice ID. Searches if not provided.")
+    date: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
+    comment: Optional[str] = None
+
+
+class VoucherPosting(BaseModel):
+    accountNumber: int = Field(description="Account number from chart of accounts (e.g. 5000 for salary, 1920 for bank)")
+    amountGross: float = Field(description="Positive=debit, negative=credit. Postings must sum to zero.")
+    vatTypeId: Optional[int] = None
+    description: Optional[str] = None
+
+
+class CreateVoucherArgs(BaseModel):
+    date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    description: str
+    postings: list[VoucherPosting]
+
+
+class CreateProjectArgs(BaseModel):
+    name: str
+    number: Optional[str] = None
+    customerId: Optional[int] = None
+    projectManagerId: Optional[int] = Field(default=None, description="Employee ID. Uses first employee if not provided.")
+    isInternal: bool = False
+    startDate: Optional[str] = None
+    endDate: Optional[str] = None
+
+
+class ActivateModuleArgs(BaseModel):
+    name: str = Field(description="Module name: PROJECT, SMART_PROJECT, TIME_TRACKING, LOGISTICS, OCR, etc.")
+
+
+class GenericApiCallArgs(BaseModel):
+    """Fallback for any API call not covered by typed tools."""
+    method: str = Field(description="HTTP method: GET, POST, PUT, DELETE")
+    path: str = Field(description="API path, e.g. /employee/123")
+    params: Optional[dict] = Field(default=None, description="Query parameters")
+    body: Optional[dict] = Field(default=None, description="JSON request body")
+
+
+# --- Build the agent ---
+
+agent = Agent(
+    OpenRouterModel(MODEL),
+    deps_type=AgentDeps,
+    system_prompt="",  # Set dynamically per run
+    retries=2,
+)
+
+
+# --- Register tools ---
+
+@agent.tool
+async def discover_sandbox(ctx: RunContext[AgentDeps], args: DiscoverSandboxArgs) -> str:
+    """Discover what exists in the sandbox: employees, customers, invoices, departments, payment types."""
+    result = await ACTIONS["discover_sandbox"](ctx.deps.client, {})
+    return json.dumps(result, ensure_ascii=False, default=str)[:4000]
+
+
+@agent.tool
+async def create_employee(ctx: RunContext[AgentDeps], args: CreateEmployeeArgs) -> str:
+    """Create an employee. Handles department lookup automatically."""
+    result = await ACTIONS["create_employee"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_customer(ctx: RunContext[AgentDeps], args: CreateCustomerArgs) -> str:
+    """Create a customer."""
+    result = await ACTIONS["create_customer"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_supplier(ctx: RunContext[AgentDeps], args: CreateSupplierArgs) -> str:
+    """Register a supplier."""
+    result = await ACTIONS["create_supplier"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_product(ctx: RunContext[AgentDeps], args: CreateProductArgs) -> str:
+    """Create a product. vatTypeId defaults to 3 (25% MVA)."""
+    result = await ACTIONS["create_product"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_department(ctx: RunContext[AgentDeps], args: CreateDepartmentArgs) -> str:
+    """Create a department."""
+    result = await ACTIONS["create_department"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_invoice(ctx: RunContext[AgentDeps], args: CreateInvoiceArgs) -> str:
+    """Create an invoice. Handles bank account setup, customer lookup/creation, and order line formatting automatically."""
+    result = await ACTIONS["create_invoice"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+
+
+@agent.tool
+async def create_order(ctx: RunContext[AgentDeps], args: CreateOrderArgs) -> str:
+    """Create an order (not yet invoiced)."""
+    result = await ACTIONS["create_order"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:3000]
+
+
+@agent.tool
+async def register_payment(ctx: RunContext[AgentDeps], args: RegisterPaymentArgs) -> str:
+    """Register payment on an invoice. Use negative amount for reversal. Finds invoice and payment type automatically."""
+    result = await ACTIONS["register_payment"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_credit_note(ctx: RunContext[AgentDeps], args: CreateCreditNoteArgs) -> str:
+    """Create a credit note to cancel an invoice. Finds the invoice automatically if invoiceId not provided."""
+    result = await ACTIONS["create_credit_note"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_voucher(ctx: RunContext[AgentDeps], args: CreateVoucherArgs) -> str:
+    """Create a journal entry / voucher. Postings must balance (sum to zero). Uses account numbers from chart of accounts."""
+    result = await ACTIONS["create_voucher"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def create_project(ctx: RunContext[AgentDeps], args: CreateProjectArgs) -> str:
+    """Create a project. Activates the PROJECT module automatically."""
+    result = await ACTIONS["create_project"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:2000]
+
+
+@agent.tool
+async def activate_module(ctx: RunContext[AgentDeps], args: ActivateModuleArgs) -> str:
+    """Activate a Tripletex module (PROJECT, SMART_PROJECT, TIME_TRACKING, etc.)."""
+    result = await ACTIONS["activate_module"](ctx.deps.client, args.model_dump())
+    return json.dumps(result, ensure_ascii=False, default=str)[:1000]
+
+
+@agent.tool
+async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
+    """Fallback: make any Tripletex API call. Use only when no typed tool fits."""
+    result = await ACTIONS["generic_api_call"](ctx.deps.client, args.model_dump(exclude_none=True))
+    return json.dumps(result, ensure_ascii=False, default=str)[:4000]
+
+
+# --- Core prompt ---
+
+CORE_PROMPT = """You are an expert Tripletex accounting agent. Complete the task by calling the available tools.
+
+KEY FACTS:
+- Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
+- Start with discover_sandbox to see what exists.
+- For invoices: create_invoice handles bank account setup and customer creation automatically.
+- For admin/administrator roles: use userType="EXTENDED" in create_employee.
+- VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
+- Dates must be YYYY-MM-DD format.
+- If a typed tool doesn't exist for what you need, use generic_api_call as fallback.
+
+Complete the task efficiently, then stop."""
 
 
 def build_system_prompt(playbook: dict | None = None) -> str:
-    """Build system prompt: core + injected playbook."""
+    """Build system prompt: core + optional playbook tips."""
     parts = [CORE_PROMPT]
-
-    if playbook:
-        pb_text = f"\n## TASK-SPECIFIC PLAYBOOK: {playbook.get('family', 'unknown').upper()}\n"
-        pb_text += f"Description: {playbook.get('description', '')}\n"
-
-        if playbook.get("preflight"):
-            pb_text += "\nPreflight steps:\n"
-            for step in playbook["preflight"]:
-                pb_text += f"- {step}\n"
-
-        if playbook.get("endpoints"):
-            pb_text += "\nEndpoints:\n"
-            for ep in playbook["endpoints"]:
-                pb_text += f"- {ep}\n"
-
-        if playbook.get("common_errors"):
-            pb_text += "\nCommon errors to avoid:\n"
-            for err in playbook["common_errors"]:
-                pb_text += f"- {err}\n"
-
-        if playbook.get("tips"):
-            pb_text += f"\nTips: {playbook['tips']}\n"
-
-        parts.append(pb_text)
-
+    if playbook and playbook.get("tips"):
+        parts.append(f"\nTask hint: {playbook['tips']}")
     return "\n".join(parts)
 
 
+# --- Run the agent ---
+
 async def run_agent(api_client: TripletexClient, prompt: str, files: list = None, playbook: dict = None) -> dict:
-    """Run the agentic tool-use loop with optional playbook context."""
+    """Run the Pydantic AI agent."""
     start_time = time.time()
 
     system_prompt = build_system_prompt(playbook)
 
-    # Build user message
     user_content = prompt
     if files:
         file_descriptions = "\n".join(
@@ -189,102 +298,23 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
         )
         user_content += f"\n\nAttached files:\n{file_descriptions}"
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_content},
-    ]
+    deps = AgentDeps(client=api_client)
 
-    max_iterations = 25
-    for iteration in range(max_iterations):
-        elapsed = time.time() - start_time
-        if elapsed > 240:  # Leave 60s buffer from 300s timeout
-            log.warning(f"Agent timeout after {elapsed:.0f}s, {iteration} iterations")
-            break
+    # Override system prompt for this run
+    agent._system_prompts = (system_prompt,)
 
-        log.info(f"Agent iteration {iteration + 1}, elapsed={elapsed:.1f}s")
+    result = await agent.run(user_content, deps=deps)
 
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=messages,
-            tools=TOOLS,
-            tool_choice="auto",
-            temperature=0,
-        )
-
-        msg = response.choices[0].message
-
-        # Build message dict for appending
-        msg_dict = {"role": "assistant", "content": msg.content or ""}
-        if msg.tool_calls:
-            msg_dict["tool_calls"] = [
-                {
-                    "id": tc.id,
-                    "type": "function",
-                    "function": {"name": tc.function.name, "arguments": tc.function.arguments}
-                }
-                for tc in msg.tool_calls
-            ]
-        messages.append(msg_dict)
-
-        # If no tool calls, agent is done
-        if not msg.tool_calls:
-            log.info(f"Agent completed in {iteration + 1} iterations, {elapsed:.1f}s")
-            break
-
-        # Execute each tool call
-        for tc in msg.tool_calls:
-            result = await _execute_tool(api_client, tc)
-            # Truncate large results
-            result_str = json.dumps(result, ensure_ascii=False, default=str)
-            if len(result_str) > 4000:
-                result_str = result_str[:4000] + "...(truncated)"
-            messages.append({
-                "role": "tool",
-                "tool_call_id": tc.id,
-                "content": result_str,
-            })
-
-    stats = api_client.get_stats()
     elapsed = time.time() - start_time
+    stats = api_client.get_stats()
+
+    # Extract output - try .output first (newer pydantic-ai), then .data
+    output = getattr(result, 'output', None) or getattr(result, 'data', None) or str(result)
+
     return {
-        "iterations": iteration + 1,
+        "iterations": stats["total_calls"],
         "elapsed_seconds": round(elapsed, 1),
         "api_calls": stats["total_calls"],
         "api_errors": stats["errors_4xx"],
-        "final_message": msg.content if msg else None,
+        "final_message": output if isinstance(output, str) else str(output),
     }
-
-
-async def _execute_tool(api_client: TripletexClient, tool_call) -> dict:
-    """Execute a single tool call against the Tripletex API."""
-    name = tool_call.function.name
-    try:
-        args = json.loads(tool_call.function.arguments)
-    except json.JSONDecodeError:
-        return {"error": f"Invalid JSON in tool arguments: {tool_call.function.arguments[:200]}"}
-
-    path = args.get("path", "")
-    body = args.get("body")
-    params = args.get("params")
-
-    try:
-        if name == "tripletex_get":
-            return await api_client.get(path, params=params)
-        elif name == "tripletex_post":
-            return await api_client.post(path, json=body)
-        elif name == "tripletex_put":
-            return await api_client.put(path, json=body, params=params)
-        elif name == "tripletex_delete":
-            return await api_client.delete(path)
-        else:
-            return {"error": f"Unknown tool: {name}"}
-    except Exception as e:
-        error_msg = str(e)
-        # Try to extract response body for HTTP errors
-        if hasattr(e, 'response'):
-            try:
-                error_msg = e.response.text[:1000]
-            except Exception:
-                pass
-        log.warning(f"Tool {name} {path} failed: {error_msg[:200]}")
-        return {"error": error_msg[:1000]}

@@ -1,0 +1,20 @@
+# SUPPLIER API Endpoints
+
+GET /supplier/{id} — Get supplier by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /supplier/{id} — Update supplier. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, email: string, bankAccounts: array, invoiceEmail: string, overdueNoticeEmail: string,}
+
+DELETE /supplier/{id} — Delete supplier by ID
+  Required params: id (path, REQUIRED)
+
+GET /supplier — Find suppliers corresponding with sent data.
+
+POST /supplier — Create supplier. Related supplier addresses may also be created.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, email: string, bankAccounts: array, invoiceEmail: string, overdueNoticeEmail: string,}
+
+PUT /supplier/list — Update multiple suppliers. Addresses can also be updated.
+
+POST /supplier/list — Create multiple suppliers. Related supplier addresses may also be created.

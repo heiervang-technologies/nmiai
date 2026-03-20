@@ -1,0 +1,271 @@
+# TRAVEL_EXPENSE API Endpoints
+
+GET /travelExpense/accommodationAllowance/{id} — Get travel accommodation allowance by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/accommodationAllowance/{id} — Update accommodation allowance.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number}
+
+DELETE /travelExpense/accommodationAllowance/{id} — Delete accommodation allowance.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/accommodationAllowance/{id} — Get travel accommodation allowance by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/accommodationAllowance/{id} — Update accommodation allowance.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number}
+
+DELETE /travelExpense/accommodationAllowance/{id} — Delete accommodation allowance.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/accommodationAllowance — Find accommodation allowances corresponding with sent data.
+
+POST /travelExpense/accommodationAllowance — Create accommodation allowance.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number}
+
+GET /travelExpense/accommodationAllowance — Find accommodation allowances corresponding with sent data.
+
+POST /travelExpense/accommodationAllowance — Create accommodation allowance.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number}
+
+GET /travelExpense/cost/{id} — Get cost by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/cost/{id} — Update cost.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, }
+
+DELETE /travelExpense/cost/{id} — Delete cost.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/cost/{id} — Get cost by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/cost/{id} — Update cost.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, }
+
+DELETE /travelExpense/cost/{id} — Delete cost.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/cost — Find costs corresponding with sent data.
+
+POST /travelExpense/cost — Create cost.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, }
+
+GET /travelExpense/cost — Find costs corresponding with sent data.
+
+POST /travelExpense/cost — Create cost.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, }
+
+PUT /travelExpense/cost/list — Update costs.
+
+PUT /travelExpense/cost/list — Update costs.
+
+POST /travelExpense/costParticipant/createCostParticipantAdvanced — Create participant on cost using explicit parameters
+  Required params: costId (query, REQUIRED), employeeId (query, REQUIRED)
+
+GET /travelExpense/costParticipant/{id} — Get cost participant by ID.
+  Required params: id (path, REQUIRED)
+
+DELETE /travelExpense/costParticipant/{id} — Delete cost participant.
+  Required params: id (path, REQUIRED)
+
+POST /travelExpense/costParticipant/list — Create participants on cost.
+
+DELETE /travelExpense/costParticipant/list — Delete cost participants.
+
+GET /travelExpense/costParticipant/{costId}/costParticipants — Get cost's participants by costId.
+  Required params: costId (path, REQUIRED)
+
+POST /travelExpense/costParticipant — Create participant on cost.
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, employeeId: integer, cost: Cost}
+
+GET /travelExpense/drivingStop/{id} — Get driving stop by ID.
+  Required params: id (path, REQUIRED)
+
+DELETE /travelExpense/drivingStop/{id} — Delete mileage allowance stops.
+  Required params: id (path, REQUIRED)
+
+POST /travelExpense/drivingStop — Create mileage allowance driving stop.
+  Body: {id: integer, version: integer, changes: array, url: string, locationName: string, latitude: number, longitude: number, sortIndex: integer, type: integer, mileageAllowance: MileageAllowance}
+
+GET /travelExpense/mileageAllowance/{id} — Get mileage allowance by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/mileageAllowance/{id} — Update mileage allowance.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: }
+
+DELETE /travelExpense/mileageAllowance/{id} — Delete mileage allowance.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/mileageAllowance/{id} — Get mileage allowance by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/mileageAllowance/{id} — Update mileage allowance.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: }
+
+DELETE /travelExpense/mileageAllowance/{id} — Delete mileage allowance.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/mileageAllowance — Find mileage allowances corresponding with sent data.
+
+POST /travelExpense/mileageAllowance — Create mileage allowance.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: }
+
+GET /travelExpense/mileageAllowance — Find mileage allowances corresponding with sent data.
+
+POST /travelExpense/mileageAllowance — Create mileage allowance.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: }
+
+GET /travelExpense/passenger/{id} — Get passenger by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/passenger/{id} — Update passenger.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, mileageAllowance: MileageAllowance}
+
+DELETE /travelExpense/passenger/{id} — Delete passenger.
+  Required params: id (path, REQUIRED)
+
+POST /travelExpense/passenger/list — Create passengers.
+
+DELETE /travelExpense/passenger/list — Delete passengers.
+
+GET /travelExpense/passenger — Find passengers corresponding with sent data.
+
+POST /travelExpense/passenger — Create passenger.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, mileageAllowance: MileageAllowance}
+
+GET /travelExpense/perDiemCompensation/{id} — Get per diem compensation by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/perDiemCompensation/{id} — Update per diem compensation.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: }
+
+DELETE /travelExpense/perDiemCompensation/{id} — Delete per diem compensation.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/perDiemCompensation/{id} — Get per diem compensation by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/perDiemCompensation/{id} — Update per diem compensation.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: }
+
+DELETE /travelExpense/perDiemCompensation/{id} — Delete per diem compensation.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/perDiemCompensation — Find per diem compensations corresponding with sent data.
+
+POST /travelExpense/perDiemCompensation — Create per diem compensation.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: }
+
+GET /travelExpense/perDiemCompensation — Find per diem compensations corresponding with sent data.
+
+POST /travelExpense/perDiemCompensation — Create per diem compensation.
+  Body: {id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: }
+
+PUT /travelExpense/:approve — Approve travel expenses.
+
+PUT /travelExpense/{id}/convert — Convert travel to/from employee expense.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/:copy — Copy travel expense.
+  Required params: id (query, REQUIRED)
+
+PUT /travelExpense/:createVouchers — Create vouchers
+  Required params: date (query, REQUIRED)
+
+GET /travelExpense/{id} — Get travel expense by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /travelExpense/{id} — Update travel expense.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: Ac}
+
+DELETE /travelExpense/{id} — Delete travel expense.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/{travelExpenseId}/attachment — Get attachment by travel expense ID.
+  Required params: travelExpenseId (path, REQUIRED)
+
+POST /travelExpense/{travelExpenseId}/attachment — Upload attachment to travel expense.
+  Required params: travelExpenseId (path, REQUIRED)
+  Body: {file: string}
+
+DELETE /travelExpense/{travelExpenseId}/attachment — Delete attachment.
+  Required params: travelExpenseId (path, REQUIRED)
+
+PUT /travelExpense/:deliver — Deliver travel expenses.
+
+GET /travelExpense — Find travel expenses corresponding with sent data.
+
+POST /travelExpense — Create travel expense.
+  Body: {id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: Ac}
+
+PUT /travelExpense/:unapprove — Unapprove travel expenses.
+
+PUT /travelExpense/:undeliver — Undeliver travel expenses.
+  Body: {id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: Ac}
+
+POST /travelExpense/{travelExpenseId}/attachment/list — Upload multiple attachments to travel expense.
+  Required params: travelExpenseId (path, REQUIRED)
+  Body: {file: array}
+
+GET /travelExpense/rate/{id} — Get travel expense rate by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/rate/{id} — Get travel expense rate by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/rate — Find rates corresponding with sent data.
+
+GET /travelExpense/rate — Find rates corresponding with sent data.
+
+GET /travelExpense/rateCategory/{id} — Get travel expense rate category by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/rateCategory/{id} — Get travel expense rate category by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/rateCategory — Find rate categories corresponding with sent data.
+
+GET /travelExpense/rateCategory — Find rate categories corresponding with sent data.
+
+GET /travelExpense/rateCategoryGroup/{id} — Get travel report rate category group by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/rateCategoryGroup — Find rate categoriy groups corresponding with sent data.
+
+GET /travelExpense/costCategory/{id} — Get cost category by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/costCategory/{id} — Get cost category by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/costCategory — Find cost category corresponding with sent data.
+
+GET /travelExpense/costCategory — Find cost category corresponding with sent data.
+
+GET /travelExpense/paymentType/{id} — Get payment type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/paymentType/{id} — Get payment type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/paymentType — Find payment type corresponding with sent data.
+
+GET /travelExpense/paymentType — Find payment type corresponding with sent data.
+
+GET /travelExpense/settings — Get travel expense settings of logged in company.
+
+GET /travelExpense/zone/{id} — Get travel expense zone by ID.
+  Required params: id (path, REQUIRED)
+
+GET /travelExpense/zone — Find travel expense zones corresponding with sent data.

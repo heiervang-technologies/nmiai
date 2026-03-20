@@ -1,0 +1,112 @@
+{
+  "family": "company",
+  "endpoint_count": 10,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/company/>withLoginAccess",
+      "summary": "Returns client customers (with accountant/auditor relation) where the current user has login access (proxy login).",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/company/{id}",
+      "summary": "Find company by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/company/divisions",
+      "summary": "[DEPRECATED] Find divisions.",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/company",
+      "summary": "Update company information.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, startDate: string, endDate: string, organizationNumber: string, email: string, phoneNumber: string, phoneNumberMobile: string, faxNumber: string, address: Address, type: string, currency: Currency, accountantOrSimilar: boolean, companyMigration: string, invoiceShowDeliveryDate: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/company/settings/altinn",
+      "summary": "Find Altinn id for login in company.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/company/settings/altinn",
+      "summary": "Update AltInn id and password.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "altInnId: integer, altInnPassword: string"
+    },
+    {
+      "method": "GET",
+      "path": "/company/salesmodules",
+      "summary": "[BETA] Get active sales modules.",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/company/salesmodules",
+      "summary": "[BETA] Add (activate) a new sales module.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "name: string, costStartDate: string"
+    },
+    {
+      "method": "GET",
+      "path": "/company/salesmodules",
+      "summary": "[BETA] Get active sales modules.",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/company/salesmodules",
+      "summary": "[BETA] Add (activate) a new sales module.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "name: string, costStartDate: string"
+    }
+  ]
+}

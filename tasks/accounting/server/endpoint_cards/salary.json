@@ -1,0 +1,350 @@
+{
+  "family": "salary",
+  "endpoint_count": 33,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/salary/taxDeduction/reconciliation/{reconciliationId}/overview",
+      "summary": "Get salary tax deduction data for the reconciliation table",
+      "required_params": [
+        "reconciliationId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/taxDeduction/reconciliation/{reconciliationId}/paymentsOverview",
+      "summary": "Get salary tax deduction payment overview from start of year to the current reconciliation term",
+      "required_params": [
+        "reconciliationId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/taxDeduction/reconciliation/{reconciliationId}/balanceAndOwedAmount",
+      "summary": "Get tax deduction details for a reconciliation",
+      "required_params": [
+        "reconciliationId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/taxDeduction/reconciliation/context",
+      "summary": "Create a taxDeduction reconciliation context for a customer",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "customerId: integer, year: integer, term: integer"
+    },
+    {
+      "method": "GET",
+      "path": "/salary/type/{id}",
+      "summary": "Find salary type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/type",
+      "summary": "Find salary type corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "number (query)",
+        "name (query)",
+        "description (query)",
+        "showInTimesheet (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings",
+      "summary": "Get salary settings of logged in company.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings",
+      "summary": "Update settings of logged in company.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "municipality: Municipality, payrollTaxCalcMethod: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings/holiday/list",
+      "summary": "Update multiple holiday settings of current logged in company.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/settings/holiday/list",
+      "summary": "Create multiple holiday settings of current logged in company.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/salary/settings/holiday/list",
+      "summary": "Delete multiple holiday settings of current logged in company.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/holiday",
+      "summary": "Find holiday settings of current logged in company.",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/settings/holiday",
+      "summary": "Create a holiday setting of current logged in company.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, year: integer, days: number, vacationPayPercentage1: number, vacationPayPercentage2: number, isMaxPercentage2Amount6G: boolean"
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings/holiday/{id}",
+      "summary": "Update a holiday setting of current logged in company.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, year: integer, days: number, vacationPayPercentage1: number, vacationPayPercentage2: number, isMaxPercentage2Amount6G: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/pensionScheme/{id}",
+      "summary": "Get Pension Scheme for a specific ID",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings/pensionScheme/{id}",
+      "summary": "Update a Pension Scheme",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, pensionSchemeId: integer, number: string, startDate: string, endDate: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/salary/settings/pensionScheme/{id}",
+      "summary": "Delete a Pension Scheme",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings/pensionScheme/list",
+      "summary": "Update multiple Pension Schemes.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/settings/pensionScheme/list",
+      "summary": "Create multiple Pension Schemes.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/salary/settings/pensionScheme/list",
+      "summary": "Delete multiple Pension Schemes.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/pensionScheme",
+      "summary": "Find pension schemes.",
+      "required_params": [],
+      "optional_params": [
+        "number (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/settings/pensionScheme",
+      "summary": "Create a Pension Scheme.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, pensionSchemeId: integer, number: string, startDate: string, endDate: string"
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/standardTime/{id}",
+      "summary": "Find standard time by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/settings/standardTime/{id}",
+      "summary": "Update standard time. ",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, company: Company, fromDate: string, hoursPerDay: number"
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/standardTime/byDate",
+      "summary": "Find standard time by date",
+      "required_params": [],
+      "optional_params": [
+        "date (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/salary/settings/standardTime",
+      "summary": "Get all standard times.",
+      "required_params": [],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/settings/standardTime",
+      "summary": "Create standard time.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, company: Company, fromDate: string, hoursPerDay: number"
+    },
+    {
+      "method": "GET",
+      "path": "/salary/transaction/{id}",
+      "summary": "Find salary transaction by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/salary/transaction/{id}",
+      "summary": "Delete salary transaction by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/salary/transaction/{id}/deleteAttachment",
+      "summary": "Delete attachment.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "sendToVoucherInbox (query)",
+        "split (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/salary/transaction",
+      "summary": "Create a new salary transaction.",
+      "required_params": [],
+      "optional_params": [
+        "generateTaxDeduction (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, date: string, year: integer, month: integer, isHistorical: boolean, paySlipsAvailableDate: string, payslips: array"
+    },
+    {
+      "method": "POST",
+      "path": "/salary/transaction/{id}/attachment",
+      "summary": "Upload an attachment to a salary transaction",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "POST",
+      "path": "/salary/transaction/{id}/attachment/list",
+      "summary": "Upload multiple attachments to a salary transaction",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: array"
+    }
+  ]
+}

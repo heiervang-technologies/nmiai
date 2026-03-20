@@ -1,0 +1,114 @@
+# TIMESHEET API Endpoints
+
+GET /activity/{id} — Find activity by ID.
+  Required params: id (path, REQUIRED)
+
+POST /activity/list — Add multiple activities.
+
+GET /activity/>forTimeSheet — Find applicable time sheet activities for an employee on a specific day.
+  Required params: projectId (query, REQUIRED)
+
+GET /activity — Find activities corresponding with sent data.
+
+POST /activity — Add activity.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, activityType: string, isProjectActivity: boolean, isGeneral: boolean, isTask: boolean, isDisabled: boolean, isChargeable: boolean, rate: number, costPercentage: number, displayName: string,}
+
+PUT /timesheet/allocated/{id}/:approve — Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry as approved. The hours will be copied to the time sheet if the relevant week/month is not approved, and there are no interfering time clocks that are active. A notification will be sent to the entry's employee if the entry's approval status or comment has changed.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/allocated/:approveList — Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry/entries as approved. The hours will be copied to the time sheet if the relevant weeks/months are not approved, and there are no interfering time clocks that are active. Notifications will be sent to the entries' employees if the entries' approval statuses or comments have changed. If IDs are provided, the other args are ignored.
+
+GET /timesheet/allocated/{id} — Find allocated hour entry by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/allocated/{id} — Update allocated hour entry by ID. Note: Allocated hour entry object fields which are present but not set, or set to 0, will be nulled. Only holiday/vacation hours can receive comments. A notification will be sent to the entry's employee if the entry's comment has changed.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, date: string, hours: number, isApproved: boolean, managerComment: string}
+
+DELETE /timesheet/allocated/{id} — Delete allocated hour entry by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/allocated/list — Update allocated hour entry. Multiple objects for different users can be sent in the same request. Note: Allocated hour entry object fields which are present but not set, or set to 0, will be nulled. Only holiday/vacation hours can receive comments. Notifications will be sent to the entries' employees if the entries' comments have changed.
+
+POST /timesheet/allocated/list — Add new allocated hour entry. Multiple objects for several users can be sent in the same request. Only holiday/vacation hours can receive comments. Notifications will be sent to the entries' employees if the entries have comments.
+
+GET /timesheet/allocated — Find allocated hour entries corresponding with sent data.
+
+POST /timesheet/allocated — Add new allocated hour entry. Only one entry per employee/date/activity/project combination is supported. Only holiday/vacation hours can receive comments. A notification will be sent to the entry's employee if the entry has a comment.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, date: string, hours: number, isApproved: boolean, managerComment: string}
+
+PUT /timesheet/allocated/{id}/:unapprove — Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry as unapproved. A notification will be sent to the entry's employee if the entry's approval status or comment has changed.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/allocated/:unapproveList — Only for allocated hours on the company's internal holiday/vacation activity. Mark the allocated hour entry/entries as unapproved. Notifications will be sent to the entries' employees if the entries' approval statuses or comments have changed. If IDs are provided, the other args are ignored.
+
+GET /timesheet/entry/{id} — Find timesheet entry by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/entry/{id} — Update timesheet entry by ID. Note: Timesheet entry object fields which are present but not set, or set to 0, will be nulled.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, activity: Activity, date: string, hours: number, chargeableHours: number, employee: Employee, timeClocks: array, comment: string, locked: boolean, chargeable: boolean, invoice: Invoice, hourlyRate: number, hourlyCost: numb}
+
+DELETE /timesheet/entry/{id} — Delete timesheet entry by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/entry/list — Update timesheet entry. Multiple objects for different users can be sent in the same request.
+
+POST /timesheet/entry/list — Add new timesheet entry. Multiple objects for several users can be sent in the same request.
+
+GET /timesheet/entry — Find timesheet entry corresponding with sent data.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED)
+
+POST /timesheet/entry — Add new timesheet entry. Only one entry per employee/date/activity/project combination is supported.
+  Body: {id: integer, version: integer, changes: array, url: string, project: Project, activity: Activity, date: string, hours: number, chargeableHours: number, employee: Employee, timeClocks: array, comment: string, locked: boolean, chargeable: boolean, invoice: Invoice, hourlyRate: number, hourlyCost: numb}
+
+GET /timesheet/entry/>recentActivities — Find recently used timesheet activities.
+  Required params: projectId (query, REQUIRED)
+
+GET /timesheet/entry/>recentProjects — Find projects with recent activities (timesheet entry registered).
+
+GET /timesheet/entry/>totalHours — Find total hours registered on an employee in a specific period.
+
+PUT /timesheet/month/:approve — approve month(s).  If id is provided the other args are ignored
+
+PUT /timesheet/month/:complete — complete month(s).  If id is provided the other args are ignored
+
+GET /timesheet/month/{id} — Find monthly status entry by ID.
+  Required params: id (path, REQUIRED)
+
+GET /timesheet/month/byMonthNumber — Find monthly status for given month.
+  Required params: employeeIds (query, REQUIRED), monthYear (query, REQUIRED)
+
+GET /timesheet/month/byMonthNumberList — Find monthly status for given month list.
+  Required params: employeeIds (query, REQUIRED), monthYearList (query, REQUIRED)
+
+PUT /timesheet/month/:reopen — reopen month(s).  If id is provided the other args are ignored
+
+PUT /timesheet/month/:unapprove — unapprove month(s).  If id is provided the other args are ignored
+
+GET /timesheet/timeClock/{id} — Find time clock entry by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/timeClock/{id} — Update time clock by ID.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, project: Project, activity: Activity, timesheetEntry: TimesheetEntry, date: string, timeStart: string, timeStop: string, hoursStart: number, lunchBreakDuration: number, newTimeSheetEntryComment: string}
+
+GET /timesheet/timeClock — Find time clock entries corresponding with sent data.
+
+GET /timesheet/timeClock/present — Find a user’s present running time clock.
+
+PUT /timesheet/timeClock/:start — Start time clock.
+  Required params: activityId (query, REQUIRED)
+
+PUT /timesheet/timeClock/{id}/:stop — Stop time clock.
+  Required params: id (path, REQUIRED)
+
+PUT /timesheet/week/:approve — Approve week. By ID or (ISO-8601 week and employeeId combination).
+
+PUT /timesheet/week/:complete — Complete week. By ID or (ISO-8601 week and employeeId combination).
+
+PUT /timesheet/week/:reopen — Reopen week. By ID or (ISO-8601 week and employeeId combination).
+
+GET /timesheet/week — Find weekly status By ID, week/year combination, employeeId or an approver
+
+PUT /timesheet/week/:unapprove — Unapprove week. By ID or (ISO-8601 week and employeeId combination).

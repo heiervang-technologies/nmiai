@@ -1,0 +1,90 @@
+{
+  "family": "department",
+  "endpoint_count": 8,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/department/{id}",
+      "summary": "Get department by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/department/{id}",
+      "summary": "Update department.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, departmentNumber: string, departmentManager: Employee, displayName: string, isInactive: boolean, businessActivityTypeId: integer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/department/{id}",
+      "summary": "Delete department by ID",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/department",
+      "summary": "Find department corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "departmentNumber (query)",
+        "departmentManagerId (query)",
+        "isInactive (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/department",
+      "summary": "Add new department.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, departmentNumber: string, departmentManager: Employee, displayName: string, isInactive: boolean, businessActivityTypeId: integer"
+    },
+    {
+      "method": "PUT",
+      "path": "/department/list",
+      "summary": "Update multiple departments.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/department/list",
+      "summary": "Register new departments.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/department/query",
+      "summary": "Wildcard search.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "query (query)",
+        "count (query)",
+        "fields (query)",
+        "isInactive (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

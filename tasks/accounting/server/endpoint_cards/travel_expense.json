@@ -1,0 +1,1073 @@
+{
+  "family": "travel_expense",
+  "endpoint_count": 96,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Get travel accommodation allowance by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Update accommodation allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Delete accommodation allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Get travel accommodation allowance by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Update accommodation allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/accommodationAllowance/{id}",
+      "summary": "Delete accommodation allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/accommodationAllowance",
+      "summary": "Find accommodation allowances corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "rateFrom (query)",
+        "rateTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/accommodationAllowance",
+      "summary": "Create accommodation allowance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/accommodationAllowance",
+      "summary": "Find accommodation allowances corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "rateFrom (query)",
+        "rateTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/accommodationAllowance",
+      "summary": "Create accommodation allowance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, zone: string, location: string, address: string, count: integer, rate: number, amount: number"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Get cost by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Update cost.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, amountNOKInclVATLow: number, amountNOKInclVATMedium: number, amountNOKInclVATHigh: number, isPaidByEmployee: boolean, isChargeable: boolean, date: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Delete cost.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Get cost by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Update cost.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, amountNOKInclVATLow: number, amountNOKInclVATMedium: number, amountNOKInclVATHigh: number, isPaidByEmployee: boolean, isChargeable: boolean, date: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/cost/{id}",
+      "summary": "Delete cost.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/cost",
+      "summary": "Find costs corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "vatTypeId (query)",
+        "currencyId (query)",
+        "rateFrom (query)",
+        "rateTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/cost",
+      "summary": "Create cost.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, amountNOKInclVATLow: number, amountNOKInclVATMedium: number, amountNOKInclVATHigh: number, isPaidByEmployee: boolean, isChargeable: boolean, date: string"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/cost",
+      "summary": "Find costs corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "vatTypeId (query)",
+        "currencyId (query)",
+        "rateFrom (query)",
+        "rateTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/cost",
+      "summary": "Create cost.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, vatType: VatType, currency: Currency, costCategory: TravelCostCategory, paymentType: TravelPaymentType, category: string, comments: string, rate: number, amountCurrencyIncVat: number, amountNOKInclVAT: number, amountNOKInclVATLow: number, amountNOKInclVATMedium: number, amountNOKInclVATHigh: number, isPaidByEmployee: boolean, isChargeable: boolean, date: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/cost/list",
+      "summary": "Update costs.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/cost/list",
+      "summary": "Update costs.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/costParticipant/createCostParticipantAdvanced",
+      "summary": "Create participant on cost using explicit parameters",
+      "required_params": [
+        "costId (query, REQUIRED)",
+        "employeeId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "displayName (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costParticipant/{id}",
+      "summary": "Get cost participant by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/costParticipant/{id}",
+      "summary": "Delete cost participant.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/costParticipant/list",
+      "summary": "Create participants on cost.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/costParticipant/list",
+      "summary": "Delete cost participants.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costParticipant/{costId}/costParticipants",
+      "summary": "Get cost's participants by costId.",
+      "required_params": [
+        "costId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/costParticipant",
+      "summary": "Create participant on cost.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, displayName: string, employeeId: integer, cost: Cost"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/drivingStop/{id}",
+      "summary": "Get driving stop by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/drivingStop/{id}",
+      "summary": "Delete mileage allowance stops.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/drivingStop",
+      "summary": "Create mileage allowance driving stop.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, locationName: string, latitude: number, longitude: number, sortIndex: integer, type: integer, mileageAllowance: MileageAllowance"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Get mileage allowance by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Update mileage allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: integer, passengers: array, passengerSupplement: MileageAllowance, trailerSupplement: MileageAllowance, tollCost: Cost, drivingStops: array"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Delete mileage allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Get mileage allowance by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Update mileage allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: integer, passengers: array, passengerSupplement: MileageAllowance, trailerSupplement: MileageAllowance, tollCost: Cost, drivingStops: array"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/mileageAllowance/{id}",
+      "summary": "Delete mileage allowance.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/mileageAllowance",
+      "summary": "Find mileage allowances corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "kmFrom (query)",
+        "kmTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/mileageAllowance",
+      "summary": "Create mileage allowance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: integer, passengers: array, passengerSupplement: MileageAllowance, trailerSupplement: MileageAllowance, tollCost: Cost, drivingStops: array"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/mileageAllowance",
+      "summary": "Find mileage allowances corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "kmFrom (query)",
+        "kmTo (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/mileageAllowance",
+      "summary": "Create mileage allowance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, date: string, departureLocation: string, destination: string, km: number, rate: number, amount: number, isCompanyCar: boolean, vehicleType: integer, passengers: array, passengerSupplement: MileageAllowance, trailerSupplement: MileageAllowance, tollCost: Cost, drivingStops: array"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/passenger/{id}",
+      "summary": "Get passenger by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/passenger/{id}",
+      "summary": "Update passenger.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, mileageAllowance: MileageAllowance"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/passenger/{id}",
+      "summary": "Delete passenger.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/passenger/list",
+      "summary": "Create passengers.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/passenger/list",
+      "summary": "Delete passengers.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/passenger",
+      "summary": "Find passengers corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "mileageAllowance (query)",
+        "name (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/passenger",
+      "summary": "Create passenger.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, mileageAllowance: MileageAllowance"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Get per diem compensation by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Update per diem compensation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: number, amount: number, isDeductionForBreakfast: boolean, isDeductionForLunch: boolean, isDeductionForDinner: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Delete per diem compensation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Get per diem compensation by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Update per diem compensation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: number, amount: number, isDeductionForBreakfast: boolean, isDeductionForLunch: boolean, isDeductionForDinner: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/perDiemCompensation/{id}",
+      "summary": "Delete per diem compensation.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/perDiemCompensation",
+      "summary": "Find per diem compensations corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "overnightAccommodation (query)",
+        "countFrom (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/perDiemCompensation",
+      "summary": "Create per diem compensation.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: number, amount: number, isDeductionForBreakfast: boolean, isDeductionForLunch: boolean, isDeductionForDinner: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/perDiemCompensation",
+      "summary": "Find per diem compensations corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "travelExpenseId (query)",
+        "rateTypeId (query)",
+        "rateCategoryId (query)",
+        "overnightAccommodation (query)",
+        "countFrom (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/perDiemCompensation",
+      "summary": "Create per diem compensation.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, travelExpense: TravelExpense, rateType: TravelExpenseRate, rateCategory: TravelExpenseRateCategory, countryCode: string, travelExpenseZoneId: integer, overnightAccommodation: string, location: string, address: string, count: integer, rate: number, amount: number, isDeductionForBreakfast: boolean, isDeductionForLunch: boolean, isDeductionForDinner: boolean"
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:approve",
+      "summary": "Approve travel expenses.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "overrideApprovalFlow (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/{id}/convert",
+      "summary": "Convert travel to/from employee expense.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:copy",
+      "summary": "Copy travel expense.",
+      "required_params": [
+        "id (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:createVouchers",
+      "summary": "Create vouchers",
+      "required_params": [
+        "date (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/{id}",
+      "summary": "Get travel expense by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/{id}",
+      "summary": "Update travel expense.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: AccountingDimensionValue, freeDimension3: AccountingDimensionValue, payslip: Payslip, vatType: VatType, paymentCurrency: Currency, travelDetails: TravelDetails, voucher: Voucher"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/{id}",
+      "summary": "Delete travel expense.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/{travelExpenseId}/attachment",
+      "summary": "Get attachment by travel expense ID.",
+      "required_params": [
+        "travelExpenseId (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/{travelExpenseId}/attachment",
+      "summary": "Upload attachment to travel expense.",
+      "required_params": [
+        "travelExpenseId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "createNewCost (query)"
+      ],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/travelExpense/{travelExpenseId}/attachment",
+      "summary": "Delete attachment.",
+      "required_params": [
+        "travelExpenseId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)",
+        "sendToInbox (query)",
+        "split (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:deliver",
+      "summary": "Deliver travel expenses.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense",
+      "summary": "Find travel expenses corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "employeeId (query)",
+        "departmentId (query)",
+        "projectId (query)",
+        "projectManagerId (query)",
+        "departureDateFrom (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense",
+      "summary": "Create travel expense.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: AccountingDimensionValue, freeDimension3: AccountingDimensionValue, payslip: Payslip, vatType: VatType, paymentCurrency: Currency, travelDetails: TravelDetails, voucher: Voucher"
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:unapprove",
+      "summary": "Unapprove travel expenses.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/travelExpense/:undeliver",
+      "summary": "Undeliver travel expenses.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, attestationSteps: array, attestation: Attestation, project: Project, employee: Employee, approvedBy: Employee, completedBy: Employee, rejectedBy: Employee, department: Department, freeDimension1: AccountingDimensionValue, freeDimension2: AccountingDimensionValue, freeDimension3: AccountingDimensionValue, payslip: Payslip, vatType: VatType, paymentCurrency: Currency, travelDetails: TravelDetails, voucher: Voucher"
+    },
+    {
+      "method": "POST",
+      "path": "/travelExpense/{travelExpenseId}/attachment/list",
+      "summary": "Upload multiple attachments to travel expense.",
+      "required_params": [
+        "travelExpenseId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "createNewCost (query)"
+      ],
+      "body_fields": "file: array"
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rate/{id}",
+      "summary": "Get travel expense rate by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rate/{id}",
+      "summary": "Get travel expense rate by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rate",
+      "summary": "Find rates corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "rateCategoryId (query)",
+        "type (query)",
+        "isValidDayTrip (query)",
+        "isValidAccommodation (query)",
+        "isValidDomestic (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rate",
+      "summary": "Find rates corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "rateCategoryId (query)",
+        "type (query)",
+        "isValidDayTrip (query)",
+        "isValidAccommodation (query)",
+        "isValidDomestic (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategory/{id}",
+      "summary": "Get travel expense rate category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategory/{id}",
+      "summary": "Get travel expense rate category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategory",
+      "summary": "Find rate categories corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "type (query)",
+        "name (query)",
+        "travelReportRateCategoryGroupId (query)",
+        "ameldingWageCode (query)",
+        "wageCodeNumber (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategory",
+      "summary": "Find rate categories corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "type (query)",
+        "name (query)",
+        "travelReportRateCategoryGroupId (query)",
+        "ameldingWageCode (query)",
+        "wageCodeNumber (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategoryGroup/{id}",
+      "summary": "Get travel report rate category group by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/rateCategoryGroup",
+      "summary": "Find rate categoriy groups corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "name (query)",
+        "isForeignTravel (query)",
+        "dateFrom (query)",
+        "dateTo (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costCategory/{id}",
+      "summary": "Get cost category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costCategory/{id}",
+      "summary": "Get cost category by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costCategory",
+      "summary": "Find cost category corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "isInactive (query)",
+        "showOnEmployeeExpenses (query)",
+        "query (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/costCategory",
+      "summary": "Find cost category corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "isInactive (query)",
+        "showOnEmployeeExpenses (query)",
+        "query (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/paymentType/{id}",
+      "summary": "Get payment type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/paymentType/{id}",
+      "summary": "Get payment type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/paymentType",
+      "summary": "Find payment type corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "isInactive (query)",
+        "showOnEmployeeExpenses (query)",
+        "query (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/paymentType",
+      "summary": "Find payment type corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "isInactive (query)",
+        "showOnEmployeeExpenses (query)",
+        "query (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/settings",
+      "summary": "Get travel expense settings of logged in company.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/zone/{id}",
+      "summary": "Get travel expense zone by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/travelExpense/zone",
+      "summary": "Find travel expense zones corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "code (query)",
+        "isDisabled (query)",
+        "query (query)",
+        "date (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

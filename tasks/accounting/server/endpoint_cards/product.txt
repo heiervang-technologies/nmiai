@@ -1,0 +1,200 @@
+# PRODUCT API Endpoints
+
+GET /product/external/{id} — [BETA] Get external product by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/external — [BETA] Find external products corresponding with sent data. The sorting-field is not in use on this endpoint.
+
+GET /product/{id} — Get product by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /product/{id} — Update product.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, displayNumber: string, description: string, orderLineDescription: string, ean: string, elNumber: string, nrfNumber: string, costExcludingVatCurrency: number, expenses: number, expensesInPercent: number, costPri}
+
+DELETE /product/{id} — Delete product.
+  Required params: id (path, REQUIRED)
+
+POST /product/{id}/image — Upload image to product. Existing image on product will be replaced if exists
+  Required params: id (path, REQUIRED)
+  Body: {file: string}
+
+DELETE /product/{id}/image — Delete image.
+  Required params: id (path, REQUIRED)
+
+PUT /product/list — Update a list of products.
+
+POST /product/list — Add multiple products.
+
+GET /product — Find products corresponding with sent data.
+
+POST /product — Create new product.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, displayNumber: string, description: string, orderLineDescription: string, ean: string, elNumber: string, nrfNumber: string, costExcludingVatCurrency: number, expenses: number, expensesInPercent: number, costPri}
+
+GET /product/supplierProduct/{id} — Get supplierProduct by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /product/supplierProduct/{id} — Update supplierProduct.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, number: string, description: string, ean: string, costExcludingVatCurrency: number, cost: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number, isInactive: boolean, productUnit: Pro}
+
+DELETE /product/supplierProduct/{id} — Delete supplierProduct.
+  Required params: id (path, REQUIRED)
+
+POST /product/supplierProduct/getSupplierProductsByIds — Find the products by ids. Method was added as a POST because GET request header has a maximum size that we can exceed with customers that a lot of products.
+
+GET /product/supplierProduct — Find products corresponding with sent data.
+
+POST /product/supplierProduct — Create new supplierProduct.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, number: string, description: string, ean: string, costExcludingVatCurrency: number, cost: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number, isInactive: boolean, productUnit: Pro}
+
+PUT /product/supplierProduct/list — Update a list of supplierProduct.
+
+POST /product/supplierProduct/list — Create list of new supplierProduct.
+
+GET /product/discountGroup/{id} — Get discount group by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/discountGroup — Find discount groups corresponding with sent data.
+
+GET /product/inventoryLocation/{id} — Get inventory location by ID. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+PUT /product/inventoryLocation/{id} — Update product inventory location. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, isMainLocation: boolean, isInactive: boolean, stockOfGoods: number}
+
+DELETE /product/inventoryLocation/{id} — Delete product inventory location. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+GET /product/inventoryLocation — Find inventory locations by product ID. Only available for Logistics Basic.
+
+POST /product/inventoryLocation — Create new product inventory location. Only available for Logistics Basic.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, isMainLocation: boolean, isInactive: boolean, stockOfGoods: number}
+
+PUT /product/inventoryLocation/list — Update multiple product inventory locations. Only available for Logistics Basic.
+
+POST /product/inventoryLocation/list — Add multiple product inventory locations. Only available for Logistics Basic.
+
+GET /product/logisticsSettings — Get logistics settings for the logged in company.
+
+PUT /product/logisticsSettings — Update logistics settings for the logged in company.
+  Body: {id: integer, version: integer, changes: array, url: string, hasWarehouseLocation: boolean, showOnboardingWizard: boolean, moduleSuggestedProductNumber: boolean, suggestedProductNumber: string, purchaseOrderDefaultComment: string, rackbeatAgreementNumber: string, moduleBring: boolean}
+
+GET /product/group/{id} — Find product group by ID. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+PUT /product/group/{id} — Update product group. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean}
+
+DELETE /product/group/{id} — Delete product group. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+GET /product/group/{id} — Find product group by ID. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+PUT /product/group/{id} — Update product group. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean}
+
+DELETE /product/group/{id} — Delete product group. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+PUT /product/group/list — Update a list of product groups. Only available for Logistics Basic.
+
+POST /product/group/list — Add multiple products groups. Only available for Logistics Basic.
+
+DELETE /product/group/list — Delete multiple product groups. Only available for Logistics Basic.
+  Required params: ids (query, REQUIRED)
+
+PUT /product/group/list — Update a list of product groups. Only available for Logistics Basic.
+
+POST /product/group/list — Add multiple products groups. Only available for Logistics Basic.
+
+DELETE /product/group/list — Delete multiple product groups. Only available for Logistics Basic.
+  Required params: ids (query, REQUIRED)
+
+GET /product/group — Find product group with sent data. Only available for Logistics Basic.
+
+POST /product/group — Create new product group. Only available for Logistics Basic.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean}
+
+GET /product/group — Find product group with sent data. Only available for Logistics Basic.
+
+POST /product/group — Create new product group. Only available for Logistics Basic.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean}
+
+GET /product/group/query — Wildcard search. Only available for Logistics Basic.
+
+GET /product/group/query — Wildcard search. Only available for Logistics Basic.
+
+GET /product/groupRelation/{id} — Find product group relation by ID. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+DELETE /product/groupRelation/{id} — Delete product group relation. Only available for Logistics Basic.
+  Required params: id (path, REQUIRED)
+
+POST /product/groupRelation/list — Add multiple products group relations. Only available for Logistics Basic.
+
+DELETE /product/groupRelation/list — Delete multiple product group relations. Only available for Logistics Basic.
+
+GET /product/groupRelation — Find product group relation with sent data. Only available for Logistics Basic.
+
+POST /product/groupRelation — Create new product group relation. Only available for Logistics Basic.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, productGroup: ProductGroup}
+
+GET /product/productPrice — Find prices for a product. Only available for Logistics Basic.
+  Required params: productId (query, REQUIRED)
+
+GET /product/unit/{id} — Get product unit by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /product/unit/{id} — Update product unit.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean}
+
+DELETE /product/unit/{id} — Delete product unit by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/unit/{id} — Get product unit by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /product/unit/{id} — Update product unit.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean}
+
+DELETE /product/unit/{id} — Delete product unit by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/unit — Find product units corresponding with sent data.
+
+POST /product/unit — Create new product unit.
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean}
+
+GET /product/unit — Find product units corresponding with sent data.
+
+POST /product/unit — Create new product unit.
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean}
+
+PUT /product/unit/list — Update list of product units.
+
+POST /product/unit/list — Create multiple product units.
+
+PUT /product/unit/list — Update list of product units.
+
+POST /product/unit/list — Create multiple product units.
+
+GET /product/unit/query — Wildcard search.
+
+GET /product/unit/query — Wildcard search.
+
+GET /product/unit/master/{id} — Get product unit master by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/unit/master/{id} — Get product unit master by ID.
+  Required params: id (path, REQUIRED)
+
+GET /product/unit/master — Find product units master corresponding with sent data.
+
+GET /product/unit/master — Find product units master corresponding with sent data.

@@ -1,0 +1,145 @@
+# VOUCHER API Endpoints
+
+GET /ledger/account/{id} — Get account by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /ledger/account/{id} — Update account.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, number: integer, numberPretty: string, name: string, description: string, type: string, legalVatTypes: array, ledgerType: string, balanceGroup: string, vatType: VatType, vatLocked: boolean, currency: Currency, isCloseable: boolean, isApplic}
+
+DELETE /ledger/account/{id} — Delete account.
+  Required params: id (path, REQUIRED)
+
+PUT /ledger/account/list — Update multiple accounts.
+
+POST /ledger/account/list — Create several accounts.
+
+DELETE /ledger/account/list — Delete multiple accounts.
+  Required params: ids (query, REQUIRED)
+
+GET /ledger/account — Find accounts corresponding with sent data.
+
+POST /ledger/account — Create a new account.
+  Body: {id: integer, version: integer, changes: array, url: string, number: integer, numberPretty: string, name: string, description: string, type: string, legalVatTypes: array, ledgerType: string, balanceGroup: string, vatType: VatType, vatLocked: boolean, currency: Currency, isCloseable: boolean, isApplic}
+
+GET /ledger/paymentTypeOut/{id} — [BETA] Get payment type for outgoing payments by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /ledger/paymentTypeOut/{id} — [BETA] Update existing payment type for outgoing payments
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, description: string, isBruttoWageDeduction: boolean, creditAccount: Account, showIncomingInvoice: boolean, showWagePayment: boolean, showVatReturns: boolean, showWagePeriodTransaction: boolean, requiresSeparateVoucher: boolean, sequence: in}
+
+DELETE /ledger/paymentTypeOut/{id} — [BETA] Delete payment type for outgoing payments by ID.
+  Required params: id (path, REQUIRED)
+
+GET /ledger/paymentTypeOut — [BETA] Gets payment types for outgoing payments
+
+POST /ledger/paymentTypeOut — [BETA] Create new payment type for outgoing payments
+  Body: {id: integer, version: integer, changes: array, url: string, description: string, isBruttoWageDeduction: boolean, creditAccount: Account, showIncomingInvoice: boolean, showWagePayment: boolean, showVatReturns: boolean, showWagePeriodTransaction: boolean, requiresSeparateVoucher: boolean, sequence: in}
+
+PUT /ledger/paymentTypeOut/list — [BETA] Update multiple payment types for outgoing payments at once
+
+POST /ledger/paymentTypeOut/list — [BETA] Create multiple payment types for outgoing payments at once
+
+PUT /ledger/posting/:closePostings — Close postings.
+
+GET /ledger/posting/{id} — Find postings by ID.
+  Required params: id (path, REQUIRED)
+
+GET /ledger/posting/openPost — Find open posts corresponding with sent data.
+  Required params: date (query, REQUIRED)
+
+GET /ledger/posting — Find postings corresponding with sent data.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED)
+
+PUT /ledger/vatType/createRelativeVatType — Create a new relative VAT Type. These are used if the company has 'forholdsmessig fradrag for inngående MVA'.
+  Required params: name (query, REQUIRED), vatTypeId (query, REQUIRED), percentage (query, REQUIRED)
+
+GET /ledger/vatType/{id} — Get vat type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /ledger/vatType — Find vat types corresponding with sent data.
+
+GET /ledger/voucher/openingBalance/>correctionVoucher — [BETA] Get the correction voucher for the opening balance.
+
+GET /ledger/voucher/openingBalance — [BETA] Get the voucher for the opening balance.
+
+POST /ledger/voucher/openingBalance — [BETA] Add an opening balance on the given date.  All movements before this date will be 'zeroed out' in a separate correction voucher. The opening balance must have the first day of a month as the date, and it's also recommended to have the first day of the year as the date. If the postings provided don't balance the voucher, the difference will automatically be posted to a help account
+  Body: {voucherDate: string, balancePostings: array, customerPostings: array, supplierPostings: array, employeePostings: array}
+
+DELETE /ledger/voucher/openingBalance — [BETA] Delete the opening balance. The correction voucher will also be deleted
+
+GET /ledger/voucher/{id} — Get voucher by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /ledger/voucher/{id} — Update voucher. Postings with guiRow==0 will be deleted and regenerated.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, date: string, number: integer, tempNumber: integer, year: integer, description: string, voucherType: VoucherType, reverseVoucher: Voucher, postings: array, document: Document, attachment: Document, externalVoucherNumber: string, ediDocument}
+
+DELETE /ledger/voucher/{id} — Delete voucher by ID.
+  Required params: id (path, REQUIRED)
+
+POST /ledger/voucher/{voucherId}/attachment — Upload attachment to voucher. If the voucher already has an attachment the content will be appended to the existing attachment as new PDF page(s). Valid document formats are PDF, PNG, JPEG and TIFF. Non PDF formats will be converted to PDF. Send as multipart form.
+  Required params: voucherId (path, REQUIRED)
+  Body: {file: string}
+
+DELETE /ledger/voucher/{voucherId}/attachment — Delete attachment.
+  Required params: voucherId (path, REQUIRED)
+
+GET /ledger/voucher/{voucherId}/pdf — Get PDF representation of voucher by ID.
+  Required params: voucherId (path, REQUIRED)
+
+GET /ledger/voucher/>externalVoucherNumber — Find vouchers based on the external voucher number.
+
+POST /ledger/voucher/importDocument — Upload a document to create one or more vouchers. Valid document formats are PDF, PNG, JPEG and TIFF. EHF/XML is possible with agreement with Tripletex. Send as multipart form.
+  Body: {file: string, description: string}
+
+POST /ledger/voucher/importGbat10 — Import GBAT10. Send as multipart form.
+  Body: {generateVatPostings: boolean, file: string, encoding: string}
+
+GET /ledger/voucher/>nonPosted — Find non-posted vouchers.
+  Required params: includeNonApproved (query, REQUIRED)
+
+GET /ledger/voucher/{id}/options — Returns a data structure containing meta information about operations that are available for this voucher. Currently only implemented for DELETE: It is possible to check if the voucher is deletable.
+  Required params: id (path, REQUIRED)
+
+GET /ledger/voucher — Find vouchers corresponding with sent data.
+  Required params: dateFrom (query, REQUIRED), dateTo (query, REQUIRED)
+
+POST /ledger/voucher — Add new voucher. IMPORTANT: Also creates postings. Only the gross amounts will be used. Amounts should be rounded to 2 decimals.
+  Body: {id: integer, version: integer, changes: array, url: string, date: string, number: integer, tempNumber: integer, year: integer, description: string, voucherType: VoucherType, reverseVoucher: Voucher, postings: array, document: Document, attachment: Document, externalVoucherNumber: string, ediDocument}
+
+PUT /ledger/voucher/list — Update multiple vouchers. Postings with guiRow==0 will be deleted and regenerated.
+
+PUT /ledger/voucher/{id}/:reverse — Reverses the voucher, and returns the reversed voucher. Supports reversing most voucher types, except salary transactions.
+  Required params: id (path, REQUIRED), date (query, REQUIRED)
+
+PUT /ledger/voucher/{id}/:sendToInbox — Send voucher to inbox.
+  Required params: id (path, REQUIRED)
+
+PUT /ledger/voucher/{id}/:sendToLedger — Send voucher to ledger.
+  Required params: id (path, REQUIRED)
+
+POST /ledger/voucher/{voucherId}/pdf/{fileName} — [DEPRECATED] Use POST ledger/voucher/{voucherId}/attachment instead.
+  Required params: voucherId (path, REQUIRED), fileName (path, REQUIRED)
+  Body: {file: string}
+
+GET /ledger/voucher/>voucherReception — Find vouchers in voucher reception.
+
+PUT /ledger/voucher/historical/:closePostings — [BETA] Close postings.
+
+POST /ledger/voucher/historical/employee — [BETA] Create one employee, based on import from external system. Validation is less strict, ie. employee department isn't required.
+  Body: {id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, employeeNumber: string, dateOfBirth: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberHome: string, phoneNumberWork: string, nationalId}
+
+POST /ledger/voucher/historical/historical — API endpoint for creating historical vouchers. These are vouchers created outside Tripletex, and should be from closed accounting years. The intended usage is to get access to historical transcations in Tripletex. Also creates postings. All amount fields in postings will be used. VAT postings must be included, these are not generated automatically like they are for normal vouchers in Tripletex. Requires the \"All vouchers\" and \"Advanced Voucher\" permissions.
+
+PUT /ledger/voucher/historical/:reverseHistoricalVouchers — [BETA] Deletes all historical vouchers. Requires the "All vouchers" and "Advanced Voucher" permissions.
+
+POST /ledger/voucher/historical/{voucherId}/attachment — Upload attachment to voucher. If the voucher already has an attachment the content will be appended to the existing attachment as new PDF page(s). Valid document formats are PDF, PNG, JPEG and TIFF. Non PDF formats will be converted to PDF. Send as multipart form.
+  Required params: voucherId (path, REQUIRED)
+  Body: {file: string}
+
+GET /ledger/voucherType/{id} — Get voucher type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /ledger/voucherType — Find voucher types corresponding with sent data.

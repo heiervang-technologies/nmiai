@@ -1,0 +1,94 @@
+# BANK API Endpoints
+
+PUT /bank/reconciliation/{id}/:adjustment — Add an adjustment to reconciliation by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/reconciliation/closedWithUnmatchedTransactions — Get the last closed reconciliation with unmached transactions by account ID.
+  Required params: accountId (query, REQUIRED)
+
+PUT /bank/reconciliation/transactions/unmatched:csv — Get all unmatched transactions in csv format
+
+GET /bank/reconciliation/{id} — Get bank reconciliation.
+  Required params: id (path, REQUIRED)
+
+PUT /bank/reconciliation/{id} — Update a bank reconciliation.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, account: Account, accountingPeriod: AccountingPeriod, voucher: Voucher, transactions: array, isClosed: boolean, type: string, bankAccountClosingBalanceCurrency: number, closedDate: string, closedByContact: Contact, closedByEmployee: Employe}
+
+DELETE /bank/reconciliation/{id} — Delete bank reconciliation by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/reconciliation/>last — Get the last created reconciliation by account ID.
+  Required params: accountId (query, REQUIRED)
+
+GET /bank/reconciliation/>lastClosed — Get last closed reconciliation by account ID.
+  Required params: accountId (query, REQUIRED)
+
+GET /bank/reconciliation — Find bank reconciliation corresponding with sent data.
+
+POST /bank/reconciliation — Post a bank reconciliation.
+  Body: {id: integer, version: integer, changes: array, url: string, account: Account, accountingPeriod: AccountingPeriod, voucher: Voucher, transactions: array, isClosed: boolean, type: string, bankAccountClosingBalanceCurrency: number, closedDate: string, closedByContact: Contact, closedByEmployee: Employe}
+
+GET /bank/reconciliation/match/count — Get the total number of matches
+  Required params: bankReconciliationId (query, REQUIRED)
+
+GET /bank/reconciliation/match/{id} — Get bank reconciliation match by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /bank/reconciliation/match/{id} — Update a bank reconciliation match by ID.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, bankReconciliation: BankReconciliation, type: string, transactions: array, postings: array}
+
+DELETE /bank/reconciliation/match/{id} — Delete a bank reconciliation match by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/reconciliation/match — Find bank reconciliation match corresponding with sent data.
+
+POST /bank/reconciliation/match — Create a bank reconciliation match.
+  Body: {id: integer, version: integer, changes: array, url: string, bankReconciliation: BankReconciliation, type: string, transactions: array, postings: array}
+
+GET /bank/reconciliation/match/query — [INTERNAL] Wildcard search.
+
+PUT /bank/reconciliation/match/:suggest — Suggest matches for a bank reconciliation by ID.
+  Required params: bankReconciliationId (query, REQUIRED)
+
+GET /bank/reconciliation/matches/counter — [BETA] Get number of matches since last page access.
+  Required params: bankReconciliationId (query, REQUIRED)
+
+POST /bank/reconciliation/matches/counter — [BETA] Reset the number of matches after the page has been accessed.
+  Required params: bankReconciliationId (query, REQUIRED)
+
+GET /bank/reconciliation/paymentType/{id} — Get payment type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/reconciliation/paymentType — Find payment type corresponding with sent data.
+
+GET /bank/reconciliation/settings — Get bank reconciliation settings.
+
+POST /bank/reconciliation/settings — Post bank reconciliation settings.
+  Body: {id: integer, version: integer, changes: array, url: string, numberOfMatchesPerPage: string}
+
+PUT /bank/reconciliation/settings/{id} — Update bank reconciliation settings.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, numberOfMatchesPerPage: string}
+
+GET /bank/statement/{id} — Get bank statement.
+  Required params: id (path, REQUIRED)
+
+DELETE /bank/statement/{id} — Delete bank statement by ID.
+  Required params: id (path, REQUIRED)
+
+POST /bank/statement/import — Upload bank statement file.
+  Required params: bankId (query, REQUIRED), accountId (query, REQUIRED), fromDate (query, REQUIRED), toDate (query, REQUIRED), fileFormat (query, REQUIRED)
+  Body: {file: string}
+
+GET /bank/statement — Find bank statement corresponding with sent data.
+
+GET /bank/statement/transaction/{id} — Get bank transaction by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/statement/transaction/{id}/details — Get additional details about transaction by ID.
+  Required params: id (path, REQUIRED)
+
+GET /bank/statement/transaction — Find bank transaction corresponding with sent data.
+  Required params: bankStatementId (query, REQUIRED)

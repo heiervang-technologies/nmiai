@@ -1,0 +1,611 @@
+{
+  "family": "invoice",
+  "endpoint_count": 50,
+  "endpoints": [
+    {
+      "method": "PUT",
+      "path": "/invoice/{id}/:createCreditNote",
+      "summary": "Creates a new Invoice representing a credit memo that nullifies the given invoice. Updates this invoice and any pre-existing inverse invoice.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "date (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "comment (query)",
+        "creditNoteEmail (query)",
+        "sendToCustomer (query)",
+        "sendType (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/invoice/{id}/:createReminder",
+      "summary": "Create invoice reminder and sends it by the given dispatch type. Supports the reminder types SOFT_REMINDER, REMINDER and NOTICE_OF_DEBT_COLLECTION. DispatchType NETS_PRINT must have type NOTICE_OF_DEBT_COLLECTION. SMS and NETS_PRINT must be activated prior to usage in the API.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "type (query, REQUIRED)",
+        "date (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "includeCharge (query)",
+        "includeInterest (query)",
+        "dispatchType (query)",
+        "dispatchTypes (query)",
+        "smsNumber (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/{id}",
+      "summary": "Get invoice by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/{invoiceId}/pdf",
+      "summary": "Get invoice document by invoice ID.",
+      "required_params": [
+        "invoiceId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "download (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/invoice/{id}/:payment",
+      "summary": "Update invoice. The invoice is updated with payment information. The amount is in the invoice’s currency.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "paymentDate (query, REQUIRED)",
+        "paymentTypeId (query, REQUIRED)",
+        "paidAmount (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "paidAmountCurrency (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice",
+      "summary": "Find invoices corresponding with sent data. Includes charged outgoing invoices only.",
+      "required_params": [
+        "invoiceDateFrom (query, REQUIRED)",
+        "invoiceDateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)",
+        "invoiceNumber (query)",
+        "kid (query)",
+        "voucherId (query)",
+        "customerId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/invoice",
+      "summary": "Create invoice. Related Order and OrderLines can be created first, or included as new objects inside the Invoice.",
+      "required_params": [],
+      "optional_params": [
+        "sendToCustomer (query)",
+        "paymentTypeId (query)",
+        "paidAmount (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, invoiceNumber: integer, invoiceDate: string, customer: Customer, creditedInvoice: integer, isCredited: boolean, invoiceDueDate: string, kid: string, invoiceComment: string, comment: string, orders: array, orderLines: array, travelReports: array, projectInvoiceDetails: array, voucher: Voucher, deliveryDate: string, amount: number"
+    },
+    {
+      "method": "POST",
+      "path": "/invoice/list",
+      "summary": "[BETA] Create multiple invoices. Max 100 at a time.",
+      "required_params": [],
+      "optional_params": [
+        "sendToCustomer (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/invoice/{id}/:send",
+      "summary": "Send invoice by ID and sendType. Optionally override email recipient.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "sendType (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "overrideEmailAddress (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/paymentType/{id}",
+      "summary": "Get payment type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/paymentType",
+      "summary": "Find payment type corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "query (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/details/{id}",
+      "summary": "Get ProjectInvoiceDetails by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/details",
+      "summary": "Find ProjectInvoiceDetails corresponding with sent data.",
+      "required_params": [
+        "invoiceDateFrom (query, REQUIRED)",
+        "invoiceDateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/{id}/:approveSubscriptionInvoice",
+      "summary": "To create a subscription invoice, first create a order with the subscription enabled, then approve it with this method. This approves the order for subscription invoicing.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "invoiceDate (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/{id}/:attach",
+      "summary": "Attach document to specified order ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "GET",
+      "path": "/order/{id}",
+      "summary": "Get order by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/{id}",
+      "summary": "Update order.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "updateLinesAndGroups (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, currency: Currency, invoicesDueIn: integer"
+    },
+    {
+      "method": "DELETE",
+      "path": "/order/{id}",
+      "summary": "Delete order.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/packingNote/{orderId}/pdf",
+      "summary": "Get PDF representation of packing note by ID.",
+      "required_params": [
+        "orderId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "type (query)",
+        "download (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderConfirmation/{orderId}/pdf",
+      "summary": "Get PDF representation of order by ID.",
+      "required_params": [
+        "orderId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "download (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/{id}/:invoice",
+      "summary": "Create new invoice or subscription invoice from order.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "invoiceDate (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "sendToCustomer (query)",
+        "sendType (query)",
+        "paymentTypeId (query)",
+        "paidAmount (query)",
+        "paidAmountAccountCurrency (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/:invoiceMultipleOrders",
+      "summary": "[BETA] Charges a single customer invoice from multiple orders. The orders must be to the same customer, currency, due date, receiver email, attn. and smsNotificationNumber",
+      "required_params": [
+        "id (query, REQUIRED)",
+        "invoiceDate (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "sendToCustomer (query)",
+        "createBackorders (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order",
+      "summary": "Find orders corresponding with sent data.",
+      "required_params": [
+        "orderDateFrom (query, REQUIRED)",
+        "orderDateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)",
+        "number (query)",
+        "customerId (query)",
+        "deliveryComment (query)",
+        "isClosed (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/order",
+      "summary": "Create order.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, currency: Currency, invoicesDueIn: integer"
+    },
+    {
+      "method": "PUT",
+      "path": "/order/sendInvoicePreview/{orderId}",
+      "summary": "Send Invoice Preview to customer by email.",
+      "required_params": [
+        "orderId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "email (query)",
+        "message (query)",
+        "saveAsDefault (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/order/list",
+      "summary": "[BETA] Create multiple Orders with OrderLines. Max 100 at a time.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/sendOrderConfirmation/{orderId}",
+      "summary": "Send Order Confirmation to customer by email.",
+      "required_params": [
+        "orderId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "email (query)",
+        "message (query)",
+        "saveAsDefault (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/sendPackingNote/{orderId}",
+      "summary": "Send Packing Note to customer by email.",
+      "required_params": [
+        "orderId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "email (query)",
+        "message (query)",
+        "saveAsDefault (query)",
+        "type (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/{id}/:unApproveSubscriptionInvoice",
+      "summary": "Unapproves the order for subscription invoicing.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderGroup/{id}",
+      "summary": "Get orderGroup by ID. A orderGroup is a way to group orderLines, and add comments and subtotals",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/order/orderGroup/{id}",
+      "summary": "Delete orderGroup by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderGroup",
+      "summary": "Find orderGroups corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "ids (query)",
+        "orderIds (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderGroup",
+      "summary": "[Beta] Put orderGroup.",
+      "required_params": [],
+      "optional_params": [
+        "OrderLineIds (query)",
+        "removeExistingOrderLines (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, order: Order, title: string, comment: string, sortIndex: integer, orderLines: array"
+    },
+    {
+      "method": "POST",
+      "path": "/order/orderGroup",
+      "summary": "[Beta] Post orderGroup.",
+      "required_params": [],
+      "optional_params": [
+        "orderLineIds (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, order: Order, title: string, comment: string, sortIndex: integer, orderLines: array"
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderline/{id}",
+      "summary": "Get order line by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}",
+      "summary": "[BETA] Put order line",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, discount: number, vatType: VatType, amountExcludingVatCurrency: number, amountIncludingVatCurrency: number, vendor: Company, order: Order"
+    },
+    {
+      "method": "DELETE",
+      "path": "/order/orderline/{id}",
+      "summary": "[BETA] Delete order line by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderline/{id}",
+      "summary": "Get order line by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}",
+      "summary": "[BETA] Put order line",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, discount: number, vatType: VatType, amountExcludingVatCurrency: number, amountIncludingVatCurrency: number, vendor: Company, order: Order"
+    },
+    {
+      "method": "DELETE",
+      "path": "/order/orderline/{id}",
+      "summary": "[BETA] Delete order line by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/order/orderline/list",
+      "summary": "Create multiple order lines.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/order/orderline/list",
+      "summary": "Create multiple order lines.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderline/orderLineTemplate",
+      "summary": "[BETA] Get order line template from order and product",
+      "required_params": [
+        "orderId (query, REQUIRED)",
+        "productId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/order/orderline/orderLineTemplate",
+      "summary": "[BETA] Get order line template from order and product",
+      "required_params": [
+        "orderId (query, REQUIRED)",
+        "productId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}/:pickLine",
+      "summary": "[BETA] Pick order line. This is only available for customers who have Logistics and who activated the available inventory functionality.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "inventoryId (query)",
+        "inventoryLocationId (query)",
+        "pickDate (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}/:pickLine",
+      "summary": "[BETA] Pick order line. This is only available for customers who have Logistics and who activated the available inventory functionality.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "inventoryId (query)",
+        "inventoryLocationId (query)",
+        "pickDate (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/order/orderline",
+      "summary": "Create order line. When creating several order lines, use /list for better performance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, discount: number, vatType: VatType, amountExcludingVatCurrency: number, amountIncludingVatCurrency: number, vendor: Company, order: Order"
+    },
+    {
+      "method": "POST",
+      "path": "/order/orderline",
+      "summary": "Create order line. When creating several order lines, use /list for better performance.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, discount: number, vatType: VatType, amountExcludingVatCurrency: number, amountIncludingVatCurrency: number, vendor: Company, order: Order"
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}/:unpickLine",
+      "summary": "[BETA] Unpick order line.This is only available for customers who have Logistics and who activated the available inventory functionality.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/order/orderline/{id}/:unpickLine",
+      "summary": "[BETA] Unpick order line.This is only available for customers who have Logistics and who activated the available inventory functionality.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    }
+  ]
+}

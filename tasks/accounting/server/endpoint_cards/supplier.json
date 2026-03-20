@@ -1,0 +1,76 @@
+{
+  "family": "supplier",
+  "endpoint_count": 7,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/supplier/{id}",
+      "summary": "Get supplier by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/supplier/{id}",
+      "summary": "Update supplier. ",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, email: string, bankAccounts: array, invoiceEmail: string, overdueNoticeEmail: string, phoneNumber: string, phoneNumberMobile: string, description: string, isPrivateIndividual: boolean, showProducts: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/supplier/{id}",
+      "summary": "Delete supplier by ID",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/supplier",
+      "summary": "Find suppliers corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "supplierNumber (query)",
+        "organizationNumber (query)",
+        "email (query)",
+        "invoiceEmail (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/supplier",
+      "summary": "Create supplier. Related supplier addresses may also be created.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, email: string, bankAccounts: array, invoiceEmail: string, overdueNoticeEmail: string, phoneNumber: string, phoneNumberMobile: string, description: string, isPrivateIndividual: boolean, showProducts: boolean"
+    },
+    {
+      "method": "PUT",
+      "path": "/supplier/list",
+      "summary": "Update multiple suppliers. Addresses can also be updated.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/supplier/list",
+      "summary": "Create multiple suppliers. Related supplier addresses may also be created.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    }
+  ]
+}

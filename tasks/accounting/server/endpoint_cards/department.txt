@@ -1,0 +1,22 @@
+# DEPARTMENT API Endpoints
+
+GET /department/{id} — Get department by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /department/{id} — Update department.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, departmentNumber: string, departmentManager: Employee, displayName: string, isInactive: boolean, businessActivityTypeId: integer}
+
+DELETE /department/{id} — Delete department by ID
+  Required params: id (path, REQUIRED)
+
+GET /department — Find department corresponding with sent data.
+
+POST /department — Add new department.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, departmentNumber: string, departmentManager: Employee, displayName: string, isInactive: boolean, businessActivityTypeId: integer}
+
+PUT /department/list — Update multiple departments.
+
+POST /department/list — Register new departments.
+
+GET /department/query — Wildcard search.

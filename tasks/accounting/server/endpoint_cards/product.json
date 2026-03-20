@@ -1,0 +1,798 @@
+{
+  "family": "product",
+  "endpoint_count": 75,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/product/external/{id}",
+      "summary": "[BETA] Get external product by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/external",
+      "summary": "[BETA] Find external products corresponding with sent data. The sorting-field is not in use on this endpoint.",
+      "required_params": [],
+      "optional_params": [
+        "name (query)",
+        "wholesaler (query)",
+        "organizationNumber (query)",
+        "elNumber (query)",
+        "nrfNumber (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/{id}",
+      "summary": "Get product by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/{id}",
+      "summary": "Update product.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, displayNumber: string, description: string, orderLineDescription: string, ean: string, elNumber: string, nrfNumber: string, costExcludingVatCurrency: number, expenses: number, expensesInPercent: number, costPrice: number, profit: number, profitInPercent: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/{id}",
+      "summary": "Delete product.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/{id}/image",
+      "summary": "Upload image to product. Existing image on product will be replaced if exists",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/{id}/image",
+      "summary": "Delete image.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/list",
+      "summary": "Update a list of products.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/list",
+      "summary": "Add multiple products.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product",
+      "summary": "Find products corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "number (query)",
+        "ids (query)",
+        "productNumber (query)",
+        "name (query)",
+        "ean (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product",
+      "summary": "Create new product.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, number: string, displayNumber: string, description: string, orderLineDescription: string, ean: string, elNumber: string, nrfNumber: string, costExcludingVatCurrency: number, expenses: number, expensesInPercent: number, costPrice: number, profit: number, profitInPercent: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number"
+    },
+    {
+      "method": "GET",
+      "path": "/product/supplierProduct/{id}",
+      "summary": "Get supplierProduct by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/supplierProduct/{id}",
+      "summary": "Update supplierProduct.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, number: string, description: string, ean: string, costExcludingVatCurrency: number, cost: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number, isInactive: boolean, productUnit: ProductUnit, isStockItem: boolean, stockOfGoods: number, vatType: VatType, currency: Currency, discountPrice: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/supplierProduct/{id}",
+      "summary": "Delete supplierProduct.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/supplierProduct/getSupplierProductsByIds",
+      "summary": "Find the products by ids. Method was added as a POST because GET request header has a maximum size that we can exceed with customers that a lot of products.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/supplierProduct",
+      "summary": "Find products corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "productId (query)",
+        "resaleIds (query)",
+        "vendorId (query)",
+        "query (query)",
+        "isInactive (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/supplierProduct",
+      "summary": "Create new supplierProduct.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, number: string, description: string, ean: string, costExcludingVatCurrency: number, cost: number, priceExcludingVatCurrency: number, priceIncludingVatCurrency: number, isInactive: boolean, productUnit: ProductUnit, isStockItem: boolean, stockOfGoods: number, vatType: VatType, currency: Currency, discountPrice: number"
+    },
+    {
+      "method": "PUT",
+      "path": "/product/supplierProduct/list",
+      "summary": "Update a list of supplierProduct.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/supplierProduct/list",
+      "summary": "Create list of new supplierProduct.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/discountGroup/{id}",
+      "summary": "Get discount group by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/discountGroup",
+      "summary": "Find discount groups corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "number (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/inventoryLocation/{id}",
+      "summary": "Get inventory location by ID. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/inventoryLocation/{id}",
+      "summary": "Update product inventory location. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, isMainLocation: boolean, isInactive: boolean, stockOfGoods: number"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/inventoryLocation/{id}",
+      "summary": "Delete product inventory location. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/inventoryLocation",
+      "summary": "Find inventory locations by product ID. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "productId (query)",
+        "inventoryId (query)",
+        "isMainLocation (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/inventoryLocation",
+      "summary": "Create new product inventory location. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, isMainLocation: boolean, isInactive: boolean, stockOfGoods: number"
+    },
+    {
+      "method": "PUT",
+      "path": "/product/inventoryLocation/list",
+      "summary": "Update multiple product inventory locations. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/inventoryLocation/list",
+      "summary": "Add multiple product inventory locations. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/logisticsSettings",
+      "summary": "Get logistics settings for the logged in company.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/logisticsSettings",
+      "summary": "Update logistics settings for the logged in company.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, hasWarehouseLocation: boolean, showOnboardingWizard: boolean, moduleSuggestedProductNumber: boolean, suggestedProductNumber: string, purchaseOrderDefaultComment: string, rackbeatAgreementNumber: string, moduleBring: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/product/group/{id}",
+      "summary": "Find product group by ID. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/group/{id}",
+      "summary": "Update product group. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/group/{id}",
+      "summary": "Delete product group. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/group/{id}",
+      "summary": "Find product group by ID. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/group/{id}",
+      "summary": "Update product group. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/group/{id}",
+      "summary": "Delete product group. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/group/list",
+      "summary": "Update a list of product groups. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/group/list",
+      "summary": "Add multiple products groups. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/group/list",
+      "summary": "Delete multiple product groups. Only available for Logistics Basic.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/group/list",
+      "summary": "Update a list of product groups. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/group/list",
+      "summary": "Add multiple products groups. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/group/list",
+      "summary": "Delete multiple product groups. Only available for Logistics Basic.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/group",
+      "summary": "Find product group with sent data. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "query (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/group",
+      "summary": "Create new product group. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/product/group",
+      "summary": "Find product group with sent data. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "query (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/group",
+      "summary": "Create new product group. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, name: string, displayName: string, parentGroup: ProductGroup, isDeletable: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/product/group/query",
+      "summary": "Wildcard search. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "query (query)",
+        "name (query)",
+        "fields (query)",
+        "count (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/group/query",
+      "summary": "Wildcard search. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "query (query)",
+        "name (query)",
+        "fields (query)",
+        "count (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/groupRelation/{id}",
+      "summary": "Find product group relation by ID. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/groupRelation/{id}",
+      "summary": "Delete product group relation. Only available for Logistics Basic.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/groupRelation/list",
+      "summary": "Add multiple products group relations. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/groupRelation/list",
+      "summary": "Delete multiple product group relations. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/groupRelation",
+      "summary": "Find product group relation with sent data. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "productId (query)",
+        "productGroupId (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/groupRelation",
+      "summary": "Create new product group relation. Only available for Logistics Basic.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, product: Product, productGroup: ProductGroup"
+    },
+    {
+      "method": "GET",
+      "path": "/product/productPrice",
+      "summary": "Find prices for a product. Only available for Logistics Basic.",
+      "required_params": [
+        "productId (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "fromDate (query)",
+        "toDate (query)",
+        "showOnlyLastPrice (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/{id}",
+      "summary": "Get product unit by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/unit/{id}",
+      "summary": "Update product unit.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/unit/{id}",
+      "summary": "Delete product unit by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/{id}",
+      "summary": "Get product unit by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/unit/{id}",
+      "summary": "Update product unit.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/product/unit/{id}",
+      "summary": "Delete product unit by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit",
+      "summary": "Find product units corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "nameShort (query)",
+        "commonCode (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/unit",
+      "summary": "Create new product unit.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit",
+      "summary": "Find product units corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "nameShort (query)",
+        "commonCode (query)",
+        "from (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/unit",
+      "summary": "Create new product unit.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, displayName: string, displayNameShort: string, name: string, nameEN: string, nameShort: string, nameShortEN: string, commonCode: string, isDeletable: boolean"
+    },
+    {
+      "method": "PUT",
+      "path": "/product/unit/list",
+      "summary": "Update list of product units.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/unit/list",
+      "summary": "Create multiple product units.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/product/unit/list",
+      "summary": "Update list of product units.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/product/unit/list",
+      "summary": "Create multiple product units.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/query",
+      "summary": "Wildcard search.",
+      "required_params": [],
+      "optional_params": [
+        "query (query)",
+        "count (query)",
+        "fields (query)",
+        "from (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/query",
+      "summary": "Wildcard search.",
+      "required_params": [],
+      "optional_params": [
+        "query (query)",
+        "count (query)",
+        "fields (query)",
+        "from (query)",
+        "sorting (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/master/{id}",
+      "summary": "Get product unit master by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/master/{id}",
+      "summary": "Get product unit master by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/master",
+      "summary": "Find product units master corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "nameShort (query)",
+        "commonCode (query)",
+        "peppolName (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/product/unit/master",
+      "summary": "Find product units master corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "name (query)",
+        "nameShort (query)",
+        "commonCode (query)",
+        "peppolName (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

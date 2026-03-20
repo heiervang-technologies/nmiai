@@ -1,0 +1,70 @@
+# CUSTOMER API Endpoints
+
+GET /deliveryAddress/{id} — Get address by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /deliveryAddress/{id} — Update address.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, addressLine1: string, addressLine2: string, postalCode: string, city: string, country: Country, displayName: string, addressAsString: string, displayNameInklMatrikkel: string, knr: integer, gnr: integer, bnr: integer, fnr: integer, snr: int}
+
+GET /deliveryAddress — Find addresses corresponding with sent data.
+
+GET /contact/{id} — Get contact by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /contact/{id} — Update contact.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberWork: string, customer: Customer, department: Department, isInactive: boolean}
+
+POST /contact/list — Create multiple contacts.
+
+DELETE /contact/list — [BETA] Delete multiple contacts.
+  Required params: ids (query, REQUIRED)
+
+GET /contact — Find contacts corresponding with sent data.
+
+POST /contact — Create contact.
+  Body: {id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberWork: string, customer: Customer, department: Department, isInactive: boolean}
+
+GET /customer/{id} — Get customer by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /customer/{id} — Update customer. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, globalLocationNumber: integer, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, accountManager: Employee, department: Department, emai}
+
+DELETE /customer/{id} — [BETA] Delete customer by ID
+  Required params: id (path, REQUIRED)
+
+GET /customer — Find customers corresponding with sent data.
+
+POST /customer — Create customer. Related customer addresses may also be created.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, organizationNumber: string, globalLocationNumber: integer, supplierNumber: integer, customerNumber: integer, isSupplier: boolean, isCustomer: boolean, isInactive: boolean, accountManager: Employee, department: Department, emai}
+
+PUT /customer/list — [BETA] Update multiple customers. Addresses can also be updated.
+
+POST /customer/list — [BETA] Create multiple customers. Related supplier addresses may also be created.
+
+GET /customer/category/{id} — Find customer/supplier category by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /customer/category/{id} — Update customer/supplier category.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string}
+
+GET /customer/category/{id} — Find customer/supplier category by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /customer/category/{id} — Update customer/supplier category.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string}
+
+GET /customer/category — Find customer/supplier categories corresponding with sent data.
+
+POST /customer/category — Add new customer/supplier category.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string}
+
+GET /customer/category — Find customer/supplier categories corresponding with sent data.
+
+POST /customer/category — Add new customer/supplier category.
+  Body: {id: integer, version: integer, changes: array, url: string, name: string, number: string, description: string, type: integer, displayName: string}

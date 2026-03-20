@@ -1,0 +1,149 @@
+# INVOICE API Endpoints
+
+PUT /invoice/{id}/:createCreditNote — Creates a new Invoice representing a credit memo that nullifies the given invoice. Updates this invoice and any pre-existing inverse invoice.
+  Required params: id (path, REQUIRED), date (query, REQUIRED)
+
+PUT /invoice/{id}/:createReminder — Create invoice reminder and sends it by the given dispatch type. Supports the reminder types SOFT_REMINDER, REMINDER and NOTICE_OF_DEBT_COLLECTION. DispatchType NETS_PRINT must have type NOTICE_OF_DEBT_COLLECTION. SMS and NETS_PRINT must be activated prior to usage in the API.
+  Required params: id (path, REQUIRED), type (query, REQUIRED), date (query, REQUIRED)
+
+GET /invoice/{id} — Get invoice by ID.
+  Required params: id (path, REQUIRED)
+
+GET /invoice/{invoiceId}/pdf — Get invoice document by invoice ID.
+  Required params: invoiceId (path, REQUIRED)
+
+PUT /invoice/{id}/:payment — Update invoice. The invoice is updated with payment information. The amount is in the invoice’s currency.
+  Required params: id (path, REQUIRED), paymentDate (query, REQUIRED), paymentTypeId (query, REQUIRED), paidAmount (query, REQUIRED)
+
+GET /invoice — Find invoices corresponding with sent data. Includes charged outgoing invoices only.
+  Required params: invoiceDateFrom (query, REQUIRED), invoiceDateTo (query, REQUIRED)
+
+POST /invoice — Create invoice. Related Order and OrderLines can be created first, or included as new objects inside the Invoice.
+  Body: {id: integer, version: integer, changes: array, url: string, invoiceNumber: integer, invoiceDate: string, customer: Customer, creditedInvoice: integer, isCredited: boolean, invoiceDueDate: string, kid: string, invoiceComment: string, comment: string, orders: array, orderLines: array, travelReports: a}
+
+POST /invoice/list — [BETA] Create multiple invoices. Max 100 at a time.
+
+PUT /invoice/{id}/:send — Send invoice by ID and sendType. Optionally override email recipient.
+  Required params: id (path, REQUIRED), sendType (query, REQUIRED)
+
+GET /invoice/paymentType/{id} — Get payment type by ID.
+  Required params: id (path, REQUIRED)
+
+GET /invoice/paymentType — Find payment type corresponding with sent data.
+
+GET /invoice/details/{id} — Get ProjectInvoiceDetails by ID.
+  Required params: id (path, REQUIRED)
+
+GET /invoice/details — Find ProjectInvoiceDetails corresponding with sent data.
+  Required params: invoiceDateFrom (query, REQUIRED), invoiceDateTo (query, REQUIRED)
+
+PUT /order/{id}/:approveSubscriptionInvoice — To create a subscription invoice, first create a order with the subscription enabled, then approve it with this method. This approves the order for subscription invoicing.
+  Required params: id (path, REQUIRED), invoiceDate (query, REQUIRED)
+
+PUT /order/{id}/:attach — Attach document to specified order ID.
+  Required params: id (path, REQUIRED)
+  Body: {file: string}
+
+GET /order/{id} — Get order by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /order/{id} — Update order.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, order}
+
+DELETE /order/{id} — Delete order.
+  Required params: id (path, REQUIRED)
+
+GET /order/packingNote/{orderId}/pdf — Get PDF representation of packing note by ID.
+  Required params: orderId (path, REQUIRED)
+
+GET /order/orderConfirmation/{orderId}/pdf — Get PDF representation of order by ID.
+  Required params: orderId (path, REQUIRED)
+
+PUT /order/{id}/:invoice — Create new invoice or subscription invoice from order.
+  Required params: id (path, REQUIRED), invoiceDate (query, REQUIRED)
+
+PUT /order/:invoiceMultipleOrders — [BETA] Charges a single customer invoice from multiple orders. The orders must be to the same customer, currency, due date, receiver email, attn. and smsNotificationNumber
+  Required params: id (query, REQUIRED), invoiceDate (query, REQUIRED)
+
+GET /order — Find orders corresponding with sent data.
+  Required params: orderDateFrom (query, REQUIRED), orderDateTo (query, REQUIRED)
+
+POST /order — Create order.
+  Body: {id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, order}
+
+PUT /order/sendInvoicePreview/{orderId} — Send Invoice Preview to customer by email.
+  Required params: orderId (path, REQUIRED)
+
+POST /order/list — [BETA] Create multiple Orders with OrderLines. Max 100 at a time.
+
+PUT /order/sendOrderConfirmation/{orderId} — Send Order Confirmation to customer by email.
+  Required params: orderId (path, REQUIRED)
+
+PUT /order/sendPackingNote/{orderId} — Send Packing Note to customer by email.
+  Required params: orderId (path, REQUIRED)
+
+PUT /order/{id}/:unApproveSubscriptionInvoice — Unapproves the order for subscription invoicing.
+  Required params: id (path, REQUIRED)
+
+GET /order/orderGroup/{id} — Get orderGroup by ID. A orderGroup is a way to group orderLines, and add comments and subtotals
+  Required params: id (path, REQUIRED)
+
+DELETE /order/orderGroup/{id} — Delete orderGroup by ID.
+  Required params: id (path, REQUIRED)
+
+GET /order/orderGroup — Find orderGroups corresponding with sent data.
+
+PUT /order/orderGroup — [Beta] Put orderGroup.
+  Body: {id: integer, version: integer, changes: array, url: string, order: Order, title: string, comment: string, sortIndex: integer, orderLines: array}
+
+POST /order/orderGroup — [Beta] Post orderGroup.
+  Body: {id: integer, version: integer, changes: array, url: string, order: Order, title: string, comment: string, sortIndex: integer, orderLines: array}
+
+GET /order/orderline/{id} — Get order line by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /order/orderline/{id} — [BETA] Put order line
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+DELETE /order/orderline/{id} — [BETA] Delete order line by ID.
+  Required params: id (path, REQUIRED)
+
+GET /order/orderline/{id} — Get order line by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /order/orderline/{id} — [BETA] Put order line
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+DELETE /order/orderline/{id} — [BETA] Delete order line by ID.
+  Required params: id (path, REQUIRED)
+
+POST /order/orderline/list — Create multiple order lines.
+
+POST /order/orderline/list — Create multiple order lines.
+
+GET /order/orderline/orderLineTemplate — [BETA] Get order line template from order and product
+  Required params: orderId (query, REQUIRED), productId (query, REQUIRED)
+
+GET /order/orderline/orderLineTemplate — [BETA] Get order line template from order and product
+  Required params: orderId (query, REQUIRED), productId (query, REQUIRED)
+
+PUT /order/orderline/{id}/:pickLine — [BETA] Pick order line. This is only available for customers who have Logistics and who activated the available inventory functionality.
+  Required params: id (path, REQUIRED)
+
+PUT /order/orderline/{id}/:pickLine — [BETA] Pick order line. This is only available for customers who have Logistics and who activated the available inventory functionality.
+  Required params: id (path, REQUIRED)
+
+POST /order/orderline — Create order line. When creating several order lines, use /list for better performance.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+POST /order/orderline — Create order line. When creating several order lines, use /list for better performance.
+  Body: {id: integer, version: integer, changes: array, url: string, product: Product, inventory: Inventory, inventoryLocation: InventoryLocation, description: string, displayName: string, count: number, unitCostCurrency: number, unitPriceExcludingVatCurrency: number, currency: Currency, markup: number, disc}
+
+PUT /order/orderline/{id}/:unpickLine — [BETA] Unpick order line.This is only available for customers who have Logistics and who activated the available inventory functionality.
+  Required params: id (path, REQUIRED)
+
+PUT /order/orderline/{id}/:unpickLine — [BETA] Unpick order line.This is only available for customers who have Logistics and who activated the available inventory functionality.
+  Required params: id (path, REQUIRED)

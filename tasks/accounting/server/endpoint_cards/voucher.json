@@ -1,0 +1,585 @@
+{
+  "family": "voucher",
+  "endpoint_count": 52,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/ledger/account/{id}",
+      "summary": "Get account by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/account/{id}",
+      "summary": "Update account.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, number: integer, numberPretty: string, name: string, description: string, type: string, legalVatTypes: array, ledgerType: string, balanceGroup: string, vatType: VatType, vatLocked: boolean, currency: Currency, isCloseable: boolean, isApplicableForSupplierInvoice: boolean, requireReconciliation: boolean, isInactive: boolean, isBankAccount: boolean"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/account/{id}",
+      "summary": "Delete account.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/account/list",
+      "summary": "Update multiple accounts.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/account/list",
+      "summary": "Create several accounts.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/account/list",
+      "summary": "Delete multiple accounts.",
+      "required_params": [
+        "ids (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/account",
+      "summary": "Find accounts corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "number (query)",
+        "isBankAccount (query)",
+        "isInactive (query)",
+        "isApplicableForSupplierInvoice (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/account",
+      "summary": "Create a new account.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, number: integer, numberPretty: string, name: string, description: string, type: string, legalVatTypes: array, ledgerType: string, balanceGroup: string, vatType: VatType, vatLocked: boolean, currency: Currency, isCloseable: boolean, isApplicableForSupplierInvoice: boolean, requireReconciliation: boolean, isInactive: boolean, isBankAccount: boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/paymentTypeOut/{id}",
+      "summary": "[BETA] Get payment type for outgoing payments by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/paymentTypeOut/{id}",
+      "summary": "[BETA] Update existing payment type for outgoing payments",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, description: string, isBruttoWageDeduction: boolean, creditAccount: Account, showIncomingInvoice: boolean, showWagePayment: boolean, showVatReturns: boolean, showWagePeriodTransaction: boolean, requiresSeparateVoucher: boolean, sequence: integer, isInactive: boolean, displayName: string, currencyId: integer, currencyCode: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/paymentTypeOut/{id}",
+      "summary": "[BETA] Delete payment type for outgoing payments by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/paymentTypeOut",
+      "summary": "[BETA] Gets payment types for outgoing payments",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "description (query)",
+        "isInactive (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/paymentTypeOut",
+      "summary": "[BETA] Create new payment type for outgoing payments",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, description: string, isBruttoWageDeduction: boolean, creditAccount: Account, showIncomingInvoice: boolean, showWagePayment: boolean, showVatReturns: boolean, showWagePeriodTransaction: boolean, requiresSeparateVoucher: boolean, sequence: integer, isInactive: boolean, displayName: string, currencyId: integer, currencyCode: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/paymentTypeOut/list",
+      "summary": "[BETA] Update multiple payment types for outgoing payments at once",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/paymentTypeOut/list",
+      "summary": "[BETA] Create multiple payment types for outgoing payments at once",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/posting/:closePostings",
+      "summary": "Close postings.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/posting/{id}",
+      "summary": "Find postings by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/posting/openPost",
+      "summary": "Find open posts corresponding with sent data.",
+      "required_params": [
+        "date (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "accountId (query)",
+        "supplierId (query)",
+        "customerId (query)",
+        "employeeId (query)",
+        "departmentId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/posting",
+      "summary": "Find postings corresponding with sent data.",
+      "required_params": [
+        "dateFrom (query, REQUIRED)",
+        "dateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "openPostings (query)",
+        "accountId (query)",
+        "supplierId (query)",
+        "customerId (query)",
+        "employeeId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/vatType/createRelativeVatType",
+      "summary": "Create a new relative VAT Type. These are used if the company has 'forholdsmessig fradrag for inngående MVA'.",
+      "required_params": [
+        "name (query, REQUIRED)",
+        "vatTypeId (query, REQUIRED)",
+        "percentage (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/vatType/{id}",
+      "summary": "Get vat type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/vatType",
+      "summary": "Find vat types corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "id (query)",
+        "number (query)",
+        "typeOfVat (query)",
+        "vatDate (query)",
+        "shouldIncludeSpecificationTypes (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/openingBalance/>correctionVoucher",
+      "summary": "[BETA] Get the correction voucher for the opening balance.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/openingBalance",
+      "summary": "[BETA] Get the voucher for the opening balance.",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/openingBalance",
+      "summary": "[BETA] Add an opening balance on the given date.  All movements before this date will be 'zeroed out' in a separate correction voucher. The opening balance must have the first day of a month as the date, and it's also recommended to have the first day of the year as the date. If the postings provided don't balance the voucher, the difference will automatically be posted to a help account",
+      "required_params": [],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": "voucherDate: string, balancePostings: array, customerPostings: array, supplierPostings: array, employeePostings: array"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/voucher/openingBalance",
+      "summary": "[BETA] Delete the opening balance. The correction voucher will also be deleted",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/{id}",
+      "summary": "Get voucher by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/{id}",
+      "summary": "Update voucher. Postings with guiRow==0 will be deleted and regenerated.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "sendToLedger (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, date: string, number: integer, tempNumber: integer, year: integer, description: string, voucherType: VoucherType, reverseVoucher: Voucher, postings: array, document: Document, attachment: Document, externalVoucherNumber: string, ediDocument: Document, supplierVoucherType: string, wasAutoMatched: boolean, vendorInvoiceNumber: string, displayName: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/voucher/{id}",
+      "summary": "Delete voucher by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/{voucherId}/attachment",
+      "summary": "Upload attachment to voucher. If the voucher already has an attachment the content will be appended to the existing attachment as new PDF page(s). Valid document formats are PDF, PNG, JPEG and TIFF. Non PDF formats will be converted to PDF. Send as multipart form.",
+      "required_params": [
+        "voucherId (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ledger/voucher/{voucherId}/attachment",
+      "summary": "Delete attachment.",
+      "required_params": [
+        "voucherId (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)",
+        "sendToInbox (query)",
+        "split (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/{voucherId}/pdf",
+      "summary": "Get PDF representation of voucher by ID.",
+      "required_params": [
+        "voucherId (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/>externalVoucherNumber",
+      "summary": "Find vouchers based on the external voucher number.",
+      "required_params": [],
+      "optional_params": [
+        "externalVoucherNumber (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/importDocument",
+      "summary": "Upload a document to create one or more vouchers. Valid document formats are PDF, PNG, JPEG and TIFF. EHF/XML is possible with agreement with Tripletex. Send as multipart form.",
+      "required_params": [],
+      "optional_params": [
+        "split (query)"
+      ],
+      "body_fields": "file: string, description: string"
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/importGbat10",
+      "summary": "Import GBAT10. Send as multipart form.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "generateVatPostings: boolean, file: string, encoding: string"
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/>nonPosted",
+      "summary": "Find non-posted vouchers.",
+      "required_params": [
+        "includeNonApproved (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "dateFrom (query)",
+        "dateTo (query)",
+        "changedSince (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/{id}/options",
+      "summary": "Returns a data structure containing meta information about operations that are available for this voucher. Currently only implemented for DELETE: It is possible to check if the voucher is deletable.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher",
+      "summary": "Find vouchers corresponding with sent data.",
+      "required_params": [
+        "dateFrom (query, REQUIRED)",
+        "dateTo (query, REQUIRED)"
+      ],
+      "optional_params": [
+        "id (query)",
+        "number (query)",
+        "numberFrom (query)",
+        "numberTo (query)",
+        "typeId (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher",
+      "summary": "Add new voucher. IMPORTANT: Also creates postings. Only the gross amounts will be used. Amounts should be rounded to 2 decimals.",
+      "required_params": [],
+      "optional_params": [
+        "sendToLedger (query)"
+      ],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, date: string, number: integer, tempNumber: integer, year: integer, description: string, voucherType: VoucherType, reverseVoucher: Voucher, postings: array, document: Document, attachment: Document, externalVoucherNumber: string, ediDocument: Document, supplierVoucherType: string, wasAutoMatched: boolean, vendorInvoiceNumber: string, displayName: string"
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/list",
+      "summary": "Update multiple vouchers. Postings with guiRow==0 will be deleted and regenerated.",
+      "required_params": [],
+      "optional_params": [
+        "sendToLedger (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/{id}/:reverse",
+      "summary": "Reverses the voucher, and returns the reversed voucher. Supports reversing most voucher types, except salary transactions.",
+      "required_params": [
+        "id (path, REQUIRED)",
+        "date (query, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/{id}/:sendToInbox",
+      "summary": "Send voucher to inbox.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)",
+        "comment (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/{id}/:sendToLedger",
+      "summary": "Send voucher to ledger.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "version (query)",
+        "number (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/{voucherId}/pdf/{fileName}",
+      "summary": "[DEPRECATED] Use POST ledger/voucher/{voucherId}/attachment instead.",
+      "required_params": [
+        "voucherId (path, REQUIRED)",
+        "fileName (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucher/>voucherReception",
+      "summary": "Find vouchers in voucher reception.",
+      "required_params": [],
+      "optional_params": [
+        "dateFrom (query)",
+        "dateTo (query)",
+        "searchText (query)",
+        "from (query)",
+        "count (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/historical/:closePostings",
+      "summary": "[BETA] Close postings.",
+      "required_params": [],
+      "optional_params": [
+        "postingIds (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/historical/employee",
+      "summary": "[BETA] Create one employee, based on import from external system. Validation is less strict, ie. employee department isn't required.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": "id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, employeeNumber: string, dateOfBirth: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberHome: string, phoneNumberWork: string, nationalIdentityNumber: string, dnumber: string, internationalId: InternationalId, bankAccountNumber: string, iban: string, bic: string"
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/historical/historical",
+      "summary": "API endpoint for creating historical vouchers. These are vouchers created outside Tripletex, and should be from closed accounting years. The intended usage is to get access to historical transcations in Tripletex. Also creates postings. All amount fields in postings will be used. VAT postings must be included, these are not generated automatically like they are for normal vouchers in Tripletex. Requires the \\\"All vouchers\\\" and \\\"Advanced Voucher\\\" permissions.",
+      "required_params": [],
+      "optional_params": [
+        "comment (query)",
+        "useCustomNumberSeries (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "PUT",
+      "path": "/ledger/voucher/historical/:reverseHistoricalVouchers",
+      "summary": "[BETA] Deletes all historical vouchers. Requires the \"All vouchers\" and \"Advanced Voucher\" permissions.",
+      "required_params": [],
+      "optional_params": [],
+      "body_fields": null
+    },
+    {
+      "method": "POST",
+      "path": "/ledger/voucher/historical/{voucherId}/attachment",
+      "summary": "Upload attachment to voucher. If the voucher already has an attachment the content will be appended to the existing attachment as new PDF page(s). Valid document formats are PDF, PNG, JPEG and TIFF. Non PDF formats will be converted to PDF. Send as multipart form.",
+      "required_params": [
+        "voucherId (path, REQUIRED)"
+      ],
+      "optional_params": [],
+      "body_fields": "file: string"
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucherType/{id}",
+      "summary": "Get voucher type by ID.",
+      "required_params": [
+        "id (path, REQUIRED)"
+      ],
+      "optional_params": [
+        "fields (query)"
+      ],
+      "body_fields": null
+    },
+    {
+      "method": "GET",
+      "path": "/ledger/voucherType",
+      "summary": "Find voucher types corresponding with sent data.",
+      "required_params": [],
+      "optional_params": [
+        "name (query)",
+        "from (query)",
+        "count (query)",
+        "sorting (query)",
+        "fields (query)"
+      ],
+      "body_fields": null
+    }
+  ]
+}

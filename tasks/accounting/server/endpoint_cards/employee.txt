@@ -1,0 +1,238 @@
+# EMPLOYEE API Endpoints
+
+GET /employee/{id} — Get employee by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/{id} — Update employee.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, employeeNumber: string, dateOfBirth: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberHome: string, phoneNumberWork: string, nationalId}
+
+POST /employee/list — Create several employees.
+
+GET /employee — Find employees corresponding with sent data.
+
+POST /employee — Create one employee.
+  Body: {id: integer, version: integer, changes: array, url: string, firstName: string, lastName: string, displayName: string, employeeNumber: string, dateOfBirth: string, email: string, phoneNumberMobileCountry: Country, phoneNumberMobile: string, phoneNumberHome: string, phoneNumberWork: string, nationalId}
+
+GET /employee/searchForEmployeesAndContacts — Get employees and contacts by parameters. Include contacts by default.
+
+GET /employee/category/{id} — Get employee category by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/category/{id} — Update employee category information.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, name: string, number: string, description: string}
+
+DELETE /employee/category/{id} — Delete employee category by ID
+  Required params: id (path, REQUIRED)
+
+PUT /employee/category/list — Update multiple employee categories.
+
+POST /employee/category/list — Create new employee categories.
+
+DELETE /employee/category/list — Delete multiple employee categories
+  Required params: ids (query, REQUIRED)
+
+GET /employee/category — Find employee category corresponding with sent data.
+
+POST /employee/category — Create a new employee category.
+  Body: {id: integer, version: integer, changes: array, url: string, displayName: string, name: string, number: string, description: string}
+
+GET /employee/employment/{id} — Find employment by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/{id} — Update employemnt. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, employmentId: string, startDate: string, endDate: string, employmentEndReason: string, division: Division, lastSalaryChangeDate: string, noEmploymentRelationship: boolean, isMainEmployer: boolean, taxDeductionCode: strin}
+
+GET /employee/employment/{id} — Find employment by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/{id} — Update employemnt. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, employmentId: string, startDate: string, endDate: string, employmentEndReason: string, division: Division, lastSalaryChangeDate: string, noEmploymentRelationship: boolean, isMainEmployer: boolean, taxDeductionCode: strin}
+
+GET /employee/employment — Find all employments for employee.
+
+POST /employee/employment — Create employment.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, employmentId: string, startDate: string, endDate: string, employmentEndReason: string, division: Division, lastSalaryChangeDate: string, noEmploymentRelationship: boolean, isMainEmployer: boolean, taxDeductionCode: strin}
+
+GET /employee/employment — Find all employments for employee.
+
+POST /employee/employment — Create employment.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, employmentId: string, startDate: string, endDate: string, employmentEndReason: string, division: Division, lastSalaryChangeDate: string, noEmploymentRelationship: boolean, isMainEmployer: boolean, taxDeductionCode: strin}
+
+GET /employee/employment/details/{id} — Find employment details by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/details/{id} — Update employment details. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/details/{id} — Find employment details by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/details/{id} — Update employment details. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/details/{id} — Find employment details by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/details/{id} — Update employment details. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/details — Find all employmentdetails for employment.
+
+POST /employee/employment/details — Create employment details.
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/details — Find all employmentdetails for employment.
+
+POST /employee/employment/details — Create employment details.
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/details — Find all employmentdetails for employment.
+
+POST /employee/employment/details — Create employment details.
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, date: string, employmentType: string, employmentForm: string, maritimeEmployment: MaritimeEmployment, remunerationType: string, workingHoursScheme: string, shiftDurationHours: number, occupationCode: OccupationCode, }
+
+GET /employee/employment/employmentType/employmentEndReasonType — Find all employment end reason type IDs.
+
+GET /employee/employment/employmentType/employmentEndReasonType — Find all employment end reason type IDs.
+
+GET /employee/employment/employmentType/employmentFormType — Find all employment form type IDs.
+
+GET /employee/employment/employmentType/employmentFormType — Find all employment form type IDs.
+
+GET /employee/employment/employmentType/maritimeEmploymentType — Find all maritime employment type IDs.
+  Required params: type (query, REQUIRED)
+
+GET /employee/employment/employmentType/maritimeEmploymentType — Find all maritime employment type IDs.
+  Required params: type (query, REQUIRED)
+
+GET /employee/employment/employmentType/salaryType — Find all salary type IDs.
+
+GET /employee/employment/employmentType/salaryType — Find all salary type IDs.
+
+GET /employee/employment/employmentType/scheduleType — Find all schedule type IDs.
+
+GET /employee/employment/employmentType/scheduleType — Find all schedule type IDs.
+
+GET /employee/employment/employmentType — Find all employment type IDs.
+
+GET /employee/employment/employmentType — Find all employment type IDs.
+
+GET /employee/employment/leaveOfAbsence/{id} — Find leave of absence by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/leaveOfAbsence/{id} — Update leave of absence.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, importedLeaveOfAbsenceId: string, startDate: string, endDate: string, percentage: number, isWageDeduction: boolean, type: string}
+
+GET /employee/employment/leaveOfAbsence/{id} — Find leave of absence by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/employment/leaveOfAbsence/{id} — Update leave of absence.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, importedLeaveOfAbsenceId: string, startDate: string, endDate: string, percentage: number, isWageDeduction: boolean, type: string}
+
+GET /employee/employment/leaveOfAbsence — Find all leave of absence corresponding with the sent data.
+
+POST /employee/employment/leaveOfAbsence — Create leave of absence.
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, importedLeaveOfAbsenceId: string, startDate: string, endDate: string, percentage: number, isWageDeduction: boolean, type: string}
+
+GET /employee/employment/leaveOfAbsence — Find all leave of absence corresponding with the sent data.
+
+POST /employee/employment/leaveOfAbsence — Create leave of absence.
+  Body: {id: integer, version: integer, changes: array, url: string, employment: Employment, importedLeaveOfAbsenceId: string, startDate: string, endDate: string, percentage: number, isWageDeduction: boolean, type: string}
+
+POST /employee/employment/leaveOfAbsence/list — Create multiple leave of absences.
+
+POST /employee/employment/leaveOfAbsence/list — Create multiple leave of absences.
+
+GET /employee/employment/leaveOfAbsenceType — Find all leave of absence type IDs.
+
+GET /employee/employment/leaveOfAbsenceType — Find all leave of absence type IDs.
+
+GET /employee/employment/occupationCode/{id} — Get occupation by ID.
+  Required params: id (path, REQUIRED)
+
+GET /employee/employment/occupationCode/{id} — Get occupation by ID.
+  Required params: id (path, REQUIRED)
+
+GET /employee/employment/occupationCode — Find all profession codes.
+
+GET /employee/employment/occupationCode — Find all profession codes.
+
+GET /employee/employment/remunerationType — Find all remuneration type IDs.
+
+GET /employee/employment/remunerationType — Find all remuneration type IDs.
+
+GET /employee/employment/workingHoursScheme — Find working hours scheme ID.
+
+GET /employee/employment/workingHoursScheme — Find working hours scheme ID.
+
+GET /employee/hourlyCostAndRate/{id} — Find hourly cost and rate by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/hourlyCostAndRate/{id} — Update hourly cost and rate. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, date: string, rate: number, budgetRate: number, hourCostRate: number}
+
+GET /employee/hourlyCostAndRate — Find all hourly cost and rates for employee.
+
+POST /employee/hourlyCostAndRate — Create hourly cost and rate.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, date: string, rate: number, budgetRate: number, hourCostRate: number}
+
+GET /employee/nextOfKin/{id} — Find next of kin by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/nextOfKin/{id} — Update next of kin. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, name: string, phoneNumber: string, address: string, typeOfRelationship: string}
+
+GET /employee/nextOfKin — Find all next of kin for employee.
+
+POST /employee/nextOfKin — Create next of kin.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, name: string, phoneNumber: string, address: string, typeOfRelationship: string}
+
+PUT /employee/preferences/:changeLanguage — Change current employees language to the given language
+
+GET /employee/preferences/>loggedInEmployeePreferences — Get employee preferences for current user
+
+PUT /employee/preferences/{id} — Update employee preferences information.
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employeeId: integer, companyId: integer, filterOnProjectParticipant: boolean, filterOnProjectManager: boolean, language: string}
+
+PUT /employee/preferences/list — Update multiple employee preferences.
+
+GET /employee/preferences — Find employee preferences corresponding with sent data.
+
+GET /employee/standardTime/{id} — Find standard time by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/standardTime/{id} — Update standard time. 
+  Required params: id (path, REQUIRED)
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, fromDate: string, hoursPerDay: number}
+
+GET /employee/standardTime/byDate — Find standard time for employee by date.
+
+GET /employee/standardTime — Find all standard times for employee.
+
+POST /employee/standardTime — Create standard time.
+  Body: {id: integer, version: integer, changes: array, url: string, employee: Employee, fromDate: string, hoursPerDay: number}
+
+GET /employee/entitlement/client — [BETA] Find all entitlements at client for user.
+
+GET /employee/entitlement/{id} — Get entitlement by ID.
+  Required params: id (path, REQUIRED)
+
+PUT /employee/entitlement/:grantClientEntitlementsByTemplate — [BETA] Update employee entitlements in client account.
+  Required params: employeeId (query, REQUIRED), customerId (query, REQUIRED), template (query, REQUIRED)
+
+PUT /employee/entitlement/:grantEntitlementsByTemplate — [BETA] Update employee entitlements.
+  Required params: employeeId (query, REQUIRED), template (query, REQUIRED)
+
+GET /employee/entitlement — Find all entitlements for user.
