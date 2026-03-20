@@ -1,5 +1,18 @@
 # Astar Island Challenge - Strategy & Reference
 
+## Score Progress
+
+![Score over time](score_over_time.png)
+
+| Round | Score | Rank | Model | Key Change |
+|-------|-------|------|-------|------------|
+| 1 | 59.3 | 17/117 | Hand-tuned Dirichlet priors | First submission, full coverage queries |
+| 2-4 | — | — | — | Missed (overnight, no auto-watcher) |
+| 5 | 71.5 | 60/144 | Empirical transition priors | +12 pts from data-driven priors alone |
+| 6 | pending | — | HistGBT + Empirical Bayes | ML model trained on 40K ground truth cells |
+
+**Best score: 71.5** | **Target: 85+**
+
 ## Challenge Overview
 
 **Task:** Observe a black-box Norse civilization simulator through a limited viewport and predict the final world state as probability distributions.
