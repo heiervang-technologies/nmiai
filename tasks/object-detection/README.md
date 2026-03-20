@@ -12,6 +12,21 @@
 
 **Dashboard:** https://app.ainm.no/submit/norgesgruppen-data
 
+## Example Task Data
+
+Shelf image with ground truth annotations (bounding boxes + product category labels):
+
+![Annotated shelf example](example_annotated.jpg)
+
+*Cereal aisle — 29 annotated products. Each bounding box is labeled with the specific Norwegian SKU name (e.g., "COCO POPS CHOCOS 330G KELLOGGS"). The model must both locate products (detection) and identify the exact SKU (classification) across 356 categories.*
+
+Key observations from the training data:
+- Dense shelves with 14–235 products per image
+- Norwegian product names as category labels (specific SKUs, not general categories)
+- Image resolution varies widely: 481px to 5712px
+- Multiple store chains: SPAR, Meny, Kiwi, etc.
+- 356 categories, heavily imbalanced (1–422 annotations per category)
+
 ## Sponsor Context (from Kickoff Presentation)
 
 **NorgesGruppen** is Norway's largest grocery retailer:
