@@ -273,12 +273,14 @@ version = "0.1.0"
 source = { virtual = "tasks/object-detection/data-creation" }
 dependencies = [
     { name = "albumentations" },
+    { name = "httpx" },
     { name = "huggingface-hub" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pillow" },
     { name = "pycocotools" },
     { name = "pyyaml" },
+    { name = "scikit-learn" },
     { name = "timm" },
     { name = "torch" },
     { name = "torchvision" },
@@ -287,12 +289,14 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "albumentations", specifier = ">=2.0.8" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "huggingface-hub", specifier = ">=1.7.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "pillow", specifier = ">=12.1.1" },
     { name = "pycocotools", specifier = ">=2.0.11" },
     { name = "pyyaml", specifier = ">=6.0.3" },
+    { name = "scikit-learn", specifier = ">=1.8.0" },
     { name = "timm", specifier = ">=1.0.25" },
     { name = "torch", specifier = ">=2.10.0" },
     { name = "torchvision", specifier = ">=0.25.0" },
