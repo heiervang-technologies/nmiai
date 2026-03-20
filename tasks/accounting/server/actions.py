@@ -556,21 +556,39 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 project_id = proj["id"]
                 break
 
-    # Find or create activity (use /activity, NOT /project/{id}/activity)
+    # Find or create activity
+    # Use /activity for listing, /project/projectActivity for creating
     activity_id = args.get("activityId")
     if not activity_id and args.get("activityName"):
-        activities = await client.get("/activity", params={"count": 100})
-        for act in activities.get("values", []):
-            if args["activityName"].lower() in act.get("name", "").lower():
-                activity_id = act["id"]
-                break
-        # If not found, create it
-        if not activity_id:
-            act_body = {"name": args["activityName"]}
-            if project_id:
-                act_body["project"] = {"id": project_id}
-            act_result = await client.post("/activity", json=act_body)
-            activity_id = act_result.get("value", {}).get("id")
+        # Try listing existing activities
+        try:
+            activities = await client.get("/activity", params={"count": 100})
+            for act in activities.get("values", []):
+                if args["activityName"].lower() in act.get("name", "").lower():
+                    activity_id = act["id"]
+                    break
+        except Exception:
+            pass
+
+        # If not found, create via /project/projectActivity
+        if not activity_id and project_id:
+            try:
+                act_body = {
+                    "project": {"id": project_id},
+                    "activity": {"name": args["activityName"]},
+                    "startDate": args.get("date", TODAY),
+                }
+                act_result = await client.post("/project/projectActivity", json=act_body)
+                act_val = act_result.get("value", {})
+                activity_id = act_val.get("activity", {}).get("id") or act_val.get("id")
+            except Exception as e:
+                log.warning(f"Failed to create project activity: {e}")
+                # Fallback: try /activity directly
+                try:
+                    act_result = await client.post("/activity", json={"name": args["activityName"]})
+                    activity_id = act_result.get("value", {}).get("id")
+                except Exception:
+                    pass
 
     # Register hours via /timesheet/entry
     entry_body = {
