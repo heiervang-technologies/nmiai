@@ -259,9 +259,10 @@ class HybridPriorModel:
             where=gbr_sum > 0,
         )
 
-        # Bucket model is more stable with low data; trees capture interactions.
-        blend = np.full((len(X), 1), 0.55, dtype=np.float64)
-        blend[bucket_support < 30.0] = 0.40
+        # Keep the tree model as a light correction only.
+        # In practice the bucket prior is more stable on tiny round counts.
+        blend = np.full((len(X), 1), 0.15, dtype=np.float64)
+        blend[bucket_support < 30.0] = 0.0
         pred = blend * gbr_pred + (1.0 - blend) * bucket_pred
         pred = np.clip(pred, 0.0, None)
         pred_sum = pred.sum(axis=1, keepdims=True)
@@ -315,6 +316,7 @@ def build_prediction(initial_grid, model, observations):
     prior[mountain] = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
 
     counts = np.zeros_like(prior)
+    obs_count = np.zeros(prior.shape[:2], dtype=np.int32)
     for obs in observations:
         grid = obs["grid"]
         vx = obs["viewport_x"]
@@ -325,6 +327,7 @@ def build_prediction(initial_grid, model, observations):
                 x = vx + dx
                 if 0 <= y < counts.shape[0] and 0 <= x < counts.shape[1]:
                     counts[y, x, cell_code_to_class(cell)] += 1.0
+                    obs_count[y, x] += 1
 
     init_type = maps["init_type"]
     tau = np.zeros(init_type.shape, dtype=np.float64)
@@ -334,6 +337,10 @@ def build_prediction(initial_grid, model, observations):
 
     posterior = counts + tau[:, :, None] * prior
     pred = posterior / posterior.sum(axis=2, keepdims=True)
+
+    # A single stochastic observation is usually too noisy for weighted KL.
+    # Keep the prior unless we have repeated evidence on the cell.
+    pred[obs_count < 2] = prior[obs_count < 2]
 
     pred = np.maximum(pred, 0.01)
     pred /= pred.sum(axis=2, keepdims=True)
