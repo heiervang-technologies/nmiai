@@ -1,0 +1,12 @@
+{
+  "family": "supplier",
+  "keywords": ["leverandør", "supplier", "Lieferant", "fournisseur", "proveedor", "fornecedor", "leverandor"],
+  "description": "Register or update suppliers",
+  "preflight": [],
+  "endpoints": [
+    "POST /supplier — body: {name, organizationNumber, email, phoneNumber}"
+  ],
+  "required_fields": ["name"],
+  "common_errors": [],
+  "tips": ""
+}

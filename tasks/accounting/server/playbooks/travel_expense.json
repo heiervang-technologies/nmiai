@@ -1,0 +1,21 @@
+{
+  "family": "travel_expense",
+  "keywords": ["reiseregning", "travel expense", "Reisekostenabrechnung", "note de frais", "gastos de viaje", "despesas de viagem", "reiserekning"],
+  "description": "Create, manage, or delete travel expenses",
+  "preflight": [
+    "May need to activate travel expense module",
+    "GET /employee to find employee ID"
+  ],
+  "endpoints": [
+    "POST /travelExpense — body: {employee:{id}, title, isChargeable:false, isFixedInvoicedAmount:false, isIncludeAttachedReceiptsWhenReinvoicing:false}",
+    "POST /travelExpense/cost — body: {travelExpense:{id}, date, costCategory:{id}, paymentType:{id}, amountCurrencyIncVat, currency:{id}, vatType:{id}, isPaidByEmployee:true}",
+    "PUT /travelExpense/:deliver — params: {id}",
+    "DELETE /travelExpense/{id}"
+  ],
+  "required_fields": ["employee", "isChargeable", "isFixedInvoicedAmount", "isIncludeAttachedReceiptsWhenReinvoicing"],
+  "common_errors": [
+    "Travel expense module may need activation",
+    "Cost categories and payment types need to be looked up first"
+  ],
+  "tips": "Multi-step: create expense → add costs → deliver"
+}

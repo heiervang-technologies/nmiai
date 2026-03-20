@@ -1,0 +1,21 @@
+{
+  "family": "voucher",
+  "keywords": ["bilag", "voucher", "Beleg", "pièce comptable", "asiento", "lønn", "salary", "payroll", "Gehalt", "salaire"],
+  "description": "Create journal entries / vouchers, manual salary postings",
+  "preflight": [
+    "GET /ledger/account to find account IDs for the relevant accounts"
+  ],
+  "endpoints": [
+    "POST /ledger/voucher — body: {date, description, postings:[{row:1, account:{id:ACCT_ID}, amountGross:AMOUNT, vatType:{id:VAT_ID}}, {row:2, ...}]}",
+    "PUT /ledger/voucher/{id}/:reverse — reverse a voucher"
+  ],
+  "required_fields": ["date", "description", "postings"],
+  "common_errors": [
+    "Row numbers must start at 1 (row 0 is system-reserved)",
+    "Account must be referenced by {id:NUMBER} not by name",
+    "Use amountGross, NOT amount",
+    "Postings must balance (total debits = total credits)",
+    "For salary: 5000-series = salary cost, 2780 = withholding tax, 1920 = bank"
+  ],
+  "tips": "Positive amountGross = debit, negative = credit. Postings must sum to zero."
+}

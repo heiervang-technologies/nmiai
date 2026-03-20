@@ -1,0 +1,21 @@
+{
+  "family": "project",
+  "keywords": ["prosjekt", "project", "Projekt", "projet", "proyecto", "projeto"],
+  "description": "Create projects, register hours, project invoicing",
+  "preflight": [
+    "POST /company/salesmodules body:{name:'PROJECT'} — activate project module",
+    "GET /employee to find project manager ID"
+  ],
+  "endpoints": [
+    "POST /project — body: {name, projectManager:{id}, isInternal:false, customer:{id}}",
+    "POST /project/activity — body: {project:{id}, name}",
+    "POST /timesheet/entry — body: {activity:{id}, employee:{id}, date, hours}",
+    "PUT /order/{id}/:invoice — for project invoicing"
+  ],
+  "required_fields": ["name", "projectManager", "isInternal"],
+  "common_errors": [
+    "PROJECT module must be activated first",
+    "projectManager must reference an existing employee"
+  ],
+  "tips": "For time registration + invoicing: create project, create activity, register hours, then create order from project and invoice it"
+}

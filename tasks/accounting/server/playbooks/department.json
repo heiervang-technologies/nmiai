@@ -1,0 +1,12 @@
+{
+  "family": "department",
+  "keywords": ["avdeling", "department", "Abteilung", "département", "departamento"],
+  "description": "Create departments",
+  "preflight": [],
+  "endpoints": [
+    "POST /department — body: {name, departmentNumber}"
+  ],
+  "required_fields": ["name", "departmentNumber"],
+  "common_errors": [],
+  "tips": ""
+}

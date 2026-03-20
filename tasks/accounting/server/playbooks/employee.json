@@ -1,0 +1,18 @@
+{
+  "family": "employee",
+  "keywords": ["ansatt", "employee", "Mitarbeiter", "employé", "empleado", "empregado", "tilsett"],
+  "description": "Create, update, or manage employees",
+  "preflight": ["GET /department to find department ID"],
+  "endpoints": [
+    "POST /employee — body: {firstName, lastName, userType:'STANDARD', department:{id:DEP_ID}, email, dateOfBirth, phoneNumberMobile}",
+    "PUT /employee/{id} — GET first for id+version, then PUT full object",
+    "POST /employee/employment — {employee:{id}, startDate, employmentType}"
+  ],
+  "required_fields": ["firstName", "lastName", "userType", "department"],
+  "common_errors": [
+    "userType cannot be 0 or empty — always set to STANDARD, EXTENDED, or NO_ACCESS",
+    "department.id is required — GET /department first",
+    "admin/administrator role = userType EXTENDED"
+  ],
+  "tips": "If task mentions 'administrator' or 'admin', set userType to EXTENDED"
+}

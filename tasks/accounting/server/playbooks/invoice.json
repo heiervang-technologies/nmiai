@@ -1,0 +1,25 @@
+{
+  "family": "invoice",
+  "keywords": ["faktura", "invoice", "Rechnung", "facture", "factura", "fatura"],
+  "description": "Create invoices, register payments, create credit notes",
+  "preflight": [
+    "GET /company/>withLoginAccess to find company",
+    "PUT /company/{id} with bankAccountNumber to register bank account (REQUIRED before invoicing)",
+    "GET /customer or POST /customer to ensure customer exists",
+    "GET /invoice/paymentType to find payment type IDs (for payment tasks)"
+  ],
+  "endpoints": [
+    "POST /invoice — body: {invoiceDate, invoiceDueDate, orders:[{customer:{id}, orderDate, deliveryDate, orderLines:[{description, count, unitPriceExcludingVatCurrency, vatType:{id:3}}]}]}",
+    "GET /invoice — params: {invoiceDateFrom, invoiceDateTo} REQUIRED",
+    "PUT /invoice/{id}/:payment — params: {paymentDate, paymentTypeId, paidAmount}",
+    "PUT /invoice/{id}/:createCreditNote — params: {date, comment}"
+  ],
+  "required_fields": ["invoiceDate", "customer", "orderLines with vatType"],
+  "common_errors": [
+    "Company must have bankAccountNumber before invoice creation",
+    "GET /invoice REQUIRES invoiceDateFrom and invoiceDateTo params",
+    "Invoice body needs 'orders' array wrapping orderLines, each order needs customer, orderDate, deliveryDate",
+    "vatType MUST be set on every order line"
+  ],
+  "tips": "For credit notes, the invoice already exists — search for it. For payments, use negative paidAmount to reverse."
+}

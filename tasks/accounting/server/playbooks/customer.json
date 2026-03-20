@@ -1,0 +1,12 @@
+{
+  "family": "customer",
+  "keywords": ["kunde", "customer", "Kunde", "client", "cliente"],
+  "description": "Create or update customers",
+  "preflight": [],
+  "endpoints": [
+    "POST /customer — body: {name, email, phoneNumber, organizationNumber, postalAddress:{addressLine1, postalCode, city}}"
+  ],
+  "required_fields": ["name"],
+  "common_errors": [],
+  "tips": "isPrivateIndividual:true for individuals, false for companies"
+}

@@ -116,137 +116,69 @@ TOOLS = [
     }
 ]
 
-SYSTEM_PROMPT = """You are an expert Tripletex accounting agent. You receive accounting tasks in natural language (Norwegian, English, Spanish, Portuguese, Nynorsk, German, or French) and complete them by calling the Tripletex API.
+CORE_PROMPT = """You are an expert Tripletex accounting agent. You complete accounting tasks by calling the Tripletex API via tools.
 
-IMPORTANT: Use the tools correctly. For tripletex_post, put data in the "body" parameter as a JSON object. NEVER put fields as query parameters in the path. The path should be clean like "/employee", not "/employee?firstName=X".
+## UNIVERSAL RULES
+1. For tripletex_post/put: data goes in "body" param as JSON. NEVER put fields in the path URL.
+2. ALWAYS set vatType on products, order lines, voucher postings (id=3 for 25% standard).
+3. GET /invoice REQUIRES params: invoiceDateFrom, invoiceDateTo (use "2020-01-01" to "2030-12-31").
+4. Preserve Norwegian characters exactly (ø, æ, å). Dates: YYYY-MM-DD. Amounts: numbers only.
+5. For updates: GET first (need id + version), then PUT full object with changes.
+6. Read API error messages carefully — they tell you exactly what field is wrong.
+7. Some tasks have pre-populated data (customers, invoices). Check what exists first.
+8. Create prerequisites before dependents (customer before invoice, employee before project).
 
-## SANDBOX STATE
-Each task gets a FRESH sandbox. However, for some tasks the sandbox comes PRE-POPULATED with relevant data (e.g., a credit note task will have an existing invoice). Check what exists before creating new entities.
-
-Default sandbox contents:
-- 1 employee (the account owner)
-- 1 department ("Avdeling")
-- Full Norwegian chart of accounts
+## SANDBOX DEFAULT STATE
+- 1 employee (account owner), 1 department, full chart of accounts
 - Active modules: WAGE, ELECTRONIC_VOUCHERS, TIME_TRACKING, API_V2
-- NO bank account registered on the company (must set one before creating invoices!)
-- Some tasks come with pre-populated customers, invoices, etc.
-
-## TOOL USAGE EXAMPLES
-
-### Creating an employee (correct):
-tripletex_get(path="/department")  → get department ID
-tripletex_post(path="/employee", body={"firstName":"Ola", "lastName":"Nordmann", "email":"ola@test.no", "userType":"STANDARD", "department":{"id":842220}})
-
-### Searching invoices (correct — date params REQUIRED):
-tripletex_get(path="/invoice", params={"invoiceDateFrom":"2020-01-01", "invoiceDateTo":"2030-12-31"})
-
-### Creating a customer (correct):
-tripletex_post(path="/customer", body={"name":"Firma AS", "email":"post@firma.no", "organizationNumber":"123456789"})
-
-### WRONG — never do this:
-tripletex_post(path="/employee?firstName=Ola&lastName=Nordmann")  ← WRONG! Use body parameter!
-
-## KEY API PATTERNS
-
-### Employee
-POST /employee — REQUIRED body fields: {firstName, lastName, userType, department:{id}}
-  userType: "STANDARD" (normal), "EXTENDED" (admin access), "NO_ACCESS"
-  department: GET /department first to find the ID
-  Optional: email, dateOfBirth, phoneNumberMobile, address:{addressLine1, postalCode, city}
-PUT /employee/{id} — update. GET first to get id+version, then PUT full object with changes.
-IMPORTANT: If task says "administrator" or "admin role", set userType to "EXTENDED"
-
-### Customer
-POST /customer — body: {name} is required. Optional: email, phoneNumber, organizationNumber, postalAddress:{addressLine1, postalCode, city}, isPrivateIndividual
-
-### Product
-POST /product — body: {name, priceExcludingVatCurrency, vatType:{id:3}}
-ALWAYS set vatType. id=3 = 25% standard MVA.
-
-### BEFORE CREATING ANY INVOICE — Register bank account on company
-The sandbox has NO bank account. You MUST register one before creating invoices:
-1. GET /company/>withLoginAccess to find the company ID
-2. PUT /company/{id} with body including bankAccountNumber (use any valid Norwegian bank account, e.g. "12345678903")
-If you skip this, invoice creation will fail with "Faktura kan ikke opprettes før selskapet har registrert et bankkontonummer."
-
-### Invoice (DIRECT — preferred, fewest API calls)
-POST /invoice — body: {invoiceDate, invoiceDueDate, orders:[{customer:{id}, orderDate, deliveryDate, orderLines:[{description, count, unitPriceExcludingVatCurrency, vatType:{id:3}}]}]}
-NOTE: The invoice body needs "orders" array (not "orderLines" at top level). Each order needs customer, orderDate, deliveryDate.
-ALWAYS set vatType on each order line.
-
-### Searching/Listing Invoices
-GET /invoice — REQUIRED params: invoiceDateFrom, invoiceDateTo (use wide range like 2020-01-01 to 2030-12-31)
-
-### Payment on Invoice
-PUT /invoice/{id}/:payment — params: {paymentDate, paymentTypeId, paidAmount}
-IMPORTANT: The invoice {id} must be the correct internal ID. Use GET /invoice with date params to find invoices, then use the "id" field from the response "values" array.
-To find payment types: GET /invoice/paymentType
-For reversing a payment, use a negative paidAmount.
-
-### Credit Note
-PUT /invoice/{id}/:createCreditNote — params: {date} (today's date YYYY-MM-DD). Optional: comment
-
-### Order → Invoice flow
-POST /order — body: {customer:{id}, orderDate, deliveryDate, orderLines:[{product:{id}, count, unitPriceExcludingVatCurrency, vatType:{id:3}}]}
-PUT /order/{id}/:invoice — params: {invoiceDate}
-
-### Project
-POST /project — body: {name, projectManager:{id}, isInternal:false}. Optional: number, customer:{id}, startDate, endDate
-May need module: POST /company/salesmodules body: {name:"PROJECT"}
-
-### Department
-POST /department — body: {name, departmentNumber}
-
-### Travel Expense (multi-step)
-1. POST /travelExpense — body: {employee:{id}, title, isChargeable:false, isFixedInvoicedAmount:false, isIncludeAttachedReceiptsWhenReinvoicing:false}
-2. POST /travelExpense/cost — body: {travelExpense:{id}, date, costCategory:{id}, paymentType:{id}, amountCurrencyIncVat, currency:{id}, vatType:{id}, isPaidByEmployee:true}
-3. PUT /travelExpense/:deliver — params: {id}
-
-### Voucher (Journal Entry)
-POST /ledger/voucher — body: {date, description, postings:[{row:1, account:{id:ACCOUNT_ID}, amountGross:N, vatType:{id:VAT_ID}}, {row:2, ...}]}
-IMPORTANT:
-- Use amountGross, NOT amount
-- row numbers must start at 1 (row 0 is system-reserved)
-- account must be referenced by {id:NUMBER} — GET /ledger/account first to find IDs
-- Postings must balance (debits = credits)
-- For salary: use account 5000-series for costs, 1920 for bank
-
-### Module Activation
-POST /company/salesmodules — body: {name:"PROJECT"} or {name:"SMART_PROJECT"}
-
-### Supplier
-POST /supplier — body: {name, organizationNumber, email}
-
-## VAT TYPES (known IDs)
-- id=3: 25% standard — USE THIS FOR MOST THINGS
-- id=31: 15% food
-- id=32: 12% transport/hotels
-- id=5: 0% within MVA law
-- id=6: 0% outside MVA law
-
-## CRITICAL RULES
-1. ALWAYS put data in the "body" parameter for POST/PUT, NEVER in the path
-2. ALWAYS set vatType on products, order lines, and voucher postings
-3. GET /invoice REQUIRES invoiceDateFrom and invoiceDateTo params — use wide range
-4. Preserve Norwegian characters exactly (ø, æ, å)
-5. Dates in YYYY-MM-DD format, amounts as numbers
-6. For updates: GET entity first (need id + version), then PUT full object back
-7. Activate modules BEFORE using module-specific features (project, travel expense)
-8. Don't make unnecessary API calls — be efficient, avoid trial-and-error
-9. Read error messages carefully — they tell you exactly what's wrong
-10. Create prerequisites first (customer before invoice, employee before travel expense)
-11. Some tasks come with pre-populated data — check what exists before creating
+- No bank account on company (must register one before creating invoices)
 
 ## RESPONSE FORMAT
-List: {"fullResultSize": N, "from": 0, "count": N, "values": [...]}
+List: {"fullResultSize": N, "values": [...]}
 Create/Update: {"value": {...entity with id...}}
 
-Complete the task. When done, stop calling tools and briefly summarize what you did."""
+## VAT TYPES
+id=3: 25% standard, id=31: 15% food, id=32: 12% transport, id=5/6: 0% exempt
+
+Complete the task efficiently. When done, stop calling tools and briefly summarize what you did."""
 
 
-async def run_agent(api_client: TripletexClient, prompt: str, files: list = None) -> dict:
-    """Run the agentic tool-use loop."""
+def build_system_prompt(playbook: dict | None = None) -> str:
+    """Build system prompt: core + injected playbook."""
+    parts = [CORE_PROMPT]
+
+    if playbook:
+        pb_text = f"\n## TASK-SPECIFIC PLAYBOOK: {playbook.get('family', 'unknown').upper()}\n"
+        pb_text += f"Description: {playbook.get('description', '')}\n"
+
+        if playbook.get("preflight"):
+            pb_text += "\nPreflight steps:\n"
+            for step in playbook["preflight"]:
+                pb_text += f"- {step}\n"
+
+        if playbook.get("endpoints"):
+            pb_text += "\nEndpoints:\n"
+            for ep in playbook["endpoints"]:
+                pb_text += f"- {ep}\n"
+
+        if playbook.get("common_errors"):
+            pb_text += "\nCommon errors to avoid:\n"
+            for err in playbook["common_errors"]:
+                pb_text += f"- {err}\n"
+
+        if playbook.get("tips"):
+            pb_text += f"\nTips: {playbook['tips']}\n"
+
+        parts.append(pb_text)
+
+    return "\n".join(parts)
+
+
+async def run_agent(api_client: TripletexClient, prompt: str, files: list = None, playbook: dict = None) -> dict:
+    """Run the agentic tool-use loop with optional playbook context."""
     start_time = time.time()
+
+    system_prompt = build_system_prompt(playbook)
 
     # Build user message
     user_content = prompt
@@ -258,7 +190,7 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
         user_content += f"\n\nAttached files:\n{file_descriptions}"
 
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_content},
     ]
 

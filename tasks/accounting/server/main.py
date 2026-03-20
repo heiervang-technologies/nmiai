@@ -17,6 +17,7 @@ from pydantic import BaseModel
 
 from tripletex_client import TripletexClient
 from agent import run_agent
+from planner import plan_task
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -49,7 +50,7 @@ class SolveResponse(BaseModel):
     status: str = "completed"
 
 
-def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float):
+def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float, plan: dict = None):
     """Log every request for bandit-style analysis."""
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     entry = {
@@ -57,6 +58,7 @@ def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float):
         "prompt": req.prompt,
         "files": [{"filename": f.filename, "mime_type": f.mime_type} for f in req.files],
         "base_url": req.tripletex_credentials.base_url,
+        "plan": plan,
         "result": result,
         "api_stats": stats,
         "elapsed_seconds": round(elapsed, 1),
@@ -70,6 +72,8 @@ def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float):
     summary = {
         "ts": ts,
         "prompt_preview": req.prompt[:150],
+        "family": plan.get("family") if plan else None,
+        "confidence": plan.get("confidence") if plan else None,
         "api_calls": stats.get("total_calls", 0),
         "api_errors": stats.get("errors_4xx", 0),
         "iterations": result.get("iterations", 0),
@@ -95,8 +99,13 @@ async def solve(req: SolveRequest, request: Request):
 
     start = time.time()
     result = {}
+    plan = None
     try:
-        # Prepare files for agent
+        # Phase 1: Plan — classify task family and retrieve playbook
+        plan = plan_task(req.prompt)
+        log.info(f"Plan: family={plan['family']} confidence={plan['confidence']} method={plan['method']}")
+
+        # Phase 2: Execute — run agent with playbook context
         files = None
         if req.files:
             files = [
@@ -104,7 +113,7 @@ async def solve(req: SolveRequest, request: Request):
                 for f in req.files
             ]
 
-        result = await run_agent(client, req.prompt, files)
+        result = await run_agent(client, req.prompt, files, playbook=plan.get("playbook"))
         log.info(f"Agent result: iterations={result.get('iterations')}, "
                  f"api_calls={result.get('api_calls')}, errors={result.get('api_errors')}")
     except Exception as e:
@@ -113,7 +122,7 @@ async def solve(req: SolveRequest, request: Request):
     finally:
         stats = client.get_stats()
         elapsed = time.time() - start
-        log_request(req, result, stats, elapsed)
+        log_request(req, result, stats, elapsed, plan)
         await client.close()
 
     return SolveResponse(status="completed")

@@ -1,0 +1,12 @@
+{
+  "family": "product",
+  "keywords": ["produkt", "product", "Produkt", "produit", "producto", "produto"],
+  "description": "Create or update products",
+  "preflight": [],
+  "endpoints": [
+    "POST /product — body: {name, number, priceExcludingVatCurrency, vatType:{id:3}}"
+  ],
+  "required_fields": ["name"],
+  "common_errors": ["vatType must be set explicitly"],
+  "tips": "vatType id=3 for 25% standard MVA"
+}
