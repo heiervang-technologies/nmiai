@@ -1,61 +1,84 @@
-# Astar Island - Simulation Mechanics
+# Astar Island Simulation Mechanics
+
+## The World
+
+The world is a rectangular grid (default 40×40) with 8 terrain types that map to **6 prediction classes**:
+
+![Terrain Types](/docs/astar-island/terrain-types.png)
+
+<div class="table-scroll-wrapper">
+
+| Internal Code | Terrain    | Class Index | Description                           |
+|---------------|------------|-------------|---------------------------------------|
+| 10            | Ocean      | 0 (Empty)   | Impassable water, borders the map     |
+| 11            | Plains     | 0 (Empty)   | Flat land, buildable                  |
+| 0             | Empty      | 0           | Generic empty cell                    |
+| 1             | Settlement | 1           | Active Norse settlement               |
+| 2             | Port       | 2           | Coastal settlement with harbour       |
+| 3             | Ruin       | 3           | Collapsed settlement                  |
+| 4             | Forest     | 4           | Provides food to adjacent settlements |
+| 5             | Mountain   | 5           | Impassable terrain                    |
+
+</div>
+
+Ocean, Plains, and Empty all map to **class 0** in predictions. Mountains are static (never change). Forests are mostly static but can reclaim ruined land. The interesting cells are those that can become Settlements, Ports, or Ruins.
 
 ## Map Generation
 
-Maps are generated deterministically from **seeds**. Each round uses 5 different seeds.
+Each map is procedurally generated from a **map seed**:
 
-### Terrain Features
+- **Ocean borders** surround the map
+- **Fjords** cut inland from random edges
+- **Mountain chains** form via random walks
+- **Forest patches** cover land with clustered groves
+- **Initial settlements** placed on land cells, spaced apart
 
-- **Ocean**: Borders the island and forms fjords
-- **Fjords**: Water channels cutting into the landmass
-- **Mountain chains**: High terrain barriers
-- **Forest patches**: Wooded areas that grow and reclaim land
-- **Settlements**: Viking villages that grow, trade, and fight
+The map seed is visible to you — you can reconstruct the initial terrain layout locally.
 
-## Annual Simulation Phases
+## Simulation Lifecycle
 
-The simulation runs for 50 years. Each year consists of 5 phases executed in order:
+Each of the 50 years cycles through multiple phases. The world goes through **growth, conflict, trade, harsh winters, and environmental change** — in that order.
 
-### 1. Growth Phase
+![Simulation Phases](/docs/astar-island/simulation-phases.png)
 
-- Settlements produce **food** based on surrounding terrain
-- Settlements **expand** when population and food thresholds are met
-- Coastal settlements build **ports**
-- Settlements with ports build **longships**
+### Growth
 
-### 2. Conflict Phase
+Settlements produce food based on adjacent terrain. When conditions are right, settlements grow in population, develop ports along coastlines, and build longships for naval operations. Prosperous settlements expand by founding new settlements on nearby land.
 
-- Settlements may **raid** neighboring settlements
-- **Longship range**: Settlements with longships can raid across water
-- Raids transfer wealth and can destroy weaker settlements
+### Conflict
 
-### 3. Trade Phase
+Settlements raid each other. Longships extend raiding range significantly. Desperate settlements (low food) raid more aggressively. Successful raids loot resources and damage the defender. Sometimes, conquered settlements change allegiance to the raiding faction.
 
-- Settlements with **ports** exchange goods
-- Trade increases wealth and food for participating settlements
+![Faction dynamics — settlements change color as allegiances shift](/docs/astar-island/faction-dynamics.gif)
 
-### 4. Winter Phase
+### Trade
 
-- Settlements lose **food** proportional to population
-- Settlements that cannot sustain their population **collapse to Ruins**
+Ports within range of each other can trade if not at war. Trade generates wealth and food for both parties, and technology diffuses between trading partners.
 
-### 5. Environment Phase
+### Winter
 
-- **Ruins** are gradually **reclaimed** by forest or converted to outposts
-- Forest spreads into adjacent empty terrain
+Each year ends with a winter of varying severity. All settlements lose food. Settlements can collapse from starvation, sustained raids, or harsh winters — becoming Ruins and dispersing population to nearby friendly settlements.
+
+### Environment
+
+The natural world slowly reclaims abandoned land. Nearby thriving settlements may reclaim and rebuild ruined sites, establishing new outposts that inherit a portion of their patron's resources and knowledge. Coastal ruins can even be restored as ports. If no settlement steps in, ruins are eventually overtaken by forest growth or fade back into open plains.
 
 ## Settlement Properties
 
-Each settlement tracks:
+Each settlement tracks: position, population, food, wealth, defense, tech level, port status, longship ownership, and faction allegiance (owner_id).
 
-| Property | Description |
-|----------|-------------|
-| position | Grid coordinates (x, y) |
-| population | Number of inhabitants |
-| food | Food reserves |
-| wealth | Accumulated resources |
-| defense | Military strength |
-| tech | Technology level |
-| port | Whether settlement has a port |
-| longship | Whether settlement has a longship |
-| faction | Which faction the settlement belongs to |
+Initial states expose settlement positions and port status. Internal stats (population, food, wealth, defense) are only visible through simulation queries.
+
+## The World in Motion
+
+Watch a full 50-year simulation unfold — settlements grow, expand, get raided, and some collapse:
+
+![50-year simulation](/docs/astar-island/simulation.gif)
+
+Initial state vs. after 50 years of simulation:
+
+![Before and after](/docs/astar-island/simulation-before-after.png)
+
+With high expansion, settlements rapidly colonise available land:
+
+![High expansion simulation](/docs/astar-island/expansion.gif)

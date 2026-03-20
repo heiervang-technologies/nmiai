@@ -1,39 +1,56 @@
-# Astar Island Task - Overview
+# Astar Island — Viking Civilisation Prediction
 
-## Challenge Summary
+## What is this?
 
-Predict the future state of a simulated Viking island. Observe the island through limited viewport queries, then submit probability distributions over terrain types for each cell.
+Astar Island is a machine learning challenge where you observe a black-box Norse civilisation simulator through a limited viewport and predict the final world state. The simulator runs a procedurally generated Norse world for 50 years — settlements grow, factions clash, trade routes form, alliances shift, forests reclaim ruins, and harsh winters reshape entire civilisations.
 
-## Grid
+Your goal: **observe, learn the world's hidden rules, and predict the probability distribution of terrain types across the entire map.**
 
-- **40x40 grid** map
-- **8 terrain types** that map to **6 prediction classes**
+- **Task type**: Observation + probabilistic prediction
+- **Platform**: [app.ainm.no](https://app.ainm.no)
+- **API**: REST endpoints at `api.ainm.no/astar-island/`
 
-## Queries
+![Initial Astar Island Map](/docs/astar-island/map-initial.png)
 
-- **50 queries per round**, shared across **5 seeds**
-- Maximum viewport size: **15x15**
+## How It Works
 
-## Simulation
+1.  **A round starts** — the admin creates a round with a fixed map, many hidden parameters, and 5 random seeds
+2.  **Observe through a viewport** — call `POST /astar-island/simulate` with viewport coordinates to observe one stochastic run through a window (max 15×15 cells). You have 50 queries total per round, shared across all 5 seeds.
+3.  **Learn the hidden rules** — analyze viewport observations to understand the forces that govern the world
+4.  **Generate predictions** — use your understanding to build probability distributions for the full map
+5.  **Submit predictions** — for each of the 5 seeds, submit a W×H×6 probability tensor predicting terrain type probabilities per cell
+6.  **Scoring** — your prediction is compared against the ground truth using entropy-weighted KL divergence
 
-Each seed runs a **50-year simulation** of Viking settlement, conflict, trade, and environmental change.
+## The Core Challenge
 
-## Submission
+The simulation is **stochastic** — the same map and parameters produce different outcomes every run. With only **50 queries** shared across **5 seeds**, and each query only revealing a **15×15 viewport** of the 40×40 map, you must be strategic about what you observe and how you use that information.
 
-Submit a probability tensor of shape `[height][width][6]` representing the predicted probability distribution over the 6 classes for each cell.
+![Same map, different stochastic outcomes](/docs/astar-island/stochastic-outcomes.png)
 
-```json
-{
-  "prediction": [
-    [
-      [0.1, 0.2, 0.3, 0.1, 0.2, 0.1],
-      ...
-    ],
-    ...
-  ]
-}
-```
+![Viewport: you only see a small window of the full map](/docs/astar-island/viewport-demo.png)
 
-## Important
+The world is governed by many hidden forces that interact in complex ways. Teams that understand these interactions can build accurate models and generate predictions far beyond what raw observation provides.
 
-**Never use 0.0 probability** for any class in any cell. A zero probability for a class that appears in the ground truth results in infinite KL divergence and a score of zero. Use a minimum floor of 0.01.
+## Quick Start
+
+1.  Sign in at [app.ainm.no](https://app.ainm.no) with Google
+2.  Create or join a team
+3.  Go to the Astar Island page
+4.  When a round is active, use the API to observe the simulator
+5.  Analyze results, build your model, submit predictions for all 5 seeds
+
+## Key Concepts
+
+<div class="table-scroll-wrapper">
+
+| Concept | Description |
+|----|----|
+| **Map seed** | Determines terrain layout (fixed per seed, visible to you) |
+| **Sim seed** | Random seed for each simulation run (different every query) |
+| **Hidden parameters** | Values controlling the world's behavior (same for all seeds in a round) |
+| **50 queries** | Your budget per round, shared across all 5 seeds |
+| **Viewport** | Each query reveals a max 15×15 window of the map |
+| **W×H×6 tensor** | Your prediction — probability of each of 6 terrain classes per cell |
+| **50 years** | Each simulation runs for 50 time steps |
+
+</div>

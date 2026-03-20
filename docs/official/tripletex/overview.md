@@ -1,31 +1,54 @@
-# Tripletex Task - Overview
+# Tripletex — AI Accounting Agent
 
-## Challenge Summary
+Build an AI agent that completes accounting tasks in Tripletex. You receive a task prompt (in one of 7 languages), use the Tripletex API to execute it, and get scored on correctness and efficiency.
 
-Automate accounting tasks using the Tripletex API. Your solution receives a natural language prompt describing an accounting task and must execute it correctly against a Tripletex sandbox.
+## How It Works
 
-## Task Structure
+1.  Submit your HTTPS endpoint URL on the platform
+2.  We provision a fresh Tripletex sandbox account
+3.  We send a randomly selected accounting task to your `/solve` endpoint
+4.  Your agent reads the prompt, optionally processes attached files (PDFs, images)
+5.  Your agent calls the Tripletex API via a proxy to complete the task
+6.  We verify the result field-by-field against expected values
+7.  Your score updates on the rolling leaderboard
 
-- **30 task types** covering various accounting operations
-- **56 variants** of each task type (7 languages x 8 datasets)
-- **5-minute timeout** per submission
-- **Score range**: 0 - 6.0 per task
+Each submission gets a brand new Tripletex account — you always start from scratch.
 
-A fresh sandbox environment is provisioned for each submission.
+## Key Facts
 
-## Scoring Overview
+<div class="table-scroll-wrapper">
 
-Score is calculated as:
+|  |  |
+|----|----|
+| Task types | 30 different accounting tasks |
+| Variants | 56 per task (7 languages × 8 data sets) |
+| Language | Prompts in Norwegian, English, Spanish, Portuguese, Nynorsk, German, French |
+| Timeout | 5 minutes per submission |
+| API | [Tripletex v2 REST API](https://kkpqfuj-amager.tripletex.dev/v2-docs/) via authenticated proxy |
+| Scoring | Field-by-field checks + efficiency bonus, best score per task kept |
+| Score range | 0.0 (failed) — up to 6.0 (perfect Tier 3 + best efficiency) |
+| Files | Some tasks include PDF or image attachments |
 
-```
-score = correctness * tier_multiplier + efficiency_bonus
-```
+</div>
 
-- **Correctness**: Normalized 0-1 based on field-by-field verification
-- **Tier multiplier**: Increases over time:
-  - **Tier 1** (x1) - Available now
-  - **Tier 2** (x2) - Unlocked early Friday
-  - **Tier 3** (x3) - Unlocked early Saturday
-- **Efficiency bonus**: Awarded only on perfect (1.0 correctness) submissions
+## Quick Start
 
-Maximum possible score: **6.0** (perfect Tier 3 with max efficiency bonus).
+1.  Build a `/solve` endpoint that accepts POST requests with a task prompt and Tripletex credentials
+2.  Use an LLM to interpret the Norwegian prompt and decide which API calls to make
+3.  Call the Tripletex API using the provided proxy URL and session token
+4.  Return `{"status": "completed"}` when done
+5.  Submit your endpoint URL at `https://app.ainm.no/submit/tripletex`
+
+## Task Categories
+
+Your agent will encounter tasks like:
+
+- **Employees** — Create employees, set roles, update contact info
+- **Customers & Products** — Register customers, create products
+- **Invoicing** — Create invoices, register payments, issue credit notes
+- **Travel Expenses** — Register or delete travel expense reports
+- **Projects** — Create projects linked to customers
+- **Corrections** — Delete or reverse incorrect entries
+- **Departments** — Create departments, enable accounting modules
+
+Tasks range from simple single-API-call operations to multi-step workflows requiring several resources to be created and linked together.

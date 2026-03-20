@@ -1,166 +1,102 @@
-# Astar Island - Quickstart
+# Astar Island Quickstart
 
-## Authentication Setup
+## Authentication
 
-### Option 1: Cookie Authentication
+All endpoints require authentication. Log in at app.ainm.no, then inspect cookies in your browser to grab your `access_token` JWT.
 
-Log in via the competition platform. The JWT cookie is set automatically in your browser. For scripts, extract the cookie and pass it:
+You can authenticate using either a cookie or a Bearer token header:
 
-```python
-import httpx
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import requests
+ 
+BASE = &quot;https://api.ainm.no&quot;
+ 
+# Option 1: Cookie-based auth
+session = requests.Session()
+session.cookies.set(&quot;access_token&quot;, &quot;YOUR_JWT_TOKEN&quot;)
+ 
+# Option 2: Bearer token auth
+session = requests.Session()
+session.headers[&quot;Authorization&quot;] = &quot;Bearer YOUR_JWT_TOKEN&quot;</code></pre>
+</figure>
 
-BASE_URL = "https://api.ainm.no/astar-island"
-cookies = {"session": "your-jwt-cookie-value"}
-client = httpx.Client(base_url=BASE_URL, cookies=cookies)
-```
+## Step 1: Get the Active Round
 
-### Option 2: Bearer Token
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>rounds = session.get(f&quot;{BASE}/astar-island/rounds&quot;).json()
+active = next((r for r in rounds if r[&quot;status&quot;] == &quot;active&quot;), None)
+ 
+if active:
+    round_id = active[&quot;id&quot;]
+    print(f&quot;Active round: {active[&#39;round_number&#39;]}&quot;)</code></pre>
+</figure>
 
-```python
-import httpx
+## Step 2: Get Round Details
 
-BASE_URL = "https://api.ainm.no/astar-island"
-headers = {"Authorization": "Bearer your-token-here"}
-client = httpx.Client(base_url=BASE_URL, headers=headers)
-```
+Fetch the detail endpoint to get full round info including `seeds_count` and initial states:
 
-## Get Active Round
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>detail = session.get(f&quot;{BASE}/astar-island/rounds/{round_id}&quot;).json()
+ 
+width = detail[&quot;map_width&quot;]      # 40
+height = detail[&quot;map_height&quot;]    # 40
+seeds = detail[&quot;seeds_count&quot;]    # 5
+print(f&quot;Round: {width}x{height}, {seeds} seeds&quot;)
+ 
+for i, state in enumerate(detail[&quot;initial_states&quot;]):
+    grid = state[&quot;grid&quot;]           # height x width terrain codes
+    settlements = state[&quot;settlements&quot;]  # [{x, y, has_port, alive}, ...]
+    print(f&quot;Seed {i}: {len(settlements)} settlements&quot;)</code></pre>
+</figure>
 
-```python
-response = client.get("/rounds")
-rounds = response.json()
-active_round = [r for r in rounds if r.get("active")]
-print(f"Active round: {active_round}")
-```
+## Step 3: Query the Simulator
 
-## Get Round Details
+You have 50 queries per round, shared across all seeds. Each query reveals a 5-15 cell wide viewport:
 
-```python
-round_id = 1
-response = client.get(f"/rounds/{round_id}")
-round_info = response.json()
-print(f"Round info: {round_info}")
-```
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>result = session.post(f&quot;{BASE}/astar-island/simulate&quot;, json={
+    &quot;round_id&quot;: round_id,
+    &quot;seed_index&quot;: 0,
+    &quot;viewport_x&quot;: 10,
+    &quot;viewport_y&quot;: 5,
+    &quot;viewport_w&quot;: 15,
+    &quot;viewport_h&quot;: 15,
+}).json()
+ 
+grid = result[&quot;grid&quot;]                # 15x15 terrain after simulation
+settlements = result[&quot;settlements&quot;]  # settlements in viewport with full stats
+viewport = result[&quot;viewport&quot;]        # {x, y, w, h}</code></pre>
+</figure>
 
-## Query the Simulator
+## Step 4: Build and Submit Predictions
 
-Use POST /simulate to observe a region of the island:
+For each seed, submit a `height x width x 6` probability tensor. Each cell has 6 values representing the probability of each terrain class (Empty, Settlement, Port, Ruin, Forest, Mountain). They must sum to 1.0:
 
-```python
-query = {
-    "round_id": 1,
-    "seed_index": 0,
-    "viewport_x": 0,
-    "viewport_y": 0,
-    "viewport_w": 15,
-    "viewport_h": 15,
-}
-response = client.post("/simulate", json=query)
-observation = response.json()
-print(f"Observed terrain: {observation}")
-```
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import numpy as np
+ 
+for seed_idx in range(seeds):
+    prediction = np.full((height, width, 6), 1/6)  # uniform baseline
+ 
+    # TODO: replace with your model&#39;s predictions
+    # prediction[y][x] = [p_empty, p_settlement, p_port, p_ruin, p_forest, p_mountain]
+ 
+    resp = session.post(f&quot;{BASE}/astar-island/submit&quot;, json={
+        &quot;round_id&quot;: round_id,
+        &quot;seed_index&quot;: seed_idx,
+        &quot;prediction&quot;: prediction.tolist(),
+    })
+    print(f&quot;Seed {seed_idx}: {resp.status_code}&quot;)</code></pre>
+</figure>
 
-### Budget Management
+A uniform prediction scores ~1-5. Use your queries to build better predictions.
 
-You have **50 queries per round** shared across all 5 seeds. Plan your viewports carefully:
+> **Warning:** Never assign probability 0.0 to any class. If the ground truth has any non-zero probability for a class you marked as zero, KL divergence becomes infinite and your score for that cell is destroyed. Always enforce a minimum floor (e.g., 0.01) and renormalize. See the [scoring docs](/docs/astar-island/scoring.md#common-pitfalls) for details.
 
-```python
-# Check remaining budget
-response = client.get("/budget")
-budget = response.json()
-print(f"Remaining queries: {budget}")
+## Using the MCP Server
 
-# Strategy: 10 queries per seed, covering the full 40x40 grid
-# with 15x15 viewports (need ~9 to cover, leaving 1 spare per seed)
-viewports = [
-    (0, 0), (15, 0), (25, 0),
-    (0, 15), (15, 15), (25, 15),
-    (0, 25), (15, 25), (25, 25),
-]
-```
+Add the documentation server to Claude Code for AI-assisted development:
 
-## Submit Predictions
-
-Submit a probability tensor of shape `[40][40][6]`:
-
-```python
-import numpy as np
-
-# Initialize with uniform distribution (safe baseline)
-prediction = np.full((40, 40, 6), 1.0 / 6.0)
-
-# TODO: Replace with your actual predictions based on observations
-# Important: Never use 0.0 - use minimum floor of 0.01
-prediction = np.clip(prediction, 0.01, None)
-
-# Normalize each cell to sum to 1.0
-prediction = prediction / prediction.sum(axis=2, keepdims=True)
-
-submission = {
-    "round_id": 1,
-    "seed_index": 0,
-    "prediction": prediction.tolist(),
-}
-response = client.post("/submit", json=submission)
-print(f"Submission result: {response.json()}")
-```
-
-## Full Example
-
-```python
-import httpx
-import numpy as np
-
-BASE_URL = "https://api.ainm.no/astar-island"
-headers = {"Authorization": "Bearer your-token-here"}
-
-with httpx.Client(base_url=BASE_URL, headers=headers) as client:
-    # Get active round
-    rounds = client.get("/rounds").json()
-    round_id = rounds[0]["id"]
-
-    for seed_index in range(5):
-        # Observe the island (use ~10 queries per seed)
-        observations = []
-        for vx in range(0, 40, 15):
-            for vy in range(0, 40, 15):
-                w = min(15, 40 - vx)
-                h = min(15, 40 - vy)
-                query = {
-                    "round_id": round_id,
-                    "seed_index": seed_index,
-                    "viewport_x": vx,
-                    "viewport_y": vy,
-                    "viewport_w": w,
-                    "viewport_h": h,
-                }
-                obs = client.post("/simulate", json=query).json()
-                observations.append(obs)
-
-        # Build prediction from observations
-        prediction = np.full((40, 40, 6), 1.0 / 6.0)
-
-        # TODO: Use observations to build informed predictions
-        # Apply domain knowledge about simulation mechanics
-
-        # Ensure no zeros and normalize
-        prediction = np.clip(prediction, 0.01, None)
-        prediction = prediction / prediction.sum(axis=2, keepdims=True)
-
-        # Submit
-        submission = {
-            "round_id": round_id,
-            "seed_index": seed_index,
-            "prediction": prediction.tolist(),
-        }
-        result = client.post("/submit", json=submission).json()
-        print(f"Seed {seed_index}: {result}")
-```
-
-## MCP Server
-
-An MCP server is available for accessing documentation directly from Claude:
-
-```bash
-claude mcp add --transport http nmiai https://mcp-docs.ainm.no/mcp
-```
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code>claude mcp add --transport http nmiai https://mcp-docs.ainm.no/mcp</code></pre>
+</figure>

@@ -1,29 +1,30 @@
-# Google Cloud Overview - NM i AI 2026
+# Google Cloud
 
-## Partnership & Benefits
+Google Cloud is an official partner of NM i AI 2026. Selected teams receive a free GCP account with a dedicated project — no credit limits, no billing setup, ready to use.
 
-Google Cloud is an official partner of NM i AI 2026. The program provides selected teams with free GCP accounts featuring dedicated projects, unlimited credits, and full access to cloud services without billing setup required.
+## What You Get
 
-### What Teams Receive
+- A `@gcplab.me` Google account
+- A dedicated GCP project with full access to Cloud services
+- No credit limits — use what you need for the competition
+- Access to Gemini models, Cloud Run, Vertex AI, and more
+- Collaboration tools: Gmail, Google Docs, Google Chat, NotebookLM
 
-- **@gcplab.me Google account** with full project access
-- **No credit limits** for competition use
-- Access to **Gemini models, Cloud Run, Vertex AI**, and other services
-- **Collaboration tools** including Gmail, Docs, Chat, and NotebookLM
+## Who Gets an Account
 
-## Eligibility & Selection Criteria
+Accounts are limited. We prioritize teams based on:
 
-Account availability is limited. Priority allocation considers:
+1.  **Team verification** — all members must be Vipps-verified
+2.  **Application** — you must apply for a GCP account through the platform
+3.  **Competition activity** — active teams are prioritized
+4.  **Younger participants** — we prioritize students and early-career developers
 
-1. **Team verification** - all members must complete Vipps verification
-2. **Platform application** - teams must formally request GCP access
-3. **Active participation** - engagement in competition activities
-4. **Age demographics** - preference given to students and early-career professionals
+You don't need a GCP account to compete — you can host your endpoint anywhere. But if you don't have your own cloud environment, this is a great way to get started for free.
 
-## Application Process
+## How to Apply
 
-Teams apply through their dashboard at app.ainm.no. All participants must be Vipps-verified before submitting requests.
+Apply for a GCP account from your team page at [app.ainm.no](https://app.ainm.no). All team members must be Vipps-verified before applying.
 
-## Flexibility for Existing Infrastructure
+## Already Have Cloud Infrastructure?
 
-GCP accounts are optional. Teams may host endpoints on AWS, Azure, or their own platforms. The competition only requires a public HTTPS URL that responds correctly - infrastructure location is irrelevant to scoring.
+If your team already has access to AWS, Azure, or your own GCP project — great! You can host your endpoints anywhere. The competition only cares about a public HTTPS URL that responds correctly.

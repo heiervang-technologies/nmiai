@@ -1,114 +1,161 @@
-# Tripletex - Examples
+# Tripletex — Examples
 
-## FastAPI Template
+## Minimal `/solve` Endpoint
 
-```python
-from fastapi import FastAPI
-import httpx
-
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import base64
+from pathlib import Path
+ 
+import requests
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+ 
 app = FastAPI()
+ 
+@app.post(&quot;/solve&quot;)
+async def solve(request: Request):
+    body = await request.json()
+    prompt = body[&quot;prompt&quot;]
+    files = body.get(&quot;files&quot;, [])
+    creds = body[&quot;tripletex_credentials&quot;]
+ 
+    base_url = creds[&quot;base_url&quot;]
+    token = creds[&quot;session_token&quot;]
+    auth = (&quot;0&quot;, token)
+ 
+    for f in files:
+        data = base64.b64decode(f[&quot;content_base64&quot;])
+        Path(f[&quot;filename&quot;]).write_bytes(data)
+ 
+    # TODO: Use an LLM to interpret the prompt and execute
+    # the appropriate Tripletex API calls
+ 
+    return JSONResponse({&quot;status&quot;: &quot;completed&quot;})</code></pre>
+</figure>
 
+Run with:
 
-@app.post("/solve")
-async def solve(request: dict):
-    prompt = request["prompt"]
-    credentials = request["tripletex_credentials"]
-    base_url = credentials["base_url"]
-    token = credentials["session_token"]
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code>pip install fastapi uvicorn requests
+uvicorn main:app --host 0.0.0.0 --port 8000</code></pre>
+</figure>
 
-    auth = httpx.BasicAuth(username="0", password=token)
+Expose locally via HTTPS for testing:
 
-    async with httpx.AsyncClient(base_url=base_url, auth=auth) as client:
-        # Your solution logic here
-        pass
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code>npx cloudflared tunnel --url http://localhost:8000</code></pre>
+</figure>
 
-    return {"status": "completed"}
-```
+## Tripletex API Examples
 
-## List Employees
+### List employees
 
-```python
-async def list_employees(client: httpx.AsyncClient):
-    response = await client.get("/v2/employee", params={"count": 100})
-    response.raise_for_status()
-    data = response.json()
-    return data["values"]
-```
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>resp = requests.get(
+    f&quot;{base_url}/employee&quot;,
+    auth=auth,
+    params={&quot;fields&quot;: &quot;id,firstName,lastName,email&quot;}
+)
+employees = resp.json()[&quot;values&quot;]</code></pre>
+</figure>
 
-## Create Customer
+### Create a customer
 
-```python
-async def create_customer(client: httpx.AsyncClient, name: str, email: str):
-    payload = {
-        "name": name,
-        "email": email,
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>resp = requests.post(
+    f&quot;{base_url}/customer&quot;,
+    auth=auth,
+    json={
+        &quot;name&quot;: &quot;Acme AS&quot;,
+        &quot;email&quot;: &quot;post@acme.no&quot;,
+        &quot;isCustomer&quot;: True
     }
-    response = await client.post("/v2/customer", json=payload)
-    response.raise_for_status()
-    return response.json()["value"]
-```
+)
+customer_id = resp.json()[&quot;value&quot;][&quot;id&quot;]</code></pre>
+</figure>
 
-## Create Invoice
+### Create an invoice
 
-```python
-async def create_invoice(client: httpx.AsyncClient, customer_id: int, lines: list):
-    payload = {
-        "customer": {"id": customer_id},
-        "invoiceDate": "2026-03-19",
-        "dueDate": "2026-04-19",
-        "orders": [],
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>today = &quot;2026-03-03&quot;
+resp = requests.post(
+    f&quot;{base_url}/invoice&quot;,
+    auth=auth,
+    json={
+        &quot;invoiceDate&quot;: today,
+        &quot;invoiceDueDate&quot;: today,
+        &quot;customer&quot;: {&quot;id&quot;: customer_id},
+        &quot;orders&quot;: [{&quot;id&quot;: order_id}]
     }
-    response = await client.post("/v2/invoice", json=payload)
-    response.raise_for_status()
-    return response.json()["value"]
-```
+)</code></pre>
+</figure>
 
-## Search Entity
+### Search for a specific entity
 
-```python
-async def search_entity(client: httpx.AsyncClient, endpoint: str, query: str):
-    response = await client.get(f"/v2/{endpoint}", params={"query": query, "count": 25})
-    response.raise_for_status()
-    return response.json()["values"]
-```
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>resp = requests.get(
+    f&quot;{base_url}/customer&quot;,
+    auth=auth,
+    params={
+        &quot;name&quot;: &quot;Acme&quot;,
+        &quot;fields&quot;: &quot;id,name,email&quot;,
+        &quot;count&quot;: 10
+    }
+)
+matches = resp.json()[&quot;values&quot;]</code></pre>
+</figure>
 
-## Deployment
+## Building an Effective Agent
 
-### Using uvicorn + cloudflared tunnel
-
-```bash
-# Start the server
-uvicorn main:app --host 0.0.0.0 --port 8000
-
-# In another terminal, expose via cloudflared
-cloudflared tunnel --url http://localhost:8000
-```
-
-This gives you a public HTTPS URL to register as your endpoint on the competition platform.
+1.  **Parse the prompt** — Use an LLM to extract the task type, entity names, field values, and relationships from the Norwegian prompt
+2.  **Handle files** — Some tasks include PDFs with invoices, contracts, or expense reports. Decode from base64 and extract relevant data
+3.  **Map to API calls** — Determine which Tripletex endpoints to call and in what order. Some tasks require creating prerequisites first
+4.  **Verify your work** — After creating entities, query back to confirm they exist with correct values
+5.  **Handle errors** — Tripletex returns detailed error messages. Parse them to retry with corrections
 
 ## Common Task Patterns
 
-### Single Entity
+<div class="table-scroll-wrapper">
 
-Create or update a single entity (employee, customer, project). Parse the prompt to extract fields, make one API call.
+| Pattern | Example | API Flow |
+|----|----|----|
+| Create single entity | "Create employee Ola Nordmann" | POST /employee |
+| Create with linking | "Create invoice for customer" | GET /customer → POST /order → POST /invoice |
+| Modify existing | "Add phone to contact" | GET /customer → PUT /customer/{id} |
+| Delete/reverse | "Delete travel expense" | GET /travelExpense → DELETE /travelExpense/{id} |
+| Multi-step setup | "Register payment" | POST /customer → POST /invoice → POST /payment |
 
-### Multi-Step
+</div>
 
-Tasks that require creating multiple related entities. Example: create a customer, then create an invoice for that customer.
+## Common Errors
 
-### Modification
+<div class="table-scroll-wrapper">
 
-Find an existing entity, update specific fields. Requires a search/list call followed by a PUT/PATCH.
+| Error | Cause | Fix |
+|----|----|----|
+| 401 Unauthorized | Wrong auth format | Use Basic Auth with username `0` and session token as password |
+| 404 Not Found | Wrong endpoint path | Check the Tripletex v2 API docs for correct paths |
+| 422 Validation Error | Missing required fields | Read error message — it specifies which fields are required |
+| Empty `values` array | No results found | Check search parameters, try broader search |
+| Timeout (5 min) | Agent too slow | Optimize API calls, reduce unnecessary requests |
 
-### Deletion
+</div>
 
-Find and delete an entity. Requires identifying the entity first, then calling DELETE.
+## Tips
 
-## Optimization Tips
+- The Tripletex sandbox starts empty — you may need to create prerequisites (customer, product) before creating invoices
+- Use `?fields=*` to see all available fields on an entity
+- Some tasks require enabling modules first (e.g., department accounting)
+- Norwegian characters (æ, ø, å) work fine in API requests — send as UTF-8
+- All API calls through the proxy are logged — use them for debugging in the submissions view
+- Prompts come in 7 languages (nb, en, es, pt, nn, de, fr) — your agent should handle all of them
 
-- **Plan before calling**: Parse the prompt fully before making any API calls.
-- **Avoid trial-and-error**: Each failed API call (4xx) hurts your efficiency score.
-- **Minimize GETs**: Only fetch data you actually need.
-- **Batch operations**: Where the API supports it, batch creates/updates.
-- **Read error responses**: Tripletex error messages are descriptive and help fix issues.
-- **Norwegian characters**: Work fine as UTF-8. No special encoding needed.
+## Optimizing for Efficiency
+
+Your score can go above 1.0 if you achieve perfect correctness with minimal API calls and zero errors. Higher-tier tasks have higher score ceilings (up to 6.0 for Tier 3). Tips:
+
+- **Plan before calling** — Parse the prompt fully before making API calls. Understand what needs to be created/modified before starting
+- **Avoid trial-and-error** — Every 4xx error (400, 404, 422) reduces your efficiency bonus. Validate inputs before sending
+- **Minimize GET calls** — Don't fetch entities you don't need. If you created something, you already know its ID from the response
+- **Batch where possible** — Some Tripletex endpoints accept lists. Use them instead of multiple individual calls
+- **Read error messages** — If a call fails, the Tripletex error message tells you exactly what's wrong. Fix it in one retry, not several

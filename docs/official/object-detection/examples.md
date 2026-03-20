@@ -1,158 +1,182 @@
-# Object Detection - Examples
+# NorgesGruppen Data: Examples & Tips
 
 ## Random Baseline
 
-A simple random prediction baseline to verify submission format:
+Minimal `run.py` that generates random predictions (use to verify your setup):
 
-```python
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import argparse
 import json
-import pathlib
 import random
-import argparse
-
-
+from pathlib import Path
+ 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=str, required=True)
-    parser.add_argument("--output", type=str, required=True)
+    parser.add_argument(&quot;--input&quot;, required=True)
+    parser.add_argument(&quot;--output&quot;, required=True)
     args = parser.parse_args()
-
-    input_dir = pathlib.Path(args.input)
-    output_path = pathlib.Path(args.output)
-
-    image_files = sorted(input_dir.glob("*.jpg")) + sorted(input_dir.glob("*.png"))
-
+ 
     predictions = []
-    for img_path in image_files:
-        image_id = int(img_path.stem)
-        num_detections = random.randint(1, 10)
-        for _ in range(num_detections):
-            predictions.append({
-                "image_id": image_id,
-                "category_id": random.randint(0, 355),
-                "bbox": [
-                    random.uniform(0, 500),
-                    random.uniform(0, 500),
-                    random.uniform(10, 200),
-                    random.uniform(10, 200),
-                ],
-                "score": random.uniform(0.0, 1.0),
-            })
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(predictions, f)
-
-    print(f"Generated {len(predictions)} predictions for {len(image_files)} images.")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-## YOLOv8 Approach
-
-### Pretrained COCO Model
-
-A pretrained YOLOv8 model trained on COCO will output **wrong category IDs** since COCO has 80 classes, not 356. You must fine-tune the model on the competition dataset.
-
-### Fine-Tuning
-
-When fine-tuning YOLOv8 on the competition dataset, set:
-
-```python
-# Set number of classes to 357 (0-356 inclusive, but nc = count)
-# Adjust based on whether categories are 0-indexed or 1-indexed
-model = YOLO("yolov8n.pt")
-model.train(data="dataset.yaml", epochs=50, nc=357)
-```
-
-Ensure your `dataset.yaml` maps category IDs correctly to the competition's 356 categories.
-
-## ONNX Export and Inference
-
-### Export
-
-When exporting to ONNX, use **opset version <= 20**:
-
-```python
-model.export(format="onnx", opset=20)
-```
-
-### ONNX Inference
-
-Use `CUDAExecutionProvider` for GPU acceleration:
-
-```python
-import onnxruntime as ort
-import numpy as np
-import json
-import pathlib
-import argparse
-
-
-def preprocess(image_path, input_size=(640, 640)):
-    from PIL import Image
-
-    img = Image.open(image_path).convert("RGB")
-    img_resized = img.resize(input_size)
-    img_array = np.array(img_resized).astype(np.float32) / 255.0
-    img_array = np.transpose(img_array, (2, 0, 1))
-    img_array = np.expand_dims(img_array, axis=0)
-    return img_array
-
-
-def postprocess(outputs, image_id, score_threshold=0.25):
-    predictions = []
-    # Adjust based on your model's output format
-    detections = outputs[0]
-    for det in detections:
-        score = float(det[4])
-        if score < score_threshold:
+    for img in sorted(Path(args.input).iterdir()):
+        if img.suffix.lower() not in (&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;):
             continue
-        x, y, w, h = det[0], det[1], det[2], det[3]
-        category_id = int(det[5])
-        predictions.append({
-            "image_id": image_id,
-            "category_id": category_id,
-            "bbox": [float(x), float(y), float(w), float(h)],
-            "score": score,
-        })
-    return predictions
+        image_id = int(img.stem.split(&quot;_&quot;)[-1])
+        for _ in range(random.randint(5, 20)):
+            predictions.append({
+                &quot;image_id&quot;: image_id,
+                &quot;category_id&quot;: random.randint(0, 356),
+                &quot;bbox&quot;: [
+                    round(random.uniform(0, 1500), 1),
+                    round(random.uniform(0, 800), 1),
+                    round(random.uniform(20, 200), 1),
+                    round(random.uniform(20, 200), 1),
+                ],
+                &quot;score&quot;: round(random.uniform(0.01, 1.0), 3),
+            })
+ 
+    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+    with open(args.output, &quot;w&quot;) as f:
+        json.dump(predictions, f)
+ 
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+</figure>
 
+## YOLOv8 Example
 
+Using YOLOv8n with GPU auto-detection. **Important:** The pretrained COCO model outputs COCO class IDs (0-79), not product IDs (0-355). For correct product classification, fine-tune on the competition training data with `nc=357`. Detection-only submissions (wrong category_ids) still score up to 70%.
+
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import argparse
+import json
+from pathlib import Path
+import torch
+from ultralytics import YOLO
+ 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=str, required=True)
-    parser.add_argument("--output", type=str, required=True)
+    parser.add_argument(&quot;--input&quot;, required=True)
+    parser.add_argument(&quot;--output&quot;, required=True)
     args = parser.parse_args()
+ 
+    device = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
+    model = YOLO(&quot;yolov8n.pt&quot;)
+    predictions = []
+ 
+    for img in sorted(Path(args.input).iterdir()):
+        if img.suffix.lower() not in (&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;):
+            continue
+        image_id = int(img.stem.split(&quot;_&quot;)[-1])
+        results = model(str(img), device=device, verbose=False)
+        for r in results:
+            if r.boxes is None:
+                continue
+            for i in range(len(r.boxes)):
+                x1, y1, x2, y2 = r.boxes.xyxy[i].tolist()
+                predictions.append({
+                    &quot;image_id&quot;: image_id,
+                    &quot;category_id&quot;: int(r.boxes.cls[i].item()),
+                    &quot;bbox&quot;: [round(x1, 1), round(y1, 1), round(x2 - x1, 1), round(y2 - y1, 1)],
+                    &quot;score&quot;: round(float(r.boxes.conf[i].item()), 3),
+                })
+ 
+    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+    with open(args.output, &quot;w&quot;) as f:
+        json.dump(predictions, f)
+ 
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+</figure>
 
-    input_dir = pathlib.Path(args.input)
-    output_path = pathlib.Path(args.output)
+Include `yolov8n.pt` in your zip. This pretrained COCO model serves as a baseline — fine-tune on the competition training data for better results. With GPU available, larger models like YOLOv8m/l/x are also feasible within the timeout.
 
-    session = ort.InferenceSession(
-        "model.onnx",
-        providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
-    )
+## ONNX Inference Example
 
+ONNX works with any model framework. Use `CUDAExecutionProvider` for GPU acceleration:
+
+**Export (on your training machine):**
+
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code># From ultralytics:
+from ultralytics import YOLO
+model = YOLO(&quot;best.pt&quot;)
+model.export(format=&quot;onnx&quot;, imgsz=640, opset=17)
+ 
+# From any PyTorch model:
+import torch
+model = ...  # your trained model
+dummy = torch.randn(1, 3, 640, 640)
+torch.onnx.export(model, dummy, &quot;model.onnx&quot;, opset_version=17)</code></pre>
+</figure>
+
+**Inference (in your `run.py`):**
+
+<figure data-rehype-pretty-code-figure="">
+<pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code>import argparse
+import json
+import numpy as np
+from pathlib import Path
+from PIL import Image
+import onnxruntime as ort
+ 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(&quot;--input&quot;, required=True)
+    parser.add_argument(&quot;--output&quot;, required=True)
+    args = parser.parse_args()
+ 
+    session = ort.InferenceSession(&quot;model.onnx&quot;, providers=[&quot;CUDAExecutionProvider&quot;, &quot;CPUExecutionProvider&quot;])
     input_name = session.get_inputs()[0].name
-    image_files = sorted(input_dir.glob("*.jpg")) + sorted(input_dir.glob("*.png"))
+    predictions = []
+ 
+    for img_path in sorted(Path(args.input).iterdir()):
+        if img_path.suffix.lower() not in (&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;):
+            continue
+        image_id = int(img_path.stem.split(&quot;_&quot;)[-1])
+ 
+        img = Image.open(img_path).convert(&quot;RGB&quot;).resize((640, 640))
+        arr = np.array(img).astype(np.float32) / 255.0
+        arr = np.transpose(arr, (2, 0, 1))[np.newaxis, ...]
+ 
+        outputs = session.run(None, {input_name: arr})
+        # Process outputs based on your model&#39;s output format
+        # ...
+ 
+    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+    with open(args.output, &quot;w&quot;) as f:
+        json.dump(predictions, f)
+ 
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+</figure>
 
-    all_predictions = []
-    for img_path in image_files:
-        image_id = int(img_path.stem)
-        img_tensor = preprocess(img_path)
-        outputs = session.run(None, {input_name: img_tensor})
-        preds = postprocess(outputs, image_id)
-        all_predictions.extend(preds)
+## Common Errors
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(all_predictions, f)
+<div class="table-scroll-wrapper">
 
-    print(f"Generated {len(all_predictions)} predictions for {len(image_files)} images.")
+| Error | Fix |
+|----|----|
+| `run.py not found at zip root` | Zip the **contents**, not the folder. See "Creating Your Zip" in submission docs. |
+| `Disallowed file type: __MACOSX/...` | macOS Finder resource forks. Use terminal: `zip -r ../sub.zip . -x ".*" "__MACOSX/*"` |
+| `Disallowed file type: .bin` | Rename `.bin` → `.pt` (same format) or convert to `.safetensors` |
+| `Security scan found violations` | Remove imports of subprocess, socket, os, etc. Use pathlib instead. |
+| `No predictions.json in output` | Make sure run.py writes to the `--output` path |
+| `Timed out after 300s` | Ensure GPU is used (`model.to("cuda")`), or use a smaller model |
+| `Exit code 137` | Out of memory (8 GB limit). Reduce batch size or use FP16 |
+| `Exit code 139` | Segfault — likely model weight version mismatch. Re-export with matching package version or use ONNX. |
+| `ModuleNotFoundError` | Package not in sandbox. Export model to ONNX or include model code in your .py files. |
+| `KeyError` / `RuntimeError` on model load | Version mismatch. Pin exact sandbox versions or export to ONNX. |
 
+</div>
 
-if __name__ == "__main__":
-    main()
-```
+## Tips
+
+- Start with the random baseline to verify your setup works
+- **GPU is available** — larger models (YOLOv8m/l/x, custom transformers) are feasible within the 300s timeout
+- Use `torch.cuda.is_available()` to write code that works both locally (CPU) and on the server (GPU)
+- FP16 quantization is recommended — smaller weights, faster GPU inference
+- ONNX with `CUDAExecutionProvider` gives good GPU performance for any framework
+- Process images one at a time to stay within memory limits
+- Use `torch.no_grad()` during inference
+- Test your code locally before uploading
+- You don't need all sandbox packages for training — only match what you use

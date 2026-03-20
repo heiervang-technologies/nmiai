@@ -46,20 +46,65 @@ Competition entry for NM i AI 2026 (Norwegian Championship of AI).
 
 ## Communication Protocol
 
+We communicate between agents via tmux panes. Each agent runs in its own pane.
+
 ### Master orchestrator: pane %7
 
-Report to master:
+All agents report to the master orchestrator in pane %7.
+
+### How to send messages to other agents
+
+Use `tmux-tool send` or `director send` to paste text into another pane. **CRITICAL: The message will NOT auto-submit.** You MUST send Enter separately afterward.
+
+**Recommended pattern (most reliable):**
+```bash
+director send %TARGET 'your message here'
+sleep 0.5
+tmux send-keys -t %TARGET Enter
+sleep 0.3
+tmux send-keys -t %TARGET Enter
+```
+
+**Alternative using tmux-tool:**
+```bash
+tmux-tool send %TARGET 'your message here'
+sleep 0.5
+tmux send-keys -t %TARGET Enter
+sleep 0.3
+tmux send-keys -t %TARGET Enter
+```
+
+### KNOWN ISSUE: Enter key not submitting
+
+There is a race condition where Enter is sent before the paste completes, causing messages to sit in the input buffer unsubmitted. **Always send Enter twice with a short delay to be safe.** This is tracked in [agent-tools#7](https://github.com/heiervang-technologies/agent-tools/issues/7).
+
+If you see `[Pasted text #N +X lines]` in a pane but the agent is not processing, the message was not submitted. Send Enter manually:
+```bash
+tmux send-keys -t %TARGET Enter
+```
+
+### Reporting to master
+
+Use the multi-agent XML protocol:
 ```bash
 tmux-tool send %7 '<agent id="YOUR_ID" role="YOUR_ROLE" pane="%YOUR_PANE">Your message</agent>'
 sleep 0.5
 tmux send-keys -t %7 Enter
+sleep 0.3
+tmux send-keys -t %7 Enter
 ```
 
-### Known bug: director send does not auto-submit
-Always follow any `director send` with:
+### Finding your pane ID
 ```bash
-sleep 0.5
-tmux send-keys -t %TARGET Enter
+tmux-tool current
+# or
+echo $TMUX_PANE
+```
+
+### Listing all agents
+```bash
+director list
+tmux-tool list
 ```
 
 ### When to report to master

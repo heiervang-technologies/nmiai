@@ -1,34 +1,52 @@
-# Object Detection - Scoring
+# NorgesGruppen Data: Scoring
 
-## Score Formula
+## Hybrid Scoring
 
-```
-score = 0.7 * detection_mAP + 0.3 * classification_mAP
-```
+Your final score combines detection and classification:
 
-Both metrics are computed at **IoU >= 0.5**.
+    Score = 0.7 × detection_mAP + 0.3 × classification_mAP
 
-### Detection mAP
+Both components use mAP@0.5 (Mean Average Precision at IoU threshold 0.5).
 
-- Evaluates the ability to locate objects regardless of category.
-- Category labels are **ignored**; only bounding box overlap matters.
+### Detection mAP (70% of score)
 
-### Classification mAP
+Measures whether you found the products, ignoring category:
 
-- Evaluates the ability to correctly classify detected objects.
-- Requires both correct bounding box (IoU >= 0.5) **and** correct `category_id`.
+- Each prediction is matched to the closest ground truth box
+- A prediction is a true positive if IoU ≥ 0.5 (category is ignored)
+- This rewards accurate bounding box localization
+
+### Classification mAP (30% of score)
+
+Measures whether you identified the correct product:
+
+- A prediction is a true positive if IoU ≥ 0.5 AND the `category_id` matches the ground truth
+- 356 product categories (IDs 0-355) from the training data `annotations.json`
+
+### Detection-Only Submissions
+
+If you set `category_id: 0` for all predictions, you can score up to **0.70** (70%) from the detection component alone. Adding correct product identification unlocks the remaining 30%.
+
+- Score range: 0.0 (worst) to 1.0 (perfect)
 
 ## Submission Limits
 
-| Limit | Value |
-|-------|-------|
-| Submissions per day | 3 |
-| Daily reset | Midnight UTC |
-| Max concurrent submissions | 2 |
-| Infrastructure errors | First 2 do not count against daily limit |
+<div class="table-scroll-wrapper">
 
-## Final Rankings
+| Limit                           | Value                                  |
+|---------------------------------|----------------------------------------|
+| Submissions in-flight           | 2 per team                             |
+| Submissions per day             | 3 per team                             |
+| Infrastructure failure freebies | 2 per day (don't count against your 3) |
 
-Final rankings are determined using a **private test set** that is separate from the public leaderboard test set.
+</div>
 
-Teams can **manually select** which of their submissions should be used for final evaluation. If no selection is made, the best-scoring public submission is used.
+Limits reset at midnight UTC. If you hit an infrastructure error (our fault), it doesn't count against your daily limit — up to 2 per day. After that, infrastructure failures consume a regular submission slot.
+
+## Leaderboard
+
+The public leaderboard shows scores from the public test set. The final ranking uses the private test set which is never revealed to participants.
+
+## Select for Final Evaluation
+
+By default, your best-scoring submission is used for the final private evaluation. You can override this by clicking **Select for final** on any completed submission in your submission history. This lets you choose a submission you trust, even if it's not your highest public score. You can change your selection at any time before the competition ends.
