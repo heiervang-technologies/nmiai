@@ -51,8 +51,24 @@ DIAGNOSTIC_BUCKET_WEIGHTS = {
     "other": 0.6,
 }
 
+OBS_BUCKET_TAU = {
+    "init_settlement": 4.8,
+    "init_port": 4.4,
+    "coastal_frontier": 4.2,
+    "inland_near": 3.8,
+    "inland_mid": 2.8,
+    "forest_near": 3.0,
+    "edge_frontier": 3.2,
+    "other": 1.8,
+}
+
 _MODEL_CACHE = None
 _GRID_FINGERPRINTS: dict[bytes, int] = {}  # fingerprint -> round_num
+
+# Live rounds showed that per-cell observation updates can over-trust sparse
+# samples and degrade score. Keep observations for template/regime inference,
+# but disable direct local posterior nudging unless re-enabled after clean CV.
+ENABLE_LOCAL_OBS_UPDATE = False
 
 
 def _grid_fingerprint(initial_grid) -> bytes:
@@ -422,7 +438,9 @@ def apply_local_observation_update(prior: np.ndarray, initial_grid: list[list[in
         return prior
 
     ig = np.asarray(initial_grid, dtype=np.int32)
+    maps = compute_feature_maps(initial_grid)
     counts = np.zeros_like(prior)
+    obs_count = np.zeros(prior.shape[:2], dtype=np.float64)
 
     for obs in observations:
         grid = obs.get("grid", [])
@@ -434,18 +452,28 @@ def apply_local_observation_update(prior: np.ndarray, initial_grid: list[list[in
                 x = vx + dx
                 if 0 <= y < prior.shape[0] and 0 <= x < prior.shape[1]:
                     counts[y, x, cell_code_to_class(int(cell))] += 1.0
+                    obs_count[y, x] += 1.0
 
     safe_prior = np.clip(prior, 1e-12, 1.0)
     ent = -np.sum(safe_prior * np.log(safe_prior), axis=2)
-    tau = 0.8 + 3.6 * ent / np.log(N_CLASSES)
+    tau = 0.6 + 2.8 * ent / np.log(N_CLASSES)
+
+    for y in range(prior.shape[0]):
+        for x in range(prior.shape[1]):
+            bucket = diagnostic_bucket(maps, y, x)
+            tau[y, x] += OBS_BUCKET_TAU.get(bucket or "other", OBS_BUCKET_TAU["other"])
+
     tau[ig == OCEAN] = 100.0
     tau[ig == MOUNTAIN] = 100.0
 
     posterior = counts + tau[:, :, None] * prior
     posterior /= posterior.sum(axis=2, keepdims=True)
-    observed_mask = counts.sum(axis=2) > 0
     out = prior.copy()
-    out[observed_mask] = posterior[observed_mask]
+
+    obs_strength = 1.0 - np.exp(-obs_count / 1.6)
+    obs_strength = np.clip(obs_strength, 0.0, 0.92)
+    out = (1.0 - obs_strength[:, :, None]) * out + obs_strength[:, :, None] * posterior
+
     return out
 
 
@@ -503,7 +531,7 @@ def predict(initial_grid: list[list[int]] | np.ndarray, observations: list[dict]
         pred = np.clip(pred, 1e-12, None)
         pred /= pred.sum(axis=2, keepdims=True)
 
-    if observations:
+    if observations and ENABLE_LOCAL_OBS_UPDATE:
         pred = apply_local_observation_update(pred, initial_grid, observations)
 
     pred = np.maximum(pred, 0.01)
