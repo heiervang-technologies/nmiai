@@ -18,12 +18,20 @@ python run.py --input /data/images/ --output /predictions.json
 - Exit code MUST be 0. Any non-zero = "evaluation failed"
 - Max 420MB ZIP, 300s timeout, NVIDIA L4 GPU (24GB VRAM)
 
-### 3. Blocked Imports
-- `os`, `subprocess`, `socket`, `ctypes` — BLOCKED
-- `eval()`, `exec()`, `compile()`, `__import__()` — BLOCKED
-- Use `pathlib` for all file operations
-- Use `open()` directly for file I/O (not os.path)
-- `cv2.imread(str(path))` works fine
+### 3. Blocked Imports (FULL LIST)
+**Blocked imports:**
+- `os`, `sys`, `subprocess`, `socket`, `ctypes`, `builtins`, `importlib`
+- `pickle`, `marshal`, `shelve`, `shutil`
+- `yaml` (use `json` instead)
+- `requests`, `urllib`, `http.client`
+- `multiprocessing`, `threading`, `signal`, `gc`
+- `code`, `codeop`, `pty`
+
+**Blocked calls:** `eval()`, `exec()`, `compile()`, `__import__()`, `getattr()` with dangerous names
+
+**Also blocked:** ELF/Mach-O/PE binaries, symlinks, path traversal
+
+**Use instead:** `pathlib` (not `os`), `json` (not `yaml`), `open()` directly for file I/O, `cv2.imread(str(path))` for images
 
 ### 4. Output JSON Format
 ```json
