@@ -151,18 +151,13 @@ def main():
         outputs = session.run(None, {input_name: img_input})
         boxes, confs, class_ids = postprocess(outputs, orig_shape, ratio, pad)
 
-        predictions = []
         for box, conf, cls_id in zip(boxes, confs, class_ids):
-            predictions.append({
+            results.append({
+                'image_id': img_path.name,
                 'bbox': [round(v, 2) for v in box],
                 'category_id': int(cls_id),
                 'score': round(float(conf), 4),
             })
-
-        results.append({
-            'image_id': img_path.name,
-            'predictions': predictions,
-        })
 
     output_path = pathlib.Path(args.output)
     with open(str(output_path), 'w') as f:
