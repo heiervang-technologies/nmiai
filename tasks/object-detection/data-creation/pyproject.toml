@@ -7,7 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "albumentations>=2.0.8",
     "httpx>=0.28.1",
-    "huggingface-hub>=1.7.1",
+    "huggingface-hub[cli]>=1.7.1",
     "matplotlib>=3.10.8",
     "numpy>=2.4.3",
     "opencv-python-headless>=4.13.0.92",

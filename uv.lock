@@ -291,7 +291,7 @@ dependencies = [
 requires-dist = [
     { name = "albumentations", specifier = ">=2.0.8" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "huggingface-hub", specifier = ">=1.7.1" },
+    { name = "huggingface-hub", extras = ["cli"], specifier = ">=1.7.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "opencv-python-headless", specifier = ">=4.13.0.92" },
