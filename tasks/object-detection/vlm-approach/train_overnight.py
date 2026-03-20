@@ -64,8 +64,8 @@ STAGE_CONFIGS = {
     1: {
         "name": "pretrain_coco",
         "description": "Broad object understanding on COCO",
-        "lr": 2e-4,
-        "batch_size": 16,  # Per GPU
+        "lr": 4e-4,  # sqrt-scaled from 2e-4 for 4x batch
+        "batch_size": 64,  # Per GPU (was 16)
         "epochs": 3,
         "warmup_ratio": 0.05,
         "num_classes": 80,
@@ -75,8 +75,8 @@ STAGE_CONFIGS = {
     2: {
         "name": "narrow_retail",
         "description": "Narrow to grocery/retail domain",
-        "lr": 5e-5,
-        "batch_size": 8,
+        "lr": 1e-4,  # sqrt-scaled from 5e-5 for 4x batch
+        "batch_size": 32,  # Per GPU (was 8)
         "epochs": 5,
         "warmup_ratio": 0.03,
         "num_classes": 356,  # Use competition classes
@@ -86,8 +86,8 @@ STAGE_CONFIGS = {
     3: {
         "name": "finetune_competition",
         "description": "Multi-task on competition data (cls + det)",
-        "lr": 2e-5,
-        "batch_size": 4,
+        "lr": 4e-5,  # sqrt-scaled from 2e-5 for 4x batch
+        "batch_size": 16,  # Per GPU (was 4)
         "epochs": 10,
         "warmup_ratio": 0.02,
         "num_classes": 356,

@@ -38,7 +38,7 @@ VAL_DIR = DATA_ROOT / "stratified_split" / "val"
 OUTPUT_DIR = Path(__file__).parent / "training_output_multitask"
 
 NUM_CLASSES = 356
-CLS_BATCH_SIZE = 8
+CLS_BATCH_SIZE = 6
 DET_BATCH_SIZE = 1  # shelf images are large
 LR = 3e-5  # Lower LR since we resume from 91% checkpoint
 EPOCHS = 1
@@ -111,6 +111,11 @@ class CropClassificationDataset(Dataset):
     def __getitem__(self, idx):
         s = self.samples[idx]
         crop = Image.open(s["crop_path"]).convert("RGB")
+        # Cap at 384px to prevent OOM with variable crop sizes
+        max_dim = max(crop.size)
+        if max_dim > 384:
+            scale = 384 / max_dim
+            crop = crop.resize((int(crop.width * scale), int(crop.height * scale)), Image.LANCZOS)
         return {"image": crop, "label": s["category_id"]}
 
 
@@ -315,9 +320,11 @@ def process_batch(images, processor, prompt_text, device):
     return {k: v.to(device) for k, v in inputs.items()}
 
 
+VAL_EVERY = 500  # validate every N steps
+
 @torch.no_grad()
-def validate_cls(model, cls_head, processor, val_dataset, device, max_batches=50):
-    """Run classification validation and return accuracy."""
+def validate_cls(model, cls_head, processor, val_dataset, device, max_batches=200):
+    """Run classification validation and return accuracy + loss."""
     model.eval()
     cls_head.eval()
 
@@ -332,6 +339,7 @@ def validate_cls(model, cls_head, processor, val_dataset, device, max_batches=50
 
     correct = 0
     total = 0
+    total_loss = 0.0
     for i, batch in enumerate(loader):
         if i >= max_batches:
             break
@@ -343,14 +351,18 @@ def validate_cls(model, cls_head, processor, val_dataset, device, max_batches=50
             outputs = model.model(**inputs, output_hidden_states=True)
             hidden = outputs.last_hidden_state
             logits = cls_head(hidden)
+            loss = F.cross_entropy(logits, labels)
 
         preds = logits.argmax(dim=-1)
         correct += (preds == labels).sum().item()
         total += labels.shape[0]
+        total_loss += loss.item() * labels.shape[0]
 
     model.train()
     cls_head.train()
-    return correct / max(1, total)
+    acc = correct / max(1, total)
+    avg_loss = total_loss / max(1, total)
+    return acc, avg_loss
 
 
 def train():
@@ -570,6 +582,43 @@ def train():
                         "train/epoch": epoch + step_in_epoch / steps_per_epoch,
                     }, step=global_step)
 
+                if global_step % SAVE_EVERY == 0:
+                    ckpt_path = OUTPUT_DIR / f"checkpoint-{global_step}"
+                    ckpt_path.mkdir(exist_ok=True)
+                    torch.save({
+                        "model_state": model.state_dict(),
+                        "cls_head_state": cls_head.state_dict(),
+                        "det_head_state": det_head.state_dict(),
+                        "optimizer_state": optimizer.state_dict(),
+                        "global_step": global_step,
+                        "epoch": epoch,
+                        "accuracy": epoch_cls_correct / max(1, epoch_cls_total),
+                    }, ckpt_path / "checkpoint.pt")
+                    print(f"Saved checkpoint to {ckpt_path}")
+
+                if global_step % VAL_EVERY == 0:
+                    print(f"--- Validating at step {global_step} ---")
+                    val_acc, val_loss = validate_cls(model, cls_head, processor, val_dataset, device)
+                    print(f"Val acc={val_acc:.3f} val_loss={val_loss:.4f}")
+                    wandb.log({
+                        "val/accuracy": val_acc,
+                        "val/loss": val_loss,
+                    }, step=global_step)
+                    if val_acc > best_val_acc:
+                        best_val_acc = val_acc
+                        best_path = OUTPUT_DIR / "best"
+                        best_path.mkdir(exist_ok=True)
+                        torch.save({
+                            "model_state": model.state_dict(),
+                            "cls_head_state": cls_head.state_dict(),
+                            "det_head_state": det_head.state_dict(),
+                            "global_step": global_step,
+                            "epoch": epoch,
+                            "val_acc": val_acc,
+                            "val_loss": val_loss,
+                        }, best_path / "best.pt")
+                        print(f"New best model saved (val_acc={val_acc:.3f})")
+
             if cls_iter is None:
                 break
 
@@ -643,15 +692,17 @@ def train():
         train_acc = epoch_cls_correct / max(1, epoch_cls_total)
 
         print(f"\n--- Validating epoch {epoch+1} ---")
-        val_acc = validate_cls(model, cls_head, processor, val_dataset, device)
+        val_acc, val_loss = validate_cls(model, cls_head, processor, val_dataset, device)
 
-        print(f"\n=== Epoch {epoch+1}/{EPOCHS}: cls_loss={avg_cls:.4f} det_loss={avg_det:.4f} train_acc={train_acc:.3f} val_acc={val_acc:.3f} ===\n")
+        print(f"\n=== Epoch {epoch+1}/{EPOCHS}: cls_loss={avg_cls:.4f} det_loss={avg_det:.4f} train_acc={train_acc:.3f} val_acc={val_acc:.3f} val_loss={val_loss:.4f} ===\n")
 
         wandb.log({
             "epoch/cls_loss": avg_cls,
             "epoch/det_loss": avg_det,
             "epoch/train_acc": train_acc,
             "epoch/val_acc": val_acc,
+            "val/accuracy": val_acc,
+            "val/loss": val_loss,
             "epoch/number": epoch + 1,
         }, step=global_step)
 

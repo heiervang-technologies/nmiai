@@ -607,13 +607,7 @@ def main():
                         help=f"Batch size (default: {BATCH_SIZE})")
     args = parser.parse_args()
 
-    # Override globals with CLI args
-    global TEMPERATURE, ALPHA, LR, EPOCHS, BATCH_SIZE
-    TEMPERATURE = args.temperature
-    ALPHA = args.alpha
-    LR = args.lr
-    EPOCHS = args.epochs
-    BATCH_SIZE = args.batch_size
+    # Use CLI args (passed directly to functions, no global override needed)
 
     if args.phase in ("generate", "both"):
         generate_soft_labels()
