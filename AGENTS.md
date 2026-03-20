@@ -1,5 +1,7 @@
 # Agent Roster - NM i AI 2026
 
+Last updated: March 20, ~11:00 CET (Day 2)
+
 ## Master
 
 | Agent | Pane | Session | Role |
@@ -10,31 +12,26 @@
 
 | Agent | Pane | Role | Status |
 |-------|------|------|--------|
-| **master-object-detection** | %8 | Task lead. Orchestrates training, submissions, git. | Active |
-| yolo-approach | %22 | YOLOv8x training on local L4 GPU | Training |
-| vlm-approach | %18 | DINOv2 classification pipeline | Pipeline ready |
-| yolo26-exploration | %23 | RT-DETR + YOLO11x/26x on Centurion (RTX 3090) | Training |
-| data-creation | %24 | Dataset augmentation (V3 delivered) | Complete |
+| **master-object-detection** | %8 | Task lead. Orchestrates training, submissions, git. | 3 ONNX models ready to submit |
+| yolo-approach | %22 | YOLOv8x training | Complete (200 epochs, mAP50=0.802) |
+| vlm-approach | %18 | DINOv2 + Qwen3.5 classification | Pipeline ready |
+| yolo26-exploration | %23 | RT-DETR + YOLO11x/26x ONNX export | Complete (both exported) |
+| data-creation | %24 | Dataset augmentation | V3 complete (2565 imgs) |
 
 ## Accounting Team
 
 | Agent | Pane | Role | Status |
 |-------|------|------|--------|
-| **master-accounting** | %9 | Task lead. Building FastAPI /solve endpoint. | Implementing |
+| **master-accounting** | %9 | Task lead. Building FastAPI /solve endpoint. | Switching to OpenAI, unblocked |
 | oracle | %27 | Research and support | Available |
 
 ## Astar Island Team
 
 | Agent | Pane | Role | Status |
 |-------|------|------|--------|
-| **master-astar-island** | %10 | Task lead. Solver development, round submissions. | Awaiting Round 2 |
-| GPT 5.4 (Codex) | %21 | Strategy advisor | Available |
-
-## Other
-
-| Agent | Pane | Session | Role |
-|-------|------|---------|------|
-| agent-tools | %3 | agent-tools | Fixing director send Enter bug |
+| **master-astar-island** | %10 | Task lead. Solver development, round submissions. | Auto-watcher running, R6 submitted |
+| GPT 5.4 (Codex) | %21 | Strategy advisor | Active |
+| GPT 5.4 (Visual) | %16 | Visual analysis of ground truth | Active |
 
 ## How to Join
 
