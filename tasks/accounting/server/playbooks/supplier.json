@@ -12,15 +12,24 @@
     "leverandørfaktura",
     "received invoice from supplier",
     "mottatt faktura",
+    "motteke faktura",
     "invoice from the supplier",
-    "factura del proveedor"
+    "factura del proveedor",
+    "fatura do fornecedor",
+    "recebemos a fatura",
+    "hemos recibido la factura",
+    "Rechnung vom Lieferanten",
+    "facture du fournisseur"
   ],
-  "description": "Register or update suppliers",
+  "description": "Register supplier invoices (incoming invoices) and manage suppliers",
   "preflight": [],
   "endpoints": [
-    "POST /supplier — body: {name, organizationNumber, email, phoneNumber}"
+    "Use register_supplier_invoice tool — handles supplier creation and voucher posting automatically"
   ],
-  "required_fields": ["name"],
-  "common_errors": [],
-  "tips": ""
+  "required_fields": ["supplierName", "amountIncludingVat"],
+  "common_errors": [
+    "Do NOT use generic_api_call for supplier invoices — always use register_supplier_invoice",
+    "Do NOT try POST /incomingInvoice or POST /supplierInvoice directly"
+  ],
+  "tips": "ALWAYS use the register_supplier_invoice tool for received/incoming invoices. Provide supplierName, supplierOrgNumber, amountIncludingVat, accountNumber (from prompt), and invoiceNumber."
 }

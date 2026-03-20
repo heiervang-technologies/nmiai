@@ -374,22 +374,49 @@ async def action_activate_module(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_project(client: TripletexClient, args: dict) -> dict:
-    """Create a project. Activates module if needed."""
+    """Create a project. Activates module if needed. Handles customer and employee lookup."""
     # Try to activate project module (non-fatal if fails)
     await action_activate_module(client, {"name": "PROJECT"})
 
-    # Find project manager (first employee)
+    # Find or create customer if needed
+    customer_id = args.get("customerId")
+    if not customer_id and args.get("customerName"):
+        custs = await client.get("/customer", params={"count": 100})
+        for c in custs.get("values", []):
+            if args["customerName"].lower() in c.get("name", "").lower():
+                customer_id = c["id"]
+                break
+        if not customer_id:
+            cust_body = {"name": args["customerName"]}
+            if args.get("customerOrgNumber"):
+                cust_body["organizationNumber"] = args["customerOrgNumber"]
+            cust_result = await client.post("/customer", json=cust_body)
+            customer_id = cust_result.get("value", {}).get("id")
+
+    # Find project manager — search by email first, then name, then fallback to first employee
     manager_id = args.get("projectManagerId")
     if not manager_id:
         emps = await client.get("/employee", params={"count": 10})
         for emp in emps.get("values", []):
-            # Prefer matching by email if provided
             if args.get("projectManagerEmail") and emp.get("email") == args["projectManagerEmail"]:
                 manager_id = emp["id"]
                 break
             elif args.get("projectManagerName") and args["projectManagerName"].lower() in emp.get("displayName", "").lower():
                 manager_id = emp["id"]
                 break
+        # If manager not found by email/name, create them
+        if not manager_id and args.get("projectManagerEmail"):
+            name_parts = args.get("projectManagerName", "Project Manager").split(" ", 1)
+            first_name = name_parts[0]
+            last_name = name_parts[1] if len(name_parts) > 1 else "Manager"
+            try:
+                emp_result = await action_create_employee(client, {
+                    "firstName": first_name, "lastName": last_name,
+                    "email": args["projectManagerEmail"],
+                })
+                manager_id = emp_result.get("value", {}).get("id")
+            except Exception:
+                pass
         if not manager_id and emps.get("values"):
             manager_id = emps["values"][0]["id"]
 
@@ -401,13 +428,13 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
     }
     if args.get("number"):
         body["number"] = str(args["number"])
-    if args.get("customerId"):
-        body["customer"] = {"id": args["customerId"]}
+    if customer_id:
+        body["customer"] = {"id": customer_id}
     if args.get("endDate"):
         body["endDate"] = args["endDate"]
     if args.get("fixedPrice") is not None:
         body["isFixedPrice"] = True
-        body["fixedprice"] = float(args["fixedPrice"])
+        body["fixedPrice"] = float(args["fixedPrice"])
 
     return await client.post("/project", json=body)
 
@@ -700,6 +727,68 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     return await client.post("/ledger/voucher", json=voucher_body)
 
 
+async def action_create_travel_expense(client: TripletexClient, args: dict) -> dict:
+    """Create a travel expense report with per diem."""
+    # Find employee
+    employee_id = args.get("employeeId")
+    if not employee_id:
+        emps = await client.get("/employee", params={"count": 10})
+        for emp in emps.get("values", []):
+            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
+                employee_id = emp["id"]
+                break
+            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
+                employee_id = emp["id"]
+                break
+        if not employee_id and emps.get("values"):
+            employee_id = emps["values"][0]["id"]
+
+    body = {
+        "employee": {"id": employee_id},
+        "title": args.get("title", "Travel expense"),
+        "isChargeable": args.get("isChargeable", False),
+        "isFixedInvoicedAmount": args.get("isFixedInvoicedAmount", False),
+        "isIncludeAttachedReceiptsWhenReinvoicing": False,
+    }
+
+    if args.get("departureDate") or args.get("returnDate"):
+        body["travelDetails"] = {
+            "departureDate": args.get("departureDate"),
+            "returnDate": args.get("returnDate"),
+            "purpose": args.get("title", ""),
+        }
+        if args.get("departure"):
+            body["travelDetails"]["departureFrom"] = args["departure"]
+        if args.get("destination"):
+            body["travelDetails"]["destination"] = args["destination"]
+
+    result = await client.post("/travelExpense", json=body)
+    expense = result.get("value", result)
+    expense_id = expense.get("id")
+
+    # Add per diem if specified
+    if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
+        try:
+            per_diem_body = {
+                "travelExpense": {"id": expense_id},
+                "count": int(args["perDiemDays"]),
+                "rate": float(args["perDiemRate"]),
+                "overnightAccommodation": args.get("accommodation", "HOTEL"),
+            }
+            await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
+        except Exception as e:
+            log.warning(f"Per diem creation failed: {e}")
+
+    # Deliver the expense
+    if expense_id:
+        try:
+            await client.put(f"/travelExpense/:deliver", params={"id": expense_id})
+        except Exception as e:
+            log.warning(f"Travel expense delivery failed (may need approval): {e}")
+
+    return result
+
+
 async def action_process_salary(client: TripletexClient, args: dict) -> dict:
     """Process salary by creating a manual voucher. Salary API requires special setup,
     so we use voucher postings on salary accounts (5000-series)."""
@@ -806,6 +895,7 @@ ACTIONS = {
     "update_employee": action_update_employee,
     "register_timesheet": action_register_timesheet,
     "register_supplier_invoice": action_register_supplier_invoice,
+    "create_travel_expense": action_create_travel_expense,
     "process_salary": action_process_salary,
     "create_invoice": action_create_invoice,
     "create_order": action_create_order,

@@ -130,10 +130,15 @@ class CreateProjectArgs(BaseModel):
     name: str
     number: Optional[str] = None
     customerId: Optional[int] = None
+    customerName: Optional[str] = Field(default=None, description="Customer name to find or create")
+    customerOrgNumber: Optional[str] = Field(default=None, description="Customer org number")
     projectManagerId: Optional[int] = Field(default=None, description="Employee ID. Uses first employee if not provided.")
+    projectManagerEmail: Optional[str] = Field(default=None, description="Project manager email to find existing employee")
+    projectManagerName: Optional[str] = Field(default=None, description="Project manager name to find existing employee")
     isInternal: bool = False
     startDate: Optional[str] = None
     endDate: Optional[str] = None
+    fixedPrice: Optional[float] = Field(default=None, description="Fixed price amount in NOK. Sets project as fixed-price.")
 
 
 class ActivateModuleArgs(BaseModel):
@@ -179,6 +184,19 @@ class RegisterTimesheetArgs(BaseModel):
     hours: float
     date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     comment: Optional[str] = None
+
+
+class CreateTravelExpenseArgs(BaseModel):
+    employeeName: Optional[str] = None
+    employeeEmail: Optional[str] = None
+    employeeId: Optional[int] = None
+    title: str = Field(description="Trip description, e.g. 'Client visit Oslo'")
+    departureDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    returnDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    perDiemDays: Optional[int] = Field(default=None, description="Number of days for per diem")
+    perDiemRate: Optional[float] = Field(default=None, description="Daily per diem rate in NOK")
+    departure: Optional[str] = Field(default=None, description="Departure city")
+    destination: Optional[str] = Field(default=None, description="Destination city")
 
 
 class ProcessSalaryArgs(BaseModel):
@@ -318,6 +336,12 @@ async def create_project(ctx: RunContext[AgentDeps], args: CreateProjectArgs) ->
 async def activate_module(ctx: RunContext[AgentDeps], args: ActivateModuleArgs) -> str:
     """Activate a Tripletex module (PROJECT, SMART_PROJECT, TIME_TRACKING, etc.)."""
     return await _safe_action("activate_module", ctx.deps.client, args.model_dump(), 1000)
+
+
+@agent.tool
+async def create_travel_expense(ctx: RunContext[AgentDeps], args: CreateTravelExpenseArgs) -> str:
+    """Create a travel expense report with per diem. Finds employee automatically."""
+    return await _safe_action("create_travel_expense", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
 @agent.tool
