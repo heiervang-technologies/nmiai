@@ -1,0 +1,281 @@
+{
+  "module": "neighborhood_predictor",
+  "in_sample": {
+    "mean_kl": 0.10967092975059613,
+    "mean_weighted_kl": 0.09000706907883958,
+    "mean_entropy": 0.9281873532762056,
+    "num_seeds": 30,
+    "per_seed": [
+      {
+        "round": 1,
+        "seed": 0,
+        "mean_kl": 0.06826726902174388,
+        "mean_weighted_kl": 0.06495945674601358,
+        "mean_entropy": 0.8691024606828979,
+        "dynamic_cells": 1293,
+        "elapsed_ms": 128.30662727355957
+      },
+      {
+        "round": 1,
+        "seed": 1,
+        "mean_kl": 0.060135275250734865,
+        "mean_weighted_kl": 0.0673556378444408,
+        "mean_entropy": 1.0481711890132397,
+        "dynamic_cells": 1326,
+        "elapsed_ms": 120.59545516967773
+      },
+      {
+        "round": 1,
+        "seed": 2,
+        "mean_kl": 0.06547247193293165,
+        "mean_weighted_kl": 0.06757424640661562,
+        "mean_entropy": 0.9372471706585375,
+        "dynamic_cells": 1331,
+        "elapsed_ms": 118.10183525085449
+      },
+      {
+        "round": 1,
+        "seed": 3,
+        "mean_kl": 0.05477054047366486,
+        "mean_weighted_kl": 0.06166441611698749,
+        "mean_entropy": 1.0796538266751148,
+        "dynamic_cells": 1366,
+        "elapsed_ms": 117.12336540222168
+      },
+      {
+        "round": 1,
+        "seed": 4,
+        "mean_kl": 0.06996443471880064,
+        "mean_weighted_kl": 0.0724559568062019,
+        "mean_entropy": 0.9076375205614267,
+        "dynamic_cells": 1274,
+        "elapsed_ms": 120.60213088989258
+      },
+      {
+        "round": 2,
+        "seed": 0,
+        "mean_kl": 0.07078616455140603,
+        "mean_weighted_kl": 0.08399756551349356,
+        "mean_entropy": 1.1368044261782624,
+        "dynamic_cells": 1388,
+        "elapsed_ms": 141.61276817321777
+      },
+      {
+        "round": 2,
+        "seed": 1,
+        "mean_kl": 0.056547815276344414,
+        "mean_weighted_kl": 0.06956969701913958,
+        "mean_entropy": 1.180659903252688,
+        "dynamic_cells": 1352,
+        "elapsed_ms": 124.38273429870605
+      },
+      {
+        "round": 2,
+        "seed": 2,
+        "mean_kl": 0.0637663938801511,
+        "mean_weighted_kl": 0.0774357286348593,
+        "mean_entropy": 1.146756151681873,
+        "dynamic_cells": 1328,
+        "elapsed_ms": 123.27885627746582
+      },
+      {
+        "round": 2,
+        "seed": 3,
+        "mean_kl": 0.06077962142606276,
+        "mean_weighted_kl": 0.07685295307413922,
+        "mean_entropy": 1.2053628484783259,
+        "dynamic_cells": 1339,
+        "elapsed_ms": 123.11673164367676
+      },
+      {
+        "round": 2,
+        "seed": 4,
+        "mean_kl": 0.0649590819967929,
+        "mean_weighted_kl": 0.08261982254556262,
+        "mean_entropy": 1.2203853479393543,
+        "dynamic_cells": 1372,
+        "elapsed_ms": 119.76075172424316
+      },
+      {
+        "round": 3,
+        "seed": 0,
+        "mean_kl": 0.2644112835350273,
+        "mean_weighted_kl": 0.10146961636221344,
+        "mean_entropy": 0.38490258558889073,
+        "dynamic_cells": 372,
+        "elapsed_ms": 124.89843368530273
+      },
+      {
+        "round": 3,
+        "seed": 1,
+        "mean_kl": 0.2668828448414009,
+        "mean_weighted_kl": 0.10037349205103525,
+        "mean_entropy": 0.3782209579259724,
+        "dynamic_cells": 541,
+        "elapsed_ms": 122.85113334655762
+      },
+      {
+        "round": 3,
+        "seed": 2,
+        "mean_kl": 0.2621902723155576,
+        "mean_weighted_kl": 0.1010999695947812,
+        "mean_entropy": 0.3782211389023443,
+        "dynamic_cells": 407,
+        "elapsed_ms": 121.03915214538574
+      },
+      {
+        "round": 3,
+        "seed": 3,
+        "mean_kl": 0.2644010995727491,
+        "mean_weighted_kl": 0.09909983762634725,
+        "mean_entropy": 0.37718307401305295,
+        "dynamic_cells": 378,
+        "elapsed_ms": 133.80861282348633
+      },
+      {
+        "round": 3,
+        "seed": 4,
+        "mean_kl": 0.2716841283818171,
+        "mean_weighted_kl": 0.09831677179319406,
+        "mean_entropy": 0.35463649967686806,
+        "dynamic_cells": 400,
+        "elapsed_ms": 120.67723274230957
+      },
+      {
+        "round": 4,
+        "seed": 0,
+        "mean_kl": 0.05763202543846879,
+        "mean_weighted_kl": 0.04093572437824283,
+        "mean_entropy": 0.7764918175040101,
+        "dynamic_cells": 1344,
+        "elapsed_ms": 119.24266815185547
+      },
+      {
+        "round": 4,
+        "seed": 1,
+        "mean_kl": 0.048140928008361936,
+        "mean_weighted_kl": 0.03976127193623007,
+        "mean_entropy": 0.8704032997549257,
+        "dynamic_cells": 1362,
+        "elapsed_ms": 129.58979606628418
+      },
+      {
+        "round": 4,
+        "seed": 2,
+        "mean_kl": 0.051330772109566034,
+        "mean_weighted_kl": 0.0366881464054127,
+        "mean_entropy": 0.7659127806522237,
+        "dynamic_cells": 1303,
+        "elapsed_ms": 123.87418746948242
+      },
+      {
+        "round": 4,
+        "seed": 3,
+        "mean_kl": 0.05428260801345171,
+        "mean_weighted_kl": 0.03637543297139844,
+        "mean_entropy": 0.7471261959122651,
+        "dynamic_cells": 1313,
+        "elapsed_ms": 126.74856185913086
+      },
+      {
+        "round": 4,
+        "seed": 4,
+        "mean_kl": 0.05165843771768261,
+        "mean_weighted_kl": 0.040791638071513765,
+        "mean_entropy": 0.8406840645585038,
+        "dynamic_cells": 1384,
+        "elapsed_ms": 136.31725311279297
+      },
+      {
+        "round": 5,
+        "seed": 0,
+        "mean_kl": 0.08315557799247185,
+        "mean_weighted_kl": 0.06879531810863936,
+        "mean_entropy": 0.8770360019472978,
+        "dynamic_cells": 1300,
+        "elapsed_ms": 138.90886306762695
+      },
+      {
+        "round": 5,
+        "seed": 1,
+        "mean_kl": 0.09000609386184709,
+        "mean_weighted_kl": 0.07167833378517612,
+        "mean_entropy": 0.839308419417767,
+        "dynamic_cells": 1186,
+        "elapsed_ms": 146.35515213012695
+      },
+      {
+        "round": 5,
+        "seed": 2,
+        "mean_kl": 0.07624385184312303,
+        "mean_weighted_kl": 0.06417186835322397,
+        "mean_entropy": 0.9193954442393348,
+        "dynamic_cells": 1294,
+        "elapsed_ms": 137.6652717590332
+      },
+      {
+        "round": 5,
+        "seed": 3,
+        "mean_kl": 0.07692184855701013,
+        "mean_weighted_kl": 0.06321940852344594,
+        "mean_entropy": 0.9186281706386629,
+        "dynamic_cells": 1230,
+        "elapsed_ms": 123.68512153625488
+      },
+      {
+        "round": 5,
+        "seed": 4,
+        "mean_kl": 0.07942407599396929,
+        "mean_weighted_kl": 0.05808534549330388,
+        "mean_entropy": 0.8575507007665532,
+        "dynamic_cells": 1289,
+        "elapsed_ms": 115.36240577697754
+      },
+      {
+        "round": 6,
+        "seed": 0,
+        "mean_kl": 0.13126328882622057,
+        "mean_weighted_kl": 0.1845153096108161,
+        "mean_entropy": 1.3072381920796583,
+        "dynamic_cells": 1394,
+        "elapsed_ms": 115.52929878234863
+      },
+      {
+        "round": 6,
+        "seed": 1,
+        "mean_kl": 0.132478734792425,
+        "mean_weighted_kl": 0.19239589195806162,
+        "mean_entropy": 1.3361422101289628,
+        "dynamic_cells": 1358,
+        "elapsed_ms": 120.90325355529785
+      },
+      {
+        "round": 6,
+        "seed": 2,
+        "mean_kl": 0.1267402910821538,
+        "mean_weighted_kl": 0.19162905597831476,
+        "mean_entropy": 1.412187735120203,
+        "dynamic_cells": 1319,
+        "elapsed_ms": 123.39925765991211
+      },
+      {
+        "round": 6,
+        "seed": 3,
+        "mean_kl": 0.12818309004077968,
+        "mean_weighted_kl": 0.18656152756480565,
+        "mean_entropy": 1.3682364219898497,
+        "dynamic_cells": 1384,
+        "elapsed_ms": 119.34852600097656
+      },
+      {
+        "round": 6,
+        "seed": 4,
+        "mean_kl": 0.13764757106516706,
+        "mean_weighted_kl": 0.19976263109157757,
+        "mean_entropy": 1.4043340423471005,
+        "dynamic_cells": 1378,
+        "elapsed_ms": 124.04465675354004
+      }
+    ]
+  }
+}
