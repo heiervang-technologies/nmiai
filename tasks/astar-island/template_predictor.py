@@ -520,3 +520,57 @@ if __name__ == "__main__":
     print(json.dumps(result, indent=2))
     if len(sys.argv) > 1:
         print("Template predictor does not submit directly; use it through benchmark or import it.")
+
+
+def submit_active_round():
+    """Find active round, load observations if available, predict and submit."""
+    import requests, time
+    TOKEN = ""
+    token_file = Path(__file__).parent / ".token"
+    if token_file.exists():
+        TOKEN = token_file.read_text().strip()
+    if not TOKEN:
+        import os
+        TOKEN = os.environ.get("AINM_TOKEN", "")
+    if not TOKEN:
+        print("No auth token")
+        return
+
+    session = requests.Session()
+    session.cookies.set("access_token", TOKEN)
+    session.headers["Authorization"] = f"Bearer {TOKEN}"
+    BASE = "https://api.ainm.no"
+
+    rounds = session.get(f"{BASE}/astar-island/rounds").json()
+    active = next((r for r in rounds if r["status"] == "active"), None)
+    if not active:
+        print("No active round")
+        return
+
+    round_id = active["id"]
+    rn = active["round_number"]
+    details = session.get(f"{BASE}/astar-island/rounds/{round_id}").json()
+    print(f"Submitting R{rn} with template predictor")
+
+    round_dir = Path(__file__).parent / "logs" / f"round{rn}"
+    for seed_idx in range(details["seeds_count"]):
+        obs_path = round_dir / f"observations_seed{seed_idx}.json"
+        obs = json.loads(obs_path.read_text()) if obs_path.exists() else None
+        if obs and len(obs) == 0:
+            obs = None
+
+        pred = predict(details["initial_states"][seed_idx]["grid"], observations=obs)
+        n_obs = len(obs) if obs else 0
+
+        for attempt in range(3):
+            resp = session.post(f"{BASE}/astar-island/submit", json={
+                "round_id": round_id,
+                "seed_index": seed_idx,
+                "prediction": pred.tolist(),
+            })
+            if resp.status_code == 200:
+                print(f"  Seed {seed_idx}: accepted ({n_obs} obs)")
+                break
+            time.sleep(2)
+        time.sleep(0.3)
+    print("Done")

@@ -85,7 +85,7 @@ fetch_ground_truth_for_completed()
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: ${MINS_UNTIL_CLOSE}min until close — submitting predictions" >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM: 30 minutes remaining, submitting predictions now." 2>/dev/null
         cd /home/me/ht/nmiai
-        uv run python3 tasks/astar-island/predictor.py --model-config phase >> "$LOG_FILE" 2>&1
+        uv run python3 -c "import sys; sys.path.insert(0, 'tasks/astar-island'); import template_predictor as tp; tp.submit_active_round()" >> "$LOG_FILE" 2>&1
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: predictions submitted" >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM predictions submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
