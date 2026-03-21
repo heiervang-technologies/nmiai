@@ -13,7 +13,7 @@ import asyncio
 import csv
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 CDP_URL = 'http://localhost:9222'
@@ -54,6 +54,15 @@ def successful_writes(calls: list[dict]) -> int:
     return sum(1 for call in calls if call.get('method') in {'POST', 'PUT', 'DELETE'} and 200 <= int(call.get('status', 0)) < 300)
 
 
+def parse_log_datetime(ts: str) -> datetime | None:
+    if len(ts) < 15:
+        return None
+    try:
+        return datetime.strptime(ts, '%Y%m%d_%H%M%S').replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
 def load_existing_log_ts(path: Path) -> set[str]:
     if not path.exists():
         return set()
@@ -62,43 +71,53 @@ def load_existing_log_ts(path: Path) -> set[str]:
         return {row.get('log_ts', '').strip() for row in rows if row.get('log_ts')}
 
 
-def find_matching_log(log_dir: Path, utc_time: str) -> dict | None:
-    logs = sorted(log_dir.glob('*.json'))
-    logs = [path for path in logs if path.name != 'summary.jsonl']
-    try:
-        hour, minute = (int(part) for part in utc_time.split(':', 1))
-    except ValueError:
-        return None
-    for path in reversed(logs):
+def load_logs(log_dir: Path) -> list[dict]:
+    rows = []
+    for path in sorted(log_dir.glob('*.json')):
+        if path.name == 'summary.jsonl':
+            continue
         payload = json.loads(path.read_text(encoding='utf-8'))
         ts = payload.get('timestamp', '')
-        if len(ts) < 15 or not ts.startswith(f'20260321_{hour:02d}'):
-            continue
-        ts_minute = int(ts[13:15])
-        if abs(ts_minute - minute) > 3:
+        dt = parse_log_datetime(ts)
+        if dt is None:
             continue
         calls = ((payload.get('api_stats') or {}).get('calls') or [])
-        return {
-            'log_ts': ts,
-            'family': ((payload.get('plan') or {}).get('family') or 'unknown'),
-            'prompt': (payload.get('prompt') or '')[:180],
-            'api_calls': (payload.get('api_stats') or {}).get('total_calls', 0),
-            'api_errors': (payload.get('api_stats') or {}).get('errors_4xx', 0),
-            'successful_writes': successful_writes(calls),
-            'attachment_present': bool(payload.get('files')),
-        }
-    return None
+        rows.append(
+            {
+                'log_ts': ts,
+                'dt': dt,
+                'family': ((payload.get('plan') or {}).get('family') or 'unknown'),
+                'prompt': (payload.get('prompt') or '')[:180],
+                'api_calls': (payload.get('api_stats') or {}).get('total_calls', 0),
+                'api_errors': (payload.get('api_stats') or {}).get('errors_4xx', 0),
+                'successful_writes': successful_writes(calls),
+                'attachment_present': bool(payload.get('files')),
+            }
+        )
+    return rows
 
 
-def cet_to_utc_time(cet_text: str) -> str | None:
+def parse_duration_seconds(duration_text: str) -> float | None:
+    text = duration_text.strip().rstrip('s')
     try:
-        dt = datetime.strptime(cet_text, '%I:%M %p')
+        return float(text)
     except ValueError:
         return None
-    hour = dt.hour - 1
-    if hour < 0:
-        hour += 24
-    return f'{hour:02d}:{dt.minute:02d}'
+
+
+def cet_to_target_utc_datetime(cet_text: str, duration_text: str) -> datetime | None:
+    try:
+        local_time = datetime.strptime(cet_text, '%I:%M %p')
+    except ValueError:
+        return None
+    duration_seconds = parse_duration_seconds(duration_text)
+    if duration_seconds is None:
+        return None
+    now = datetime.now(timezone.utc)
+    completed = datetime(now.year, now.month, now.day, local_time.hour - 1, local_time.minute, tzinfo=timezone.utc)
+    if completed.hour < 0:
+        completed += timedelta(days=-1)
+    return completed - timedelta(seconds=duration_seconds)
 
 
 def parse_blocks(text: str, limit: int) -> list[dict]:
@@ -129,6 +148,36 @@ def parse_blocks(text: str, limit: int) -> list[dict]:
             }
         )
     return parsed
+
+
+def match_logs(blocks: list[dict], logs: list[dict], max_gap_seconds: float = 120.0) -> list[dict | None]:
+    tasks = []
+    for idx, block in enumerate(blocks):
+        target_dt = cet_to_target_utc_datetime(block['cet_time'], block['duration'])
+        tasks.append({'index': idx, 'target_dt': target_dt})
+
+    matched: list[dict | None] = [None] * len(blocks)
+    used: set[str] = set()
+    sortable_tasks = [task for task in tasks if task['target_dt'] is not None]
+    sortable_tasks.sort(key=lambda item: item['target_dt'], reverse=True)
+
+    for task in sortable_tasks:
+        candidates = []
+        for log in logs:
+            if log['log_ts'] in used:
+                continue
+            gap = abs((log['dt'] - task['target_dt']).total_seconds())
+            if gap > max_gap_seconds:
+                continue
+            candidates.append((gap, log['dt'], log))
+        if not candidates:
+            continue
+        candidates.sort(key=lambda item: (item[0], -item[1].timestamp()))
+        gap, _, log = candidates[0]
+        used.add(log['log_ts'])
+        confidence = 'high' if gap <= 30 else 'medium'
+        matched[task['index']] = {**log, 'match_gap_seconds': round(gap, 1), 'match_confidence': confidence}
+    return matched
 
 
 async def collect_dashboard_rows(args: argparse.Namespace) -> list[dict]:
@@ -166,12 +215,10 @@ async def collect_dashboard_rows(args: argparse.Namespace) -> list[dict]:
         await playwright.stop()
 
     existing = load_existing_log_ts(args.tracker)
+    blocks = parse_blocks(text, args.limit)
+    matched_logs = match_logs(blocks, load_logs(args.log_dir))
     rows = []
-    for block in parse_blocks(text, args.limit):
-        utc_time = cet_to_utc_time(block['cet_time'])
-        if utc_time is None:
-            continue
-        log_match = find_matching_log(args.log_dir, utc_time)
+    for block, log_match in zip(blocks, matched_logs):
         if not log_match:
             continue
         log_ts = log_match['log_ts']

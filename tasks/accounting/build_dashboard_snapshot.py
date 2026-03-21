@@ -7,7 +7,7 @@ import argparse
 import asyncio
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 CDP_URL = 'http://localhost:9222'
@@ -27,20 +27,24 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def find_matching_log(log_dir: Path, utc_time: str) -> dict | None:
-    logs = sorted(log_dir.glob('*.json'))
-    logs = [path for path in logs if path.name != 'summary.jsonl']
+def parse_log_datetime(ts: str) -> datetime | None:
+    if len(ts) < 15:
+        return None
     try:
-        hour, minute = (int(part) for part in utc_time.split(':', 1))
+        return datetime.strptime(ts, '%Y%m%d_%H%M%S').replace(tzinfo=timezone.utc)
     except ValueError:
         return None
-    for path in reversed(logs):
+
+
+def load_logs(log_dir: Path) -> list[dict]:
+    rows = []
+    for path in sorted(log_dir.glob('*.json')):
+        if path.name == 'summary.jsonl':
+            continue
         payload = json.loads(path.read_text(encoding='utf-8'))
         ts = payload.get('timestamp', '')
-        if len(ts) < 15 or not ts.startswith(f'20260321_{hour:02d}'):
-            continue
-        ts_minute = int(ts[13:15])
-        if abs(ts_minute - minute) > 3:
+        dt = parse_log_datetime(ts)
+        if dt is None:
             continue
         calls = ((payload.get('api_stats') or {}).get('calls') or [])
         error_details = []
@@ -56,32 +60,47 @@ def find_matching_log(log_dir: Path, utc_time: str) -> dict | None:
                     'error': str(call.get('error', ''))[:200],
                 }
             )
-        return {
-            'timestamp': ts,
-            'family': ((payload.get('plan') or {}).get('family') or 'unknown'),
-            'prompt_preview': (payload.get('prompt') or '')[:220],
-            'result_preview': (((payload.get('result') or {}).get('final_message')) or '')[:220],
-            'api_calls': len(calls),
-            'api_errors': sum(1 for call in calls if int(call.get('status', 0) or 0) >= 400),
-            'successful_writes': sum(
-                1
-                for call in calls
-                if call.get('method') in {'POST', 'PUT', 'DELETE'} and 200 <= int(call.get('status', 0) or 0) < 300
-            ),
-            'error_details': error_details[:3],
-        }
-    return None
+        rows.append(
+            {
+                'timestamp': ts,
+                'dt': dt,
+                'family': ((payload.get('plan') or {}).get('family') or 'unknown'),
+                'prompt_preview': (payload.get('prompt') or '')[:220],
+                'result_preview': (((payload.get('result') or {}).get('final_message')) or '')[:220],
+                'api_calls': len(calls),
+                'api_errors': sum(1 for call in calls if int(call.get('status', 0) or 0) >= 400),
+                'successful_writes': sum(
+                    1
+                    for call in calls
+                    if call.get('method') in {'POST', 'PUT', 'DELETE'} and 200 <= int(call.get('status', 0) or 0) < 300
+                ),
+                'error_details': error_details[:3],
+            }
+        )
+    return rows
 
 
-def cet_to_utc_time(cet_text: str) -> str | None:
+def parse_duration_seconds(duration_text: str) -> float | None:
+    text = duration_text.strip().rstrip('s')
     try:
-        dt = datetime.strptime(cet_text, '%I:%M %p')
+        return float(text)
     except ValueError:
         return None
-    hour = dt.hour - 1
-    if hour < 0:
-        hour += 24
-    return f'{hour:02d}:{dt.minute:02d}'
+
+
+def cet_to_target_utc_datetime(cet_text: str, duration_text: str) -> datetime | None:
+    try:
+        local_time = datetime.strptime(cet_text, '%I:%M %p')
+    except ValueError:
+        return None
+    duration_seconds = parse_duration_seconds(duration_text)
+    if duration_seconds is None:
+        return None
+    now = datetime.now(timezone.utc)
+    completed = datetime(now.year, now.month, now.day, local_time.hour - 1, local_time.minute, tzinfo=timezone.utc)
+    if completed.hour < 0:
+        completed += timedelta(days=-1)
+    return completed - timedelta(seconds=duration_seconds)
 
 
 def parse_blocks(text: str, limit: int) -> list[dict]:
@@ -112,6 +131,36 @@ def parse_blocks(text: str, limit: int) -> list[dict]:
             }
         )
     return parsed
+
+
+def match_logs(blocks: list[dict], logs: list[dict], max_gap_seconds: float = 120.0) -> list[dict | None]:
+    tasks = []
+    for idx, block in enumerate(blocks):
+        target_dt = cet_to_target_utc_datetime(block['cet_time'], block['duration'])
+        tasks.append({'index': idx, 'target_dt': target_dt})
+
+    matched: list[dict | None] = [None] * len(blocks)
+    used: set[str] = set()
+    sortable_tasks = [task for task in tasks if task['target_dt'] is not None]
+    sortable_tasks.sort(key=lambda item: item['target_dt'], reverse=True)
+
+    for task in sortable_tasks:
+        candidates = []
+        for log in logs:
+            if log['timestamp'] in used:
+                continue
+            gap = abs((log['dt'] - task['target_dt']).total_seconds())
+            if gap > max_gap_seconds:
+                continue
+            candidates.append((gap, log['dt'], log))
+        if not candidates:
+            continue
+        candidates.sort(key=lambda item: (item[0], -item[1].timestamp()))
+        gap, _, log = candidates[0]
+        used.add(log['timestamp'])
+        confidence = 'high' if gap <= 30 else 'medium'
+        matched[task['index']] = {**log, 'match_gap_seconds': round(gap, 1), 'match_confidence': confidence}
+    return matched
 
 
 async def collect_dashboard_snapshot(args: argparse.Namespace) -> dict:
@@ -152,10 +201,11 @@ async def collect_dashboard_snapshot(args: argparse.Namespace) -> dict:
     rank_match = re.search(r'Rank\s*\n\s*#?(\d+)', text)
     submissions_match = re.search(r'(\d+)\s*/\s*300\s*daily', text)
 
+    blocks = parse_blocks(text, args.limit)
+    matched_logs = match_logs(blocks, load_logs(args.log_dir))
+
     tasks = []
-    for block in parse_blocks(text, args.limit):
-        utc_time = cet_to_utc_time(block['cet_time'])
-        log_match = find_matching_log(args.log_dir, utc_time) if utc_time else None
+    for block, log_match in zip(blocks, matched_logs):
         passed = sum(1 for _, state in block['checks'] if state == 'passed')
         failed = sum(1 for _, state in block['checks'] if state == 'failed')
         tasks.append(
@@ -164,12 +214,14 @@ async def collect_dashboard_snapshot(args: argparse.Namespace) -> dict:
                 'max_points': float(block['max_points']),
                 'dashboard_score': block['pct'],
                 'cet_time': block['cet_time'],
-                'utc_time': utc_time,
+                'utc_time': None if log_match is None else log_match['dt'].strftime('%H:%M:%S'),
                 'duration': block['duration'],
                 'checks_passed': passed,
                 'checks_failed': failed,
                 'family': (log_match or {}).get('family', '?'),
                 'log_timestamp': (log_match or {}).get('timestamp', ''),
+                'match_confidence': (log_match or {}).get('match_confidence', 'none'),
+                'match_gap_seconds': (log_match or {}).get('match_gap_seconds'),
                 'api_calls': (log_match or {}).get('api_calls'),
                 'api_errors': (log_match or {}).get('api_errors'),
                 'successful_writes': (log_match or {}).get('successful_writes'),
@@ -205,7 +257,8 @@ def render_markdown(snapshot: dict) -> str:
             '- '
             + f"[{index}] {task['points']}/{task['max_points']} ({task['dashboard_score']}%), family={task['family']}, "
             + f"time={task['cet_time']}, duration={task['duration']}, checks={task['checks_passed']}P/{task['checks_failed']}F, "
-            + f"api={task.get('api_calls', '?')}c/{task.get('api_errors', '?')}e/{task.get('successful_writes', '?')}w"
+            + f"api={task.get('api_calls', '?')}c/{task.get('api_errors', '?')}e/{task.get('successful_writes', '?')}w, "
+            + f"match={task.get('match_confidence', 'none')}"
         )
         if task.get('dashboard_score', 0.0) < 50:
             lines.append(f"  prompt: {task.get('prompt_preview', '')}")

@@ -1,57 +1,60 @@
 # Accounting Dashboard Snapshot
 
-Generated: `2026-03-21T20:37:08.657981+00:00`
+Generated: `2026-03-21T20:44:55.485839+00:00`
 Total score: `71.0`
 Rank: `#21`
 Daily submissions used: `186`
 
 ## Recent Results
 
-- [1] 1.0/8.0 (13.0%), family=invoice, time=09:36 PM, duration=3.6s, checks=0P/0F, api=3c/0e/1w
-  prompt: Der Kunde Grünfeld GmbH (Org.-Nr. 888415769) hat eine offene Rechnung über 32800 NOK ohne MwSt. für "Datenberatung". Registrieren Sie die vollständige Zahlung dieser Rechnung.
-  result: Die Zahlung wurde registriert.
-
-Hinweis: Auf der gefundenen Rechnung waren insgesamt 41.000 NOK offen brutto, davon 32.800 NOK netto und 8.200 NOK MwSt. Nach Ihrer Zahlung über 32.800 NOK bleiben noch 8.200 NOK offen.
-- [2] 13.0/13.0 (100.0%), family=product, time=09:29 PM, duration=32.0s, checks=0P/0F, api=5c/0e/4w
-- [3] 7.0/7.0 (100.0%), family=customer, time=09:21 PM, duration=11.0s, checks=0P/0F, api=3c/0e/2w
-- [4] 6.0/10.0 (60.0%), family=cost_analysis, time=09:19 PM, duration=75.8s, checks=0P/0F, api=14c/6e/3w
-- [5] 11.0/14.0 (79.0%), family=?, time=09:17 PM, duration=12.8s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [6] 2.0/7.0 (29.0%), family=?, time=09:15 PM, duration=14.5s, checks=0P/0F, api=Nonec/Nonee/Nonew
+- [1] 0.0/8.0 (0.0%), family=?, time=09:43 PM, duration=2.7s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
   prompt: 
   result: 
-- [7] 8.0/8.0 (100.0%), family=?, time=09:13 PM, duration=20.3s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [8] 8.0/8.0 (100.0%), family=?, time=09:12 PM, duration=11.8s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [9] 8.0/8.0 (100.0%), family=?, time=09:11 PM, duration=12.5s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [10] 2.0/10.0 (20.0%), family=?, time=09:11 PM, duration=37.6s, checks=0P/0F, api=Nonec/Nonee/Nonew
+- [2] 0.0/8.0 (0.0%), family=?, time=09:41 PM, duration=5.4s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
   prompt: 
   result: 
-- [11] 8.0/8.0 (100.0%), family=?, time=09:11 PM, duration=17.4s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [12] 13.0/13.0 (100.0%), family=?, time=09:10 PM, duration=20.6s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [13] 10.0/10.0 (100.0%), family=?, time=09:08 PM, duration=25.3s, checks=0P/0F, api=Nonec/Nonee/Nonew
-- [14] 6.0/6.0 (100.0%), family=invoice, time=08:53 PM, duration=9.8s, checks=0P/0F, api=2c/0e/1w
-- [15] 8.0/8.0 (100.0%), family=invoice, time=08:53 PM, duration=24.4s, checks=0P/0F, api=2c/0e/1w
-- [16] 1.0/8.0 (13.0%), family=ledger_correction, time=08:43 PM, duration=15.9s, checks=0P/0F, api=16c/0e/4w
-  prompt: Vi har oppdaget feil i hovedboken for januar og februar 2026. Gå gjennom alle bilag og finn de 4 feilene: en postering på feil konto (konto 7140 brukt i stedet for 7100, beløp 5850 kr), et duplisert bilag (konto 7300, be
-  result: Jeg har korrigert alle 4 feilene med egne korrigeringsbilag:
+- [3] 0.0/8.0 (0.0%), family=?, time=09:39 PM, duration=1.9s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
+  prompt: 
+  result: 
+- [4] 1.0/8.0 (13.0%), family=?, time=09:36 PM, duration=3.6s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
+  prompt: 
+  result: 
+- [5] 13.0/13.0 (100.0%), family=invoice, time=09:29 PM, duration=32.0s, checks=0P/0F, api=5c/0e/4w, match=medium
+- [6] 7.0/7.0 (100.0%), family=annual_close, time=09:21 PM, duration=11.0s, checks=0P/0F, api=10c/0e/4w, match=high
+- [7] 6.0/10.0 (60.0%), family=employee, time=09:19 PM, duration=75.8s, checks=0P/0F, api=6c/0e/4w, match=high
+- [8] 11.0/14.0 (79.0%), family=invoice, time=09:17 PM, duration=12.8s, checks=0P/0F, api=3c/0e/1w, match=medium
+- [9] 2.0/7.0 (29.0%), family=invoice, time=09:15 PM, duration=14.5s, checks=0P/0F, api=4c/0e/2w, match=medium
+  prompt: Temos um novo funcionário chamado João Martins, nascido em 13. September 1993. Crie-o como funcionário com o e-mail joao.martins@example.org e data de início 19. May 2026.
+  result: Funcionário criado: João Martins  
+E-mail: joao.martins@example.org  
+Data de nascimento: 1993-09-13  
+Data de início: 2026-05-19  
+ID do funcionário: 18661308
+- [10] 8.0/8.0 (100.0%), family=customer, time=09:13 PM, duration=20.3s, checks=0P/0F, api=3c/0e/2w, match=high
+- [11] 8.0/8.0 (100.0%), family=invoice, time=09:12 PM, duration=11.8s, checks=0P/0F, api=2c/0e/1w, match=high
+- [12] 8.0/8.0 (100.0%), family=product, time=09:11 PM, duration=12.5s, checks=0P/0F, api=5c/0e/4w, match=high
+- [13] 2.0/10.0 (20.0%), family=annual_close, time=09:11 PM, duration=37.6s, checks=0P/0F, api=2c/0e/1w, match=medium
+  prompt: Utfør månedsavslutning for mars 2026. Periodiser forskuddsbetalt kostnad (6500 kr per måned fra konto 1700 til kostkonto). Bokfør månedlig avskrivning for et driftsmiddel med anskaffelseskost 104900 kr og levetid 5 år (l
+  result: Månedsavslutning for mars 2026 er bokført.
 
-- Feil konto: flyttet 5 850 kr fra 7140 til 7100
-  - Bilag nr. 31
+Bokført på 2026-03-31:
+- Periodisering forskuddsbetalt kostnad:
+  - Debet 6500: 6 500,00
+  - Kredit 1700: 6 500,00
+- Månedlig avskrivning:
+  - Beregning: 104 900 / 5 år / 12 = 
+- [14] 8.0/8.0 (100.0%), family=invoice, time=09:11 PM, duration=17.4s, checks=0P/0F, api=4c/0e/2w, match=medium
+- [15] 13.0/13.0 (100.0%), family=?, time=09:10 PM, duration=20.6s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
+- [16] 10.0/10.0 (100.0%), family=?, time=09:08 PM, duration=25.3s, checks=0P/0F, api=Nonec/Nonee/Nonew, match=none
+- [17] 6.0/6.0 (100.0%), family=invoice, time=08:53 PM, duration=9.8s, checks=0P/0F, api=1c/0e/1w, match=medium
+- [18] 8.0/8.0 (100.0%), family=employee, time=08:53 PM, duration=24.4s, checks=0P/0F, api=4c/0e/2w, match=medium
+- [19] 1.0/8.0 (13.0%), family=annual_close, time=08:43 PM, duration=15.9s, checks=0P/0F, api=5c/0e/4w, match=medium
+  prompt: Führen Sie den vereinfachten Jahresabschluss für 2025 durch: 1) Berechnen und buchen Sie die jährliche Abschreibung für drei Anlagen: Programvare (419000 NOK, 6 Jahre linear, Konto 1250), Kontormaskiner (374150 NOK, 8 Ja
+  result: Jahresabschluss-Buchungen für 2025 wurden ausgeführt, soweit im Kontenplan möglich.
 
-- Duplisert bilag: reversert 1 200 kr på konto 7300
-  - Bilag nr. 32
-
-- Manglende MVA-linje
-- [17] 7.0/7.0 (100.0%), family=ledger_correction, time=08:43 PM, duration=15.9s, checks=0P/0F, api=16c/0e/4w
-- [18] 0.0/10.0 (0.0%), family=ledger_correction, time=08:43 PM, duration=22.2s, checks=0P/0F, api=16c/0e/4w
-  prompt: Vi har oppdaget feil i hovedboken for januar og februar 2026. Gå gjennom alle bilag og finn de 4 feilene: en postering på feil konto (konto 7140 brukt i stedet for 7100, beløp 5850 kr), et duplisert bilag (konto 7300, be
-  result: Jeg har korrigert alle 4 feilene med egne korrigeringsbilag:
-
-- Feil konto: flyttet 5 850 kr fra 7140 til 7100
-  - Bilag nr. 31
-
-- Duplisert bilag: reversert 1 200 kr på konto 7300
-  - Bilag nr. 32
-
-- Manglende MVA-linje
-- [19] 8.0/8.0 (100.0%), family=cost_analysis, time=08:41 PM, duration=13.2s, checks=0P/0F, api=11c/3e/3w
-- [20] 6.0/10.0 (60.0%), family=cost_analysis, time=08:40 PM, duration=69.5s, checks=4P/2F, api=11c/3e/3w
+Gebucht:
+- Abschreibung Programvare: Beleg 80
+  - 6010 Soll 69.833 NOK
+  - 1250 Haben 69.833 NOK
+- Abschreibung Kontormaskiner: Beleg 8
+- [20] 7.0/7.0 (100.0%), family=invoice, time=08:43 PM, duration=15.9s, checks=4P/0F, api=2c/0e/1w, match=medium
