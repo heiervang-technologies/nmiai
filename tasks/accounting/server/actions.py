@@ -2261,8 +2261,10 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 return {"values": [], "count": 0, "warning": f"Endpoint {path} not found"}
             raise
     elif method == "POST":
-        # Sanitize /project/projectActivity body — Tripletex 500s on unexpected fields
-        if "/project/projectActivity" in path and body and isinstance(body, dict):
+        # Sanitize /project/projectActivity body — Tripletex 500s on unexpected/empty fields
+        if "/project/projectActivity" in path:
+            if not body or not isinstance(body, dict):
+                body = {}
             activity = body.get("activity", {})
             if isinstance(activity, dict):
                 clean_activity = {
@@ -2272,6 +2274,8 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
             else:
                 clean_activity = {"name": "General", "activityType": "PROJECT_SPECIFIC_ACTIVITY"}
             project_ref = body.get("project", {})
+            if not project_ref or not project_ref.get("id"):
+                return {"error": "POST /project/projectActivity requires project.id in body"}
             # Rebuild body with only allowed fields
             body = {"project": project_ref, "activity": clean_activity}
             if args.get("body", {}).get("startDate"):
