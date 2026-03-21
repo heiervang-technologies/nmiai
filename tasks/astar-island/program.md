@@ -12,6 +12,7 @@ The loop is split in two:
 - Win the Astar Island task.
 - Primary optimization target: lower leave-one-round-out mean weighted KL.
 - Live objective: deploy the best validated predictor on every remaining round, without overwriting a stronger safe submission.
+- Strategic stance: later rounds are worth more, so live policy should bias toward safe exploitation unless held-out CV gives strong evidence for change.
 
 ## Current Reality
 
@@ -19,6 +20,7 @@ The loop is split in two:
 - The trusted validation signal is leave-one-round-out CV on completed round ground truth only.
 - In-sample benchmarks are not decision-grade.
 - `auto_watcher.sh` is the current safe-best live policy and should not be overridden casually.
+- The known recent bug is watcher overwrite risk: no challenger should replace a stronger submission without explicit held-out evidence.
 
 ## Setup
 
@@ -28,7 +30,8 @@ Before starting the loop:
 2. Confirm `tasks/astar-island/ground_truth/` is current.
 3. Confirm `tasks/astar-island/autoresearch_results.tsv` exists.
 4. Confirm `eval_system.py` or equivalent honest CV path is using only held-out rounds for evaluation.
-5. Treat `auto_watcher.sh` as production until a challenger proves itself out-of-sample.
+5. Confirm GT ingestion from completed rounds feeds the next predictor build automatically or with a single safe command.
+6. Treat `auto_watcher.sh` as production until a challenger proves itself out-of-sample.
 
 ## In-Scope Files
 
@@ -57,6 +60,7 @@ Use this ranking of trust:
 - Predictor logic.
 - Query selection logic.
 - Honest CV harnesses.
+- GT ingestion / rebuild automation between rounds.
 - Logging, diagnostics, and frontier tracking.
 
 ## What You Must Not Do
@@ -89,7 +93,7 @@ Autoresearch should preserve this production rhythm:
 
 1. Between rounds: fetch GT, rebuild priors, rerun honest CV, update frontier.
 2. Round opens: ingest round metadata and announce.
-3. At about 60 minutes after open: spend the query budget according to the live policy.
+3. At about 60 minutes after open: spend the query budget according to the live policy, currently a blitz concentrated on the hottest viewports.
 4. At about 30 minutes before close: submit with the current safe-best predictor.
 5. After scoring: compare live score to offline expectation and diagnose misses.
 
@@ -100,10 +104,11 @@ Loop forever unless interrupted.
 1. Fetch newly completed ground truth.
 2. Rebuild or refresh the predictor.
 3. Run leave-one-round-out CV.
-4. Record mean weighted KL, per-round breakdowns, and variance.
+4. Record mean weighted KL, per-round breakdowns, regime-specific behavior, and variance.
 5. If a challenger beats safe-best by more than `5%` on held-out CV, mark it as a manual promotion candidate.
 6. Otherwise keep the live watcher unchanged.
-7. After each live round, log the realized score and compare it to the CV-implied expectation.
+7. Bias late-round policy toward exploitation unless the challenger evidence is clearly strong.
+8. After each live round, log the realized score and compare it to the CV-implied expectation.
 
 ## Keep / Discard Rules
 
@@ -115,7 +120,8 @@ Loop forever unless interrupted.
 ## Known Bottlenecks
 
 - Prosperous rounds remain the hardest regime.
-- Regime detection and overlay settings changed recently and still need honest CV.
+- Regime detection is still the key breakthrough candidate and must be measured on honest CV, not anecdotes.
+- Structural zeros and overlay settings changed recently and still need honest CV.
 - Round-to-round variance is still too high.
 
 ## Pareto Frontier

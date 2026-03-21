@@ -10,12 +10,15 @@ The goal is not to maximize a leaked local metric. The goal is to win the real c
 - Primary optimization target: competition score = `0.7 * detection_mAP@0.5 + 0.3 * classification_mAP@0.5`.
 - Strategic bias: detection improvements are worth about 3x classification improvements.
 - Hard anchor: the current server score `0.9051` is the only trusted end-to-end number right now.
+- Current competition stance: keep OD pipelines alive and trustworthy, but do not burn effort on speculative pivots while accounting remains the main leaderboard gap.
 
 ## Current Reality
 
 - The old `stratified_split` validation set is leaked and cannot be used for model selection.
 - `data-creation/create_clean_split.py` promotes the existing non-overlapping `198/50` holdout into `data-creation/data/clean_split/`.
 - The best current path is still `V5 YOLO + DINOv2 classification`, with MarkusNet letterbox ONNX as the side lane.
+- MarkusNet letterbox ONNX is the highest-upside side lane; pure PyTorch MarkusNet and dynamic ONNX export remain too risky.
+- Titan is online for clean retraining, but local model selection is still blocked until clean eval remains stable and leakage-free.
 - Submission slots are precious. Do not auto-submit.
 
 ## Setup
@@ -28,6 +31,7 @@ Before running the loop, verify or do this work:
 4. Make sure every evaluator, leaderboard, and watcher is pointed at `clean_split` explicitly.
 5. Initialize `tasks/object-detection/autoresearch_results.tsv` if missing.
 6. Initialize or update experiment provenance tracking before starting a new batch.
+7. Confirm packaging constraints are still respected: submission ZIP under `420MB`, runtime under `360s`, L4 GPU, no network, restricted imports.
 
 ## In-Scope Files
 
@@ -62,6 +66,7 @@ Use this ranking of trust:
 - Eval automation, leaderboard generation, checkpoint watchers, export/package flows.
 - Clean-val threshold, NMS, and TTA sweeps.
 - Experiment tracking and provenance files.
+- V5 YOLO `best.pt -> ONNX -> ZIP` automation and continuous checkpoint scoring.
 - Training configs and post-processing if they can be evaluated on clean val or justified for server testing.
 
 ## What You Must Not Do
@@ -70,6 +75,7 @@ Use this ranking of trust:
 - Do not use leaked val metrics for any keep/discard decision.
 - Do not start CPU training.
 - Do not spend time on blocked paths unless the human explicitly reopens them.
+- Do not treat local leaked-val wins as evidence of generalization.
 
 Blocked paths right now:
 
@@ -122,10 +128,11 @@ Loop forever unless interrupted.
 3. Score every new checkpoint or submission artifact on `clean_split`.
 4. Append the result and provenance to the tracker.
 5. If the artifact is a YOLO checkpoint, run the export path: `best.pt -> ONNX -> submission ZIP`.
-6. Run lightweight sweeps on post-processing only after a clean baseline exists.
-7. Produce a ranked shortlist for humans, but do not submit automatically.
-8. Keep only changes that improve a trusted metric or materially improve automation reliability.
-9. If a change only improves leaked metrics, revert it.
+6. Prioritize detection-improving candidates over classification-only wins unless runtime or packaging risk changes the tradeoff.
+7. Run lightweight sweeps on post-processing only after a clean baseline exists.
+8. Produce a ranked shortlist for humans, but do not submit automatically.
+9. Keep only changes that improve a trusted metric or materially improve automation reliability.
+10. If a change only improves leaked metrics, revert it.
 
 ## Keep / Discard Rules
 
@@ -142,6 +149,7 @@ Loop forever unless interrupted.
 - Prefer server submissions for candidates that either:
   - clearly beat current clean-val best, or
   - represent a distinct strategic bet not captured by current trusted offline eval.
+- Keep final train-on-val / retrain-on-all-data protocols ready, but only trigger them for the chosen finalist.
 
 ## Pareto Frontier
 
