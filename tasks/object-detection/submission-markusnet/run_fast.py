@@ -31,7 +31,7 @@ NUM_CLASSES = 356
 CONF_THRESH = 0.001
 NMS_IOU_THRESH = 0.45
 MAX_DET = 100  # Reduced from 300 - most images have <100 real products
-CROP_BATCH_SIZE = 1  # One crop at a time to minimize VRAM
+CROP_BATCH_SIZE = 8  # Batch crops for GPU utilization (L4 sandbox: 24GB dedicated)
 
 # Vision config
 VIS_HIDDEN = 768
@@ -88,7 +88,7 @@ CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWL
 # max_pixels = 16777216
 QWEN_IMAGE_FACTOR = 32
 QWEN_MIN_PIXELS = 65536   # 256x256 minimum, matches training
-QWEN_MAX_PIXELS = 262144  # Allow up to 512x512 for text reading
+QWEN_MAX_PIXELS = 16777216  # Match Qwen3.5 processor upper bound
 QWEN_MEAN = [0.5, 0.5, 0.5]
 QWEN_STD = [0.5, 0.5, 0.5]
 
