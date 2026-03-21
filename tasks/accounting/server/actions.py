@@ -774,13 +774,13 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
     if not customer_id:
         return {"error": "Could not find or create customer"}
 
-    # Look up VAT types — build candidate list for retry
+    # Look up VAT types — try resolved first, then one zero-rate fallback (max 2 attempts)
     vat_types = await _get_outgoing_vat_types(client)
     all_vat = vat_types.get("values", [])
-    outgoing_ids = [v["id"] for v in all_vat if "utgående" in v.get("name", "").lower() or "utg" in v.get("name", "").lower()]
-    zero_ids = [v["id"] for v in all_vat if v.get("percentage") == 0]
     resolved_id = _resolve_default_vat_id(vat_types, 3)
-    vat_candidates = list(dict.fromkeys([resolved_id] + outgoing_ids + zero_ids))[:5]
+    # Single fallback: first zero-rate outgoing type
+    zero_fallback = next((v["id"] for v in all_vat if v.get("percentage") == 0), None)
+    vat_candidates = [resolved_id] + ([zero_fallback] if zero_fallback and zero_fallback != resolved_id else [])
 
     def _build_order_lines(vat_id):
         lines = []
