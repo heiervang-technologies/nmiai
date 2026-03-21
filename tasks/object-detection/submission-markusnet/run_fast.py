@@ -87,8 +87,8 @@ CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWL
 # min_pixels = 65536
 # max_pixels = 16777216
 QWEN_IMAGE_FACTOR = 32
-QWEN_MIN_PIXELS = 12544   # 112x112 minimum, saves VRAM vs 65536
-QWEN_MAX_PIXELS = 65536   # Cap at 256x256 equivalent
+QWEN_MIN_PIXELS = 65536   # 256x256 minimum, matches training
+QWEN_MAX_PIXELS = 262144  # Allow up to 512x512 for text reading
 QWEN_MEAN = [0.5, 0.5, 0.5]
 QWEN_STD = [0.5, 0.5, 0.5]
 
@@ -797,12 +797,36 @@ class MarkusNet(nn.Module):
 
         cls_state = ckpt['cls_head_state']
 
+        has_embed_tokens = "model.language_model.embed_tokens.weight" in model_state
         self._load_vision(model_state)
         self._load_language(model_state)
+        if not has_embed_tokens:
+            self._load_token_embeddings(ckpt, device)
         self.cls_head.head[0].weight.data = cls_state["head.0.weight"].to(device)
         self.cls_head.head[0].bias.data = cls_state["head.0.bias"].to(device)
         self.cls_head.head[3].weight.data = cls_state["head.3.weight"].to(device)
         self.cls_head.head[3].bias.data = cls_state["head.3.bias"].to(device)
+
+    def _load_token_embeddings(self, ckpt, device):
+        token_ids = ckpt.get("token_ids")
+        token_embeds = ckpt.get("token_embeds")
+        if token_ids is None or token_embeds is None:
+            raise RuntimeError(
+                "Checkpoint is missing embed_tokens and required token embeddings. "
+                "Re-export NF4 with token_ids/token_embeds metadata."
+            )
+
+        embed_device = self.language.embed_tokens.weight.device
+        token_ids = torch.as_tensor(token_ids, dtype=torch.long, device=embed_device)
+        token_embeds = token_embeds.to(device=embed_device, dtype=self.language.embed_tokens.weight.dtype)
+
+        if token_embeds.ndim != 2 or token_embeds.shape[0] != token_ids.numel() or token_embeds.shape[1] != TXT_HIDDEN:
+            raise RuntimeError(
+                f"Invalid token embedding payload: ids={token_ids.shape}, embeds={token_embeds.shape}"
+            )
+
+        self.language.embed_tokens.weight.data.zero_()
+        self.language.embed_tokens.weight.data[token_ids] = token_embeds
 
     def _load_vision(self, state):
         prefix = "model.visual."

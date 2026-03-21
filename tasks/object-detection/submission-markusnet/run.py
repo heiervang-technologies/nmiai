@@ -851,8 +851,9 @@ class MarkusNet(nn.Module):
                 "Re-export NF4 with token_ids/token_embeds metadata."
             )
 
-        token_ids = torch.as_tensor(token_ids, dtype=torch.long, device=device)
-        token_embeds = token_embeds.to(device=device, dtype=self.language.embed_tokens.weight.dtype)
+        embed_device = self.language.embed_tokens.weight.device
+        token_ids = torch.as_tensor(token_ids, dtype=torch.long, device=embed_device)
+        token_embeds = token_embeds.to(device=embed_device, dtype=self.language.embed_tokens.weight.dtype)
 
         if token_embeds.ndim != 2 or token_embeds.shape[0] != token_ids.numel() or token_embeds.shape[1] != TXT_HIDDEN:
             raise RuntimeError(
