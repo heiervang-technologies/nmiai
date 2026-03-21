@@ -69,3 +69,27 @@ WARN| project         | 32c 10e 49.9s | Cost analysis (Nynorsk) - activity endpo
 - Cost analysis (create projects from ledger analysis)
 - EUR payment with paidAmountCurrency
 - Travel per diem rate category matching
+
+## Failure Predictors (what makes tasks score 0/10)
+
+**Tier is the #1 predictor:**
+- TIER1 (simple create/register): 63% clean, 4% fail
+- TIER2 (PDF/complex): 43% clean, 22% fail
+- TIER3 (multi-step/analysis): 41% clean, 25% fail
+
+**Language is NOT a predictor:** NO=12%, ES=8%, EN=9% fail rate (normalized)
+
+**Guaranteed 0/10 combos:**
+- ANY language + TIER3 + project = always fails
+- ANY language + TIER3 + cost_analysis = always fails
+
+**Properties that make tasks hard:**
+1. "Analyze ledger + create entities" — multi-step: query→analyze→create
+2. "Full project lifecycle" — project + activity + hourlyRates + timesheet + invoice
+3. "Foreign currency + agio" — paidAmountCurrency + exchange rate voucher
+4. "PDF with employment details" — depends on field extraction quality
+5. "Bank reconciliation from CSV" — CSV parsing + invoice ID matching
+
+**Task families that NEVER succeed clean:**
+- `project`: 0% clean (0/10) — hourlyRates + activity creation always breaks
+- `cost_analysis`: 0% clean — voucher ID guessing + activity creation
