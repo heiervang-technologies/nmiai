@@ -1790,6 +1790,7 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                 "amountInclVat": amount,
                 "vatTypeId": 1,
                 "row": 1,
+                "externalId": f"line-{args.get('invoiceNumber', '1')}-1",
                 "description": args.get("description", "Supplier invoice"),
                 "vendorId": int(supplier_id),
             })
