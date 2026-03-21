@@ -330,6 +330,8 @@ async def _set_project_fixed_price(
     hourly_rates = await client.get("/project/hourlyRates", params={"projectId": project_id})
     hourly_rate_values = hourly_rates.get("values", [])
 
+    candidate_models = ["FIXED_HOURLY_RATE", "TYPE_FIXED_HOURLY_RATE"]
+
     if hourly_rate_values:
         hourly_rate_id = hourly_rate_values[0].get("id")
         if hourly_rate_id:
@@ -337,19 +339,37 @@ async def _set_project_fixed_price(
             hourly_rate_obj = hourly_rate_data.get("value", hourly_rate_data)
             hourly_rate_obj["fixedRate"] = _money(fixed_price)
             hourly_rate_obj.setdefault("startDate", start_date)
-            hourly_rate_obj.setdefault("hourlyRateModel", "TYPE_FIXED_HOURLY_RATE")
-            return await client.put(f"/project/hourlyRates/{hourly_rate_id}", json=hourly_rate_obj)
+            existing_model = hourly_rate_obj.get("hourlyRateModel")
+            for model in ([existing_model] if existing_model else []) + candidate_models:
+                if not model:
+                    continue
+                hourly_rate_obj["hourlyRateModel"] = model
+                try:
+                    return await client.put(f"/project/hourlyRates/{hourly_rate_id}", json=hourly_rate_obj)
+                except Exception as e:
+                    if not _error_mentions(e, "hourlyratemodel", "korrekt type"):
+                        raise
 
-    return await client.post(
-        "/project/hourlyRates",
-        json={
-            "project": {"id": project_id},
-            "startDate": start_date,
-            "showInProjectOrder": True,
-            "hourlyRateModel": "TYPE_FIXED_HOURLY_RATE",
-            "fixedRate": _money(fixed_price),
-        },
-    )
+    last_error = None
+    for model in candidate_models:
+        try:
+            return await client.post(
+                "/project/hourlyRates",
+                json={
+                    "project": {"id": project_id},
+                    "startDate": start_date,
+                    "showInProjectOrder": True,
+                    "hourlyRateModel": model,
+                    "fixedRate": _money(fixed_price),
+                },
+            )
+        except Exception as e:
+            last_error = e
+            if not _error_mentions(e, "hourlyratemodel", "korrekt type"):
+                raise
+    if last_error:
+        raise last_error
+    return None
 
 
 async def _resolve_travel_per_diem_rate(
@@ -902,14 +922,39 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     amount = float(args.get("amount", args.get("paidAmount", 0)))
     payment_date = args.get("paymentDate", TODAY)
 
-    return await client.put(
-        f"/invoice/{invoice_id}/:payment",
-        params={
-            "paymentDate": payment_date,
-            "paymentTypeId": int(payment_type_id),
-            "paidAmount": amount,
-        }
-    )
+    payment_params = {
+        "paymentDate": payment_date,
+        "paymentTypeId": int(payment_type_id),
+        "paidAmount": amount,
+    }
+    try:
+        return await client.put(f"/invoice/{invoice_id}/:payment", params=payment_params)
+    except Exception as e:
+        if amount > 0 and _error_mentions(e, "paidamount", "payment", "beløp", "amount"):
+            try:
+                invoices = await client.get(
+                    "/invoice",
+                    params={"invoiceDateFrom": "2020-01-01", "invoiceDateTo": "2030-12-31", "count": 200},
+                )
+                for inv in invoices.get("values", []):
+                    if inv.get("id") != invoice_id:
+                        continue
+                    remaining = inv.get("amountRemainder")
+                    if remaining is None:
+                        remaining = inv.get("amountRemaining")
+                    if remaining is None:
+                        remaining = inv.get("amountUnpaid")
+                    if remaining is None:
+                        remaining = inv.get("restAmount")
+                    if remaining is not None:
+                        clipped = min(amount, float(remaining))
+                        if clipped != amount:
+                            payment_params["paidAmount"] = _money(clipped)
+                            return await client.put(f"/invoice/{invoice_id}/:payment", params=payment_params)
+                    break
+            except Exception:
+                pass
+        raise
 
 
 async def action_create_credit_note(client: TripletexClient, args: dict) -> dict:
