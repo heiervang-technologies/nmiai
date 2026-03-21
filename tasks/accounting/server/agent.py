@@ -510,6 +510,7 @@ MULTI-STEP TASK PATTERNS:
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
 - "Foreign currency invoice + payment + agio": create_invoice with currencyCode (e.g. "EUR"), then register_payment with NOK amount (foreign amount × payment exchange rate). Then create_voucher to book the exchange rate difference (agio): debit account 8060 (agio gain) or credit 8160 (agio loss), balanced against 1500 (customer receivables). Agio = (payment_rate - invoice_rate) × foreign_amount.
 - "Bank statement / reconciliation / CSV payment matching": use register_payment with invoiceNumber when the statement includes an invoice reference; do not guess Tripletex invoice IDs from raw numbers
+- "Ledger review / find errors in vouchers": use discover_sandbox + generic_api_call GET /ledger/voucher to find vouchers, then create_voucher to post corrections. IMPORTANT: if correcting postings on account 2400 (leverandørgjeld/accounts payable), you MUST include supplierName in create_voucher args so the supplier reference is added to postings. Similarly for 1500 (kundefordringer), include customerName.
 
 KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.

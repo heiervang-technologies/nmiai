@@ -184,13 +184,17 @@ async def _grant_employee_all_privileges(client: TripletexClient, employee_id: i
         pass
 
     # Set allowInformationRegistration + userType via PUT on employee.
-    # NOTE: Do NOT call /employee/entitlement/:grantEntitlementsByTemplate —
-    # it returns 404/500 in competition sandboxes and wastes API calls.
     try:
         emp_data = await client.get(f"/employee/{employee_id}")
         emp = emp_data.get("value", emp_data)
         emp["allowInformationRegistration"] = True
-        emp["userType"] = "EXTENDED"
+        if emp.get("userType") != "EXTENDED":
+            emp["userType"] = "EXTENDED"
+        # Ensure department is set (required for PUT)
+        if not emp.get("department") or not emp["department"].get("id"):
+            deps = await client.get("/department", params={"count": 1})
+            if deps.get("values"):
+                emp["department"] = {"id": deps["values"][0]["id"]}
         await client.put(f"/employee/{employee_id}", json=emp)
         log.info(f"Set allowInformationRegistration+EXTENDED on employee {employee_id} via PUT")
         return
