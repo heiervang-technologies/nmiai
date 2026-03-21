@@ -176,12 +176,26 @@ def ccc(cell):
     if cell==5: return 5
     return 0
 
+# POOL all observations across seeds for round-level regime detection
+all_obs = {}
+all_obs_combined = []
 for si in range(details['seeds_count']):
     op = rd / f'observations_seed{si}.json'
-    obs = json.loads(op.read_text()) if op.exists() else []
-    obs = obs if len(obs) > 0 else None
-    pred = rp.predict(details['initial_states'][si]['grid'], observations=obs)
-    # Empirical overlay with tau=10 (CV-optimized: 13% better than tau=2)
+    seed_obs = json.loads(op.read_text()) if op.exists() else []
+    all_obs[si] = seed_obs
+    all_obs_combined.extend(seed_obs)
+
+# Detect regime ONCE from ALL seeds' observations (round-level property)
+regime_weights = rp.detect_regime_from_observations(
+    np.array(details['initial_states'][0]['grid']), all_obs_combined
+)
+print(f'Round regime weights (pooled): {regime_weights}')
+
+for si in range(details['seeds_count']):
+    obs = all_obs[si] if all_obs[si] else None
+    # Pass pooled regime by setting model cache, then predict
+    pred = rp.predict(details['initial_states'][si]['grid'], observations=all_obs_combined)
+    # Empirical overlay with tau=10 on THIS seed's observations only
     if obs:
         init = np.array(details['initial_states'][si]['grid'])
         counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
@@ -194,7 +208,7 @@ for si in range(details['seeds_count']):
             for x in range(40):
                 if oc[y,x]>=3 and init[y,x] not in (10,5):
                     alpha=10.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
-        pred=np.maximum(pred,0.005); pred/=pred.sum(axis=2,keepdims=True)
+        pred=np.maximum(pred,1e-6); pred/=pred.sum(axis=2,keepdims=True)
     for attempt in range(3):
         r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
         if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs) if obs else 0} obs)'); break

@@ -23,7 +23,7 @@ from scipy.ndimage import distance_transform_edt, convolve
 
 GT_DIR = Path(__file__).parent / "ground_truth"
 N_CLASSES = 6
-FLOOR = 0.005
+FLOOR = 1e-6
 
 OCEAN = 10
 MOUNTAIN = 5
@@ -399,6 +399,23 @@ def predict(initial_grid, observations=None):
             else:
                 pred[y, x] = np.ones(N_CLASSES) / N_CLASSES
 
+    # Structural zeros: enforce hard constraints before floor
+    dist_civ_struct, n_ocean_struct, _, coast_struct = compute_features(ig)
+    for y in range(h):
+        for x in range(w):
+            code = int(ig[y, x])
+            if code in (OCEAN, MOUNTAIN):
+                continue
+            # Port is impossible if not ocean-adjacent
+            if not coast_struct[y, x]:
+                pred[y, x, 2] = 0.0  # Port = 0
+            # Mountain is impossible on non-mountain cells
+            pred[y, x, 5] = 0.0
+            # Ruin is negligible far from settlements
+            if dist_civ_struct[y, x] > 10:
+                pred[y, x, 3] = 0.0  # Ruin = 0
+
+    # Apply minimal floor only to prevent log(0), then renormalize
     pred = np.maximum(pred, FLOOR)
     pred /= pred.sum(axis=2, keepdims=True)
     return pred
