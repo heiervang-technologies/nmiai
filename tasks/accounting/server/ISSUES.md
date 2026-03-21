@@ -6,6 +6,8 @@ All agents: check this before pushing fixes. Update status when fixing.
 
 | # | Severity | Family | Issue | Root Cause | Owner |
 |---|----------|--------|-------|------------|-------|
+| 20 | RED | dimension | 0/8 — dimension voucher missing vatType + dimension on both postings | Auto-add vatType=3 on expense, dimension ONLY on expense posting | 9aab175 |
+| 19 | YELLOW | annual_close | 0/8 — Nynorsk monthly closing misclassified as cost_analysis | Swapped priority: annual_close=98 > cost_analysis=97 | 9aab175 |
 | 17 | YELLOW | invoice | 6.5/8 — "Crie um pedido" order->invoice flow missing | Agent goes straight to invoice instead of creating order first. Fix deployed (12e99cb) but unconfirmed. | blindspot %3 |
 | 16 | YELLOW | project | 4.5/8 — fixed-price project uses wrong tool | LLM used create_project + manual invoice instead of create_fixed_price_project_invoice. Fix deployed (ec4b8d1) but unconfirmed. | blindspot %3 |
 | 15 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction. Needs PATH A attempt. | advisor %6 |
