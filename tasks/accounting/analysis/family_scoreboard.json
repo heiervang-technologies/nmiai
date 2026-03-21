@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-21T19:58:27.667894+00:00",
+  "generated_at": "2026-03-21T20:07:25.715695+00:00",
   "projection_status": "noisy_calibration",
   "family_scores": [
     {
@@ -11,6 +11,7 @@
       "gap_to_100": 0.0,
       "proxy_clean_rate": 0.862,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -25,6 +26,7 @@
       "gap_to_100": 0.0,
       "proxy_clean_rate": 0.912,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -39,6 +41,7 @@
       "gap_to_100": 0.0,
       "proxy_clean_rate": 1.0,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -53,6 +56,7 @@
       "gap_to_100": 0.0,
       "proxy_clean_rate": 0.743,
       "priority_score": 13.8,
+      "opportunity_score": 0.0,
       "blockers": [
         "sandbox_valid_vat_type",
         "vat_account_mapping",
@@ -71,6 +75,7 @@
       "gap_to_100": 14.5,
       "proxy_clean_rate": 0.864,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -85,6 +90,7 @@
       "gap_to_100": 21.0,
       "proxy_clean_rate": 0.706,
       "priority_score": 6.0,
+      "opportunity_score": 1.26,
       "blockers": [
         "project_hourly_rates_endpoint",
         "module_permission_blocked"
@@ -106,6 +112,7 @@
       "gap_to_100": 30.0,
       "proxy_clean_rate": 0.905,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -120,6 +127,7 @@
       "gap_to_100": 30.0,
       "proxy_clean_rate": 0.889,
       "priority_score": null,
+      "opportunity_score": null,
       "blockers": [],
       "missing_fields": [],
       "status": "keep",
@@ -134,6 +142,7 @@
       "gap_to_100": 61.5,
       "proxy_clean_rate": 0.6,
       "priority_score": 10.25,
+      "opportunity_score": 6.304,
       "blockers": [
         "duplicate_identifier"
       ],
@@ -152,6 +161,7 @@
       "gap_to_100": 89.2,
       "proxy_clean_rate": 0.444,
       "priority_score": 12.75,
+      "opportunity_score": 11.373,
       "blockers": [
         "employee_time_access",
         "rate_category_date_mismatch",
@@ -176,6 +186,7 @@
       "gap_to_100": 97.1,
       "proxy_clean_rate": 0.4,
       "priority_score": 3.0,
+      "opportunity_score": 2.913,
       "blockers": [],
       "missing_fields": [],
       "status": "watch",
@@ -190,6 +201,7 @@
       "gap_to_100": 100.0,
       "proxy_clean_rate": 0.2,
       "priority_score": 3.35,
+      "opportunity_score": 3.35,
       "blockers": [
         "activity_type_required"
       ],
@@ -209,6 +221,7 @@
       "gap_to_100": 100.0,
       "proxy_clean_rate": 0.516,
       "priority_score": 17.1,
+      "opportunity_score": 17.1,
       "blockers": [
         "email_validation"
       ],
@@ -228,6 +241,7 @@
       "gap_to_100": 100.0,
       "proxy_clean_rate": 0.286,
       "priority_score": 21.7,
+      "opportunity_score": 21.7,
       "blockers": [
         "sandbox_valid_vat_type",
         "employee_time_access",
@@ -252,6 +266,7 @@
       "gap_to_100": 100.0,
       "proxy_clean_rate": 0.36,
       "priority_score": 44.65,
+      "opportunity_score": 44.65,
       "blockers": [
         "sandbox_valid_vat_type"
       ],
