@@ -1,6 +1,6 @@
 {
   "family": "cost_analysis",
-  "keywords": ["kostnad", "costs increased", "kostnader", "analyze", "analyser", "analise", "analysez", "Kosten", "costes", "custos"],
+  "keywords": ["kostnad", "costs increased", "total costs", "totalkostnadene", "kostnader økte", "kostnader auka", "largest increase", "biggest increase", "kostnadskonto", "expense accounts", "analyze the general ledger", "analyser hovudboka", "analyze", "analyser", "analise", "analysez", "Kosten gestiegen", "costes aumentaron", "custos aumentaram"],
   "description": "Analyze ledger postings to find cost changes, then create projects/activities",
   "preflight": [],
   "endpoints": [

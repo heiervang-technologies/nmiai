@@ -25,7 +25,15 @@
     "timeliste",
     "heures",
     "stunden",
-    "horas"
+    "horas",
+    "prosjektsyklus",
+    "prosjektsyklusen",
+    "project lifecycle",
+    "full project cycle",
+    "ciclo de vida do projeto",
+    "ciclo de vida del proyecto",
+    "cycle de vie du projet",
+    "Projektlebenszyklus"
   ],
   "description": "Register hours on projects and invoice from logged time",
   "preflight": [
@@ -39,7 +47,12 @@
     "POST /project/projectActivity — body: {project:{id}, activity:{id}, startDate}",
     "PUT /order/{id}/:invoice — invoice project work after time registration"
   ],
-  "required_fields": ["employee", "project", "activity", "hours"],
+  "required_fields": [
+    "employee",
+    "project",
+    "activity",
+    "hours"
+  ],
   "common_errors": [
     "Do not use /project/{id}/activity — the correct endpoints are /activity and /project/projectActivity",
     "company/salesmodules may return 403 in competition sandboxes; treat module activation as best-effort",

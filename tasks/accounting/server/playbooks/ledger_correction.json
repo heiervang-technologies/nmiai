@@ -1,8 +1,24 @@
 {
   "family": "ledger_correction",
-  "keywords": ["erros no livro", "errors in the ledger", "Fehler im Hauptbuch", "erreurs dans le grand livre", "errores en el libro mayor", "feil i hovedboken", "korrigere", "correct", "reversal", "reclassif", "analyze the general ledger", "analyser hovedboken", "analysiere das Hauptbuch", "largest increase", "biggest increase", "total costs increased", "kostnadene økte"],
+  "keywords": [
+    "erros no livro",
+    "errors in the ledger",
+    "Fehler im Hauptbuch",
+    "erreurs dans le grand livre",
+    "errores en el libro mayor",
+    "feil i hovedboken",
+    "korrigere",
+    "correct",
+    "reversal",
+    "reclassif",
+    "analyser hovedboken",
+    "analysiere das Hauptbuch"
+  ],
   "description": "Find and correct errors in ledger postings",
-  "preflight": ["GET /ledger/voucher to find existing vouchers", "GET /ledger/posting to find postings"],
+  "preflight": [
+    "GET /ledger/voucher to find existing vouchers",
+    "GET /ledger/posting to find postings"
+  ],
   "endpoints": [
     "GET /ledger/voucher — list vouchers (params: dateFrom, dateTo)",
     "GET /ledger/posting — list postings (params: dateFrom, dateTo, accountNumberFrom, accountNumberTo)",
