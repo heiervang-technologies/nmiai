@@ -2122,27 +2122,42 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         # Auto-fix voucher postings: supplier/customer refs + balance
         if "/ledger/voucher" in path and body and isinstance(body, dict):
             postings = body.get("postings", [])
-            # Auto-add supplier ref on account 2400 (leverandørgjeld) postings
+            # Build account lookup: id -> account object (number, ledgerType)
+            account_ids = [p.get("account", {}).get("id") for p in postings if p.get("account", {}).get("id")]
+            acct_map = {}
+            if account_ids:
+                try:
+                    accts = await client.get("/ledger/account", params={"count": 1000})
+                    for a in accts.get("values", []):
+                        acct_map[a["id"]] = a
+                except Exception:
+                    pass
             supplier_accounts = {2400, 2401, 2410}
             customer_accounts = {1500, 1501, 1510}
-            needs_supplier = any(
-                int(p.get("account", {}).get("number", p.get("accountNumber", 0))) in supplier_accounts
-                for p in postings if not p.get("supplier")
-            )
-            needs_customer = any(
-                int(p.get("account", {}).get("number", p.get("accountNumber", 0))) in customer_accounts
-                for p in postings if not p.get("customer")
-            )
+            needs_supplier = False
+            needs_customer = False
+            for p in postings:
+                acct_id = p.get("account", {}).get("id")
+                acct_obj = acct_map.get(acct_id, {})
+                acct_num = acct_obj.get("number", 0)
+                ledger_type = acct_obj.get("ledgerType", "")
+                if (acct_num in supplier_accounts or ledger_type in {"VENDOR", "SUPPLIER"}) and not p.get("supplier"):
+                    needs_supplier = True
+                if (acct_num in customer_accounts or ledger_type == "CUSTOMER") and not p.get("customer"):
+                    needs_customer = True
             if needs_supplier:
                 try:
                     suppliers = await client.get("/supplier", params={"count": 1})
                     if suppliers.get("values"):
                         sup_id = suppliers["values"][0]["id"]
                         for p in postings:
-                            acct_num = int(p.get("account", {}).get("number", p.get("accountNumber", 0)))
-                            if acct_num in supplier_accounts and not p.get("supplier"):
+                            acct_id = p.get("account", {}).get("id")
+                            acct_obj = acct_map.get(acct_id, {})
+                            acct_num = acct_obj.get("number", 0)
+                            ledger_type = acct_obj.get("ledgerType", "")
+                            if (acct_num in supplier_accounts or ledger_type in {"VENDOR", "SUPPLIER"}) and not p.get("supplier"):
                                 p["supplier"] = {"id": sup_id}
-                                log.info(f"Auto-added supplier.id={sup_id} to account {acct_num} posting")
+                                log.info(f"Auto-added supplier.id={sup_id} to account {acct_num} ({ledger_type}) posting")
                 except Exception:
                     pass
             if needs_customer:
@@ -2151,10 +2166,13 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     if customers.get("values"):
                         cust_id = customers["values"][0]["id"]
                         for p in postings:
-                            acct_num = int(p.get("account", {}).get("number", p.get("accountNumber", 0)))
-                            if acct_num in customer_accounts and not p.get("customer"):
+                            acct_id = p.get("account", {}).get("id")
+                            acct_obj = acct_map.get(acct_id, {})
+                            acct_num = acct_obj.get("number", 0)
+                            ledger_type = acct_obj.get("ledgerType", "")
+                            if (acct_num in customer_accounts or ledger_type == "CUSTOMER") and not p.get("customer"):
                                 p["customer"] = {"id": cust_id}
-                                log.info(f"Auto-added customer.id={cust_id} to account {acct_num} posting")
+                                log.info(f"Auto-added customer.id={cust_id} to account {acct_num} ({ledger_type}) posting")
                 except Exception:
                     pass
             # Auto-balance
