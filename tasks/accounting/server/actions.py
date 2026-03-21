@@ -2601,6 +2601,11 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 await action_setup_bank_account(client, {})
             except Exception:
                 pass
+        # Auto-add sendType for invoice send
+        if "/:send" in path and "/invoice/" in path:
+            params = params or {}
+            if "sendType" not in params:
+                params["sendType"] = "EMAIL"
         return await client.put(path, json=body, params=params or None)
     elif method == "DELETE":
         return await client.delete(path)
