@@ -198,6 +198,9 @@ def main():
             # Probe classifier
             logits = probe_sess.run(None, {"features": features})[0]  # [1, 356]
             cat_id = int(np.argmax(logits[0]))
+            # Category aliases: merge umlaut spelling variants
+            ALIASES = {61: 59, 260: 170, 201: 36}
+            cat_id = ALIASES.get(cat_id, cat_id)
 
             results.append({
                 "image_id": img_id,
