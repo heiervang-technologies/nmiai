@@ -476,6 +476,7 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/product": "Use create_product tool instead",
         "/department": "Use create_department tool instead",
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
+        "/employee/employment": "Use create_employee tool with startDate, annualSalary, percentageOfFullTimeEquivalent instead. It handles employment creation automatically.",
     }
     # Fix wrong activity endpoint: /project/{id}/activity -> create activity + link to project
     import re
