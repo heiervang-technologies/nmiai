@@ -62,35 +62,62 @@ def _invoice_matches(inv: dict, args: dict) -> bool:
 
 
 def _resolve_default_vat_id(vat_types: dict, fallback: int = 3) -> int:
+    vat_id = _find_vat_type_id(vat_types, percentage=25, prefer_outgoing=True)
+    return vat_id if vat_id is not None else fallback
+
+
+def _find_vat_type_id(vat_types: dict, percentage: int | None, prefer_outgoing: bool) -> int | None:
+    candidates = []
     for vt in vat_types.get("values", []):
-        if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
-            return vt["id"]
-    return fallback
+        vt_id = vt.get("id")
+        if vt_id is None:
+            continue
+        name = (vt.get("name") or "").lower()
+        vt_percentage = vt.get("percentage")
+        score = 0
+        if percentage is not None:
+            if vt_percentage != percentage:
+                continue
+            score += 100
+        if prefer_outgoing and "utgående" in name:
+            score += 20
+        if "standard" in name or "høy sats" in name:
+            score += 10
+        if "direktepostert" in name:
+            score -= 20
+        if "inngående" in name or "fradrag" in name:
+            score -= 50
+        candidates.append((score, int(vt_id)))
+    if not candidates:
+        return None
+    candidates.sort(reverse=True)
+    return candidates[0][1]
+
+
+def _requested_vat_percentages(requested: int | None) -> list[int]:
+    if requested is None:
+        return [25]
+    requested = int(requested)
+    if requested in {0, 12, 15, 25}:
+        return [requested]
+    legacy_map = {
+        3: [25],
+        5: [15, 0],
+        6: [0],
+        31: [15],
+        32: [12],
+    }
+    return legacy_map.get(requested, [])
 
 
 def _resolve_outgoing_vat_id(vat_types: dict, requested: int | None, fallback: int = 3) -> int:
-    if requested is None:
-        return _resolve_default_vat_id(vat_types, fallback)
-    requested = int(requested)
-    # If it looks like a percentage (0, 12, 15, 25), resolve by percentage
-    if requested in (25, 15, 12, 0):
-        for vt in vat_types.get("values", []):
-            if vt.get("percentage") == requested and "utgående" in vt.get("name", "").lower():
-                return vt["id"]
-    # If it looks like a known hardcoded ID (3, 5, 31, 32), verify it exists in this sandbox
-    known_hardcoded = {3: 25, 5: 0, 31: 15, 32: 12}
-    if requested in known_hardcoded:
-        # Check if this ID actually exists
-        for vt in vat_types.get("values", []):
-            if vt.get("id") == requested:
-                return requested
-        # ID doesn't exist — resolve by the percentage it was meant to represent
-        target_pct = known_hardcoded[requested]
-        for vt in vat_types.get("values", []):
-            if vt.get("percentage") == target_pct and "utgående" in vt.get("name", "").lower():
-                return vt["id"]
-    # Otherwise assume it's a valid sandbox-specific ID
-    return requested
+    for percentage in _requested_vat_percentages(requested):
+        vat_id = _find_vat_type_id(vat_types, percentage=percentage, prefer_outgoing=True)
+        if vat_id is not None:
+            return vat_id
+    if requested is not None and int(requested) not in {3, 5, 6, 31, 32}:
+        return int(requested)
+    return fallback
 
 
 async def _get_outgoing_vat_types(client: TripletexClient) -> dict:
@@ -337,16 +364,13 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
     if args.get("priceIncludingVat") is not None:
         body["priceIncludingVatCurrency"] = float(args["priceIncludingVat"])
 
-    # Resolve VAT type dynamically — try all available types if first attempt fails
+    # Resolve VAT type dynamically — smart shortlist, not brute force
     vat_types = await _get_outgoing_vat_types(client)
-    all_vat_ids = [vt["id"] for vt in vat_types.get("values", [])]
-
-    # Try resolved VAT first, then iterate through all available types
     default_vat_id = _resolve_default_vat_id(vat_types, 3)
     vat_id = _resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id)
 
-    # Build candidate list: resolved first, then all others
-    candidates = [vat_id] + [v for v in all_vat_ids if v != vat_id]
+    # Smart shortlist: resolved, then common fallbacks (3=25% utgående, 6=0%, 5=0%, 7=no VAT)
+    candidates = list(dict.fromkeys([vat_id, 3, 6, 5, 7]))  # deduplicated, order preserved
 
     for candidate_vat_id in candidates:
         body["vatType"] = {"id": int(candidate_vat_id)}
@@ -365,21 +389,11 @@ async def action_create_department(client: TripletexClient, args: dict) -> dict:
     department_number = str(args.get("departmentNumber", args.get("number", "")))
     department_name = args["name"]
 
-    if department_number:
-        try:
-            existing = await client.get(
-                "/department",
-                params={"departmentNumber": department_number, "count": 10},
-            )
-            for dept in existing.get("values", []):
-                if str(dept.get("departmentNumber", "")) == department_number:
-                    return {"value": dept}
-        except Exception:
-            pass
-
     try:
-        existing = await client.get("/department", params={"name": department_name, "count": 10})
+        existing = await client.get("/department", params={"count": 100})
         for dept in existing.get("values", []):
+            if department_number and str(dept.get("departmentNumber", "")) == department_number:
+                return {"value": dept}
             if dept.get("name", "").strip().lower() == department_name.strip().lower():
                 return {"value": dept}
     except Exception:
@@ -393,17 +407,15 @@ async def action_create_department(client: TripletexClient, args: dict) -> dict:
         return await client.post("/department", json=body)
     except Exception:
         # Duplicate-number races are common in regression runs; return the existing dept.
-        if department_number:
-            try:
-                existing = await client.get(
-                    "/department",
-                    params={"departmentNumber": department_number, "count": 10},
-                )
-                for dept in existing.get("values", []):
-                    if str(dept.get("departmentNumber", "")) == department_number:
-                        return {"value": dept}
-            except Exception:
-                pass
+        try:
+            existing = await client.get("/department", params={"count": 100})
+            for dept in existing.get("values", []):
+                if department_number and str(dept.get("departmentNumber", "")) == department_number:
+                    return {"value": dept}
+                if dept.get("name", "").strip().lower() == department_name.strip().lower():
+                    return {"value": dept}
+        except Exception:
+            pass
         raise
 
 
@@ -895,6 +907,13 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         project_id=args.get("projectId"),
         project_name=args.get("projectName"),
     )
+    if not project_id:
+        try:
+            projects = await client.get("/project", params={"count": 1})
+            if projects.get("values"):
+                project_id = projects["values"][0]["id"]
+        except Exception:
+            pass
 
     entry_date = args.get("date", TODAY)
 
@@ -1119,19 +1138,14 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
 
 async def action_create_travel_expense(client: TripletexClient, args: dict) -> dict:
     """Create a travel expense report with per diem."""
-    # Find employee
-    employee_id = args.get("employeeId")
+    employee_id = await _find_employee_id(
+        client,
+        employee_id=args.get("employeeId"),
+        employee_email=args.get("employeeEmail"),
+        employee_name=args.get("employeeName"),
+    )
     if not employee_id:
-        emps = await client.get("/employee", params={"count": 10})
-        for emp in emps.get("values", []):
-            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
-                employee_id = emp["id"]
-                break
-            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
-                employee_id = emp["id"]
-                break
-        if not employee_id and emps.get("values"):
-            employee_id = emps["values"][0]["id"]
+        return {"error": "Could not resolve employee for travel expense"}
 
     from datetime import date, timedelta
     today = date.today().isoformat()
@@ -1147,6 +1161,9 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
         except Exception:
             return_date = today
 
+    departure_from = args.get("departure") or args.get("departureFrom") or args.get("destination") or args.get("title", "Travel")
+    destination = args.get("destination") or args.get("title", "Travel")
+
     body = {
         "employee": {"id": employee_id},
         "title": args.get("title", "Travel expense"),
@@ -1159,16 +1176,29 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             "purpose": args.get("title", "Travel"),
             "isForeignTravel": False,
             "isDayTrip": days <= 1,
+            "departureFrom": departure_from,
+            "destination": destination,
         },
     }
-    if args.get("departure"):
-        body["travelDetails"]["departureFrom"] = args["departure"]
-    if args.get("destination"):
-        body["travelDetails"]["destination"] = args["destination"]
 
     result = await client.post("/travelExpense", json=body)
     expense = result.get("value", result)
     expense_id = expense.get("id")
+    travel_payment_type_id = None
+    travel_cost_category_id = None
+    if expense_id:
+        try:
+            payment_types = await client.get("/travelExpense/paymentType", params={"count": 50})
+            if payment_types.get("values"):
+                travel_payment_type_id = payment_types["values"][0].get("id")
+        except Exception as e:
+            log.warning(f"Travel payment type lookup failed: {e}")
+        try:
+            cost_categories = await client.get("/travelExpense/costCategory", params={"count": 50})
+            if cost_categories.get("values"):
+                travel_cost_category_id = cost_categories["values"][0].get("id")
+        except Exception as e:
+            log.warning(f"Travel cost category lookup failed: {e}")
 
     # Add explicit travel outlays before per diem/delivery when the prompt includes them.
     for cost in args.get("costs", []):
@@ -1178,11 +1208,17 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             amount = _money(cost.get("amount", 0))
             cost_body = {
                 "travelExpense": {"id": expense_id},
+                "date": departure_date,
                 "category": cost.get("category") or cost.get("description") or "Expense",
                 "comments": cost.get("description") or cost.get("category") or "Travel expense cost",
                 "amountCurrencyIncVat": amount,
                 "amountNOKInclVAT": amount,
+                "isPaidByEmployee": True,
             }
+            if travel_payment_type_id:
+                cost_body["paymentType"] = {"id": travel_payment_type_id}
+            if travel_cost_category_id:
+                cost_body["costCategory"] = {"id": travel_cost_category_id}
             await client.post("/travelExpense/cost", json=cost_body)
         except Exception as e:
             log.warning(f"Travel cost creation failed: {e}")
@@ -1193,30 +1229,15 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             # Lookup a valid per diem rate type. Deliver fails if rateType.id is missing or if we
             # accidentally pass a rateCategory id where a rate id is required.
             rate_type_id = None
-            rate_category_id = None
             try:
-                rate_cats = await client.get("/travelExpense/rateCategory", params={"count": 50})
-                for rc in rate_cats.get("values", []):
-                    name = (rc.get("name") or "").lower()
-                    if not name or any(token in name for token in ["diet", "per diem", "reise", "travel"]):
-                        rate_category_id = rc.get("id")
+                rates = await client.get(
+                    "/travelExpense/rate",
+                    params={"isValidDomestic": True, "count": 50},
+                )
+                for rate in rates.get("values", []):
+                    rate_type_id = rate.get("id")
+                    if rate_type_id:
                         break
-                if not rate_category_id and rate_cats.get("values"):
-                    rate_category_id = rate_cats["values"][0].get("id")
-
-                if rate_category_id:
-                    rates = await client.get(
-                        "/travelExpense/rate",
-                        params={
-                            "rateCategoryId": rate_category_id,
-                            "isValidDomestic": True,
-                            "count": 50,
-                        },
-                    )
-                    for rate in rates.get("values", []):
-                        rate_type_id = rate.get("id")
-                        if rate_type_id:
-                            break
                 if not rate_type_id:
                     rates = await client.get("/travelExpense/rate", params={"count": 50})
                     for rate in rates.get("values", []):
@@ -1237,8 +1258,6 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             }
             if rate_type_id:
                 per_diem_body["rateType"] = {"id": rate_type_id}
-            if rate_category_id:
-                per_diem_body["rateCategory"] = {"id": rate_category_id}
             else:
                 log.warning("No per diem rateType ID found, perDiemCompensation may fail.")
 
@@ -1255,6 +1274,10 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                     "isPaidByEmployee": True,
                     "comments": f"Per diem {args['perDiemDays']} days x {args['perDiemRate']} NOK",
                 }
+                if travel_payment_type_id:
+                    cost_body["paymentType"] = {"id": travel_payment_type_id}
+                if travel_cost_category_id:
+                    cost_body["costCategory"] = {"id": travel_cost_category_id}
                 await client.post("/travelExpense/cost", json=cost_body)
             except Exception as e2:
                 log.warning(f"Cost fallback also failed: {e2}")
@@ -1270,6 +1293,10 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                     "isPaidByEmployee": True,
                     "comments": item.get("description", "Expense"),
                 }
+                if travel_payment_type_id:
+                    cost_body["paymentType"] = {"id": travel_payment_type_id}
+                if travel_cost_category_id:
+                    cost_body["costCategory"] = {"id": travel_cost_category_id}
                 await client.post("/travelExpense/cost", json=cost_body)
             except Exception as e:
                 log.warning(f"Failed to add expense item '{item.get('description')}': {e}")
@@ -1374,15 +1401,10 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
         project_id = project_value.get("id")
     else:
         try:
-            project_data = await client.get(f"/project/{project_id}")
-            project_obj = _build_project_update_payload(project_data.get("value", project_data))
-            project_obj["startDate"] = project_obj.get("startDate") or args.get("startDate", TODAY)
-            project_obj["isFixedPrice"] = True
-            project_result = await client.put(f"/project/{project_id}", json=project_obj)
             await client.put(
                 "/project/hourlyRates/updateOrAddHourRates",
                 json={
-                    "startDate": args.get("startDate", project_obj.get("startDate") or TODAY),
+                    "startDate": args.get("startDate", TODAY),
                     "hourlyRateModel": "FIXED_RATE",
                     "fixedRate": _money(args["fixedPrice"]),
                 },
