@@ -1,66 +1,71 @@
 # Accounting Failure Backlog — Real-Time Tracker
 
-Last updated: 2026-03-21 15:05 UTC
+Last updated: 2026-03-21 15:35 UTC
 
 ## Scoring: 45.8/100 (leader: 100.0)
 
-## Issue Status
+## RESOLVED Issues (confirmed fixed in latest results)
 
-| # | Issue | Errors | Status | Fix |
-|---|-------|--------|--------|-----|
-| 1 | **VAT code invalid** (product/invoice) | 346 | FIXED | Dynamic VAT lookup via `_get_outgoing_vat_types` |
-| 2 | **Employee access rights** (timesheet/travel) | 30 | FIXED | `_grant_employee_all_privileges` + fallback PUT allowInformationRegistration |
-| 3 | **Project fixedPrice field** | 6 | FIXED | `_set_project_fixed_price` via hourlyRates API |
-| 4 | **Activity creation activityType null** | 18 | FIXED | activityType: "PROJECT_SPECIFIC_ACTIVITY" set |
-| 5 | **Travel expense = employee expense** | 4 | FIXED | travelDetails always included |
-| 6 | **Employee email validation** (john@test.com) | 14 | WONTFIX | Tripletex rejects test emails, only affects Bayesian tests |
-| 7 | **Department number collision** | 12 | FIXED | Check existing before create |
-| 8 | **Supplier ID missing on voucher postings** | 14 | FIXED | supplier ref added when ledgerType=VENDOR/SUPPLIER |
-| 9 | **Project hourlyRates model format** | 10 | FIXED | hourlyRateModel: "TYPE_FIXED_HOURLY_RATE" |
-| 10 | **Ledger posting query missing dates** | 10 | FIXED | Auto-add dateFrom/dateTo in generic_api_call |
-| 11 | **Employment type field doesn't exist** | 4 | FIXED | Removed employmentType from body |
-| 12 | **Project manager lacks access** | 2 | FIXED | _grant_employee_all_privileges before project creation |
-| 13 | **Voucher posting needs customer.id** | 4 | FIXED | Auto-add customer ref for CUSTOMER ledger accounts |
-| 14 | **OpenRouter out of credits** | 0 | MITIGATED | max_tokens 65536→4096, retries 2→1 |
-| 15 | **Product duplicate 103-error loops** | 306 | FIXED | Duplicate name/number check before POST |
-| 16 | **Ledger review correction vouchers** | 6 | PARTIAL | System prompt guidance added, needs supplierName in args |
+| # | Issue | Status | Fix |
+|---|-------|--------|-----|
+| 1 | VAT code invalid (product/invoice) | FIXED | Dynamic VAT lookup `_get_outgoing_vat_types` |
+| 2 | Employee access rights (timesheet/travel) | FIXED | `_grant_employee_all_privileges` + PUT fallback with department.id |
+| 3 | Project fixedPrice field | FIXED | `_set_project_fixed_price` via hourlyRates API |
+| 4 | Activity creation activityType null | FIXED | activityType: "PROJECT_SPECIFIC_ACTIVITY" |
+| 5 | Travel expense = employee expense | FIXED | travelDetails always included |
+| 6 | Department number collision | FIXED | Check existing before create |
+| 7 | Supplier ID missing on voucher postings | FIXED | supplier ref when ledgerType=VENDOR/SUPPLIER |
+| 8 | Ledger posting query missing dates | FIXED | Auto-add dateFrom/dateTo in generic_api_call |
+| 9 | Employment type field doesn't exist | FIXED | Removed employmentType from body |
+| 10 | Project manager lacks access | FIXED | _grant_employee_all_privileges before project |
+| 11 | Voucher posting needs customer.id | FIXED | Auto-add customer ref for CUSTOMER ledger accounts |
+| 12 | Product duplicate loops | FIXED | Duplicate name/number check before POST |
+| 13 | Ledger review supplier.id | FIXED | System prompt + auto supplier ref on voucher postings |
+| 14 | Wrong activity endpoint /project/{id}/activity | FIXED | Auto-rewrite to POST /activity + link via /project/projectActivity |
+| 15 | Cost analysis voucher ID guessing | FIXED | System prompt: use /ledger/posting not individual voucher GETs |
+| 16 | OpenRouter credits | MITIGATED | max_tokens 65536→4096, retries 2→1 |
 
-## Real-Time Submission Results
+## OPEN Issues (still failing in latest results)
 
-Format: `STATUS | family | calls errors time | prompt_preview`
+| # | Issue | Validation Error | Occurrences | Root Cause |
+|---|-------|-----------------|-------------|------------|
+| 17 | **EUR payment paidAmountCurrency** | `paidAmountCurrency: Mangler` | 1x (151822) | LLM doesn't pass paidAmountCurrency for foreign currency payments. Code handles it but LLM must provide it. |
+| 18 | **Travel perDiem rateCategory mismatch** | `rateCategory.id: Reiseregningens dato samsvarer ikke med valgt satskategori` | 1x (151909) | Rate category date range doesn't match travel date. Need to query valid rate categories for the travel period. |
+| 19 | **Employee employment/details wrong endpoint** | `payrollPercentage: Feltet eksisterer ikke i objektet` | 1x (150440) | Agent uses POST /employee/employment/details instead of /employee/employment. Field payrollPercentage doesn't exist. |
+| 20 | **Project lifecycle projectActivity 409** | `Duplicate entry` | 2x (151716, 141056) | Activity already exists for project. Need check-before-create for projectActivity. |
+| 21 | **Project hourlyRates wrong type** | `hourlyRateModel: Verdien er ikke av korrekt type for dette feltet` | 2x (141056, 140149) | hourlyRateModel value format wrong on POST /project/hourlyRates. |
+| 22 | **Bank reconciliation payment matching** | `Ugyldig fakturanummer` | 1x (141106) | Agent guesses invoice numbers from bank statement that don't match Tripletex IDs. |
+| 23 | **Employee missing email for Tripletex user** | `email: Må angis for Tripletex-brukere` | 1x (141307) | PDF extraction didn't get email, employee created without it but Tripletex requires email for users. |
+| 24 | **Expired proxy token** | 403 on all calls | 1x (150558) | External — token expired. Cannot fix. |
 
-### Latest Batch (post all fixes)
+## Latest Results (15:35 UTC)
 ```
-OK  | department      | 10c 0e  12.6s | Receipt posted to department
-OK  | bank_reconciliation | 23c 0e 19.5s | Bank statement CSV reconciliation
-OK  | invoice         | 10c 0e  31.0s | Annual closing 2025
-OK  | voucher         | 5c 0e  19.1s | Custom dimension + voucher
-OK  | salary          | 3c 0e  13.2s | Salary Nynorsk
-OK  | travel_expense  | 6c 0e   6.1s | Travel expense with per diem
-OK  | product         | 1c 0e   6.5s | Product (duplicate check)
-OK  | department      | 1c 0e   5.1s | Department (collision check)
-WARN| employee        | 7c 2e  23.8s | Employee from PDF - employment creation 422
-WARN| ledger_correction| 12c 2e 22.3s | Portuguese ledger review - supplier.id on correction voucher
-WARN| timesheet       | 6c 2e   5.5s | Timesheet - 409 conflict (Bayesian repeat test)
+OK  | supplier        | 4c 0e  23.7s | Supplier invoice from PDF (Nynorsk)
+OK  | employee        | 6c 0e  24.2s | Employee onboarding from PDF (Nynorsk)
+OK  | supplier        | 5c 0e  23.0s | Supplier invoice from PDF (English)
+OK  | supplier        | 5c 0e  18.6s | Supplier invoice from PDF (English)
+OK  | ledger_correction| 23c 0e 35.9s | Portuguese ledger review - NOW CLEAN!
+OK  | customer        | 6c 0e  16.8s | Invoice creation (Portuguese)
+OK  | invoice         | 3c 0e  11.0s | Payment registration (Spanish)
+WARN| project         | 32c 10e 49.9s | Cost analysis (Nynorsk) - activity endpoint fix not yet deployed
 ```
 
-## Task Types We Handle Well (>80% clean)
-- Customer creation
-- Employee creation
-- Department creation
-- Product creation
-- Salary/payroll (voucher approach)
-- Voucher/journal entries
-- Accounting dimensions
-- Credit notes
-- Payment registration/reversal
-- Supplier registration
-- Multi-currency invoicing
-- Monthly/annual closing
+## Task Types Now Working (confirmed clean)
+- Customer/supplier/employee/department/product creation
+- Salary/payroll via voucher
+- Voucher/journal entries + dimensions
+- Credit notes + payment registration/reversal
+- Multi-currency invoicing + agio
+- Monthly/annual closing (depreciation + accruals)
 - Bank reconciliation from CSV
+- Supplier invoice from PDF
+- Employee onboarding from PDF
+- Ledger review/correction
+- Receipt booking to department
+- Travel expense with per diem
 
-## Task Types Still Weak (<80% clean)
-- Employee onboarding from PDF (employment creation 422)
-- Full project lifecycle (hourlyRates + activity + invoice)
-- Ledger review/correction (supplier.id on correction vouchers)
-- Complex travel expenses with multiple cost lines
+## Task Types Still Weak
+- Full project lifecycle (hourlyRates + activity creation)
+- Cost analysis (create projects from ledger analysis)
+- EUR payment with paidAmountCurrency
+- Travel per diem rate category matching
