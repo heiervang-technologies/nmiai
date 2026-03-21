@@ -199,7 +199,7 @@ def main():
             logits = probe_sess.run(None, {"features": features})[0]  # [1, 356]
             cat_id = int(np.argmax(logits[0]))
             # Category aliases: merge umlaut spelling variants
-            ALIASES = {61: 59, 260: 170, 201: 36}
+            ALIASES = {59: 61, 170: 260, 36: 201}
             cat_id = ALIASES.get(cat_id, cat_id)
 
             results.append({
