@@ -207,36 +207,34 @@ def heuristic_seed_scores(initial_states, height, width):
 
 
 def allocate_queries_across_seeds(initial_states, height, width, remaining):
-    seed_summaries, heuristic_scores = heuristic_seed_scores(initial_states, height, width)
-    heuristic_weights = heuristic_scores / heuristic_scores.sum() if heuristic_scores.sum() > 0 else np.full(len(initial_states), 1.0 / len(initial_states))
-    combined_weights = heuristic_weights
-    ranked = [int(i) for i in np.argsort(-combined_weights)]
-    combined_weights = combined_weights / combined_weights.sum()
-    seed_count = len(initial_states)
-    base = min(3, remaining // seed_count) if remaining >= seed_count else 0
-    allocation = np.full(seed_count, base, dtype=np.int32)
-    extra = int(remaining - allocation.sum())
+    """Allocate queries for REGIME DETECTION only.
 
-    if extra > 0:
-        fractional = combined_weights * extra
-        allocation += np.floor(fractional).astype(np.int32)
-        leftover = int(remaining - allocation.sum())
-        remainders = fractional - np.floor(fractional)
-        priority_order = sorted(range(seed_count), key=lambda i: (-remainders[i], ranked.index(i) if i in ranked else seed_count))
-        for idx in priority_order[:leftover]:
-            allocation[idx] += 1
+    Strategy (from advisor + eval boss analysis):
+    - Use exactly 1 diagnostic query per seed = 5 total
+    - Each query targets the most settlement-rich viewport
+    - Observations used ONLY for template weight updates, never cell-level
+    - 5 queries saturate regime detection benefit; more add zero value
+    """
+    seed_summaries, heuristic_scores = heuristic_seed_scores(initial_states, height, width)
+    seed_count = len(initial_states)
+
+    # Cap at 1 query per seed for regime detection (5 total)
+    # This is the optimal strategy per eval boss CV analysis
+    REGIME_QUERIES_PER_SEED = 1
+    allocation = np.full(seed_count, REGIME_QUERIES_PER_SEED, dtype=np.int32)
+
+    ranked = [int(i) for i in np.argsort(-heuristic_scores)]
 
     plan = {
         "seed_summaries": seed_summaries,
         "heuristic_scores": [round(v, 3) for v in heuristic_scores.tolist()],
-        "heuristic_weights": [round(v, 4) for v in heuristic_weights.tolist()],
-        "combined_weights": [round(v, 4) for v in combined_weights.tolist()],
         "allocation": allocation.tolist(),
         "ranked_seeds": ranked,
         "strategy": {
-            "explore_fraction": 0.6,
-            "repeat_fraction": 0.4,
-            "repeat_top_hotspots": True,
+            "mode": "regime_detection_only",
+            "queries_per_seed": REGIME_QUERIES_PER_SEED,
+            "total_queries": int(allocation.sum()),
+            "rationale": "5 viewports saturate regime detection. More queries add zero value. No cell-level observation updates.",
         },
     }
     return allocation.tolist(), plan
