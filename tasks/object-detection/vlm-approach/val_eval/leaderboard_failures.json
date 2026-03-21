@@ -3,6 +3,6 @@
     "model_name": "nmiai_single_model_v1",
     "submission_path": "/home/me/ht/nmiai/tasks/object-detection/nmiai_single_model_v1.zip",
     "submission_type": "zip",
-    "error": "CalledProcessError(1, ['python', '/tmp/dense_eval_xenkcd1a/submission/run.py', '--input', '/home/me/ht/nmiai/tasks/object-detection/data-creation/data/clean_split/val/images', '--output', '/home/me/ht/nmiai/tasks/object-detection/vlm-approach/val_eval/predictions/nmiai_single_model_v1.json'])"
+    "error": "TimeoutExpired(['python', '/tmp/dense_eval_p692ngeo/submission/run.py', '--input', '/home/me/ht/nmiai/tasks/object-detection/data-creation/data/clean_split/val/images', '--output', '/home/me/ht/nmiai/tasks/object-detection/vlm-approach/val_eval/predictions/nmiai_single_model_v1.json'], 1799.99997712)"
   }
 ]

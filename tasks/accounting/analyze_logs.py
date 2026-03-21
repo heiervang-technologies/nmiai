@@ -71,12 +71,29 @@ GENERIC_FIELD_RULES = [
     (re.compile(r"vattype", re.IGNORECASE), "vat_type"),
     (re.compile(r"paymenttype", re.IGNORECASE), "payment_type"),
     (re.compile(r"costcategory", re.IGNORECASE), "cost_category"),
-    (re.compile(r"customer", re.IGNORECASE), "customer"),
+    (re.compile(r"customer\.id|kunde mangler", re.IGNORECASE), "customer"),
     (re.compile(r"department", re.IGNORECASE), "department"),
-    (re.compile(r"project", re.IGNORECASE), "project"),
+    (re.compile(r"project\.id|project\b|prosjekt", re.IGNORECASE), "project"),
     (re.compile(r"activity", re.IGNORECASE), "activity"),
-    (re.compile(r"employee", re.IGNORECASE), "employee"),
-    (re.compile(r"ratetype", re.IGNORECASE), "rate_type"),
+    (re.compile(r"employee\.id|employee\b|ansatt", re.IGNORECASE), "employee"),
+    (re.compile(r"ratetype|satskategori", re.IGNORECASE), "rate_type"),
+]
+
+ISSUE_RULES = [
+    (re.compile(r"nummeret er i bruk|allerede i bruk|already exists", re.IGNORECASE), "duplicate_identifier"),
+    (re.compile(r"stavefeil|invalid email|e-postadresse", re.IGNORECASE), "email_validation"),
+    (re.compile(r"brukertilgangen .* ikke aktivert", re.IGNORECASE), "employee_time_access"),
+    (re.compile(r"ugyldig mva-kode", re.IGNORECASE), "sandbox_valid_vat_type"),
+    (re.compile(r"gyldig regnskapskonto for mva-koden", re.IGNORECASE), "vat_account_mapping"),
+    (re.compile(r"activitytype.*kan ikke v[æa]re null", re.IGNORECASE), "activity_type_required"),
+    (re.compile(r"kun reiseregning, ikke ansattutlegg", re.IGNORECASE), "travel_expense_kind"),
+    (re.compile(r"uten kostnader", re.IGNORECASE), "travel_expense_contents_required"),
+    (re.compile(r"sats eller satskategori m[åa]", re.IGNORECASE), "per_diem_rate_required"),
+    (re.compile(r"dato samsvarer ikke med valgt satskategori", re.IGNORECASE), "rate_category_date_mismatch"),
+    (re.compile(r"fixedprice.*finnes ikke i objektet|fixed price.*finnes ikke", re.IGNORECASE), "fixed_price_wrong_endpoint"),
+    (re.compile(r"projectratetypes|hourlyrates", re.IGNORECASE), "project_hourly_rates_endpoint"),
+    (re.compile(r"account -> Feltet eksisterer ikke i objektet", re.IGNORECASE), "incoming_invoice_wrong_account_field"),
+    (re.compile(r"permission to access this feature", re.IGNORECASE), "module_permission_blocked"),
 ]
 
 
@@ -166,9 +183,10 @@ def infer_missing_fields(
     prompt: str,
     final_message: str,
     validation_entries: list[dict[str, str]],
-) -> tuple[Counter, Counter]:
+) -> tuple[Counter, Counter, Counter]:
     direct = Counter()
     prompt_required = Counter()
+    blockers = Counter()
     family_hints = FAMILY_HINTS.get(family, {})
 
     for pattern, field_name in family_hints.get("expected_prompt_fields", []):
@@ -176,18 +194,36 @@ def infer_missing_fields(
             prompt_required[field_name] += 1
 
     combined_texts = [final_message or ""]
+    generic_texts = [final_message or ""]
     for entry in validation_entries:
         combined_texts.append(" ".join([entry.get("path", ""), entry.get("field", ""), entry.get("message", "")]))
+        generic_texts.append(" ".join([entry.get("field", ""), entry.get("message", "")]))
 
     for text in combined_texts:
         for pattern, field_name in family_hints.get("message_rules", []):
             if pattern.search(text):
                 direct[field_name] += 1
+        for pattern, issue_name in ISSUE_RULES:
+            if pattern.search(text):
+                blockers[issue_name] += 1
+
+    for text in generic_texts:
         for pattern, field_name in GENERIC_FIELD_RULES:
             if pattern.search(text):
                 direct[field_name] += 1
 
-    return direct, prompt_required
+    if blockers.get("duplicate_identifier") and family == "department":
+        direct.pop("department", None)
+    if blockers.get("email_validation") and family == "employee":
+        direct.pop("employee", None)
+    if blockers.get("sandbox_valid_vat_type"):
+        direct.pop("vat_type", None)
+    if blockers.get("employee_time_access") and family in {"timesheet", "travel_expense"}:
+        direct.pop("employee", None)
+    if blockers.get("fixed_price_wrong_endpoint"):
+        direct.pop("rate_type", None)
+
+    return direct, prompt_required, blockers
 
 
 def normalize_pattern(entry: dict[str, str]) -> str:
@@ -282,6 +318,9 @@ def render_markdown(summary: dict[str, Any]) -> str:
             f"- Prompt-required fields: {', '.join(item['field'] for item in family['prompt_required_fields'][:6]) or 'none'}"
         )
         lines.append(
+            f"- Likely blockers: {', '.join(item['field'] for item in family.get('likely_blockers', [])[:6]) or 'none'}"
+        )
+        lines.append(
             f"- Missing-field hypotheses: {', '.join(item['field'] for item in family['likely_missing_fields'][:6]) or 'none'}"
         )
         if family["top_error_patterns"]:
@@ -315,7 +354,7 @@ def build_summary(
         validation_entries = []
         for call in calls:
             validation_entries.extend(extract_validation_entries(call))
-        missing_fields, prompt_required = infer_missing_fields(family, record.get("prompt", ""), final_message, validation_entries)
+        missing_fields, prompt_required, blockers = infer_missing_fields(family, record.get("prompt", ""), final_message, validation_entries)
 
         files = record.get("files") or []
         attachment_present = bool(files)
@@ -339,6 +378,7 @@ def build_summary(
                 "error_patterns": Counter(),
                 "missing_fields": Counter(),
                 "prompt_required": Counter(),
+                "blockers": Counter(),
                 "prompt_examples": [],
             },
         )
@@ -358,6 +398,7 @@ def build_summary(
             bucket["error_patterns"].update([normalize_pattern(entry)])
         bucket["missing_fields"].update(missing_fields)
         bucket["prompt_required"].update(prompt_required)
+        bucket["blockers"].update(blockers)
         bucket["prompt_examples"].append(
             {
                 "timestamp": record.get("timestamp"),
@@ -379,6 +420,9 @@ def build_summary(
         prompt_required_fields = [
             {"field": field, "count": count} for field, count in bucket["prompt_required"].most_common(8)
         ]
+        likely_blockers = [
+            {"field": field, "count": count} for field, count in bucket["blockers"].most_common(8)
+        ]
         top_error_patterns = [
             {"pattern": pattern, "count": count} for pattern, count in bucket["error_patterns"].most_common(8)
         ]
@@ -387,6 +431,7 @@ def build_summary(
             status = "manual_review"
         description = (
             f"{family_name}: clean_rate={proxy_clean_rate:.1%}, "
+            f"blockers={','.join(item['field'] for item in likely_blockers[:3]) or 'none'}, "
             f"likely_missing={','.join(item['field'] for item in likely_missing_fields[:4]) or 'none'}"
         )
         family_rows.append(
@@ -413,14 +458,17 @@ def build_summary(
                 "empty_attachment_runs": bucket["empty_attachment_runs"],
                 "top_error_patterns": top_error_patterns,
                 "likely_missing_fields": likely_missing_fields,
+                "likely_blockers": likely_blockers,
                 "prompt_required_fields": prompt_required_fields,
                 "prompt_examples": bucket["prompt_examples"][-3:],
                 "scorer_hypotheses": FAMILY_HINTS.get(family_name, {}).get("hypotheses", []),
             }
         )
         if proxy_clean_rate < 0.7:
+            blocker_text = ', '.join(item['field'] for item in likely_blockers[:4]) or 'none'
+            missing_text = ', '.join(item['field'] for item in likely_missing_fields[:4]) or 'none'
             alerts.append(
-                f"{family_name} clean rate is {proxy_clean_rate:.1%}; likely missing fields: {', '.join(item['field'] for item in likely_missing_fields[:4]) or 'none'}"
+                f"{family_name} clean rate is {proxy_clean_rate:.1%}; blockers: {blocker_text}; likely missing fields: {missing_text}"
             )
         if family_name == "travel_expense" and likely_missing_fields:
             alerts.append(

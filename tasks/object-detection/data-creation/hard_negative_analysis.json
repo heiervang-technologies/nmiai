@@ -1,0 +1,253 @@
+{
+  "high_risk_categories": [
+    {
+      "id": 129,
+      "name": "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE",
+      "risk": 6,
+      "train_count": 28,
+      "orig_count": 6,
+      "unique_images": 13,
+      "median_area": 9585,
+      "avg_area": 15163
+    },
+    {
+      "id": 335,
+      "name": "STORFE SHORT RIBS GREATER OMAHA LV",
+      "risk": 5,
+      "train_count": 42,
+      "orig_count": 1,
+      "unique_images": 42,
+      "median_area": 1938,
+      "avg_area": 1938
+    }
+  ],
+  "medium_risk_categories": [
+    {
+      "id": 51,
+      "name": "Tørresvik Gårdsegg 6stk",
+      "risk": 4,
+      "train_count": 25,
+      "orig_count": 5,
+      "unique_images": 5,
+      "median_area": 56511,
+      "avg_area": 48193
+    },
+    {
+      "id": 288,
+      "name": "Sunnmørsegg 10stk",
+      "risk": 4,
+      "train_count": 34,
+      "orig_count": 3,
+      "unique_images": 12,
+      "median_area": 16800,
+      "avg_area": 17697
+    },
+    {
+      "id": 242,
+      "name": "BOG 390G GILDE",
+      "risk": 4,
+      "train_count": 55,
+      "orig_count": 1,
+      "unique_images": 55,
+      "median_area": 2835,
+      "avg_area": 2835
+    },
+    {
+      "id": 286,
+      "name": "EGG L 10STK TOTEN",
+      "risk": 4,
+      "train_count": 63,
+      "orig_count": 9,
+      "unique_images": 7,
+      "median_area": 9900,
+      "avg_area": 10122
+    },
+    {
+      "id": 159,
+      "name": "Galåvolden Store Gårdsegg 10stk",
+      "risk": 3,
+      "train_count": 44,
+      "orig_count": 4,
+      "unique_images": 11,
+      "median_area": 50596,
+      "avg_area": 53192
+    },
+    {
+      "id": 301,
+      "name": "Gårdsegg fra Fana 10stk",
+      "risk": 3,
+      "train_count": 48,
+      "orig_count": 6,
+      "unique_images": 8,
+      "median_area": 76249,
+      "avg_area": 74643
+    },
+    {
+      "id": 76,
+      "name": "BRUSCHETTA LIGURISK 130G OLIVINO",
+      "risk": 3,
+      "train_count": 56,
+      "orig_count": 1,
+      "unique_images": 56,
+      "median_area": 7738,
+      "avg_area": 7738
+    },
+    {
+      "id": 195,
+      "name": "Økologiske Egg Brune 6stk",
+      "risk": 3,
+      "train_count": 64,
+      "orig_count": 10,
+      "unique_images": 16,
+      "median_area": 8640,
+      "avg_area": 13422
+    },
+    {
+      "id": 4,
+      "name": "Økologiske Egg 6stk",
+      "risk": 3,
+      "train_count": 74,
+      "orig_count": 10,
+      "unique_images": 15,
+      "median_area": 6604,
+      "avg_area": 19818
+    },
+    {
+      "id": 249,
+      "name": "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK",
+      "risk": 3,
+      "train_count": 77,
+      "orig_count": 9,
+      "unique_images": 65,
+      "median_area": 8162,
+      "avg_area": 28002
+    },
+    {
+      "id": 133,
+      "name": "ZOEGAS KAFFE SKÅNEROST 450G",
+      "risk": 3,
+      "train_count": 80,
+      "orig_count": 5,
+      "unique_images": 73,
+      "median_area": 4901,
+      "avg_area": 15022
+    },
+    {
+      "id": 125,
+      "name": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+      "risk": 3,
+      "train_count": 87,
+      "orig_count": 5,
+      "unique_images": 70,
+      "median_area": 5330,
+      "avg_area": 5382
+    },
+    {
+      "id": 216,
+      "name": "Sunnmørsegg",
+      "risk": 3,
+      "train_count": 91,
+      "orig_count": 13,
+      "unique_images": 14,
+      "median_area": 14673,
+      "avg_area": 12273
+    },
+    {
+      "id": 138,
+      "name": "Økologiske Egg 10stk",
+      "risk": 3,
+      "train_count": 94,
+      "orig_count": 14,
+      "unique_images": 14,
+      "median_area": 15249,
+      "avg_area": 24789
+    },
+    {
+      "id": 101,
+      "name": "SANDWICH CHEESE HERBS 30G WASA",
+      "risk": 3,
+      "train_count": 98,
+      "orig_count": 13,
+      "unique_images": 69,
+      "median_area": 6100,
+      "avg_area": 13258
+    },
+    {
+      "id": 90,
+      "name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN",
+      "risk": 3,
+      "train_count": 172,
+      "orig_count": 2,
+      "unique_images": 158,
+      "median_area": 1578,
+      "avg_area": 1578
+    },
+    {
+      "id": 180,
+      "name": "MÜSLI PAPAYA GLUTENFRI 350G AXA",
+      "risk": 3,
+      "train_count": 194,
+      "orig_count": 2,
+      "unique_images": 181,
+      "median_area": 2594,
+      "avg_area": 2594
+    },
+    {
+      "id": 227,
+      "name": "STORFE ENTRECOTE 180G FIRST PRICE",
+      "risk": 3,
+      "train_count": 292,
+      "orig_count": 1,
+      "unique_images": 269,
+      "median_area": 1404,
+      "avg_area": 1404
+    },
+    {
+      "id": 154,
+      "name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU",
+      "risk": 3,
+      "train_count": 300,
+      "orig_count": 1,
+      "unique_images": 277,
+      "median_area": 2080,
+      "avg_area": 2080
+    },
+    {
+      "id": 199,
+      "name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA",
+      "risk": 3,
+      "train_count": 307,
+      "orig_count": 1,
+      "unique_images": 277,
+      "median_area": 2268,
+      "avg_area": 2268
+    }
+  ],
+  "small_object_categories": [
+    227,
+    90,
+    335,
+    154,
+    199,
+    180,
+    242,
+    291,
+    300,
+    230,
+    69,
+    234,
+    133,
+    116,
+    245,
+    125,
+    101,
+    203,
+    193,
+    4
+  ],
+  "low_diversity_categories": [
+    51,
+    286,
+    301
+  ]
+}
