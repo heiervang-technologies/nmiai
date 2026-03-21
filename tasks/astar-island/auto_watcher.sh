@@ -211,7 +211,7 @@ weights = rp.detect_regime_from_observations(np.array(details['initial_states'][
 print(f'Regime (pooled {len(all_combined)} obs): {weights}')
 
 for si in range(5):
-    pred = rp.predict(details['initial_states'][si]['grid'], observations=all_combined)
+    pred = rp.predict(details['initial_states'][si]['grid'], observations=all_obs[si] if all_obs[si] else None)
     obs = all_obs[si]
     if obs:
         init = np.array(details['initial_states'][si]['grid'])
