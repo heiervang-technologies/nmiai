@@ -122,7 +122,7 @@ print('Blitz done')
 import json,sys,time,numpy as np,requests
 from pathlib import Path
 sys.path.insert(0,'tasks/astar-island')
-import regime_predictor as rp
+import bayesian_template_predictor as rp
 def ccc(c):
     if c in (0,10,11): return 0
     if c==1: return 1
