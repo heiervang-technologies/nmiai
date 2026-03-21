@@ -1,0 +1,142 @@
+{
+  "generated_at": "2026-03-21T18:56:13.654300+00:00",
+  "priority_targets": [
+    {
+      "family": "product",
+      "priority_score": 44.65,
+      "proxy_clean_rate": 0.2727272727272727,
+      "runs": 22,
+      "last_seen": "20260321_174648",
+      "blockers": [
+        "sandbox_valid_vat_type"
+      ],
+      "missing_fields": [],
+      "status": "manual_review"
+    },
+    {
+      "family": "timesheet",
+      "priority_score": 21.7,
+      "proxy_clean_rate": 0.2857142857142857,
+      "runs": 21,
+      "last_seen": "20260321_172830",
+      "blockers": [
+        "sandbox_valid_vat_type",
+        "employee_time_access",
+        "activity_type_required",
+        "vat_account_mapping"
+      ],
+      "missing_fields": [
+        "activity",
+        "project",
+        "employee",
+        "hours"
+      ],
+      "status": "manual_review"
+    },
+    {
+      "family": "employee",
+      "priority_score": 17.1,
+      "proxy_clean_rate": 0.4827586206896552,
+      "runs": 29,
+      "last_seen": "20260321_182557",
+      "blockers": [
+        "email_validation"
+      ],
+      "missing_fields": [
+        "employee",
+        "department"
+      ],
+      "status": "watch"
+    },
+    {
+      "family": "invoice",
+      "priority_score": 13.8,
+      "proxy_clean_rate": 0.7,
+      "runs": 30,
+      "last_seen": "20260321_183404",
+      "blockers": [
+        "sandbox_valid_vat_type",
+        "vat_account_mapping",
+        "module_permission_blocked"
+      ],
+      "missing_fields": [],
+      "status": "keep"
+    },
+    {
+      "family": "travel_expense",
+      "priority_score": 12.75,
+      "proxy_clean_rate": 0.4117647058823529,
+      "runs": 17,
+      "last_seen": "20260321_164216",
+      "blockers": [
+        "employee_time_access",
+        "rate_category_date_mismatch",
+        "travel_expense_kind",
+        "travel_expense_contents_required"
+      ],
+      "missing_fields": [
+        "delivered_state",
+        "employee",
+        "rate_type",
+        "project"
+      ],
+      "status": "watch"
+    },
+    {
+      "family": "department",
+      "priority_score": 10.25,
+      "proxy_clean_rate": 0.6086956521739131,
+      "runs": 23,
+      "last_seen": "20260321_182057",
+      "blockers": [
+        "duplicate_identifier"
+      ],
+      "missing_fields": [
+        "department"
+      ],
+      "status": "watch"
+    },
+    {
+      "family": "project",
+      "priority_score": 6.0,
+      "proxy_clean_rate": 0.75,
+      "runs": 16,
+      "last_seen": "20260321_181427",
+      "blockers": [
+        "project_hourly_rates_endpoint",
+        "module_permission_blocked"
+      ],
+      "missing_fields": [
+        "project",
+        "activity",
+        "rate_type"
+      ],
+      "status": "keep"
+    },
+    {
+      "family": "cost_analysis",
+      "priority_score": 3.35,
+      "proxy_clean_rate": 0.0,
+      "runs": 2,
+      "last_seen": "20260321_172812",
+      "blockers": [
+        "activity_type_required"
+      ],
+      "missing_fields": [
+        "activity",
+        "employee"
+      ],
+      "status": "manual_review"
+    },
+    {
+      "family": "annual_close",
+      "priority_score": 3.0,
+      "proxy_clean_rate": 0.25,
+      "runs": 4,
+      "last_seen": "20260321_182457",
+      "blockers": [],
+      "missing_fields": [],
+      "status": "manual_review"
+    }
+  ]
+}

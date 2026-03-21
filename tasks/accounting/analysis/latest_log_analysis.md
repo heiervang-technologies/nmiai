@@ -1,6 +1,6 @@
 # Accounting Log Analysis
 
-Analyzed `272` runs from `/tmp/accounting-logs`.
+Analyzed `278` runs from `/tmp/accounting-logs`.
 
 ## Global
 
@@ -15,7 +15,6 @@ Analyzed `272` runs from `/tmp/accounting-logs`.
 - cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee
 - department clean rate is 60.9%; blockers: duplicate_identifier; likely missing fields: department
 - employee clean rate is 48.3%; blockers: email_validation; likely missing fields: employee, department
-- invoice clean rate is 66.7%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none
 - product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none
 - timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
 - travel_expense clean rate is 41.2%; blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind, travel_expense_contents_required; likely missing fields: delivered_state, employee, rate_type, project
@@ -96,11 +95,11 @@ Analyzed `272` runs from `/tmp/accounting-logs`.
 
 ### invoice
 
-- Runs: 27
-- Proxy clean rate: 66.7%
-- Likely full runs: 17
+- Runs: 30
+- Proxy clean rate: 70.0%
+- Likely full runs: 20
 - Likely partial runs: 3
-- Mean API errors: 1.63
+- Mean API errors: 1.47
 - Prompt-required fields: none
 - Likely blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked
 - Missing-field hypotheses: none
@@ -108,11 +107,11 @@ Analyzed `272` runs from `/tmp/accounting-logs`.
 
 ### ledger_correction
 
-- Runs: 7
-- Proxy clean rate: 85.7%
-- Likely full runs: 5
+- Runs: 8
+- Proxy clean rate: 87.5%
+- Likely full runs: 6
 - Likely partial runs: 2
-- Mean API errors: 1.14
+- Mean API errors: 1.00
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: none
@@ -144,11 +143,11 @@ Analyzed `272` runs from `/tmp/accounting-logs`.
 
 ### salary
 
-- Runs: 18
-- Proxy clean rate: 88.9%
-- Likely full runs: 14
+- Runs: 19
+- Proxy clean rate: 89.5%
+- Likely full runs: 15
 - Likely partial runs: 2
-- Mean API errors: 0.22
+- Mean API errors: 0.21
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: employee
@@ -156,11 +155,11 @@ Analyzed `272` runs from `/tmp/accounting-logs`.
 
 ### supplier
 
-- Runs: 27
-- Proxy clean rate: 88.9%
+- Runs: 28
+- Proxy clean rate: 89.3%
 - Likely full runs: 24
-- Likely partial runs: 2
-- Mean API errors: 0.81
+- Likely partial runs: 3
+- Mean API errors: 0.82
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: project, activity

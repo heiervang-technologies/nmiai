@@ -347,6 +347,16 @@ def render_markdown(summary: dict[str, Any]) -> str:
         lines.append(f"- {alert}")
     if not summary["alerts"]:
         lines.append("- none")
+    lines.extend(["", "## Priority Queue", ""])
+    for item in summary.get("priority_targets", [])[:8]:
+        blockers = ', '.join(item['blockers'][:4]) or 'none'
+        missing = ', '.join(item['missing_fields'][:4]) or 'none'
+        lines.append(
+            f"- {item['family']}: priority={item['priority_score']:.2f}, clean={item['proxy_clean_rate']:.1%}, "
+            f"runs={item['runs']}, blockers={blockers}, missing={missing}"
+        )
+    if not summary.get("priority_targets"):
+        lines.append("- none")
     lines.extend(["", "## Families", ""])
     for family in summary["families"]:
         lines.append(f"### {family['family']}")
@@ -437,6 +447,7 @@ def build_summary(
                 "prompt_required": Counter(),
                 "blockers": Counter(),
                 "prompt_examples": [],
+                "last_seen": "",
             },
         )
         bucket["runs"] += 1
@@ -463,9 +474,11 @@ def build_summary(
                 "omissions": omissions,
             }
         )
+        bucket["last_seen"] = max(bucket["last_seen"], record.get("timestamp", ""))
 
     family_rows = []
     rendered_families = []
+    priority_targets = []
     alerts = []
     for family_name in sorted(families):
         bucket = families[family_name]
@@ -518,9 +531,26 @@ def build_summary(
                 "likely_blockers": likely_blockers,
                 "prompt_required_fields": prompt_required_fields,
                 "prompt_examples": bucket["prompt_examples"][-3:],
+                "last_seen": bucket["last_seen"],
                 "scorer_hypotheses": FAMILY_HINTS.get(family_name, {}).get("hypotheses", []),
             }
         )
+        blocker_count = sum(item["count"] for item in likely_blockers[:4])
+        missing_count = sum(item["count"] for item in likely_missing_fields[:4])
+        priority_score = ((1.0 - proxy_clean_rate) * bucket["runs"]) + (0.15 * blocker_count) + (0.05 * missing_count)
+        if bucket["runs"] >= 2 and proxy_clean_rate < 0.85:
+            priority_targets.append(
+                {
+                    "family": family_name,
+                    "priority_score": round(priority_score, 3),
+                    "proxy_clean_rate": proxy_clean_rate,
+                    "runs": bucket["runs"],
+                    "last_seen": bucket["last_seen"],
+                    "blockers": [item["field"] for item in likely_blockers[:4]],
+                    "missing_fields": [item["field"] for item in likely_missing_fields[:4]],
+                    "status": status,
+                }
+            )
         if proxy_clean_rate < 0.7:
             blocker_text = ', '.join(item['field'] for item in likely_blockers[:4]) or 'none'
             missing_text = ', '.join(item['field'] for item in likely_missing_fields[:4]) or 'none'
@@ -549,6 +579,8 @@ def build_summary(
     if empty_attachment_runs:
         alerts.append(f"{empty_attachment_runs} runs had empty attachments; treat file-based tasks as manual review")
 
+    priority_targets.sort(key=lambda item: (-item["priority_score"], item["proxy_clean_rate"], -item["runs"]))
+
     summary = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "log_dir": str(log_dir),
@@ -562,6 +594,7 @@ def build_summary(
         "family_mismatches": family_mismatches[:20],
         "empty_attachment_runs": empty_attachment_runs,
         "alerts": alerts,
+        "priority_targets": priority_targets,
         "families": rendered_families,
     }
     return summary, family_rows, fingerprint, batch_id
@@ -572,6 +605,20 @@ def write_outputs(summary: dict[str, Any], output_dir: Path) -> None:
     (output_dir / "latest_log_analysis.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (output_dir / "latest_log_analysis.md").write_text(render_markdown(summary), encoding="utf-8")
     (output_dir / "current_alerts.json").write_text(json.dumps({"alerts": summary["alerts"]}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (output_dir / "priority_queue.json").write_text(
+        json.dumps({"generated_at": summary["generated_at"], "priority_targets": summary.get("priority_targets", [])}, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    priority_lines = ["# Accounting Priority Queue", ""]
+    for item in summary.get("priority_targets", []):
+        blockers = ', '.join(item['blockers'][:4]) or 'none'
+        missing = ', '.join(item['missing_fields'][:4]) or 'none'
+        priority_lines.append(
+            f"- {item['family']}: priority={item['priority_score']:.2f}, clean={item['proxy_clean_rate']:.1%}, runs={item['runs']}, last_seen={item['last_seen']}, blockers={blockers}, missing={missing}"
+        )
+    if not summary.get("priority_targets"):
+        priority_lines.append("- none")
+    (output_dir / "priority_queue.md").write_text("\n".join(priority_lines) + "\n", encoding="utf-8")
 
 
 def run_once(args: argparse.Namespace) -> tuple[dict[str, Any], bool]:

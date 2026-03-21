@@ -124,6 +124,7 @@ Autoresearch should automate these tasks:
 7. Correlate dashboard checks with the corresponding submission-batch logs.
 8. Track unseen families versus known families.
 9. Flag attachment-based tasks, especially if `content_base64` is empty.
+10. Produce a scored priority queue so the weakest high-frequency families get fixed first.
 
 ## The Loop
 
@@ -185,6 +186,8 @@ This updates:
 - `tasks/accounting/analysis/pareto_clean_vs_errors.json`
 - `tasks/accounting/analysis/pareto_clean_vs_submissions.json`
 - `tasks/accounting/analysis/pareto_dashboard_vs_errors.json`
+- `tasks/accounting/analysis/priority_queue.json`
+- `tasks/accounting/analysis/priority_queue.md`
 
 ## Bottom Line
 
