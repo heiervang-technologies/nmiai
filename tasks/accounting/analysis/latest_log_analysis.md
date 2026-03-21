@@ -1,6 +1,6 @@
 # Accounting Log Analysis
 
-Analyzed `271` runs from `/tmp/accounting-logs`.
+Analyzed `272` runs from `/tmp/accounting-logs`.
 
 ## Global
 
@@ -14,7 +14,7 @@ Analyzed `271` runs from `/tmp/accounting-logs`.
 - annual_close clean rate is 25.0%; blockers: none; likely missing fields: none
 - cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee
 - department clean rate is 60.9%; blockers: duplicate_identifier; likely missing fields: department
-- employee clean rate is 46.4%; blockers: email_validation; likely missing fields: employee, department
+- employee clean rate is 48.3%; blockers: email_validation; likely missing fields: employee, department
 - invoice clean rate is 66.7%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none
 - product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none
 - timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
@@ -84,11 +84,11 @@ Analyzed `271` runs from `/tmp/accounting-logs`.
 
 ### employee
 
-- Runs: 28
-- Proxy clean rate: 46.4%
-- Likely full runs: 11
+- Runs: 29
+- Proxy clean rate: 48.3%
+- Likely full runs: 12
 - Likely partial runs: 2
-- Mean API errors: 0.64
+- Mean API errors: 0.62
 - Prompt-required fields: none
 - Likely blockers: email_validation
 - Missing-field hypotheses: employee, department

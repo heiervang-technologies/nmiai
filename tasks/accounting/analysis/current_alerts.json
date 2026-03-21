@@ -3,7 +3,7 @@
     "annual_close clean rate is 25.0%; blockers: none; likely missing fields: none",
     "cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee",
     "department clean rate is 60.9%; blockers: duplicate_identifier; likely missing fields: department",
-    "employee clean rate is 46.4%; blockers: email_validation; likely missing fields: employee, department",
+    "employee clean rate is 48.3%; blockers: email_validation; likely missing fields: employee, department",
     "invoice clean rate is 66.7%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none",
     "product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none",
     "timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
