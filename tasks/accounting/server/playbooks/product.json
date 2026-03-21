@@ -1,6 +1,6 @@
 {
   "family": "product",
-  "keywords": ["produkt", "product", "Produkt", "produit", "producto", "produto"],
+  "keywords": ["produkt", "product", "produit", "producto", "produto"],
   "description": "Create or update products",
   "preflight": [],
   "endpoints": [

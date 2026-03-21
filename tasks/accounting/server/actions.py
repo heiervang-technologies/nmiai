@@ -896,10 +896,27 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
             vat_candidates.append(int(vt_id))
             break
 
+    def _detect_zero_vat(line: dict) -> bool:
+        """Detect if order line should have 0% VAT from description or explicit percentage."""
+        vat_pct = line.get("vatPercentage", line.get("vatRate"))
+        if vat_pct is not None and int(vat_pct) == 0:
+            return True
+        desc = (line.get("description") or "").lower()
+        zero_signals = ["befreit", "exempt", "fritatt", "isento", "exento",
+                        "exonéré", "0%", "0 %", "ingen mva", "no vat", "mva-fri",
+                        "momsfri", "avgiftsfri"]
+        return any(signal in desc for signal in zero_signals)
+
     def _build_order_lines(vat_id):
         lines = []
         for line in args.get("orderLines", []):
-            line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
+            # Hard override: if line signals 0% VAT, find the 0% outgoing type
+            if _detect_zero_vat(line):
+                line_vat = _find_vat_type_id(vat_types, percentage=0, prefer_outgoing=True)
+                if line_vat is None:
+                    line_vat = 5  # fallback 0% exempt
+            else:
+                line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
             ol = {
                 "description": line.get("description", ""),
                 "count": float(line.get("count", 1)),

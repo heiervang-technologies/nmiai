@@ -65,10 +65,21 @@ def _normalize_text(text: str) -> str:
 
 
 # Build keyword patterns for fast, boundary-aware matching.
+# Deduplicate by normalized form to prevent double-counting (e.g. "produkt" + "Produkt").
+def _dedupe_keywords(keywords: list[str]) -> list[str]:
+    seen = set()
+    result = []
+    for kw in keywords:
+        norm = _normalize_text(kw)
+        if norm not in seen:
+            seen.add(norm)
+            result.append(kw)
+    return result
+
 KEYWORD_PATTERNS = {
     family: [
         (_normalize_text(kw), _compile_keyword_pattern(kw))
-        for kw in pb.get("keywords", [])
+        for kw in _dedupe_keywords(pb.get("keywords", []))
     ]
     for family, pb in PLAYBOOKS.items()
 }
