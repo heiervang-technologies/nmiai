@@ -1,6 +1,6 @@
 {
   "family": "customer",
-  "keywords": ["kunde", "customer", "Kunde", "client", "cliente"],
+  "keywords": ["kunde", "customer", "client", "cliente"],
   "description": "Create or update customers",
   "preflight": [],
   "endpoints": [
