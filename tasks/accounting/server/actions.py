@@ -1926,11 +1926,7 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
         "date": invoice_date,
         "description": f"Supplier invoice {invoice_number} from {args.get('supplierName', 'supplier')}".strip(),
         "postings": postings,
-        "vendorInvoiceNumber": invoice_number,
-        "externalVoucherNumber": invoice_number,
     }
-    if due_date:
-        voucher_body["comment"] = f"Due date: {due_date}"
     if voucher_type_id:
         voucher_body["voucherType"] = {"id": voucher_type_id}
 
