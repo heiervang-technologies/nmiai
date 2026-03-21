@@ -61,12 +61,21 @@ fetch_ground_truth_for_completed()
     MINS_UNTIL_CLOSE=$(echo "$ROUND_INFO" | cut -d'|' -f4)
     CLOSES_AT=$(echo "$ROUND_INFO" | cut -d'|' -f5)
 
-    # === NEW ROUND: Announce ===
+    # === NEW ROUND: Ingest new GT data + Announce ===
     if [ "$ANNOUNCED_ROUND" != "$ACTIVE" ]; then
         ANNOUNCED_ROUND="$ACTIVE"
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. Closes $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min." >> "$LOG_FILE"
-        say "Astar Island round $ROUND_NUM opened. $MINS_UNTIL_CLOSE minutes remaining." 2>/dev/null
-        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
+        # INGEST: Fetch ground truth from ALL completed rounds before doing anything
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: ingesting new ground truth data" >> "$LOG_FILE"
+        cd /home/me/ht/nmiai
+        uv run python3 -c "
+import sys; sys.path.insert(0,'tasks/astar-island')
+from query_runner import fetch_ground_truth_for_completed
+fetch_ground_truth_for_completed()
+" >> "$LOG_FILE" 2>&1
+        GT_COUNT=$(ls tasks/astar-island/ground_truth/round*_seed*.json 2>/dev/null | wc -l)
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. GT files: $GT_COUNT. Closes $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min." >> "$LOG_FILE"
+        say "Astar Island round $ROUND_NUM opened. $GT_COUNT ground truth files available. $MINS_UNTIL_CLOSE minutes remaining." 2>/dev/null
+        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. $GT_COUNT GT files ingested. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
         sleep 0.5
         tmux send-keys -t %1 Enter 2>/dev/null
     fi
