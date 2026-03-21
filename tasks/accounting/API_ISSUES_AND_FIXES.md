@@ -107,10 +107,34 @@ This blocks: timesheet entries, travel expenses, salary processing.
 - `fixedPrice` field does NOT exist on the project object
 - Fixed price must be set during creation or via a different mechanism
 
+## Error Frequency Analysis (from 137 logged runs)
+
+| Family | Runs | Calls | Errors | Error Rate | Top Error |
+|--------|------|-------|--------|------------|-----------|
+| product | 15 | 365 | 352 | 96% | vatTypeId invalid + name already exists |
+| travel_expense | 10 | 38 | 30 | 79% | employee entitlement missing |
+| department | 11 | 18 | 12 | 67% | departmentNumber already in use |
+| timesheet | 14 | 116 | 44 | 38% | employee entitlement + activity null |
+| invoice | 8 | 79 | 30 | 38% | vatType invalid on order lines |
+| project | 8 | 67 | 24 | 36% | fixedPrice field doesn't exist |
+| employee | 20 | 55 | 16 | 29% | email typo validation |
+| customer | 12 | 63 | 14 | 22% | various |
+| voucher | 18 | 90 | 16 | 18% | dateFrom/dateTo missing |
+| supplier | 9 | 45 | 8 | 18% | body format |
+| salary | 12 | 34 | 4 | 12% | employment body format |
+
+### Top 5 Most Frequent Errors
+1. **158x** product vatTypeId invalid — sandbox-specific, only id=6 works in test sandbox
+2. **153x** product name already registered — need dedup check before creating
+3. **13x** employee entitlement missing — blocks timesheet + travel expense, no API fix
+4. **10x** invoice vatType invalid on order lines — VAT resolution needs sandbox-specific IDs
+5. **7x** employee email typo validation — Tripletex validates email format strictly
+
 ## API Call Budget Awareness
 
 Competition scoring includes efficiency multiplier. Every wasted API call hurts.
-- Avoid retry loops that try multiple VAT types
+- Avoid retry loops that try multiple VAT types (max 2 attempts: resolved + fallback)
 - Avoid module activation calls (usually 403 in sandbox)
-- Pre-check for existing entities before creating (department, customer, employee)
+- Pre-check for existing entities before creating (department, customer, employee, product)
 - Use `count=1` for lookups when you only need one result
+- The entitlement API (PUT /employee/entitlement/:grantEntitlementsByTemplate) returns 404 — do NOT call it
