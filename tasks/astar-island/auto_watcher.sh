@@ -74,6 +74,14 @@ fetch_ground_truth_for_completed()
 " >> "$LOG_FILE" 2>&1
         GT_COUNT=$(ls tasks/astar-island/ground_truth/round*_seed*.json 2>/dev/null | wc -l)
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. GT files: $GT_COUNT. Closes $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min." >> "$LOG_FILE"
+        # Retrain UNet on latest GT (runs in background, ~3min on GPU)
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: retraining UNet on $GT_COUNT GT files" >> "$LOG_FILE"
+        cd /home/me/ht/nmiai
+        uv run python3 -c "
+import sys; sys.path.insert(0,'tasks/astar-island')
+import unet_predictor as up
+up.train_final()
+" >> "$LOG_FILE" 2>&1 &
         say "Astar Island round $ROUND_NUM opened. $GT_COUNT ground truth files available. $MINS_UNTIL_CLOSE minutes remaining." 2>/dev/null
         tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. $GT_COUNT GT files ingested. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
         sleep 0.5
