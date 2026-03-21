@@ -7,8 +7,6 @@ Auth: Basic auth with username=0, password=session_token.
 import httpx
 import json as json_mod
 import logging
-from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-from typing import Any
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +20,25 @@ def _split_path_params(path: str) -> tuple[str, dict]:
         params = {k: v[0] if len(v) == 1 else v for k, v in params.items()}
         return parts[0], params
     return path, {}
+
+
+def _payload_preview(payload, max_chars: int = 1200):
+    if payload is None:
+        return None
+    try:
+        normalized = json_mod.loads(json_mod.dumps(payload, ensure_ascii=False, default=str))
+    except Exception:
+        normalized = str(payload)
+    try:
+        encoded = json_mod.dumps(normalized, ensure_ascii=False, default=str)
+    except Exception:
+        encoded = str(normalized)
+    if len(encoded) <= max_chars:
+        return normalized
+    return encoded[:max_chars] + '...[truncated]'
+
+
+from urllib.parse import parse_qs
 
 
 class TripletexClient:
@@ -43,14 +60,23 @@ class TripletexClient:
     async def close(self):
         await self._client.aclose()
 
-    def _log_call(self, method: str, path: str, status: int, error: str = None):
+    def _log_call(self, method: str, path: str, status: int, error: str = None, params=None, json=None):
         self.call_count += 1
         if error or (400 <= status < 500):
             self.error_count += 1
-        self.calls_log.append({
-            "method": method, "path": path,
-            "status": status, "error": error,
-        })
+        entry = {
+            "method": method,
+            "path": path,
+            "status": status,
+            "error": error,
+        }
+        preview_params = _payload_preview(params)
+        if preview_params is not None:
+            entry["params"] = preview_params
+        preview_json = _payload_preview(json)
+        if preview_json is not None:
+            entry["json"] = preview_json
+        self.calls_log.append(entry)
 
     async def get(self, path: str, params: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
@@ -62,16 +88,18 @@ class TripletexClient:
             return self._get_cache[cache_key]
         url = f"{self.base_url}{clean_path}"
         log.info(f"GET {clean_path} params={merged_params}")
+        resp = await self._client.get(url, params=merged_params)
+        error_text = None
         try:
-            resp = await self._client.get(url, params=merged_params)
-            self._log_call("GET", clean_path, resp.status_code)
             resp.raise_for_status()
-            result = resp.json()
-            self._get_cache[cache_key] = result
-            return result
-        except httpx.HTTPStatusError as e:
-            self._log_call("GET", clean_path, e.response.status_code, e.response.text[:500])
+        except httpx.HTTPStatusError:
+            error_text = resp.text[:500]
+            self._log_call("GET", clean_path, resp.status_code, error_text, params=merged_params)
             raise
+        self._log_call("GET", clean_path, resp.status_code, params=merged_params)
+        result = resp.json()
+        self._get_cache[cache_key] = result
+        return result
 
     async def post(self, path: str, json: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
@@ -81,41 +109,41 @@ class TripletexClient:
             json = path_params
         url = f"{self.base_url}{clean_path}"
         log.info(f"POST {clean_path} body_keys={list((json or {}).keys())}")
+        resp = await self._client.post(url, json=json)
         try:
-            resp = await self._client.post(url, json=json)
-            self._log_call("POST", clean_path, resp.status_code)
             resp.raise_for_status()
-            return resp.json()
-        except httpx.HTTPStatusError as e:
-            self._log_call("POST", clean_path, e.response.status_code, e.response.text[:500])
+        except httpx.HTTPStatusError:
+            self._log_call("POST", clean_path, resp.status_code, resp.text[:500], json=json)
             raise
+        self._log_call("POST", clean_path, resp.status_code, json=json)
+        return resp.json()
 
     async def put(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
         merged_params = {**(path_params or {}), **(params or {})} or None
         url = f"{self.base_url}{clean_path}"
         log.info(f"PUT {clean_path} params={merged_params}")
+        resp = await self._client.put(url, json=json, params=merged_params)
         try:
-            resp = await self._client.put(url, json=json, params=merged_params)
-            self._log_call("PUT", clean_path, resp.status_code)
             resp.raise_for_status()
-            return resp.json()
-        except httpx.HTTPStatusError as e:
-            self._log_call("PUT", clean_path, e.response.status_code, e.response.text[:500])
+        except httpx.HTTPStatusError:
+            self._log_call("PUT", clean_path, resp.status_code, resp.text[:500], params=merged_params, json=json)
             raise
+        self._log_call("PUT", clean_path, resp.status_code, params=merged_params, json=json)
+        return resp.json()
 
     async def delete(self, path: str) -> dict:
         clean_path, _ = _split_path_params(path)
         url = f"{self.base_url}{clean_path}"
         log.info(f"DELETE {clean_path}")
+        resp = await self._client.delete(url)
         try:
-            resp = await self._client.delete(url)
-            self._log_call("DELETE", clean_path, resp.status_code)
             resp.raise_for_status()
-            return {"status": resp.status_code}
-        except httpx.HTTPStatusError as e:
-            self._log_call("DELETE", clean_path, e.response.status_code, e.response.text[:500])
+        except httpx.HTTPStatusError:
+            self._log_call("DELETE", clean_path, resp.status_code, resp.text[:500])
             raise
+        self._log_call("DELETE", clean_path, resp.status_code)
+        return {"status": resp.status_code}
 
     def get_stats(self) -> dict:
         return {
