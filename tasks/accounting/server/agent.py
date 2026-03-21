@@ -503,15 +503,12 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
                 link_args = {"method": "POST", "path": "/project/projectActivity", "body": link_body}
                 return await _safe_action("generic_api_call", ctx.deps.client, link_args, 4000)
             else:
-                # No project ID - MUST use GENERAL_ACTIVITY via /activity
-                # PROJECT_SPECIFIC_ACTIVITY is rejected on POST /activity
+                # No project ID - fall back to GENERAL_ACTIVITY via /activity
                 body["activityType"] = "GENERAL_ACTIVITY"
-        else:
-            # Force GENERAL_ACTIVITY on direct POST /activity (PROJECT_SPECIFIC always rejected here)
-            body["activityType"] = "GENERAL_ACTIVITY"
                 args_dict["body"] = body
                 return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
         else:
+            # Not project-specific - use GENERAL_ACTIVITY via /activity
             body.setdefault("activityType", "GENERAL_ACTIVITY")
             args_dict["body"] = body
             return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)

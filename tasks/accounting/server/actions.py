@@ -2119,9 +2119,45 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 body["activityType"] = "GENERAL_ACTIVITY"
             if "name" not in body or not body["name"]:
                 body["name"] = body.get("description", "Activity")[:100] or "Activity"
-        # Auto-fix unbalanced voucher postings
+        # Auto-fix voucher postings: supplier/customer refs + balance
         if "/ledger/voucher" in path and body and isinstance(body, dict):
             postings = body.get("postings", [])
+            # Auto-add supplier ref on account 2400 (leverandørgjeld) postings
+            supplier_accounts = {2400, 2401, 2410}
+            customer_accounts = {1500, 1501, 1510}
+            needs_supplier = any(
+                int(p.get("account", {}).get("number", p.get("accountNumber", 0))) in supplier_accounts
+                for p in postings if not p.get("supplier")
+            )
+            needs_customer = any(
+                int(p.get("account", {}).get("number", p.get("accountNumber", 0))) in customer_accounts
+                for p in postings if not p.get("customer")
+            )
+            if needs_supplier:
+                try:
+                    suppliers = await client.get("/supplier", params={"count": 1})
+                    if suppliers.get("values"):
+                        sup_id = suppliers["values"][0]["id"]
+                        for p in postings:
+                            acct_num = int(p.get("account", {}).get("number", p.get("accountNumber", 0)))
+                            if acct_num in supplier_accounts and not p.get("supplier"):
+                                p["supplier"] = {"id": sup_id}
+                                log.info(f"Auto-added supplier.id={sup_id} to account {acct_num} posting")
+                except Exception:
+                    pass
+            if needs_customer:
+                try:
+                    customers = await client.get("/customer", params={"count": 1})
+                    if customers.get("values"):
+                        cust_id = customers["values"][0]["id"]
+                        for p in postings:
+                            acct_num = int(p.get("account", {}).get("number", p.get("accountNumber", 0)))
+                            if acct_num in customer_accounts and not p.get("customer"):
+                                p["customer"] = {"id": cust_id}
+                                log.info(f"Auto-added customer.id={cust_id} to account {acct_num} posting")
+                except Exception:
+                    pass
+            # Auto-balance
             if len(postings) >= 2:
                 total = sum(float(p.get("amountGross", p.get("amount", 0))) for p in postings)
                 if abs(total) > 0.01:

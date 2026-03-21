@@ -1,6 +1,6 @@
 # Accounting Failure Backlog — Real-Time Tracker
 
-Last updated: 2026-03-21 15:35 UTC
+Last updated: 2026-03-21 18:40 UTC
 
 ## Scoring: 45.8/100 (leader: 100.0)
 
@@ -21,7 +21,7 @@ Last updated: 2026-03-21 15:35 UTC
 | 11 | Voucher posting needs customer.id | FIXED | Auto-add customer ref for CUSTOMER ledger accounts |
 | 12 | Product duplicate loops | FIXED | Duplicate name/number check before POST |
 | 13 | Ledger review supplier.id | FIXED | System prompt + auto supplier ref on voucher postings |
-| 14 | Wrong activity endpoint /project/{id}/activity | FIXED | Auto-rewrite to POST /activity + link via /project/projectActivity |
+| 14 | Wrong activity endpoint /project/{id}/activity | FIXED | Auto-rewrite to POST /project/projectActivity |
 | 15 | Cost analysis voucher ID guessing | FIXED | System prompt: use /ledger/posting not individual voucher GETs |
 | 16 | OpenRouter credits | MITIGATED | max_tokens 65536→4096, retries 2→1 |
 
@@ -37,17 +37,25 @@ Last updated: 2026-03-21 15:35 UTC
 | 22 | **Bank reconciliation payment matching** | `Ugyldig fakturanummer` | 1x (141106) | Agent guesses invoice numbers from bank statement that don't match Tripletex IDs. |
 | 23 | **Employee missing email for Tripletex user** | `email: Må angis for Tripletex-brukere` | 1x (141307) | PDF extraction didn't get email, employee created without it but Tripletex requires email for users. |
 | 24 | **Expired proxy token** | 403 on all calls | 1x (150558) | External — token expired. Cannot fix. |
+| 25 | **PROJECT_SPECIFIC_ACTIVITY on /activity** | `Prosjektspesifikke aktiviteter må lages via /project/projectActivity` | 1x (174056) | POST /activity rejects PROJECT_SPECIFIC type. FIXED: route to /project/projectActivity. |
+| 26 | **GET /timesheet/entry missing dateFrom** | `dateFrom: Kan ikke være null` | 7x (174056) | LLM calls GET without dates. FIXED: auto-add dateFrom/dateTo. |
+| 27 | **Timesheet duplicate entry 409** | `Duplicate entry` | 2x (172830, 174056) | Agent tries to create timesheet entry that already exists. Need check-before-create. |
+| 28 | **Employee GET 500 internal server error** | 500 on GET /employee/{id} | 2x (170509) | Tripletex internal error on employee lookup. External — retry might help. |
 
-## Latest Results (15:35 UTC)
+## Latest Results (18:40 UTC) — 39 submissions, 31 clean (79.5%)
 ```
-OK  | supplier        | 4c 0e  23.7s | Supplier invoice from PDF (Nynorsk)
-OK  | employee        | 6c 0e  24.2s | Employee onboarding from PDF (Nynorsk)
-OK  | supplier        | 5c 0e  23.0s | Supplier invoice from PDF (English)
-OK  | supplier        | 5c 0e  18.6s | Supplier invoice from PDF (English)
-OK  | ledger_correction| 23c 0e 35.9s | Portuguese ledger review - NOW CLEAN!
-OK  | customer        | 6c 0e  16.8s | Invoice creation (Portuguese)
-OK  | invoice         | 3c 0e  11.0s | Payment registration (Spanish)
-WARN| project         | 32c 10e 49.9s | Cost analysis (Nynorsk) - activity endpoint fix not yet deployed
+OK  | supplier(5x)    | 3-5c 0e  | All clean across ES/EN/FR/PT/NO
+OK  | employee(3x)    | 4-6c 0e  | DE/EN PDF extraction working
+OK  | customer(3x)    | 6-14c 0e | EUR agio + reminder fees working
+OK  | invoice(3x)     | 1-14c 0e | Payment + reminder fee + registration
+OK  | department(3x)  | 6-13c 0e | Receipt booking + creation working
+OK  | timesheet(1x)   | 10c 0e   | 29 hours registered clean
+OK  | project(2x)     | 3c 0e    | Simple project creation working
+OK  | salary(2x)      | 1-2c 0e  | Monthly closing clean
+WARN| ledger_corr(2x) | 14-23c 2-6e | Voucher supplier.id still LLM-dependent
+WARN| cost_analysis   | 20c 6e   | Activity creation still failing (pre-fix)
+WARN| project_lifecycle| 24c 1-3e | Timesheet 409 + activity routing (pre-fix)
+FAIL| expired_token   | 0c 4e    | External: 403 expired proxy token
 ```
 
 ## Task Types Now Working (confirmed clean)
