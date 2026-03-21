@@ -1012,6 +1012,16 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     try:
         return await client.put(f"/invoice/{invoice_id}/:payment", params=payment_params)
     except Exception as e:
+        err_text = str(getattr(e, 'response', None) and e.response.text or e)
+        # Auto-add paidAmountCurrency if missing (required for foreign currency invoices)
+        if "paidAmountCurrency" in err_text.lower() or "mangler" in err_text.lower():
+            if "paidAmountCurrency" not in payment_params:
+                payment_params["paidAmountCurrency"] = amount
+                log.warning(f"Retrying payment with paidAmountCurrency={amount}")
+                try:
+                    return await client.put(f"/invoice/{invoice_id}/:payment", params=payment_params)
+                except Exception:
+                    pass
         if amount > 0 and _error_mentions(e, "paidamount", "payment", "beløp", "amount"):
             try:
                 invoices = await client.get(
