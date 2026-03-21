@@ -1879,17 +1879,39 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     if not credit_account_id:
         return {"error": f"Missing leverandørgjeld account 2400"}
 
-    # Calculate VAT split: 25% MVA means amount_ex_vat = amount / 1.25
+    # Calculate VAT split: 25% MVA means amount_ex_vat = amount / 1.25.
+    # We post a dedicated VAT line instead of vatType on the expense account,
+    # because many sandbox accounts are locked to VAT code 0.
     amount_ex_vat = round(amount / 1.25, 2)
     vat_amount = round(amount - amount_ex_vat, 2)
 
-    # Balanced postings: expense debit + VAT debit = supplier credit
-    # MUST include supplier:{id} on postings - Tripletex requires it for supplier invoices
-    # Use vatType id=1 (Inngående MVA 25%) on expense posting - Tripletex auto-generates VAT line
+    # Balanced postings: expense debit + VAT debit = supplier credit.
+    # MUST include supplier:{id} on supplier payable posting.
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount), "amountGrossCurrency": _money(amount), "supplier": {"id": supplier_id}, "vatType": {"id": 1}},
-        {"row": 2, "account": {"id": credit_account_id}, "amountGross": _money(-amount), "amountGrossCurrency": _money(-amount), "supplier": {"id": supplier_id}},
+        {
+            "row": 1,
+            "account": {"id": account_id},
+            "amountGross": _money(amount_ex_vat),
+            "amountGrossCurrency": _money(amount_ex_vat),
+            "supplier": {"id": supplier_id},
+        },
+        {
+            "row": 2,
+            "account": {"id": credit_account_id},
+            "amountGross": _money(-amount),
+            "amountGrossCurrency": _money(-amount),
+            "supplier": {"id": supplier_id},
+        },
     ]
+    if vat_account_id:
+        postings.append(
+            {
+                "row": 3,
+                "account": {"id": vat_account_id},
+                "amountGross": _money(vat_amount),
+                "amountGrossCurrency": _money(vat_amount),
+            }
+        )
 
     # Look up Leverandørfaktura voucher type
     voucher_type_id = None
@@ -1909,24 +1931,15 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
         "date": invoice_date,
         "description": f"Supplier invoice {invoice_number} from {args.get('supplierName', 'supplier')}".strip(),
         "postings": postings,
+        "vendorInvoiceNumber": invoice_number,
+        "externalVoucherNumber": invoice_number,
     }
+    if due_date:
+        voucher_body["comment"] = f"Due date: {due_date}"
     if voucher_type_id:
         voucher_body["voucherType"] = {"id": voucher_type_id}
 
-    voucher_result = await client.post("/ledger/voucher", json=voucher_body)
-    voucher_id = voucher_result.get("value", {}).get("id")
-
-    # PATH C: Try converting voucher to supplier invoice via PUT postings
-    if voucher_id:
-        try:
-            await client.put(
-                f"/supplierInvoice/voucher/{voucher_id}/postings",
-                params={"sendToLedger": "true", "voucherDate": invoice_date},
-            )
-        except Exception as e:
-            log.warning(f"supplierInvoice/voucher conversion failed (non-fatal): {e}")
-
-    return voucher_result
+    return await client.post("/ledger/voucher", json=voucher_body)
 
 
 async def action_create_travel_expense(client: TripletexClient, args: dict) -> dict:
