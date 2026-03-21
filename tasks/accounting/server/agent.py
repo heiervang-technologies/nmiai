@@ -556,6 +556,7 @@ generic_api_call is ONLY for tasks with no matching typed tool above. If you use
 MULTI-STEP TASK PATTERNS:
 - "Set fixed price on project + invoice X%": call create_fixed_price_project_invoice
 - "Log hours + generate project invoice": call register_timesheet_and_invoice
+- "Create AND SEND invoice" (erstellen und senden, créez et envoyez, crie e envie): call create_invoice, THEN generic_api_call PUT /invoice/{id}/:send with params sendType=EMAIL. The invoice ID is in the create_invoice response.
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
 - "Foreign currency invoice + payment + agio": create_invoice with currencyCode (e.g. "EUR"), then register_payment with BOTH amount (NOK = foreign × payment_rate) AND paidAmountCurrency (the foreign amount, e.g. EUR). CRITICAL: paidAmountCurrency is REQUIRED for foreign currency payments or it will fail. Then create_voucher to book the exchange rate difference (agio): debit account 8060 (agio gain) or credit 8160 (agio loss), balanced against 1500 (customer receivables). Agio = (payment_rate - invoice_rate) × foreign_amount. IMPORTANT: accounts 1500, 8060, 8160 are locked to VAT code 0 (no VAT) — do NOT pass vatTypeId on these postings, or use vatTypeId for 0% rate.
