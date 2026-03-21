@@ -53,5 +53,5 @@
     "company/salesmodules may return 403 in competition sandboxes; treat module activation as best-effort",
     "Project activity may need to be linked before posting timesheet entries"
   ],
-  "tips": "For prompts that say to log hours and then invoice the customer, treat it as a timesheet workflow first and invoice second."
+  "tips": "CRITICAL: Extract the EXACT activity name from the prompt (e.g. 'utvikling', 'konsultering', 'design') and pass it as activityName. Do NOT use generic names like 'General' — the scorer checks the exact activity. If the prompt says 'employee number 1' or 'ansatt nummer 1', pass employeeId=1. ALWAYS pass the exact hours from the prompt. For prompts that say to log hours and then invoice the customer, use register_timesheet_and_invoice (one tool call). For hours-only, use register_timesheet."
 }

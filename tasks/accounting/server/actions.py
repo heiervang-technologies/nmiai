@@ -568,6 +568,16 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
                 if dep_name == wanted_department or wanted_department in dep_name:
                     dep_id = dep["id"]
                     break
+            # Create the department if prompt specified one that doesn't exist
+            if not dep_id:
+                try:
+                    dep_result = await action_create_department(client, {
+                        "name": args["departmentName"],
+                        "departmentNumber": str(len(dep_values) + 1),
+                    })
+                    dep_id = dep_result.get("value", {}).get("id")
+                except Exception as e:
+                    log.warning(f"Department creation failed: {e}")
         if not dep_id and dep_values:
             dep_id = dep_values[0]["id"]
 
@@ -722,23 +732,25 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
     if args.get("priceIncludingVat") is not None:
         body["priceIncludingVatCurrency"] = float(args["priceIncludingVat"])
 
-    # Build a cascade of VAT IDs to try: resolved → all outgoing types → no VAT
+    # Smart VAT resolution: max 3 attempts to preserve efficiency score
     vat_types = await _get_outgoing_vat_types(client)
     default_vat_id = _resolve_default_vat_id(vat_types, 3)
     resolved_vat = int(_resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id))
 
-    # Collect unique outgoing VAT IDs from sandbox, prioritizing resolved + 25% types
+    # Pick best 2 candidates + None fallback (max 3 attempts, not 10+)
     vat_candidates = [resolved_vat]
+    # Add first 0% outgoing type as second candidate (different from resolved)
     for vt in vat_types.get("values", []):
         vt_id = vt.get("id")
-        if vt_id is None or int(vt_id) in vat_candidates:
+        if vt_id is None or int(vt_id) == resolved_vat:
             continue
         name = (vt.get("name") or "").lower()
-        # Skip incoming/deductible types
         if "inngående" in name or "fradrag" in name:
             continue
-        vat_candidates.append(int(vt_id))
-    # Add None as final fallback (let Tripletex pick)
+        if vt.get("percentage") == 0:
+            vat_candidates.append(int(vt_id))
+            break
+    # None = let Tripletex pick default
     vat_candidates.append(None)
 
     last_error = None
@@ -869,18 +881,21 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
     if not customer_id:
         return {"error": "Could not find or create customer"}
 
-    # Build cascade of VAT IDs: resolved → all outgoing types (skip incoming/deductible)
+    # Smart VAT resolution: max 3 attempts to preserve efficiency score
     vat_types = await _get_outgoing_vat_types(client)
     resolved_id = _resolve_default_vat_id(vat_types, 3)
     vat_candidates = [resolved_id]
+    # Add first 0% outgoing type as fallback
     for vt in vat_types.get("values", []):
         vt_id = vt.get("id")
-        if vt_id is None or int(vt_id) in vat_candidates:
+        if vt_id is None or int(vt_id) == resolved_id:
             continue
         name = (vt.get("name") or "").lower()
         if "inngående" in name or "fradrag" in name:
             continue
-        vat_candidates.append(int(vt_id))
+        if vt.get("percentage") == 0:
+            vat_candidates.append(int(vt_id))
+            break
 
     def _build_order_lines(vat_id):
         lines = []
@@ -1857,6 +1872,11 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     departure_from = args.get("departure") or args.get("departureFrom") or args.get("destination") or args.get("title", "Travel")
     destination = args.get("destination") or args.get("title", "Travel")
 
+    # Derive travel type from data
+    country_code = args.get("countryCode", "NO").upper()
+    is_foreign = country_code != "NO"
+    is_day_trip = days <= 1 and not args.get("returnDate")
+
     body = {
         "employee": {"id": employee_id},
         "title": args.get("title", "Travel expense"),
@@ -1867,8 +1887,8 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             "departureDate": departure_date,
             "returnDate": return_date,
             "purpose": args.get("title", "Travel"),
-            "isForeignTravel": False,
-            "isDayTrip": days <= 1,
+            "isForeignTravel": is_foreign,
+            "isDayTrip": is_day_trip,
             "departureFrom": departure_from,
             "destination": destination,
         },
