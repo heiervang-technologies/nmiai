@@ -1,0 +1,18 @@
+{
+  "family": "cost_analysis",
+  "keywords": ["kostnad", "costs increased", "kostnader", "analyze", "analyser", "analise", "analysez", "Kosten", "costes", "custos"],
+  "description": "Analyze ledger postings to find cost changes, then create projects/activities",
+  "preflight": [],
+  "endpoints": [
+    "GET /ledger/posting — params: dateFrom, dateTo, accountNumberFrom, accountNumberTo, count",
+    "POST /project — create internal project",
+    "POST /activity — create activity"
+  ],
+  "required_fields": [],
+  "common_errors": [
+    "Must include dateFrom and dateTo on /ledger/posting queries",
+    "Use accountNumberFrom=4000&accountNumberTo=9999 to get expense accounts",
+    "Circuit breaker triggers at 10 errors — be precise with API calls"
+  ],
+  "tips": "EFFICIENT APPROACH: 1) GET /ledger/posting?dateFrom=2026-01-01&dateTo=2026-01-31&accountNumberFrom=4000&accountNumberTo=9999&count=1000 for January expenses. 2) Same for February (dateFrom=2026-02-01&dateTo=2026-02-28). 3) In your analysis, sum amountGross by account number for each month. 4) Find the 3 accounts with largest increase (Feb - Jan). 5) For each, create_project with isInternal=true and name=account name. 6) Use generic_api_call POST /activity with name matching account. Do ALL ledger reads with generic_api_call. Do NOT retry failed calls — adjust parameters instead."
+}
