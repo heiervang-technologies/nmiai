@@ -208,7 +208,7 @@ print(f'Round regime weights (pooled): {regime_weights}')
 # Compute regime confidence for adaptive blending
 max_w = max(regime_weights.values())
 confidence = (max_w - 1.0/3) / (1.0 - 1.0/3)  # 0-1 scale
-spatial_weight = 0.10 + 0.40 * (1 - confidence)
+spatial_weight = 0.15 + 0.50 * (1 - confidence)
 print(f'Regime confidence: {confidence:.3f}, spatial blend weight: {spatial_weight:.3f}')
 
 for si in range(details['seeds_count']):
