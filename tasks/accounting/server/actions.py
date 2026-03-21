@@ -776,18 +776,31 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
 
 async def action_create_department(client: TripletexClient, args: dict) -> dict:
     """Create a department, returning an existing match if the number/name is already in use."""
-    department_number = str(args.get("departmentNumber", args.get("number", "")))
     department_name = args["name"]
 
     try:
         existing = await client.get("/department", params={"count": 100})
-        for dept in existing.get("values", []):
-            if department_number and str(dept.get("departmentNumber", "")) == department_number:
-                return {"value": dept}
-            if dept.get("name", "").strip().lower() == department_name.strip().lower():
-                return {"value": dept}
+        existing_depts = existing.get("values", [])
     except Exception:
-        pass
+        existing_depts = []
+
+    # Check if department already exists by name
+    for dept in existing_depts:
+        if dept.get("name", "").strip().lower() == department_name.strip().lower():
+            return {"value": dept}
+
+    # Auto-assign next available number instead of using LLM-provided number
+    # which often conflicts with existing default departments
+    used_numbers = {int(d.get("departmentNumber", 0)) for d in existing_depts if d.get("departmentNumber")}
+    requested = args.get("departmentNumber", args.get("number"))
+    if requested and int(requested) not in used_numbers:
+        department_number = str(requested)
+    else:
+        # Find next available number
+        next_num = 1
+        while next_num in used_numbers:
+            next_num += 1
+        department_number = str(next_num)
 
     body = {
         "name": department_name,
@@ -796,12 +809,10 @@ async def action_create_department(client: TripletexClient, args: dict) -> dict:
     try:
         return await client.post("/department", json=body)
     except Exception:
-        # Duplicate-number races are common in regression runs; return the existing dept.
+        # Duplicate-number races; return existing dept if found
         try:
             existing = await client.get("/department", params={"count": 100})
             for dept in existing.get("values", []):
-                if department_number and str(dept.get("departmentNumber", "")) == department_number:
-                    return {"value": dept}
                 if dept.get("name", "").strip().lower() == department_name.strip().lower():
                     return {"value": dept}
         except Exception:
