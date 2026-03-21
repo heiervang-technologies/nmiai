@@ -149,7 +149,7 @@ async def collect_dashboard_rows(args: argparse.Namespace) -> list[dict]:
             raise RuntimeError('No submit/tripletex tab found in Brave')
 
         await page.evaluate(
-            '''() => {
+            r'''() => {
                 const buttons = Array.from(document.querySelectorAll('button'));
                 const taskButtons = buttons.filter(button => /Task \(/.test(button.textContent));
                 taskButtons.forEach(button => {

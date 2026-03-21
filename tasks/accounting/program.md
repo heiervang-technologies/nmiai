@@ -178,6 +178,14 @@ python tools/pareto_frontier.py \
 Refresh the full accounting artifact set with:
 
 ```bash
+python tasks/accounting/refresh_live_artifacts.py
+```
+
+This runs log analysis, dashboard sync, and artifact refresh in one step.
+
+If you only want to redraw plots/frontiers without pulling fresh dashboard rows, use:
+
+```bash
 python tools/refresh_autoresearch_artifacts.py
 ```
 
@@ -190,7 +198,7 @@ This updates:
 - `tasks/accounting/analysis/priority_queue.json`
 - `tasks/accounting/analysis/priority_queue.md`
 
-Before refreshing, pull visible dashboard results into the tracker with:
+If you only want to pull visible dashboard results into the tracker, use:
 
 ```bash
 python tasks/accounting/sync_dashboard_scores.py
