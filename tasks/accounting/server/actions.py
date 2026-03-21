@@ -916,7 +916,21 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
         zero_signals = ["befreit", "exempt", "fritatt", "isento", "exento",
                         "exonéré", "0%", "0 %", "ingen mva", "no vat", "mva-fri",
                         "momsfri", "avgiftsfri"]
-        return any(signal in desc for signal in zero_signals)
+        if any(signal in desc for signal in zero_signals):
+            return True
+        # Cross-check: if LLM set vatTypeId=5 or 6, it meant 0%
+        vat_id = line.get("vatTypeId")
+        if vat_id in (5, 6):
+            return True
+        # If LLM set vatTypeId=31 (15% food) but description has no food keywords,
+        # it almost certainly confused 0% exempt with 15% food
+        if vat_id == 31:
+            food_signals = ["food", "mat", "aliment", "lebensmittel", "comida", "matvare",
+                            "næringsmiddel", "næringsmidler", "groceries", "épicerie"]
+            if not any(s in desc for s in food_signals):
+                log.warning(f"Override: vatTypeId=31 on non-food line '{desc}' → 0% exempt")
+                return True
+        return False
 
     def _build_order_lines(vat_id):
         lines = []
