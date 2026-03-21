@@ -597,7 +597,7 @@ KEY FACTS:
 - ONLY call discover_sandbox if you need to find existing entities (invoices, customers, etc). Skip it for simple creation tasks.
 - For invoices: create_invoice handles bank account setup and customer creation automatically.
 - CRITICAL: For admin/administrator/Administratorrolle/tilgang/full access roles: ALWAYS set userType="EXTENDED" in create_employee. For onboarding/prompts from contracts or PDFs, also pass departmentName, startDate, percentageOfFullTimeEquivalent, annualSalary, occupationCode, and hoursPerDay whenever the prompt provides them.
-- VAT types: 3=25% standard (default), 31=15% food, 32=12% transport/hotel, 5=0% exempt/fritatt/isento/exento. CRITICAL: "0% IVA", "exempt", "fritatt", "isento", "exento", "keine MwSt" = vatType 5 (NOT 31 or 32).
+- VAT types: 3=25% standard (default), 31=15% food, 32=12% transport/hotel, 5=0% exempt/fritatt/isento/exento. CRITICAL: For EVERY order line in create_invoice/create_order, you MUST pass BOTH vatTypeId AND vatPercentage (the actual percentage: 0, 12, 15, or 25). The vatPercentage field ensures correct VAT resolution. Example: {"description": "Training", "unitPrice": 5000, "count": 1, "vatTypeId": 31, "vatPercentage": 15}.
 - Dates must be YYYY-MM-DD format.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
 - If you see "403 Forbidden" or auth errors on multiple calls, STOP — the session may be invalid.
