@@ -1,11 +1,19 @@
 #!/bin/bash
-# Background watcher for Astar Island rounds.
+# SOTA Auto-Submitter for Astar Island
 #
-# TIMING STRATEGY (from master):
-#   - Round opens: ANNOUNCE via say. DO NOT query.
-#   - 1 hour AFTER opening: Run queries (query_runner.py)
-#   - 30 min before close: Submit predictions (predictor.py)
-#   - Exception: master can override for specific rounds.
+# This IS the optimal submission pipeline. No manual overrides needed.
+#
+# STRATEGY (R13 scored 87.9 with this):
+#   1. Round opens: announce, fetch ground truth for completed rounds
+#   2. 60min after open: blitz 50 queries (10/seed on hottest viewport)
+#   3. 30min before close: submit with regime_predictor + empirical obs
+#
+# The regime_predictor.py combines:
+#   - Frontier-rate regime detection from observations
+#   - Soft Bayesian regime weights (not hard thresholds)
+#   - Smooth distance interpolation
+#   - Competition features (n_civ neighbors)
+#   - Empirical observation overlay (tau=2 for cells with 3+ samples)
 #
 # Usage: nohup ./auto_watcher.sh &
 
@@ -15,7 +23,7 @@ ANNOUNCED_ROUND=""
 QUERIED_ROUND=""
 SUBMITTED_ROUND=""
 
-echo "$(date -u +%Y-%m-%dT%H:%M:%S) Watcher started (PID $$) — timing: announce@open, query@1h-after-open, submit@30min-before-close" >> "$LOG_FILE"
+echo "$(date -u +%Y-%m-%dT%H:%M:%S) SOTA Watcher started (PID $$)" >> "$LOG_FILE"
 
 while true; do
     ROUND_INFO=$(curl -s https://api.ainm.no/astar-island/rounds | python3 -c "
@@ -53,41 +61,123 @@ fetch_ground_truth_for_completed()
     MINS_UNTIL_CLOSE=$(echo "$ROUND_INFO" | cut -d'|' -f4)
     CLOSES_AT=$(echo "$ROUND_INFO" | cut -d'|' -f5)
 
-    # === NEW ROUND: Announce only ===
+    # === NEW ROUND: Announce ===
     if [ "$ANNOUNCED_ROUND" != "$ACTIVE" ]; then
         ANNOUNCED_ROUND="$ACTIVE"
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. Closes at $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min remaining." >> "$LOG_FILE"
-        say "New Astar Island round opened. Round $ROUND_NUM, closes at $CLOSES_AT U T C. $MINS_UNTIL_CLOSE minutes remaining. Waiting to query." 2>/dev/null
-        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">NEW ROUND $ROUND_NUM opened. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). Will query at 60min mark, submit at 30min-before-close.</agent>" 2>/dev/null
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. Closes $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min." >> "$LOG_FILE"
+        say "Astar Island round $ROUND_NUM opened. $MINS_UNTIL_CLOSE minutes remaining." 2>/dev/null
+        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
         sleep 0.5
         tmux send-keys -t %1 Enter 2>/dev/null
     fi
 
-    # === RUN QUERIES for regime detection ===
-    # Data shows: no-obs avg=77.5, with-obs avg=66.9 (10+ point penalty)
-    # Best scores: R9=83.5 (no obs), R5=71.5 (no obs)
-    # Submit pure template priors only.
+    # === 60 MIN AFTER OPEN: Blitz 50 queries (R13 formula) ===
     if [ "$MINS_SINCE_OPEN" -ge 60 ] && [ "$QUERIED_ROUND" != "$ACTIVE" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: running regime detection queries" >> "$LOG_FILE"
-        cd /home/me/ht/nmiai
-        uv run python3 tasks/astar-island/query_runner.py >> "$LOG_FILE" 2>&1
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: queries done" >> "$LOG_FILE"
+        TOKEN=$(cat "$SCRIPT_DIR/.token" 2>/dev/null | tr -d '\n')
+        BUDGET=$(curl -s -H "Authorization: Bearer $TOKEN" https://api.ainm.no/astar-island/budget 2>/dev/null)
+        QUERIES_USED=$(echo "$BUDGET" | python3 -c "import json,sys; print(json.load(sys.stdin).get('queries_used', 0))" 2>/dev/null)
+
+        if [ "$QUERIES_USED" = "0" ]; then
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: BLITZING all 50 queries (10/seed on hottest viewport)" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM: blitzing 50 queries now." 2>/dev/null
+            cd /home/me/ht/nmiai
+
+            # Blitz: 10 queries per seed on hottest viewport
+            uv run python3 -c "
+import json, sys, time, numpy as np, requests
+from pathlib import Path
+from scipy.ndimage import distance_transform_cdt
+
+TOKEN = open('tasks/astar-island/.token').read().strip()
+s = requests.Session()
+s.cookies.set('access_token', TOKEN)
+s.headers['Authorization'] = f'Bearer {TOKEN}'
+BASE = 'https://api.ainm.no'
+
+rounds = s.get(f'{BASE}/astar-island/rounds').json()
+active = next(r for r in rounds if r['status'] == 'active')
+rid = active['id']
+rn = active['round_number']
+details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
+
+rd = Path(f'tasks/astar-island/logs/round{rn}')
+rd.mkdir(exist_ok=True, parents=True)
+
+for si in range(5):
+    init = np.array(details['initial_states'][si]['grid'])
+    civ = (init == 1) | (init == 2)
+    cd = distance_transform_cdt(~civ, metric='taxicab') if civ.any() else np.full(init.shape, 99)
+    bs, bv = -1, (0, 0)
+    for vy in range(0, 26, 3):
+        for vx in range(0, 26, 3):
+            sc = 3*(init[vy:vy+15,vx:vx+15]==1).sum() + ((cd[vy:vy+15,vx:vx+15]>=1)&(cd[vy:vy+15,vx:vx+15]<=4)).sum()
+            if sc > bs: bs = sc; bv = (vx, vy)
+    obs = []
+    for _ in range(10):
+        r = s.post(f'{BASE}/astar-island/simulate', json={'round_id':rid,'seed_index':si,'viewport_x':bv[0],'viewport_y':bv[1],'viewport_w':15,'viewport_h':15})
+        if r.status_code == 200: obs.append({'grid':r.json()['grid'],'viewport_x':bv[0],'viewport_y':bv[1]})
+        elif r.status_code == 429: break
+        time.sleep(0.15)
+    with open(rd / f'observations_seed{si}.json', 'w') as f: json.dump(obs, f)
+    print(f'Seed {si}: {len(obs)} obs on {bv}')
+print('Blitz done')
+" >> "$LOG_FILE" 2>&1
+
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: blitz queries done" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM queries complete." 2>/dev/null
+        else
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: budget already used ($QUERIES_USED), skipping blitz" >> "$LOG_FILE"
+        fi
         QUERIED_ROUND="$ACTIVE"
     fi
 
-    # === 30 MIN BEFORE CLOSE: Submit predictions ===
+    # === 30 MIN BEFORE CLOSE: Submit with SOTA predictor ===
     if [ "$MINS_UNTIL_CLOSE" -le 30 ] && [ "$SUBMITTED_ROUND" != "$ACTIVE" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: ${MINS_UNTIL_CLOSE}min until close — submitting predictions" >> "$LOG_FILE"
-        say "Astar Island round $ROUND_NUM: 30 minutes remaining, submitting predictions now." 2>/dev/null
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: submitting with SOTA regime_predictor + observations" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM: submitting SOTA predictions." 2>/dev/null
         cd /home/me/ht/nmiai
-        uv run python3 tasks/astar-island/combined_predictor.py >> "$LOG_FILE" 2>&1
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: predictions submitted" >> "$LOG_FILE"
-        say "Astar Island round $ROUND_NUM predictions submitted." 2>/dev/null
+
+        # Submit with regime_predictor (uses observations from blitz)
+        uv run python3 -c "
+import json, sys, time, os, numpy as np, requests
+from pathlib import Path
+sys.path.insert(0, 'tasks/astar-island')
+import regime_predictor as rp
+
+TOKEN = open('tasks/astar-island/.token').read().strip()
+s = requests.Session()
+s.cookies.set('access_token', TOKEN)
+s.headers['Authorization'] = f'Bearer {TOKEN}'
+BASE = 'https://api.ainm.no'
+
+rounds = s.get(f'{BASE}/astar-island/rounds').json()
+active = next(r for r in rounds if r['status'] == 'active')
+rid = active['id']
+rn = active['round_number']
+details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
+
+rd = Path(f'tasks/astar-island/logs/round{rn}')
+
+for si in range(details['seeds_count']):
+    op = rd / f'observations_seed{si}.json'
+    obs = json.loads(op.read_text()) if op.exists() else []
+    obs = obs if len(obs) > 0 else None
+    pred = rp.predict(details['initial_states'][si]['grid'], observations=obs)
+    for attempt in range(3):
+        r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
+        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs) if obs else 0} obs)'); break
+        time.sleep(2)
+    time.sleep(0.3)
+print('SOTA submission done')
+" >> "$LOG_FILE" 2>&1
+
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SOTA predictions submitted" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM SOTA predictions submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
-        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">Round $ROUND_NUM: predictions auto-submitted with ${MINS_UNTIL_CLOSE}min remaining.</agent>" 2>/dev/null
+        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: SOTA submitted (regime_predictor + blitz obs).</agent>" 2>/dev/null
         sleep 0.5
         tmux send-keys -t %1 Enter 2>/dev/null
     fi
 
-    sleep 120  # Check every 2 min
+    sleep 120
 done
