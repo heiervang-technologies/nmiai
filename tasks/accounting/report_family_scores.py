@@ -70,6 +70,22 @@ def best_dashboard_by_family(rows: list[dict[str, str]]) -> dict[str, dict[str, 
     return best
 
 
+def dashboard_stats_by_family(rows: list[dict[str, str]]) -> dict[str, dict[str, float]]:
+    stats: dict[str, dict[str, float]] = {}
+    for row in rows:
+        family = row.get('family', 'unknown')
+        score = to_float(row.get('dashboard_score'))
+        if score is None:
+            continue
+        bucket = stats.setdefault(family, {'count': 0.0, 'sum': 0.0, 'best': 0.0})
+        bucket['count'] += 1.0
+        bucket['sum'] += score
+        bucket['best'] = max(bucket['best'], score)
+    for family, bucket in stats.items():
+        bucket['avg'] = bucket['sum'] / bucket['count'] if bucket['count'] else 0.0
+    return stats
+
+
 def projection_by_family(payload: dict) -> dict[str, dict]:
     family_rows = payload.get('family_projections', []) or []
     return {row.get('family', 'unknown'): row for row in family_rows if row.get('family')}
@@ -86,6 +102,16 @@ def score_estimate(best_observed: float | None, projected: float | None) -> tupl
     if projected is not None:
         return projected, 'projected'
     return None, 'none'
+
+
+def stabilized_estimate(observed_scores: list[float], projected: float | None, prior_weight: float = 2.0) -> float | None:
+    if not observed_scores:
+        return projected
+    observed_sum = sum(observed_scores)
+    observed_count = len(observed_scores)
+    if projected is None:
+        return observed_sum / observed_count
+    return (observed_sum + (prior_weight * projected)) / (observed_count + prior_weight)
 
 
 def opportunity_score(priority_score: float | None, gap_to_100: float | None) -> float | None:
@@ -148,6 +174,7 @@ def main() -> None:
     projection = read_json(args.projection)
 
     best_dashboard = best_dashboard_by_family(dashboard)
+    dashboard_stats = dashboard_stats_by_family(dashboard)
     projections = projection_by_family(projection)
     priorities = priority_by_family(priority)
     families = sorted(set(best_dashboard) | set(projections) | set(priorities))
@@ -157,13 +184,24 @@ def main() -> None:
         observed = to_float((best_dashboard.get(family) or {}).get('score'))
         projected = to_float((projections.get(family) or {}).get('projected_dashboard_score'))
         proxy_clean_rate = to_float((projections.get(family) or {}).get('proxy_clean_rate'))
-        estimate, source = score_estimate(observed, projected)
+        stats = dashboard_stats.get(family, {})
+        observed_count = int(stats.get('count', 0.0))
+        observed_avg = to_float(stats.get('avg'))
+        observed_scores = []
+        if observed_avg is not None and observed_count > 0:
+            observed_scores = [observed_avg] * observed_count
+        estimate = stabilized_estimate(observed_scores, projected)
+        source = 'stabilized' if observed_count > 0 and projected is not None else ('observed_avg' if observed_count > 0 else 'projected')
+        if estimate is None:
+            estimate, source = score_estimate(observed, projected)
         gap_to_100 = None if estimate is None else round(max(0.0, 100.0 - estimate), 1)
         priority_item = priorities.get(family) or {}
         rows.append(
             {
                 'family': family,
                 'best_observed_dashboard_score': observed,
+                'observed_dashboard_avg': None if observed_avg is None else round(observed_avg, 1),
+                'observed_dashboard_count': observed_count,
                 'projected_dashboard_score': None if projected is None else round(projected, 1),
                 'current_estimated_score': None if estimate is None else round(estimate, 1),
                 'estimate_source': source,
