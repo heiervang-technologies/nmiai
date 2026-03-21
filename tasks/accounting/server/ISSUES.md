@@ -8,6 +8,7 @@ All agents: check this before pushing fixes. Update status when fixing.
 |---|----------|--------|-------|------------|-------|
 | 20 | RED | dimension | 0/8 — dimension on BOTH postings (expense+bank) | Strip freeAccountingDimension from bank accts + multi-lang keywords. Fix: de513af (confirmed root cause by comparing 13/13 vs 0/8 logs) | blindspot %45 |
 | 19 | YELLOW | annual_close | 0/8 — Nynorsk "månavslutninga" misclassified | Added Nynorsk keyword + priority swap. Fix: 9aab175 + de513af | blindspot %45 |
+| 21 | YELLOW | invoice | PUT /order/:invoice 422 — missing invoiceDate param (4x retries) | Auto-inject TODAY as invoiceDate in generic_api_call PUT handler. Fix: 2747d1d | regression-tracker %30 |
 | 17 | YELLOW | invoice | 6.5/8 — "Crie um pedido" order->invoice flow missing | Agent goes straight to invoice instead of creating order first. Fix deployed (12e99cb) but unconfirmed. | blindspot %3 |
 | 16 | YELLOW | project | 4.5/8 — fixed-price project uses wrong tool | LLM used create_project + manual invoice instead of create_fixed_price_project_invoice. Fix deployed (ec4b8d1) but unconfirmed. | blindspot %3 |
 | 15 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction. Needs PATH A attempt. | advisor %6 |
