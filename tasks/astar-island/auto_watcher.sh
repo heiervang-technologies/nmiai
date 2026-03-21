@@ -154,141 +154,24 @@ print('Blitz done')
         QUERIED_ROUND="$ACTIVE"
     fi
 
-    # === 30 MIN BEFORE CLOSE: Submit with SOTA predictor ===
+    # === 30 MIN BEFORE CLOSE: Submit with round_optimizer (tries 8 strategies) ===
     if [ "$MINS_UNTIL_CLOSE" -le 30 ] && [ "$SUBMITTED_ROUND" != "$ACTIVE" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: submitting with SOTA regime_predictor + observations" >> "$LOG_FILE"
-        say "Astar round $ROUND_NUM: submitting SOTA predictions." 2>/dev/null
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: running round_optimizer (8 strategies)" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM: running optimizer and submitting." 2>/dev/null
         cd /home/me/ht/nmiai
 
-        # Submit with per-round template mixture + spatial blend (CV wKL 0.059)
-        uv run python3 -c "
-import json, sys, time, numpy as np, requests
-from pathlib import Path
-sys.path.insert(0, 'tasks/astar-island')
-import regime_predictor as rp
-import spatial_model as sm
+        # Run the optimizer which tries 8 strategies and submits the best
+        uv run python3 tasks/astar-island/round_optimizer.py >> "$LOG_FILE" 2>&1
 
-TOKEN = open('tasks/astar-island/.token').read().strip()
-s = requests.Session()
-s.cookies.set('access_token', TOKEN)
-s.headers['Authorization'] = f'Bearer {TOKEN}'
-BASE = 'https://api.ainm.no'
-
-rounds_api = s.get(f'{BASE}/astar-island/rounds').json()
-active = next(r for r in rounds_api if r['status'] == 'active')
-rid = active['id']; rn = active['round_number']
-time.sleep(0.5)
-details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
-rd = Path(f'tasks/astar-island/logs/round{rn}')
-
-def ccc(cell):
-    if cell in (0,10,11): return 0
-    if cell==1: return 1
-    if cell==2: return 2
-    if cell==3: return 3
-    if cell==4: return 4
-    if cell==5: return 5
-    return 0
-
-# Load ground truth for building per-round templates
-gt_dir = Path('tasks/astar-island/ground_truth')
-gt_rounds = {}
-for f in sorted(gt_dir.glob('round*_seed*.json')):
-    r_num = int(f.stem.split('_')[0].replace('round',''))
-    s_num = int(f.stem.split('_')[1].replace('seed',''))
-    data = json.loads(f.read_text())
-    if 'ground_truth' in data and 'initial_grid' in data:
-        gt_rounds.setdefault(r_num, {})[s_num] = {
-            'initial_grid': data['initial_grid'],
-            'ground_truth': np.array(data['ground_truth']),
-        }
-print(f'Loaded GT: {len(gt_rounds)} rounds')
-
-# Build per-round models
-per_round_models = {}
-for r_num in gt_rounds:
-    per_round_models[r_num] = rp.build_model_from_data({r_num: gt_rounds[r_num]})
-
-# Pool observations
-all_obs = {}; all_obs_combined = []
-for si in range(details['seeds_count']):
-    op = rd / f'observations_seed{si}.json'
-    seed_obs = json.loads(op.read_text()) if op.exists() else []
-    all_obs[si] = seed_obs; all_obs_combined.extend(seed_obs)
-print(f'Total observations: {len(all_obs_combined)}')
-
-# Compute per-round likelihoods from observations (using first seed's grid)
-ig0 = np.array(details['initial_states'][0]['grid'], dtype=np.int32)
-log_liks = {}
-for r_num, model in per_round_models.items():
-    pred_r = rp.predict_with_model(ig0, model)
-    ll = 0.0
-    for o in all_obs_combined:
-        vx, vy = o['viewport_x'], o['viewport_y']
-        for dy, row in enumerate(o['grid']):
-            for dx, cell in enumerate(row):
-                y, x = vy+dy, vx+dx
-                if 0<=y<40 and 0<=x<40 and ig0[y,x] not in (10,5):
-                    cls = ccc(cell)
-                    ll += max(np.log(max(float(pred_r[y,x,cls]), 1e-6)), -6.0)
-    log_liks[r_num] = ll
-
-# Posterior weights
-max_ll = max(log_liks.values())
-round_weights = {r: np.exp(log_liks[r] - max_ll) for r in log_liks}
-total_w = sum(round_weights.values())
-round_weights = {r: w/total_w for r, w in round_weights.items()}
-
-# Show top 3
-top3 = sorted(round_weights.items(), key=lambda x: -x[1])[:3]
-print(f'Top template rounds: {[(f\"R{r}\", f\"{w:.3f}\") for r,w in top3]}')
-max_w = max(round_weights.values())
-conf = min((max_w - 1/len(round_weights)) / (1 - 1/len(round_weights)), 1.0)
-sw = 0.15 + 0.50 * max(1 - conf, 0)
-print(f'Template confidence: {conf:.3f}, spatial weight: {sw:.3f}')
-
-for si in range(details['seeds_count']):
-    obs = all_obs.get(si, [])
-    init_grid = details['initial_states'][si]['grid']
-    # Per-round template mixture
-    pred_mix = np.zeros((40, 40, 6))
-    for r_num, w in round_weights.items():
-        if w < 0.01: continue
-        pred_mix += w * rp.predict_with_model(init_grid, per_round_models[r_num])
-    pred_mix = np.maximum(pred_mix, 0.005); pred_mix /= pred_mix.sum(axis=2, keepdims=True)
-    # Spatial
-    pred_s = sm.predict(init_grid); pred_s = np.maximum(pred_s, 0.005); pred_s /= pred_s.sum(axis=2, keepdims=True)
-    # Blend
-    pred = (1 - sw) * pred_mix + sw * pred_s
-    # Tau overlay on cells with >=3 observations
-    if obs:
-        init = np.array(init_grid)
-        counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
-        for o in obs:
-            for dy,row in enumerate(o['grid']):
-                for dx,cell in enumerate(row):
-                    y,x = o['viewport_y']+dy, o['viewport_x']+dx
-                    if 0<=y<40 and 0<=x<40: counts[y,x,ccc(cell)]+=1; oc[y,x]+=1
-        for y in range(40):
-            for x in range(40):
-                if oc[y,x]>=2 and init[y,x] not in (10,5):
-                    alpha=30.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
-    pred = np.maximum(pred, 1e-6); pred /= pred.sum(axis=2, keepdims=True)
-    for attempt in range(3):
-        r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
-        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs)} obs)'); break
-        time.sleep(2)
-    time.sleep(0.3)
-print('Per-round template submission done')
-" >> "$LOG_FILE" 2>&1
-
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SOTA predictions submitted" >> "$LOG_FILE"
-        say "Astar round $ROUND_NUM SOTA predictions submitted." 2>/dev/null
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: optimizer done" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM optimizer submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
-        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: SOTA submitted (regime_predictor + blitz obs).</agent>" 2>/dev/null
+        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: optimizer submitted (8 strategies tested).</agent>" 2>/dev/null
         sleep 0.5
         tmux send-keys -t %5 Enter 2>/dev/null
     fi
+
+    # Old duplicate submission block removed — round_optimizer handles everything above
 
     sleep 120
 done
