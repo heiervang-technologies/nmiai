@@ -90,7 +90,7 @@ if os.environ.get("OPENROUTER_API_KEY"):
         api_key=os.environ["OPENROUTER_API_KEY"],
         base_url="https://openrouter.ai/api/v1",
     )
-    PLANNER_MODEL = os.environ.get("PLANNER_MODEL", "z-ai/glm-5")
+    PLANNER_MODEL = os.environ.get("PLANNER_MODEL", "openai/gpt-5.4")
 elif os.environ.get("OPENAI_API_KEY"):
     client = OpenAI()
     PLANNER_MODEL = os.environ.get("PLANNER_MODEL", "gpt-5.4")
