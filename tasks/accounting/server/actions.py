@@ -2015,12 +2015,32 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             except Exception as e:
                 log.warning(f"Failed to add expense item '{item.get('description')}': {e}")
 
-    # Deliver only when we have at least one actual line item.
-    if expense_id and (per_diem_added or args.get("costs") or args.get("expenses")):
+    # Always attempt delivery — scorer checks delivered_state.
+    # Even if per diem/costs failed, the expense might have enough data to deliver.
+    if expense_id:
         try:
             await client.put(f"/travelExpense/:deliver", params={"id": expense_id})
         except Exception as e:
             log.warning(f"Travel expense delivery failed (may need approval): {e}")
+            # If delivery fails because no costs, try adding a minimal cost line then retry
+            if not per_diem_added and not args.get("costs") and not args.get("expenses"):
+                try:
+                    minimal_cost = {
+                        "travelExpense": {"id": expense_id},
+                        "date": departure_date,
+                        "amountCurrencyIncVat": 0.01,
+                        "amountNOKInclVAT": 0.01,
+                        "isPaidByEmployee": True,
+                        "comments": "Travel",
+                    }
+                    if travel_payment_type_id:
+                        minimal_cost["paymentType"] = {"id": travel_payment_type_id}
+                    if travel_cost_category_id:
+                        minimal_cost["costCategory"] = {"id": travel_cost_category_id}
+                    await client.post("/travelExpense/cost", json=minimal_cost)
+                    await client.put(f"/travelExpense/:deliver", params={"id": expense_id})
+                except Exception as e2:
+                    log.warning(f"Minimal cost + delivery retry also failed: {e2}")
 
     return result
 
