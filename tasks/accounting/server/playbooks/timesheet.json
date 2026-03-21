@@ -28,7 +28,15 @@
     "horas",
     "registriere stunden",
     "enregistrer heures",
-    "registrar horas"
+    "registrar horas",
+    "registre horas",
+    "tarifa por hora",
+    "factura de proyecto",
+    "project invoice",
+    "prosjektfaktura",
+    "Projektrechnung",
+    "facture de projet",
+    "fatura de projeto"
   ],
   "description": "Register hours on projects and invoice from logged time",
   "preflight": [
