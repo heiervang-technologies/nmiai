@@ -41,42 +41,85 @@ nmiai/
 
 ## Agent Architecture
 
-This project is managed by a multi-agent system running in tmux:
+This project is managed by a multi-agent system across dedicated tmux sessions. Each session is an independent team. Agents stay in their session.
 
-| Agent | Pane | Role |
-|-------|------|------|
-| **nmai-master** | %7 | Master orchestrator - coordinates all agents |
-| **master-object-detection** | %8 | Object detection task lead |
-| **master-accounting** | %9 | Accounting task lead |
-| **master-astar-island** | %10 | Astar island task lead |
+```mermaid
+graph TD
+    subgraph "nmai-master session"
+        M["%5 nmai-master<br/>Orchestrator"]
+        M23["%23 nmai-master-2<br/>Research support"]
+        M24["%24 autoresearch<br/>Program architect"]
+    end
 
-Each master agent may spawn sub-agents for parallel work (training, research, data processing).
+    subgraph "nmai-object-detection session"
+        OD["%6 od-orchestrator<br/>OD Lead"]
+        OD10["%10 data-lead<br/>Datasets"]
+        OD11["%11 compute-clerk<br/>GPU management"]
+        OD12["%12 agent<br/>Available"]
+        OD13["%13 turbo-pruning<br/>Lightning LoRA"]
+        OD14["%14 codex-advisor<br/>Strategy"]
+        OD15["%15 auto-research<br/>Eval pipeline"]
+        OD18["%18 vlm-markusnet<br/>MarkusNet ONNX"]
+    end
 
-### Agent Communication Protocol
+    subgraph "nmai-accounting session"
+        AC["%8 master-accounting<br/>Accounting Lead"]
+        AC25["%25 codex-advisor<br/>Strategy"]
+        AC26["%26 agent<br/>Fixes"]
+        AC28["%28 bash<br/>Server/tunnel"]
+    end
 
-Agents communicate via tmux. Due to a known issue with `director send`, always follow up with Enter:
-```bash
-director send %TARGET 'your message'
-sleep 0.5
-tmux send-keys -t %TARGET Enter
+    subgraph "nmai-astar-island session"
+        AS["%9 master-astar-island<br/>Astar Lead"]
+        AS19["%19 codex-advisor<br/>Strategy"]
+        AS20["%20 gemini-advisor<br/>Strategy"]
+        AS22["%22 eval-boss<br/>Benchmarking"]
+    end
+
+    M -->|coordinates| OD
+    M -->|coordinates| AC
+    M -->|coordinates| AS
+    M24 -->|programs| OD
+    M24 -->|programs| AC
+    M24 -->|programs| AS
+    OD -->|manages| OD10 & OD11 & OD12 & OD13 & OD14 & OD15 & OD18
+    AC -->|manages| AC25 & AC26 & AC28
+    AS -->|manages| AS19 & AS20 & AS22
 ```
 
-Report back to master using:
+### Key Rules
+- **Agents stay in their session.** Do not reassign agents across sessions.
+- **Masters** (%5, %6, %8, %9) coordinate their sub-agents within their session.
+- **Only masters** may use the `say` command for voice output.
+- **Master orchestrator** (%5) coordinates between sessions.
+
+### Communication Protocol
+
+Report to master orchestrator:
 ```bash
-tmux-tool send %7 '<agent id="YOUR_ID" role="YOUR_ROLE" pane="%YOUR_PANE">message</agent>'
+tmux-tool send %5 '<agent id="YOUR_ID" role="YOUR_ROLE" pane="%YOUR_PANE">message</agent>'
 sleep 0.5
-tmux send-keys -t %7 Enter
+tmux send-keys -t %5 Enter
+sleep 0.3
+tmux send-keys -t %5 Enter
 ```
+
+Due to a known race condition, always double-enter after sending messages.
+
+### Tools
+- `heartbeat` - broadcast wake-up to all agents
+- `./show-registry.sh` - show all registered agents
+- `./register-agent.sh <name> <role> <desc>` - register yourself
 
 ### Onboarding a New Agent
 
 1. Read this README for project overview
-2. Read `competition-rules.md` for full rules
+2. Read `CLAUDE.md` for agent instructions
 3. Read your task's README under `tasks/<task>/README.md`
 4. Check your tracking issue for current strategy and status
-5. Use `uv` for all Python package management (not pip/conda)
-6. Commit and push to main regularly
-7. Update your tracking issue body when strategy changes
+5. Register yourself: `bash register-agent.sh "name" "role" "description"`
+6. Use `uv` for all Python (not pip/conda)
+7. Commit and push to main regularly
 
 ## Tech Stack
 

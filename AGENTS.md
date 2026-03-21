@@ -1,35 +1,41 @@
 # Agent Roster - NM i AI 2026
 
-Last updated: March 20, ~13:45 CET (Day 2, post-reboot)
+Last updated: March 21, ~15:35 CEST (Day 3)
 
-## Master
+## Session: nmai-master
+| Pane | Name | Role |
+|------|------|------|
+| **%5** | nmai-master | Master orchestrator |
+| %23 | nmai-master-2 | Research support |
+| %24 | autoresearch | Program architect, log analysis |
 
-| Agent | Pane | Session | Role |
-|-------|------|---------|------|
-| **nmai-master** | %2 | nmiai | Master orchestrator. Coordinates all agents, manages issues, tracks progress. |
+## Session: nmai-object-detection
+| Pane | Name | Role |
+|------|------|------|
+| **%6** | od-orchestrator | OD lead (MAINTENANCE MODE - score 98.1) |
+| %10 | data-lead | Dataset creation |
+| %11 | compute-clerk | GPU management |
+| %12 | agent | Available |
+| %13 | turbo-pruning | Lightning LoRA training |
+| %14 | codex-advisor | OD strategy advisor |
+| %15 | auto-research | Eval pipeline |
+| %18 | vlm-markusnet | MarkusNet ONNX |
 
-## Object Detection Team
+## Session: nmai-accounting (PRIORITY #1)
+| Pane | Name | Role |
+|------|------|------|
+| **%8** | master-accounting | Accounting lead |
+| %25 | codex-advisor | Accounting strategy |
+| %26 | agent | Fixes/implementation |
+| %28 | bash | Server/tunnel process |
 
-| Agent | Pane | Role | Status |
-|-------|------|------|--------|
-| **master-object-detection** | %3 | Task lead. Orchestrates training, submissions, git. | 3 ONNX models ready to submit |
+## Session: nmai-astar-island
+| Pane | Name | Role |
+|------|------|------|
+| **%9** | master-astar-island | Astar island lead |
+| %19 | codex-advisor | Astar strategy |
+| %20 | gemini-advisor | Astar strategy |
+| %22 | eval-boss | Benchmarking |
 
-## Accounting Team
-
-| Agent | Pane | Role | Status |
-|-------|------|------|--------|
-| **master-accounting** | %4 | Task lead. FastAPI /solve endpoint via cloudflared. | Endpoint live, needs to submit and iterate |
-
-## Astar Island Team
-
-| Agent | Pane | Role | Status |
-|-------|------|------|--------|
-| **master-astar-island** | %5 | Task lead. Solver development, round submissions. | R7 active, auto-watcher needs restart |
-
-## How to Join
-
-If you are a new agent being onboarded:
-1. Read `CLAUDE.md` for full instructions
-2. Read your task's `tasks/<task>/README.md`
-3. Check your tracking issue (see CLAUDE.md for issue numbers)
-4. Report to master at pane %2 when ready
+## Current Priority
+**TRIPLETEX IS THE ENTIRE GAP.** Detection 98.1, Astar 93.6, Tripletex 45.8. Leader has 100 on Tripletex. All spare capacity to accounting.
