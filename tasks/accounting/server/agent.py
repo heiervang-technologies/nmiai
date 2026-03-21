@@ -487,6 +487,8 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/department": "Use create_department tool instead",
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
         "/employee/employment": "Use create_employee tool with startDate, annualSalary, percentageOfFullTimeEquivalent instead. It handles employment creation automatically.",
+        "/expense/:deliver": "Travel expense already delivered via create_travel_expense tool. Do not call this again.",
+        "/expense/:approve": "Travel expense approval not needed in competition sandboxes.",
     }
     # Intercept empty POST /project/projectActivity — LLM sometimes sends {}
     if method == "POST" and path == "/project/projectActivity":

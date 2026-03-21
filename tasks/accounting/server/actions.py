@@ -2020,10 +2020,12 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     if expense_id and args.get("expenses"):
         for item in args["expenses"]:
             try:
+                item_amount = _money(item.get("amount", 0))
                 cost_body = {
                     "travelExpense": {"id": expense_id},
                     "date": departure_date,
-                    "amountCurrencyIncVat": _money(item.get("amount", 0)),
+                    "amountCurrencyIncVat": item_amount,
+                    "amountNOKInclVAT": item_amount,
                     "isPaidByEmployee": True,
                     "comments": item.get("description", "Expense"),
                 }
