@@ -579,7 +579,7 @@ CRITICAL RULES:
 - NEVER ask questions or request clarification. Always make your best effort with the information given.
 - If data seems missing, use reasonable accounting defaults (e.g., 22% tax rate for Norway, standard depreciation schedules, round to nearest krone).
 - For annual closing / depreciation / accrual tasks: calculate the amounts yourself and book them via create_voucher. Do NOT ask for amounts — compute them from the provided numbers.
-- Complete the task efficiently with ONE tool call when possible, then stop."""
+- Complete the task efficiently. Use as many tool calls as needed to fulfill ALL parts of the prompt. For multi-step tasks, complete every step before stopping."""
 
 
 def build_system_prompt(playbook: dict | None = None) -> str:
