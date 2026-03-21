@@ -532,7 +532,7 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         link_args = {"method": "POST", "path": "/project/projectActivity", "body": link_body}
         return await _safe_action("generic_api_call", ctx.deps.client, link_args, 4000)
     for pattern, msg in redirects.items():
-        if pattern in path:
+        if pattern in path.lower():
             return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
     return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
 
