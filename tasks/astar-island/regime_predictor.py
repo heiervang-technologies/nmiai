@@ -260,53 +260,95 @@ def interpolate_lookup(tables, counts_list, ig, dist_civ, n_ocean, n_civ, coast,
     return q, (1 - frac) * s_lo + frac * s_hi
 
 
+def cell_code_to_class(cell):
+    """Map cell codes to prediction class indices."""
+    if cell in (0, 10, 11): return 0
+    if cell == 1: return 1
+    if cell == 2: return 2
+    if cell == 3: return 3
+    if cell == 4: return 4
+    if cell == 5: return 5
+    return 0
+
+
 def detect_regime_from_observations(ig, observations):
-    """Detect regime from observation data by counting settlements."""
+    """Bayesian regime posterior from full observation likelihoods.
+
+    For each regime, compute log P(observations | regime) using the regime's
+    bucket priors, then derive posterior weights via Bayes' rule.
+    """
     if not observations:
         return DEFAULT_REGIME_WEIGHTS.copy()
 
-    dist_civ, _, _, _ = compute_features(ig)
+    model = get_model()
+    dist_civ, n_ocean, n_civ, coast = compute_features(ig)
     h, w = ig.shape
 
-    settle_count = 0
-    frontier_count = 0
+    LOG_FLOOR = -6.0  # floor for log-likelihood per cell
 
-    for obs in observations:
-        grid = obs.get("grid", [])
-        vx = int(obs.get("viewport_x", 0))
-        vy = int(obs.get("viewport_y", 0))
-        for dy, row in enumerate(grid):
-            for dx, cell in enumerate(row):
-                y = vy + dy
-                x = vx + dx
-                if not (0 <= y < h and 0 <= x < w):
-                    continue
-                code = int(ig[y, x])
-                if code in (OCEAN, MOUNTAIN, SETTLEMENT, PORT):
-                    continue
-                d = dist_civ[y, x]
-                if 1.5 <= d <= 6:
-                    frontier_count += 1
-                    if cell == SETTLEMENT or cell == PORT:
-                        settle_count += 1
+    log_likelihoods = {}
+    for regime in ("harsh", "moderate", "prosperous"):
+        rt = model["regime_tables"][regime]
+        log_lik = 0.0
+        n_cells = 0
 
-    if frontier_count < 10:
+        for obs in observations:
+            grid = obs.get("grid", [])
+            vx = int(obs.get("viewport_x", 0))
+            vy = int(obs.get("viewport_y", 0))
+            for dy, row in enumerate(grid):
+                for dx, cell_val in enumerate(row):
+                    y = vy + dy
+                    x = vx + dx
+                    if not (0 <= y < h and 0 <= x < w):
+                        continue
+                    code = int(ig[y, x])
+                    if code in (OCEAN, MOUNTAIN):
+                        continue
+
+                    # Look up this cell's prior under this regime
+                    q, _ = interpolate_lookup(
+                        rt["tables"], rt["counts"],
+                        ig, dist_civ, n_ocean, n_civ, coast, y, x
+                    )
+                    if q is None:
+                        continue
+
+                    cls = cell_code_to_class(int(cell_val))
+                    prob = max(float(q[cls]), 1e-6)
+                    log_lik += max(np.log(prob), LOG_FLOOR)
+                    n_cells += 1
+
+        log_likelihoods[regime] = log_lik
+
+    if not log_likelihoods:
         return DEFAULT_REGIME_WEIGHTS.copy()
 
-    rate = settle_count / frontier_count
+    # Bayesian posterior: P(regime|obs) ∝ P(obs|regime) * P(regime)
+    log_prior = {
+        "harsh": np.log(DEFAULT_REGIME_WEIGHTS["harsh"]),
+        "moderate": np.log(DEFAULT_REGIME_WEIGHTS["moderate"]),
+        "prosperous": np.log(DEFAULT_REGIME_WEIGHTS["prosperous"]),
+    }
 
-    if rate < 0.02:
-        return {"harsh": 0.85, "moderate": 0.12, "prosperous": 0.03}
-    elif rate < HARSH_THRESHOLD:
-        return {"harsh": 0.65, "moderate": 0.28, "prosperous": 0.07}
-    elif rate < 0.10:
-        return {"harsh": 0.20, "moderate": 0.65, "prosperous": 0.15}
-    elif rate < PROSPEROUS_THRESHOLD:
-        return {"harsh": 0.05, "moderate": 0.75, "prosperous": 0.20}
-    elif rate < 0.30:
-        return {"harsh": 0.02, "moderate": 0.18, "prosperous": 0.80}
+    log_posterior = {r: log_likelihoods[r] + log_prior[r] for r in log_likelihoods}
+
+    # Numerical stability: subtract max
+    max_lp = max(log_posterior.values())
+    weights = {r: np.exp(log_posterior[r] - max_lp) for r in log_posterior}
+    total = sum(weights.values())
+    if total > 0:
+        weights = {r: w / total for r, w in weights.items()}
     else:
-        return {"harsh": 0.01, "moderate": 0.09, "prosperous": 0.90}
+        return DEFAULT_REGIME_WEIGHTS.copy()
+
+    # Floor weights to avoid zero
+    for r in weights:
+        weights[r] = max(weights[r], 0.01)
+    total = sum(weights.values())
+    weights = {r: w / total for r, w in weights.items()}
+
+    return weights
 
 
 def predict(initial_grid, observations=None):
