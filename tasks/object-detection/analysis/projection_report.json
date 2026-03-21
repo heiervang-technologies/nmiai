@@ -1,0 +1,24 @@
+{
+  "projection_status": "insufficient_calibration",
+  "reason": "No paired clean-val/server observations exist yet for a defensible OD server projection model.",
+  "trusted_server_scores": [
+    {
+      "model": "yolov8x_original+dinov2",
+      "score": 0.9079,
+      "notes": "Proven server score, 98.1% normalized"
+    },
+    {
+      "model": "yolov8x_original+dinov2+tta",
+      "score": 0.91,
+      "notes": "TTA variant, 240s runtime"
+    }
+  ],
+  "trusted_clean_candidates": [
+    {
+      "model": "yolov8x_v6_clean",
+      "mAP50": 0.966,
+      "mAP50_95": 0.878,
+      "notes": "BEST CLEAN METRIC. Verified zero overlap."
+    }
+  ]
+}
