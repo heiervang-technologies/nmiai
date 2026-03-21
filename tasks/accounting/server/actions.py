@@ -907,39 +907,34 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
             vat_candidates.append(int(vt_id))
             break
 
-    def _detect_zero_vat(line: dict) -> bool:
-        """Detect if order line should have 0% VAT from description or explicit percentage."""
+    def _detect_vat_percentage(line: dict) -> int | None:
+        """Detect intended VAT percentage from explicit field or description keywords.
+        Returns 0, 15, or 25, or None if can't determine."""
+        # Explicit percentage from LLM always wins
         vat_pct = line.get("vatPercentage", line.get("vatRate"))
-        if vat_pct is not None and int(vat_pct) == 0:
-            return True
+        if vat_pct is not None:
+            return int(vat_pct)
         desc = (line.get("description") or "").lower()
+        # 0% signals
         zero_signals = ["befreit", "exempt", "fritatt", "isento", "exento",
-                        "exonéré", "0%", "0 %", "ingen mva", "no vat", "mva-fri",
-                        "momsfri", "avgiftsfri"]
+                        "exonere", "0%", "0 %", "ingen mva", "no vat", "mva-fri",
+                        "momsfri", "avgiftsfri", "keine mwst"]
         if any(signal in desc for signal in zero_signals):
-            return True
-        # Cross-check: if LLM set vatTypeId=5 or 6, it meant 0%
-        vat_id = line.get("vatTypeId")
-        if vat_id in (5, 6):
-            return True
-        # If LLM set vatTypeId=31 (15% food) but description has no food keywords,
-        # it almost certainly confused 0% exempt with 15% food
-        if vat_id == 31:
-            food_signals = ["food", "mat", "aliment", "lebensmittel", "comida", "matvare",
-                            "næringsmiddel", "næringsmidler", "groceries", "épicerie"]
-            if not any(s in desc for s in food_signals):
-                log.warning(f"Override: vatTypeId=31 on non-food line '{desc}' → 0% exempt")
-                return True
-        return False
+            return 0
+        # 15% food signals
+        food_signals = ["food", "mat", "aliment", "lebensmittel", "comida", "matvare",
+                        "alimentos", "alimentaire", "næringsmiddel", "groceries"]
+        if any(signal in desc for signal in food_signals):
+            return 15
+        return None
 
     def _build_order_lines(vat_id):
         lines = []
         for line in args.get("orderLines", []):
-            # Hard override: if line signals 0% VAT, find the 0% outgoing type
-            if _detect_zero_vat(line):
-                line_vat = _find_vat_type_id(vat_types, percentage=0, prefer_outgoing=True)
-                if line_vat is None:
-                    line_vat = 5  # fallback 0% exempt
+            detected_pct = _detect_vat_percentage(line)
+            if detected_pct is not None:
+                resolved = _find_vat_type_id(vat_types, percentage=detected_pct, prefer_outgoing=True)
+                line_vat = resolved if resolved is not None else _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
             else:
                 line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
             ol = {

@@ -32,7 +32,13 @@
     "commande",
     "converta em fatura",
     "convert to invoice",
-    "konverter til faktura"
+    "konverter til faktura",
+    "crie uma fatura",
+    "créez une facture",
+    "erstellen sie eine rechnung",
+    "linhas de produto",
+    "lignes de produit",
+    "produktzeilen"
   ],
   "description": "Create invoices, register payments, create credit notes",
   "preflight": [
