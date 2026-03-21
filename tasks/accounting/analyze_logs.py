@@ -8,6 +8,7 @@ import csv
 import json
 import re
 import time
+import unicodedata
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -109,15 +110,54 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_playbook_families() -> list[str]:
-    families = []
+def _normalize_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text)
+    stripped = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+    return stripped.lower()
+
+
+def _compile_keyword_pattern(keyword: str) -> re.Pattern[str]:
+    normalized = _normalize_text(keyword)
+    tokens = normalized.split()
+    if not tokens:
+        return re.compile(r"$^")
+    escaped_tokens = [re.escape(token) + r"\w*" for token in tokens]
+    return re.compile(r"(?<!\w)" + r"\s+".join(escaped_tokens), re.IGNORECASE)
+
+
+def load_playbooks() -> dict[str, dict[str, Any]]:
+    playbooks = {}
     for path in sorted(PLAYBOOK_DIR.glob("*.json")):
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
-            families.append(payload.get("family") or path.stem)
         except Exception:
-            families.append(path.stem)
-    return families
+            payload = {"family": path.stem, "keywords": []}
+        family = payload.get("family") or path.stem
+        payload["family"] = family
+        playbooks[family] = payload
+    return playbooks
+
+
+def load_playbook_families() -> list[str]:
+    return sorted(load_playbooks().keys())
+
+
+def infer_family_from_prompt(prompt: str, playbooks: dict[str, dict[str, Any]]) -> tuple[str | None, str, float]:
+    prompt_norm = _normalize_text(prompt or "")
+    matches: dict[str, float] = {}
+    for family, playbook in playbooks.items():
+        score = 0.0
+        for keyword in playbook.get("keywords", []):
+            pattern = _compile_keyword_pattern(keyword)
+            if pattern.search(prompt_norm):
+                score += 2.0 if " " in _normalize_text(keyword) else 1.0
+        if score:
+            matches[family] = score
+    if not matches:
+        return None, "low", 0.0
+    best_family = max(matches, key=lambda family: (matches[family], len(playbooks[family].get("keywords", []))))
+    confidence = "high" if matches[best_family] >= 2 else "medium"
+    return best_family, confidence, matches[best_family]
 
 
 def load_state(path: Path) -> dict[str, Any]:
@@ -294,8 +334,10 @@ def render_markdown(summary: dict[str, Any]) -> str:
         "## Global",
         "",
         f"- Seen families: {', '.join(summary['seen_families']) if summary['seen_families'] else 'none'}",
+        f"- Effective seen families: {', '.join(summary.get('effective_seen_families', [])) if summary.get('effective_seen_families') else 'none'}",
         f"- New families since last run: {', '.join(summary['new_families_since_last_run']) if summary['new_families_since_last_run'] else 'none'}",
         f"- Unseen playbook families: {', '.join(summary['unseen_families']) if summary['unseen_families'] else 'none'}",
+        f"- Family mismatches flagged: {len(summary.get('family_mismatches', []))}",
         f"- Empty attachment runs: {summary['empty_attachment_runs']}",
         "",
         "## Alerts",
@@ -334,18 +376,33 @@ def render_markdown(summary: dict[str, Any]) -> str:
 def build_summary(
     records: list[dict[str, Any]],
     playbook_families: list[str],
+    playbooks: dict[str, dict[str, Any]],
     state: dict[str, Any],
     log_dir: Path,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], str, str]:
     families: dict[str, dict[str, Any]] = {}
     seen_families = set()
+    inferred_prompt_families = set()
+    family_mismatches = []
     empty_attachment_runs = 0
     fingerprint = "|".join(record.get("timestamp", "") for record in records)
     batch_id = records[-1]["timestamp"] if records else datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
 
     for record in records:
         family = ((record.get("plan") or {}).get("family") or "unknown").strip()
+        inferred_family, inferred_confidence, inferred_score = infer_family_from_prompt(record.get("prompt", ""), playbooks)
         seen_families.add(family)
+        if inferred_family:
+            inferred_prompt_families.add(inferred_family)
+        if inferred_family and inferred_family != family:
+            family_mismatches.append({
+                "timestamp": record.get("timestamp"),
+                "logged_family": family,
+                "inferred_family": inferred_family,
+                "confidence": inferred_confidence,
+                "score": inferred_score,
+                "prompt": record.get("prompt", "")[:220],
+            })
         calls = ((record.get("api_stats") or {}).get("calls") or [])
         writes = successful_writes(calls)
         api_errors = int((record.get("api_stats") or {}).get("errors_4xx", 0))
@@ -475,11 +532,18 @@ def build_summary(
                 "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries"
             )
 
+    effective_seen_families = seen_families | inferred_prompt_families
     previous_seen = set(state.get("seen_families", []))
-    new_families = sorted(seen_families - previous_seen)
+    new_families = sorted(effective_seen_families - previous_seen)
     if new_families:
         alerts.append(f"New families seen: {', '.join(new_families)}")
-    unseen_families = sorted(set(playbook_families) - seen_families)
+    unseen_families = sorted(set(playbook_families) - effective_seen_families)
+    if family_mismatches:
+        preview = "; ".join(
+            f"{item['timestamp']}: logged {item['logged_family']} but prompt matches {item['inferred_family']}"
+            for item in family_mismatches[:4]
+        )
+        alerts.append(f"Possible family mismatches: {preview}")
     if unseen_families:
         alerts.append(f"Still unseen families: {', '.join(unseen_families)}")
     if empty_attachment_runs:
@@ -490,9 +554,12 @@ def build_summary(
         "log_dir": str(log_dir),
         "total_runs": len(records),
         "seen_families": sorted(seen_families),
+        "effective_seen_families": sorted(effective_seen_families),
+        "inferred_prompt_families": sorted(inferred_prompt_families),
         "new_families_since_last_run": new_families,
         "unseen_families": unseen_families,
         "unknown_families": sorted(seen_families - set(playbook_families)),
+        "family_mismatches": family_mismatches[:20],
         "empty_attachment_runs": empty_attachment_runs,
         "alerts": alerts,
         "families": rendered_families,
@@ -509,12 +576,13 @@ def write_outputs(summary: dict[str, Any], output_dir: Path) -> None:
 
 def run_once(args: argparse.Namespace) -> tuple[dict[str, Any], bool]:
     state = load_state(args.state_path)
-    playbook_families = load_playbook_families()
+    playbooks = load_playbooks()
+    playbook_families = sorted(playbooks.keys())
     records = load_logs(args.log_dir)
-    summary, family_rows, fingerprint, batch_id = build_summary(records, playbook_families, state, args.log_dir)
+    summary, family_rows, fingerprint, batch_id = build_summary(records, playbook_families, playbooks, state, args.log_dir)
     changed = fingerprint != state.get("last_fingerprint")
     append_results_rows(args.results_tsv, batch_id, family_rows, state)
-    state["seen_families"] = sorted(set(state.get("seen_families", [])) | set(summary["seen_families"]))
+    state["seen_families"] = sorted(set(state.get("seen_families", [])) | set(summary.get("effective_seen_families", summary["seen_families"])))
     state["last_fingerprint"] = fingerprint
     save_state(args.state_path, state)
     write_outputs(summary, args.output_dir)
