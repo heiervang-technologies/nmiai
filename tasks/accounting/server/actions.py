@@ -2203,6 +2203,19 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     last["amountGross"] = corrected
                     last["amountGrossCurrency"] = corrected
                     log.warning(f"Auto-balanced voucher postings: adjusted last posting by {-total:.2f}")
+        # Try voucher POST with retry on locked-VAT accounts
+        if "/ledger/voucher" in path:
+            try:
+                return await client.post(path, json=body)
+            except Exception as e:
+                err_text = str(getattr(e, 'response', None) and e.response.text or e)
+                if "låst til mva-kode" in err_text or "locked to vat" in err_text.lower():
+                    # Strip vatType from all postings and retry
+                    for p in body.get("postings", []):
+                        p.pop("vatType", None)
+                    log.warning("Retrying voucher without vatType (locked accounts detected)")
+                    return await client.post(path, json=body)
+                raise
         # Handle 409 Duplicate on /project/projectActivity: fetch existing instead of failing
         if "/project/projectActivity" in path:
             try:
