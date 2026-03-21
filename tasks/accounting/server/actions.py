@@ -477,10 +477,16 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         if not dep_id and dep_values:
             dep_id = dep_values[0]["id"]
 
+    user_type = args.get("userType", "STANDARD")
+    if not args.get("email") and user_type == "STANDARD":
+        # Tripletex requires email for login users; plain onboarding without email
+        # should fall back to a non-login employee instead of failing the whole task.
+        user_type = "NO_ACCESS"
+
     body = {
         "firstName": args["firstName"],
         "lastName": args["lastName"],
-        "userType": args.get("userType", "STANDARD"),
+        "userType": user_type,
     }
     if dep_id:
         body["department"] = {"id": dep_id}
@@ -712,9 +718,8 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
 
     # Approach 2: Find existing 1920 bank account in ledger and ensure it has bank number
     try:
-        accounts = await client.get("/ledger/account", params={"count": 1000})
+        accounts = await client.get("/ledger/account", params={"number": 1920, "count": 1})
         for acc in accounts.get("values", []):
-            if acc.get("number") == 1920:
                 if not acc.get("bankAccountNumber"):
                     acc["isBankAccount"] = True
                     acc["bankAccountNumber"] = bank_num
@@ -1230,6 +1235,40 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
     )
 
     entry_date = args.get("date", TODAY)
+    selected_project = None
+    if not project_id:
+        try:
+            projects = await client.get("/project", params={"count": 100})
+            project_values = projects.get("values", [])
+            usable_project = None
+            for project in project_values:
+                start_date = project.get("startDate") or TODAY
+                if start_date <= entry_date:
+                    usable_project = project
+                    break
+            selected_project = usable_project or (project_values[0] if project_values else None)
+            if selected_project:
+                project_id = selected_project["id"]
+        except Exception:
+            pass
+
+    if project_id and not args.get("projectId") and not args.get("projectName"):
+        selected_start_date = (selected_project or {}).get("startDate")
+        if selected_start_date and selected_start_date > entry_date:
+            try:
+                created_project = await action_create_project(
+                    client,
+                    {
+                        "name": f"Timeføring {entry_date}",
+                        "projectManagerId": employee_id,
+                        "isInternal": True,
+                        "startDate": entry_date,
+                    },
+                )
+                project_value = created_project.get("value", created_project)
+                project_id = project_value.get("id", project_id)
+            except Exception as e:
+                log.warning(f"Fallback internal project creation failed: {e}")
 
     # Find or create activity
     # Prefer project-applicable activities. Creating via /activity requires activityType,
