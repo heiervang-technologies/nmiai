@@ -12,7 +12,9 @@
   "common_errors": [
     "Postings must sum to zero (balanced)",
     "Use generic_api_call with GET /ledger/voucher or GET /ledger/posting to find errors",
-    "Corrective vouchers should be dated on the last day of the error period"
+    "Corrective vouchers should be dated on the last day of the error period",
+    "CRITICAL: Account 2400 (Leverandørgjeld) is ledgerType=VENDOR. Postings on vendor/supplier accounts REQUIRE supplier:{id} or you get 'Leverandør mangler'. Account 1500 (Kundefordringer) is ledgerType=CUSTOMER and requires customer:{id}.",
+    "When correcting postings on account 2400, you MUST first discover_sandbox or GET /supplier to find the supplier ID, then include supplierId in the create_voucher postings."
   ],
-  "tips": "CRITICAL: The prompt tells you EXACTLY what the errors are (wrong account, duplicate, missing VAT, wrong amount). Parse all errors from the prompt. For EACH error, create ONE corrective voucher using create_voucher. Wrong account: debit correct account, credit wrong account. Duplicate: reverse the duplicate. Missing VAT: add the VAT posting. Wrong amount: post the difference. If the original posting is on a supplier/customer control account, preserve the same supplierId/customerId on the corrective voucher posting. Use generic_api_call to GET /ledger/voucher?dateFrom=2026-01-01&dateTo=2026-02-28 to verify."
+  "tips": "CRITICAL: The prompt tells you EXACTLY what the errors are (wrong account, duplicate, missing VAT, wrong amount). Parse all errors from the prompt. For EACH error, create ONE corrective voucher using create_voucher. Wrong account: debit correct account, credit wrong account. Duplicate: reverse the duplicate. Missing VAT: add the VAT posting. Wrong amount: post the difference. SUPPLIER/CUSTOMER ACCOUNTS: If ANY posting touches account 2400 (supplier) or 1500 (customer), you MUST include supplierId or customerId in the posting args. First call discover_sandbox to find existing suppliers/customers, then pass their ID. Without this, the voucher will fail with 'Leverandør mangler' or 'Kunde mangler'. Use generic_api_call to GET /ledger/voucher?dateFrom=2026-01-01&dateTo=2026-02-28 to verify."
 }
