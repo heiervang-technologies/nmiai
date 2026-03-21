@@ -17,5 +17,5 @@
   ],
   "required_fields": ["name", "departmentNumber"],
   "common_errors": [],
-  "tips": ""
+  "tips": "For receipt/expense booking to a department: use create_voucher with postings. Debit the expense account (from receipt type, e.g. 6300 office supplies, 6500 consumables, 6800 IT equipment), credit bank/cash (1920). Include department on the expense posting via create_accounting_dimension or by adding department context in the description. For creating departments: use create_department. Do NOT use /incomingInvoice or /supplierInvoice for receipt bookings — use create_voucher."
 }
