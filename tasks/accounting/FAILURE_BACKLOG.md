@@ -2,7 +2,7 @@
 
 Last updated: 2026-03-21 18:40 UTC
 
-## Scoring: 45.8/100 (leader: 100.0)
+## Scoring: 65.7/100 (leader: 100.0) — up from 45.8
 
 ## RESOLVED Issues (confirmed fixed in latest results)
 
@@ -37,10 +37,13 @@ Last updated: 2026-03-21 18:40 UTC
 | 22 | **Bank reconciliation payment matching** | `Ugyldig fakturanummer` | 1x (141106) | Agent guesses invoice numbers from bank statement that don't match Tripletex IDs. |
 | 23 | **Employee missing email for Tripletex user** | `email: Må angis for Tripletex-brukere` | 1x (141307) | PDF extraction didn't get email, employee created without it but Tripletex requires email for users. |
 | 24 | **Expired proxy token** | 403 on all calls | 1x (150558) | External — token expired. Cannot fix. |
-| 25 | **PROJECT_SPECIFIC_ACTIVITY on /activity** | `Prosjektspesifikke aktiviteter må lages via /project/projectActivity` | 1x (174056) | POST /activity rejects PROJECT_SPECIFIC type. FIXED: route to /project/projectActivity. |
-| 26 | **GET /timesheet/entry missing dateFrom** | `dateFrom: Kan ikke være null` | 7x (174056) | LLM calls GET without dates. FIXED: auto-add dateFrom/dateTo. |
-| 27 | **Timesheet duplicate entry 409** | `Duplicate entry` | 2x (172830, 174056) | Agent tries to create timesheet entry that already exists. Need check-before-create. |
-| 28 | **Employee GET 500 internal server error** | 500 on GET /employee/{id} | 2x (170509) | Tripletex internal error on employee lookup. External — retry might help. |
+| 25 | PROJECT_SPECIFIC_ACTIVITY on /activity | FIXED | Route PROJECT_SPECIFIC to /project/projectActivity |
+| 26 | GET /timesheet/entry missing dateFrom | FIXED | Auto-add dateFrom/dateTo |
+| 27 | projectActivity 409 duplicate | FIXED | Return existing activity on 409 |
+| 28 | Agio voucher VAT type on locked accounts | FIXED | Auto-strip vatType on 1500/8060/8160/3400 |
+| 29 | Project lifecycle misclassified | FIXED | Multi-lang keywords (FR/ES/PT/DE/NO) |
+| 30 | Supplier registration misclassified | FIXED | Multi-word keywords outweigh email false positives |
+| 31 | Agent asks questions instead of acting | FIXED | System prompt: NEVER ask questions |
 
 ## Latest Results (18:40 UTC) — 39 submissions, 31 clean (79.5%)
 ```
