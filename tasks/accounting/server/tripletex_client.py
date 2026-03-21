@@ -37,6 +37,8 @@ class TripletexClient:
         self.call_count = 0
         self.error_count = 0
         self.calls_log = []
+        # Simple GET cache to avoid duplicate reads within same request
+        self._get_cache: dict[str, dict] = {}
 
     async def close(self):
         await self._client.aclose()
@@ -53,13 +55,20 @@ class TripletexClient:
     async def get(self, path: str, params: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
         merged_params = {**(path_params or {}), **(params or {})} or None
+        # Cache key for deduplication within same request
+        cache_key = f"{clean_path}|{json_mod.dumps(merged_params, sort_keys=True, default=str) if merged_params else ''}"
+        if cache_key in self._get_cache:
+            log.info(f"GET {clean_path} params={merged_params} [CACHED]")
+            return self._get_cache[cache_key]
         url = f"{self.base_url}{clean_path}"
         log.info(f"GET {clean_path} params={merged_params}")
         try:
             resp = await self._client.get(url, params=merged_params)
             self._log_call("GET", clean_path, resp.status_code)
             resp.raise_for_status()
-            return resp.json()
+            result = resp.json()
+            self._get_cache[cache_key] = result
+            return result
         except httpx.HTTPStatusError as e:
             self._log_call("GET", clean_path, e.response.status_code, e.response.text[:500])
             raise
