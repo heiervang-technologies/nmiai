@@ -106,7 +106,8 @@ class CreateOrderArgs(BaseModel):
 
 
 class RegisterPaymentArgs(BaseModel):
-    invoiceId: Optional[int] = Field(default=None, description="Invoice ID. If not provided, searches for invoices.")
+    invoiceId: Optional[int] = Field(default=None, description="Invoice ID. If not provided, searches by customer name.")
+    customerName: Optional[str] = Field(default=None, description="Customer name to match the correct invoice")
     amount: float = Field(description="Payment amount. Use negative for reversal.")
     paymentDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
     paymentTypeId: Optional[int] = Field(default=None, description="Payment type ID. Auto-detected if not provided.")
@@ -114,6 +115,7 @@ class RegisterPaymentArgs(BaseModel):
 
 class CreateCreditNoteArgs(BaseModel):
     invoiceId: Optional[int] = Field(default=None, description="Invoice ID. Searches if not provided.")
+    customerName: Optional[str] = Field(default=None, description="Customer name to match the correct invoice")
     date: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
     comment: Optional[str] = None
 

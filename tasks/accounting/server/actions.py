@@ -16,6 +16,52 @@ def _money(value: float | int) -> float:
     return round(float(value), 2)
 
 
+def _contains_ci(haystack: str | None, needle: str | None) -> bool:
+    return bool(haystack and needle and needle.lower() in haystack.lower())
+
+
+def _invoice_matches(inv: dict, args: dict) -> bool:
+    """Best-effort invoice matching using customer/invoice identifiers from the prompt."""
+    customer = inv.get("customer") or {}
+    customer_name = customer.get("name") or customer.get("displayName") or inv.get("customerName") or ""
+    customer_org = customer.get("organizationNumber") or inv.get("customerOrganizationNumber") or ""
+    invoice_number = str(inv.get("invoiceNumber") or inv.get("number") or "")
+
+    if args.get("invoiceNumber") and args["invoiceNumber"] not in invoice_number:
+        return False
+    if args.get("customerOrgNumber") and args["customerOrgNumber"] != customer_org:
+        return False
+    if args.get("customerName") and not _contains_ci(customer_name, args["customerName"]):
+        return False
+    return True
+
+
+def _resolve_default_vat_id(vat_types: dict, fallback: int = 3) -> int:
+    for vt in vat_types.get("values", []):
+        if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
+            return vt["id"]
+    return fallback
+
+
+def _resolve_outgoing_vat_id(vat_types: dict, requested: int | None, fallback: int = 3) -> int:
+    if requested is None:
+        return _resolve_default_vat_id(vat_types, fallback)
+    requested = int(requested)
+    if requested not in (25, 15, 12, 0):
+        return requested
+    for vt in vat_types.get("values", []):
+        if vt.get("percentage") == requested and "utgående" in vt.get("name", "").lower():
+            return vt["id"]
+    return fallback
+
+
+async def _get_outgoing_vat_types(client: TripletexClient) -> dict:
+    try:
+        return await client.get("/ledger/vatType", params={"count": 50})
+    except Exception:
+        return {"values": []}
+
+
 async def _find_customer_id(
     client: TripletexClient,
     customer_id: int | None = None,
@@ -177,7 +223,6 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             employment_body = {
                 "employee": {"id": employee_id},
                 "startDate": args["startDate"],
-                "employmentType": args.get("employmentType", "ORDINARY"),
             }
             if args.get("endDate"):
                 employment_body["endDate"] = args["endDate"]
@@ -417,13 +462,24 @@ async def action_create_order(client: TripletexClient, args: dict) -> dict:
                 customer_id = c["id"]
                 break
 
+    # Dynamic VAT type lookup
+    default_vat_id = 3
+    try:
+        vat_types = await client.get("/ledger/vatType", params={"count": 50})
+        for vt in vat_types.get("values", []):
+            if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
+                default_vat_id = vt["id"]
+                break
+    except Exception:
+        pass
+
     order_lines = []
     for line in args.get("orderLines", []):
         ol = {
             "description": line.get("description", ""),
             "count": float(line.get("count", 1)),
             "unitPriceExcludingVatCurrency": float(line.get("unitPrice", line.get("unitPriceExcludingVat", 0))),
-            "vatType": {"id": int(line.get("vatTypeId", 3))},
+            "vatType": {"id": int(line.get("vatTypeId", default_vat_id))},
         }
         order_lines.append(ol)
 
@@ -442,15 +498,26 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     invoice_id = args.get("invoiceId")
 
     if not invoice_id:
-        # Search for the invoice
+        # Search for the invoice — try to match by customer name if provided
         invoices = await client.get("/invoice", params={
             "invoiceDateFrom": "2020-01-01",
             "invoiceDateTo": "2030-12-31",
             "count": 50,
         })
+        customer_name = (args.get("customerName") or "").lower()
         for inv in invoices.get("values", []):
-            invoice_id = inv["id"]
-            break  # Take the first/most recent
+            # Match by customer name if provided
+            if customer_name:
+                inv_customer = inv.get("customer", {}).get("name", "").lower()
+                if customer_name in inv_customer or inv_customer in customer_name:
+                    invoice_id = inv["id"]
+                    break
+            else:
+                invoice_id = inv["id"]
+                break
+        # Fallback: take last invoice if no customer match
+        if not invoice_id and invoices.get("values"):
+            invoice_id = invoices["values"][-1]["id"]
 
     if not invoice_id:
         return {"error": "No invoice found"}
@@ -486,10 +553,24 @@ async def action_create_credit_note(client: TripletexClient, args: dict) -> dict
             "invoiceDateTo": "2030-12-31",
             "count": 50,
         })
+        customer_name = (args.get("customerName") or "").lower()
         for inv in invoices.get("values", []):
-            if not inv.get("isCredited"):
+            if inv.get("isCredited"):
+                continue
+            if customer_name:
+                inv_customer = inv.get("customer", {}).get("name", "").lower()
+                if customer_name in inv_customer or inv_customer in customer_name:
+                    invoice_id = inv["id"]
+                    break
+            else:
                 invoice_id = inv["id"]
                 break
+        # Fallback: take first non-credited
+        if not invoice_id:
+            for inv in invoices.get("values", []):
+                if not inv.get("isCredited"):
+                    invoice_id = inv["id"]
+                    break
 
     if not invoice_id:
         return {"error": "No invoice found for credit note"}
@@ -880,9 +961,10 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     vat_amount = round(amount - amount_ex_vat, 2)
 
     # Balanced postings: expense debit + VAT debit = supplier credit
+    # MUST include supplier:{id} on postings - Tripletex requires it for supplier invoices
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount_ex_vat), "amountGrossCurrency": _money(amount_ex_vat)},
-        {"row": 2, "account": {"id": credit_account_id}, "amountGross": _money(-amount), "amountGrossCurrency": _money(-amount)},
+        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount_ex_vat), "amountGrossCurrency": _money(amount_ex_vat), "supplier": {"id": supplier_id}},
+        {"row": 2, "account": {"id": credit_account_id}, "amountGross": _money(-amount), "amountGrossCurrency": _money(-amount), "supplier": {"id": supplier_id}},
     ]
     # Add VAT line if we have the account
     if vat_account_id:
