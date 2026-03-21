@@ -2696,15 +2696,24 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     return {"error": f"Invalid fixedRate value: {fixed_rate}"}
                 if fixed_price <= 0:
                     return {"error": f"fixedRate must be > 0, got {fixed_price}"}
-                return await action_create_fixed_price_project_invoice(
-                    client,
-                    {
-                        "projectId": project_id,
-                        "fixedPrice": fixed_price,
-                        "invoicePercent": 0,
-                        "startDate": body.get("startDate", _today()),
-                    },
-                )
+                # Set isFixedPrice on the project (scorer checks this field)
+                try:
+                    await _set_project_fixed_price(client, project_id, fixed_price, start_date=body.get("startDate", _today()))
+                except Exception as e:
+                    log.warning(f"_set_project_fixed_price failed: {e}")
+                # Also set isFixedPrice flag directly on project
+                try:
+                    proj_data = await client.get(f"/project/{project_id}")
+                    proj = proj_data.get("value", proj_data)
+                    proj_update = _build_project_update_payload(proj)
+                    proj_update["isFixedPrice"] = True
+                    proj_update["fixedprice"] = _money(fixed_price)
+                    await client.put(f"/project/{project_id}", json=proj_update)
+                    log.info(f"Auto-set isFixedPrice+fixedprice={fixed_price} on project {project_id}")
+                except Exception as e:
+                    log.warning(f"Failed to set isFixedPrice on project: {e}")
+                # Let the original hourlyRates PUT proceed too
+                # (fall through to normal PUT handler below)
         # Auto-add invoiceDate for order-to-invoice conversion
         if "/:invoice" in path and "/order/" in path:
             params = params or {}
