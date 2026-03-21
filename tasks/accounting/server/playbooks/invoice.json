@@ -14,7 +14,18 @@
     "reverse payment",
     "returned by the bank",
     "send invoice",
-    "payment reversal"
+    "payment reversal",
+    "pago",
+    "payment",
+    "Zahlung",
+    "paiement",
+    "pagamento",
+    "registre el pago",
+    "register payment",
+    "registrer betaling",
+    "enregistrer le paiement",
+    "Zahlung registrieren",
+    "registrar pagamento"
   ],
   "description": "Create invoices, register payments, create credit notes",
   "preflight": [
@@ -36,5 +47,5 @@
     "Invoice body needs 'orders' array wrapping orderLines, each order needs customer, orderDate, deliveryDate",
     "vatType MUST be set on every order line"
   ],
-  "tips": "For credit notes, the invoice already exists — search for it. For payments, use negative paidAmount to reverse. FOREIGN CURRENCY: If invoice is in EUR/USD/etc, register_payment needs BOTH amount (NOK equivalent) and paidAmountCurrency (foreign currency amount). Calculate NOK amount = foreign amount × exchange rate. For exchange rate difference tasks, the payment amount in NOK differs from the invoice NOK amount — create a voucher for the exchange rate gain/loss (account 8060 gain / 8160 loss)."
+  "tips": "For credit notes, the invoice already exists — search for it. For payments, use negative paidAmount to reverse. PAYMENT AMOUNTS: The paidAmount must be the TOTAL INCLUDING VAT. If the prompt says 'sin IVA', 'excl. MVA', 'ekskl. mva', 'excl VAT', 'hors TVA', 'ohne MwSt', 'sem IVA', multiply by 1.25 to get the full payment amount (Norway 25% MVA). Example: 12700 excl VAT → paidAmount = 15875. FOREIGN CURRENCY: If invoice is in EUR/USD/etc, register_payment needs BOTH amount (NOK equivalent) and paidAmountCurrency (foreign currency amount). Calculate NOK amount = foreign amount × exchange rate. For exchange rate difference tasks, the payment amount in NOK differs from the invoice NOK amount — create a voucher for the exchange rate gain/loss (account 8060 gain / 8160 loss)."
 }
