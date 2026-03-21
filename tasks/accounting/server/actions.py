@@ -2278,19 +2278,29 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_fixed_price_project_invoice(client: TripletexClient, args: dict) -> dict:
-    """Create/find a fixed-price project, set the fixed price, then invoice a percentage of it."""
+    """Create/find a fixed-price project, set the fixed price, then invoice a percentage of it.
+
+    If invoicePercent is 0 or missing, this acts as a fixed-price updater only.
+    """
     project_id = await _find_project_id(
         client,
         project_id=args.get("projectId"),
         project_name=args.get("projectName"),
     )
 
+    fixed_price = float(args.get("fixedPrice", 0) or 0)
+    if fixed_price <= 0:
+        return {"error": "fixedPrice is required and must be > 0"}
+
     project_result: dict | None = None
     if not project_id:
+        project_name = args.get("projectName")
+        if not project_name:
+            return {"error": "projectName is required when projectId is missing"}
         project_result = await action_create_project(
             client,
             {
-                "name": args["projectName"],
+                "name": project_name,
                 "number": args.get("projectNumber"),
                 "customerId": args.get("customerId"),
                 "customerName": args.get("customerName"),
@@ -2299,7 +2309,7 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
                 "projectManagerEmail": args.get("projectManagerEmail"),
                 "projectManagerName": args.get("projectManagerName"),
                 "startDate": args.get("startDate", args.get("invoiceDate", _today())),
-                "fixedPrice": args["fixedPrice"],
+                "fixedPrice": fixed_price,
             },
         )
         project_value = project_result.get("value", project_result)
@@ -2309,13 +2319,23 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
             await _set_project_fixed_price(
                 client,
                 project_id,
-                args["fixedPrice"],
+                fixed_price,
                 start_date=args.get("startDate", _today()),
             )
         except Exception as e:
             log.warning(f"Could not update existing project {project_id} with fixed price: {e}")
 
-    invoice_amount = _money(args["fixedPrice"] * (float(args["invoicePercent"]) / 100.0))
+    invoice_percent = float(args.get("invoicePercent", 0) or 0)
+    if invoice_percent <= 0:
+        return {
+            "projectId": project_id,
+            "project": project_result,
+            "invoice": None,
+            "invoiceAmount": 0.0,
+            "fixedPriceOnly": True,
+        }
+
+    invoice_amount = _money(fixed_price * (invoice_percent / 100.0))
     invoice_result = await action_create_invoice(
         client,
         {
@@ -2328,7 +2348,7 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
                 {
                     "description": args.get(
                         "description",
-                        f"{_money(args['invoicePercent'])}% delbetaling for prosjekt {args['projectName']}",
+                        f"{_money(invoice_percent)}% delbetaling for prosjekt {args.get('projectName', project_id)}",
                     ),
                     "count": 1,
                     "unitPrice": invoice_amount,
@@ -2643,6 +2663,48 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 raise
         return await client.post(path, json=body)
     elif method == "PUT":
+        # Intercept fixed-price updates attempted via hourlyRates and route to typed action
+        # This avoids fragile hourlyRates payloads and enforces the fixed-price project flow.
+        if "/project/hourlyrates" in path.lower() and body and isinstance(body, dict):
+            fixed_rate = body.get("fixedRate")
+            if fixed_rate is None:
+                fixed_rate = body.get("fixedprice", body.get("fixedPrice"))
+            if fixed_rate is not None:
+                project_id = None
+                project_ref = body.get("project")
+                if isinstance(project_ref, dict):
+                    project_id = project_ref.get("id")
+                if not project_id and params.get("projectId"):
+                    try:
+                        project_id = int(params.get("projectId"))
+                    except Exception:
+                        pass
+                if not project_id:
+                    m = re.search(r"/project/hourlyrates/(\d+)", path.lower())
+                    if m:
+                        try:
+                            hr = await client.get(f"/project/hourlyRates/{int(m.group(1))}")
+                            hr_value = hr.get("value", hr)
+                            project_id = (hr_value.get("project") or {}).get("id")
+                        except Exception as e:
+                            log.warning(f"Could not resolve projectId from hourlyRate endpoint: {e}")
+                if not project_id:
+                    return {"error": "Could not resolve projectId for fixed price hourlyRates intercept"}
+                try:
+                    fixed_price = float(fixed_rate)
+                except Exception:
+                    return {"error": f"Invalid fixedRate value: {fixed_rate}"}
+                if fixed_price <= 0:
+                    return {"error": f"fixedRate must be > 0, got {fixed_price}"}
+                return await action_create_fixed_price_project_invoice(
+                    client,
+                    {
+                        "projectId": project_id,
+                        "fixedPrice": fixed_price,
+                        "invoicePercent": 0,
+                        "startDate": body.get("startDate", _today()),
+                    },
+                )
         # Auto-add invoiceDate for order-to-invoice conversion
         if "/:invoice" in path and "/order/" in path:
             params = params or {}
