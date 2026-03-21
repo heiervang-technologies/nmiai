@@ -38,7 +38,10 @@
     "erstellen sie eine rechnung",
     "linhas de produto",
     "lignes de produit",
-    "produktzeilen"
+    "produktzeilen",
+    "crea una factura",
+    "envía una factura",
+    "envie uma fatura"
   ],
   "description": "Create invoices, register payments, create credit notes",
   "preflight": [
