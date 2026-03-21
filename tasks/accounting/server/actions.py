@@ -912,7 +912,15 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
         return lines
 
     invoice_date = args.get("invoiceDate", _today())
-    due_date = args.get("invoiceDueDate", args.get("dueDate", invoice_date))
+    # Default due date to +30 days if not specified (not same day as invoice)
+    if not args.get("invoiceDueDate") and not args.get("dueDate"):
+        from datetime import timedelta
+        try:
+            due_date = (date.fromisoformat(invoice_date) + timedelta(days=30)).isoformat()
+        except Exception:
+            due_date = invoice_date
+    else:
+        due_date = args.get("invoiceDueDate", args.get("dueDate", invoice_date))
 
     # Resolve currency if specified (e.g. EUR, USD)
     currency_id = None
