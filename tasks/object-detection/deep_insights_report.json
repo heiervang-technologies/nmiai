@@ -1,0 +1,6162 @@
+{
+  "overview": {
+    "n_images": 248,
+    "n_annotations": 22731,
+    "n_categories": 356,
+    "median_annotations_per_image": 84,
+    "resolution": {
+      "min_width": 481,
+      "max_width": 5712,
+      "min_height": 399,
+      "max_height": 4624
+    }
+  },
+  "weak_classes": [
+    {
+      "rank": 1,
+      "cat_id": 81,
+      "count": 1,
+      "n_images": 1,
+      "name": "GRØNN TE CHAI 25POS TWININGS"
+    },
+    {
+      "rank": 2,
+      "cat_id": 107,
+      "count": 1,
+      "n_images": 1,
+      "name": "FLAT WHITE 16KAPSLER DOLCE GUSTO"
+    },
+    {
+      "rank": 3,
+      "cat_id": 167,
+      "count": 1,
+      "n_images": 1,
+      "name": "TROPISK AROMA FILTERMALT 200G JACOBS"
+    },
+    {
+      "rank": 4,
+      "cat_id": 115,
+      "count": 1,
+      "n_images": 1,
+      "name": "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS"
+    },
+    {
+      "rank": 5,
+      "cat_id": 350,
+      "count": 1,
+      "n_images": 1,
+      "name": "BLÅ JAVA HELE BØNNER 340G COTW"
+    },
+    {
+      "rank": 6,
+      "cat_id": 256,
+      "count": 1,
+      "n_images": 1,
+      "name": "KAFFEFILTER PRESSKANNE 25STK EVERGOOD"
+    },
+    {
+      "rank": 7,
+      "cat_id": 202,
+      "count": 1,
+      "n_images": 1,
+      "name": "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL"
+    },
+    {
+      "rank": 8,
+      "cat_id": 199,
+      "count": 1,
+      "n_images": 1,
+      "name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA"
+    },
+    {
+      "rank": 9,
+      "cat_id": 153,
+      "count": 1,
+      "n_images": 1,
+      "name": "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G"
+    },
+    {
+      "rank": 10,
+      "cat_id": 255,
+      "count": 1,
+      "n_images": 1,
+      "name": "LIPTON ICETEA MANGO PULVER 50G"
+    },
+    {
+      "rank": 11,
+      "cat_id": 310,
+      "count": 1,
+      "n_images": 1,
+      "name": "LIPTON ICETEA LEMON PULVER 50G"
+    },
+    {
+      "rank": 12,
+      "cat_id": 95,
+      "count": 1,
+      "n_images": 1,
+      "name": "EGG M/L ØKOLOGISKE 10STK VILJE"
+    },
+    {
+      "rank": 13,
+      "cat_id": 318,
+      "count": 1,
+      "n_images": 1,
+      "name": "PANNEKAKER 6STK ELDORADO"
+    },
+    {
+      "rank": 14,
+      "cat_id": 79,
+      "count": 1,
+      "n_images": 1,
+      "name": "PANNEKAKER GROVE STEKTE 480G ÅMLI"
+    },
+    {
+      "rank": 15,
+      "cat_id": 135,
+      "count": 1,
+      "n_images": 1,
+      "name": "GÅRDSEGG EKSTRA STORE 6STK EK"
+    },
+    {
+      "rank": 16,
+      "cat_id": 94,
+      "count": 1,
+      "n_images": 1,
+      "name": "HAVREGRYN STORE GLUTENFRI 1KG AXA"
+    },
+    {
+      "rank": 17,
+      "cat_id": 211,
+      "count": 1,
+      "n_images": 1,
+      "name": "BJØRN HAVREMEL 1KG AXA"
+    },
+    {
+      "rank": 18,
+      "cat_id": 116,
+      "count": 1,
+      "n_images": 1,
+      "name": "FROKOSTBLANDING LION 350G NESTLE"
+    },
+    {
+      "rank": 19,
+      "cat_id": 263,
+      "count": 1,
+      "n_images": 1,
+      "name": "GRANOLA RASPBERRY  500G START!"
+    },
+    {
+      "rank": 20,
+      "cat_id": 227,
+      "count": 1,
+      "n_images": 1,
+      "name": "STORFE ENTRECOTE 180G FIRST PRICE"
+    },
+    {
+      "rank": 21,
+      "cat_id": 300,
+      "count": 1,
+      "n_images": 1,
+      "name": ""
+    },
+    {
+      "rank": 22,
+      "cat_id": 230,
+      "count": 1,
+      "n_images": 1,
+      "name": "JARLSBERG 27% SKIVET 120G TINE"
+    },
+    {
+      "rank": 23,
+      "cat_id": 327,
+      "count": 1,
+      "n_images": 1,
+      "name": "POTETCHIPS SORT TRØFFEL 125G TORRES"
+    },
+    {
+      "rank": 24,
+      "cat_id": 242,
+      "count": 1,
+      "n_images": 1,
+      "name": "BOG 390G GILDE"
+    },
+    {
+      "rank": 25,
+      "cat_id": 154,
+      "count": 1,
+      "n_images": 1,
+      "name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU"
+    },
+    {
+      "rank": 26,
+      "cat_id": 335,
+      "count": 1,
+      "n_images": 1,
+      "name": "STORFE SHORT RIBS GREATER OMAHA LV"
+    },
+    {
+      "rank": 27,
+      "cat_id": 258,
+      "count": 1,
+      "n_images": 1,
+      "name": "EXTRA SWEET FRUIT 14G"
+    },
+    {
+      "rank": 28,
+      "cat_id": 26,
+      "count": 1,
+      "n_images": 1,
+      "name": "OB PROCOMFORT NORMAL 16ST"
+    },
+    {
+      "rank": 29,
+      "cat_id": 76,
+      "count": 1,
+      "n_images": 1,
+      "name": "BRUSCHETTA LIGURISK 130G OLIVINO"
+    },
+    {
+      "rank": 30,
+      "cat_id": 69,
+      "count": 1,
+      "n_images": 1,
+      "name": "DAVE&JON\\'S DADLER SOUR COLA 125G"
+    },
+    {
+      "rank": 31,
+      "cat_id": 291,
+      "count": 1,
+      "n_images": 1,
+      "name": "PREMIUM DARK ORANGE 100G FREIA"
+    },
+    {
+      "rank": 32,
+      "cat_id": 57,
+      "count": 1,
+      "n_images": 1,
+      "name": "MORENEPOTETER GULE 650G BJERTNÆS&HOEL"
+    },
+    {
+      "rank": 33,
+      "cat_id": 123,
+      "count": 1,
+      "n_images": 1,
+      "name": "ASPARGES GRØNN"
+    },
+    {
+      "rank": 34,
+      "cat_id": 234,
+      "count": 1,
+      "n_images": 1,
+      "name": "LANO SÅPE 2X125G"
+    },
+    {
+      "rank": 35,
+      "cat_id": 274,
+      "count": 1,
+      "n_images": 1,
+      "name": "VESTLANDSLEFSA TØRRE 10STK 360G"
+    },
+    {
+      "rank": 36,
+      "cat_id": 140,
+      "count": 1,
+      "n_images": 1,
+      "name": "SURDEIGKJEKS 100G SÆTRES BESTE"
+    },
+    {
+      "rank": 37,
+      "cat_id": 317,
+      "count": 1,
+      "n_images": 1,
+      "name": "POWERKNEKKEBRØD GL.FRI 225G SCHÄR"
+    },
+    {
+      "rank": 38,
+      "cat_id": 91,
+      "count": 1,
+      "n_images": 1,
+      "name": "SANDWICH PESTO 37G WASA"
+    },
+    {
+      "rank": 39,
+      "cat_id": 279,
+      "count": 1,
+      "n_images": 1,
+      "name": "KNEKKEBRØD NATURELL GL.FRI 240G WASA"
+    },
+    {
+      "rank": 40,
+      "cat_id": 241,
+      "count": 1,
+      "n_images": 1,
+      "name": "SANDWICH CHEESE GRESSLØK 37G WASA"
+    },
+    {
+      "rank": 41,
+      "cat_id": 149,
+      "count": 1,
+      "n_images": 1,
+      "name": "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G"
+    },
+    {
+      "rank": 42,
+      "cat_id": 190,
+      "count": 2,
+      "n_images": 2,
+      "name": "EARL GREY TEA ØKOLOGISK 15POS JACOBS"
+    },
+    {
+      "rank": 43,
+      "cat_id": 172,
+      "count": 2,
+      "n_images": 1,
+      "name": "FRIELE INSTANT GULL 100G REFILL"
+    },
+    {
+      "rank": 44,
+      "cat_id": 134,
+      "count": 2,
+      "n_images": 1,
+      "name": "EVERGOOD ESPRESSO HELE BØNNER 500G"
+    },
+    {
+      "rank": 45,
+      "cat_id": 285,
+      "count": 2,
+      "n_images": 1,
+      "name": "Leka Egg 10stk"
+    },
+    {
+      "rank": 46,
+      "cat_id": 254,
+      "count": 2,
+      "n_images": 1,
+      "name": "SMØREMYK MELKEFRI 400G BERIT"
+    },
+    {
+      "rank": 47,
+      "cat_id": 90,
+      "count": 2,
+      "n_images": 1,
+      "name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN"
+    },
+    {
+      "rank": 48,
+      "cat_id": 180,
+      "count": 2,
+      "n_images": 2,
+      "name": "MÜSLI PAPAYA GLUTENFRI 350G AXA"
+    },
+    {
+      "rank": 49,
+      "cat_id": 276,
+      "count": 2,
+      "n_images": 2,
+      "name": "HVITLØK 100G PK"
+    },
+    {
+      "rank": 50,
+      "cat_id": 354,
+      "count": 2,
+      "n_images": 1,
+      "name": "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN"
+    }
+  ],
+  "class_size_stats": {
+    "0": {
+      "median_rel_area": 0.001644,
+      "median_rel_w": 0.0339,
+      "median_rel_h": 0.0506,
+      "median_aspect_ratio": 0.826,
+      "min_rel_area": 0.00057,
+      "max_rel_area": 0.006978
+    },
+    "1": {
+      "median_rel_area": 0.002169,
+      "median_rel_w": 0.0393,
+      "median_rel_h": 0.0558,
+      "median_aspect_ratio": 0.88,
+      "min_rel_area": 0.000632,
+      "max_rel_area": 0.007298
+    },
+    "2": {
+      "median_rel_area": 0.004894,
+      "median_rel_w": 0.0632,
+      "median_rel_h": 0.0949,
+      "median_aspect_ratio": 0.763,
+      "min_rel_area": 0.003272,
+      "max_rel_area": 0.008882
+    },
+    "3": {
+      "median_rel_area": 0.003379,
+      "median_rel_w": 0.0558,
+      "median_rel_h": 0.0642,
+      "median_aspect_ratio": 1.108,
+      "min_rel_area": 0.000504,
+      "max_rel_area": 0.015726
+    },
+    "4": {
+      "median_rel_area": 0.007731,
+      "median_rel_w": 0.1251,
+      "median_rel_h": 0.0586,
+      "median_aspect_ratio": 2.107,
+      "min_rel_area": 0.006552,
+      "max_rel_area": 0.011297
+    },
+    "5": {
+      "median_rel_area": 0.003175,
+      "median_rel_w": 0.0516,
+      "median_rel_h": 0.0462,
+      "median_aspect_ratio": 1.358,
+      "min_rel_area": 0.000475,
+      "max_rel_area": 0.013967
+    },
+    "6": {
+      "median_rel_area": 0.012108,
+      "median_rel_w": 0.2022,
+      "median_rel_h": 0.0585,
+      "median_aspect_ratio": 3.164,
+      "min_rel_area": 0.004049,
+      "max_rel_area": 0.035109
+    },
+    "7": {
+      "median_rel_area": 0.00844,
+      "median_rel_w": 0.0844,
+      "median_rel_h": 0.1031,
+      "median_aspect_ratio": 0.83,
+      "min_rel_area": 0.000633,
+      "max_rel_area": 0.025739
+    },
+    "8": {
+      "median_rel_area": 0.002215,
+      "median_rel_w": 0.057,
+      "median_rel_h": 0.0433,
+      "median_aspect_ratio": 1.546,
+      "min_rel_area": 0.000487,
+      "max_rel_area": 0.011001
+    },
+    "9": {
+      "median_rel_area": 0.002617,
+      "median_rel_w": 0.0517,
+      "median_rel_h": 0.0479,
+      "median_aspect_ratio": 1.131,
+      "min_rel_area": 0.000202,
+      "max_rel_area": 0.004305
+    },
+    "10": {
+      "median_rel_area": 0.010238,
+      "median_rel_w": 0.1816,
+      "median_rel_h": 0.0511,
+      "median_aspect_ratio": 3.235,
+      "min_rel_area": 0.005836,
+      "max_rel_area": 0.012854
+    },
+    "11": {
+      "median_rel_area": 0.007661,
+      "median_rel_w": 0.071,
+      "median_rel_h": 0.1118,
+      "median_aspect_ratio": 0.769,
+      "min_rel_area": 0.002729,
+      "max_rel_area": 0.024251
+    },
+    "12": {
+      "median_rel_area": 0.002156,
+      "median_rel_w": 0.0453,
+      "median_rel_h": 0.0486,
+      "median_aspect_ratio": 1.12,
+      "min_rel_area": 0.000328,
+      "max_rel_area": 0.006903
+    },
+    "13": {
+      "median_rel_area": 0.006818,
+      "median_rel_w": 0.0536,
+      "median_rel_h": 0.1134,
+      "median_aspect_ratio": 0.463,
+      "min_rel_area": 0.000603,
+      "max_rel_area": 0.009822
+    },
+    "14": {
+      "median_rel_area": 0.005621,
+      "median_rel_w": 0.0585,
+      "median_rel_h": 0.1028,
+      "median_aspect_ratio": 0.691,
+      "min_rel_area": 0.002641,
+      "max_rel_area": 0.020691
+    },
+    "15": {
+      "median_rel_area": 0.00791,
+      "median_rel_w": 0.069,
+      "median_rel_h": 0.1165,
+      "median_aspect_ratio": 0.706,
+      "min_rel_area": 0.000339,
+      "max_rel_area": 0.026044
+    },
+    "16": {
+      "median_rel_area": 0.002587,
+      "median_rel_w": 0.0471,
+      "median_rel_h": 0.0549,
+      "median_aspect_ratio": 1.145,
+      "min_rel_area": 0.001677,
+      "max_rel_area": 0.006902
+    },
+    "17": {
+      "median_rel_area": 0.003169,
+      "median_rel_w": 0.0445,
+      "median_rel_h": 0.0515,
+      "median_aspect_ratio": 0.937,
+      "min_rel_area": 0.000407,
+      "max_rel_area": 0.003754
+    },
+    "18": {
+      "median_rel_area": 0.005118,
+      "median_rel_w": 0.0886,
+      "median_rel_h": 0.0546,
+      "median_aspect_ratio": 1.481,
+      "min_rel_area": 0.001321,
+      "max_rel_area": 0.009009
+    },
+    "19": {
+      "median_rel_area": 0.004098,
+      "median_rel_w": 0.06,
+      "median_rel_h": 0.0632,
+      "median_aspect_ratio": 1.086,
+      "min_rel_area": 0.000142,
+      "max_rel_area": 0.018594
+    },
+    "20": {
+      "median_rel_area": 0.0027,
+      "median_rel_w": 0.0503,
+      "median_rel_h": 0.0505,
+      "median_aspect_ratio": 1.0,
+      "min_rel_area": 0.001248,
+      "max_rel_area": 0.006406
+    },
+    "21": {
+      "median_rel_area": 0.002695,
+      "median_rel_w": 0.0345,
+      "median_rel_h": 0.0764,
+      "median_aspect_ratio": 0.564,
+      "min_rel_area": 0.00021,
+      "max_rel_area": 0.014186
+    },
+    "22": {
+      "median_rel_area": 0.005499,
+      "median_rel_w": 0.0573,
+      "median_rel_h": 0.0958,
+      "median_aspect_ratio": 0.721,
+      "min_rel_area": 0.001798,
+      "max_rel_area": 0.015549
+    },
+    "23": {
+      "median_rel_area": 0.010102,
+      "median_rel_w": 0.0795,
+      "median_rel_h": 0.1188,
+      "median_aspect_ratio": 0.716,
+      "min_rel_area": 0.002833,
+      "max_rel_area": 0.03137
+    },
+    "24": {
+      "median_rel_area": 0.002513,
+      "median_rel_w": 0.0576,
+      "median_rel_h": 0.0509,
+      "median_aspect_ratio": 1.057,
+      "min_rel_area": 0.001197,
+      "max_rel_area": 0.006921
+    },
+    "25": {
+      "median_rel_area": 0.003777,
+      "median_rel_w": 0.067,
+      "median_rel_h": 0.0602,
+      "median_aspect_ratio": 1.132,
+      "min_rel_area": 0.001644,
+      "max_rel_area": 0.017335
+    },
+    "26": {
+      "median_rel_area": 0.001814,
+      "median_rel_w": 0.0294,
+      "median_rel_h": 0.0617,
+      "median_aspect_ratio": 0.636,
+      "min_rel_area": 0.001814,
+      "max_rel_area": 0.001814
+    },
+    "27": {
+      "median_rel_area": 0.004138,
+      "median_rel_w": 0.0858,
+      "median_rel_h": 0.0538,
+      "median_aspect_ratio": 1.862,
+      "min_rel_area": 0.001155,
+      "max_rel_area": 0.013562
+    },
+    "28": {
+      "median_rel_area": 0.004491,
+      "median_rel_w": 0.1271,
+      "median_rel_h": 0.0612,
+      "median_aspect_ratio": 1.959,
+      "min_rel_area": 0.001563,
+      "max_rel_area": 0.004757
+    },
+    "29": {
+      "median_rel_area": 0.011635,
+      "median_rel_w": 0.0885,
+      "median_rel_h": 0.1309,
+      "median_aspect_ratio": 0.732,
+      "min_rel_area": 0.001694,
+      "max_rel_area": 0.044626
+    },
+    "30": {
+      "median_rel_area": 0.012743,
+      "median_rel_w": 0.0913,
+      "median_rel_h": 0.1386,
+      "median_aspect_ratio": 0.691,
+      "min_rel_area": 0.002203,
+      "max_rel_area": 0.05709
+    },
+    "31": {
+      "median_rel_area": 0.004901,
+      "median_rel_w": 0.0638,
+      "median_rel_h": 0.0922,
+      "median_aspect_ratio": 0.869,
+      "min_rel_area": 0.003609,
+      "max_rel_area": 0.022681
+    },
+    "32": {
+      "median_rel_area": 0.003011,
+      "median_rel_w": 0.0437,
+      "median_rel_h": 0.0707,
+      "median_aspect_ratio": 0.699,
+      "min_rel_area": 0.001425,
+      "max_rel_area": 0.0125
+    },
+    "33": {
+      "median_rel_area": 0.004988,
+      "median_rel_w": 0.0605,
+      "median_rel_h": 0.0823,
+      "median_aspect_ratio": 0.896,
+      "min_rel_area": 0.000488,
+      "max_rel_area": 0.018736
+    },
+    "34": {
+      "median_rel_area": 0.013455,
+      "median_rel_w": 0.0928,
+      "median_rel_h": 0.1427,
+      "median_aspect_ratio": 0.686,
+      "min_rel_area": 0.001947,
+      "max_rel_area": 0.057961
+    },
+    "35": {
+      "median_rel_area": 0.008669,
+      "median_rel_w": 0.0688,
+      "median_rel_h": 0.124,
+      "median_aspect_ratio": 0.657,
+      "min_rel_area": 0.003438,
+      "max_rel_area": 0.026637
+    },
+    "36": {
+      "median_rel_area": 0.002723,
+      "median_rel_w": 0.0412,
+      "median_rel_h": 0.063,
+      "median_aspect_ratio": 0.755,
+      "min_rel_area": 0.000451,
+      "max_rel_area": 0.005393
+    },
+    "37": {
+      "median_rel_area": 0.003338,
+      "median_rel_w": 0.0441,
+      "median_rel_h": 0.0729,
+      "median_aspect_ratio": 0.669,
+      "min_rel_area": 0.001135,
+      "max_rel_area": 0.005751
+    },
+    "38": {
+      "median_rel_area": 0.002485,
+      "median_rel_w": 0.0327,
+      "median_rel_h": 0.076,
+      "median_aspect_ratio": 0.534,
+      "min_rel_area": 0.000413,
+      "max_rel_area": 0.017281
+    },
+    "39": {
+      "median_rel_area": 0.003132,
+      "median_rel_w": 0.0367,
+      "median_rel_h": 0.0833,
+      "median_aspect_ratio": 0.594,
+      "min_rel_area": 0.00057,
+      "max_rel_area": 0.010425
+    },
+    "40": {
+      "median_rel_area": 0.003521,
+      "median_rel_w": 0.0446,
+      "median_rel_h": 0.0847,
+      "median_aspect_ratio": 0.567,
+      "min_rel_area": 0.001425,
+      "max_rel_area": 0.009969
+    },
+    "41": {
+      "median_rel_area": 0.007637,
+      "median_rel_w": 0.131,
+      "median_rel_h": 0.0564,
+      "median_aspect_ratio": 1.905,
+      "min_rel_area": 0.005586,
+      "max_rel_area": 0.008729
+    },
+    "42": {
+      "median_rel_area": 0.001146,
+      "median_rel_w": 0.0276,
+      "median_rel_h": 0.0417,
+      "median_aspect_ratio": 0.937,
+      "min_rel_area": 0.000697,
+      "max_rel_area": 0.002354
+    },
+    "43": {
+      "median_rel_area": 0.006441,
+      "median_rel_w": 0.1025,
+      "median_rel_h": 0.0653,
+      "median_aspect_ratio": 2.146,
+      "min_rel_area": 0.003263,
+      "max_rel_area": 0.008749
+    },
+    "44": {
+      "median_rel_area": 0.002611,
+      "median_rel_w": 0.0568,
+      "median_rel_h": 0.046,
+      "median_aspect_ratio": 1.647,
+      "min_rel_area": 0.002109,
+      "max_rel_area": 0.002611
+    },
+    "45": {
+      "median_rel_area": 0.003083,
+      "median_rel_w": 0.0865,
+      "median_rel_h": 0.0419,
+      "median_aspect_ratio": 1.878,
+      "min_rel_area": 0.001117,
+      "max_rel_area": 0.011802
+    },
+    "46": {
+      "median_rel_area": 0.003257,
+      "median_rel_w": 0.0812,
+      "median_rel_h": 0.0394,
+      "median_aspect_ratio": 1.914,
+      "min_rel_area": 0.001165,
+      "max_rel_area": 0.016192
+    },
+    "47": {
+      "median_rel_area": 0.006074,
+      "median_rel_w": 0.0604,
+      "median_rel_h": 0.0975,
+      "median_aspect_ratio": 0.753,
+      "min_rel_area": 0.002469,
+      "max_rel_area": 0.018047
+    },
+    "48": {
+      "median_rel_area": 0.008045,
+      "median_rel_w": 0.1037,
+      "median_rel_h": 0.0662,
+      "median_aspect_ratio": 2.242,
+      "min_rel_area": 0.004953,
+      "max_rel_area": 0.011518
+    },
+    "49": {
+      "median_rel_area": 0.003583,
+      "median_rel_w": 0.0422,
+      "median_rel_h": 0.0935,
+      "median_aspect_ratio": 0.557,
+      "min_rel_area": 0.001929,
+      "max_rel_area": 0.016504
+    },
+    "50": {
+      "median_rel_area": 0.008771,
+      "median_rel_w": 0.0759,
+      "median_rel_h": 0.1083,
+      "median_aspect_ratio": 0.755,
+      "min_rel_area": 0.003273,
+      "max_rel_area": 0.027488
+    },
+    "51": {
+      "median_rel_area": 0.006918,
+      "median_rel_w": 0.126,
+      "median_rel_h": 0.0549,
+      "median_aspect_ratio": 2.13,
+      "min_rel_area": 0.002903,
+      "max_rel_area": 0.008493
+    },
+    "52": {
+      "median_rel_area": 0.003117,
+      "median_rel_w": 0.0543,
+      "median_rel_h": 0.0542,
+      "median_aspect_ratio": 1.294,
+      "min_rel_area": 0.000139,
+      "max_rel_area": 0.014687
+    },
+    "53": {
+      "median_rel_area": 0.011225,
+      "median_rel_w": 0.085,
+      "median_rel_h": 0.1118,
+      "median_aspect_ratio": 0.81,
+      "min_rel_area": 0.002279,
+      "max_rel_area": 0.039838
+    },
+    "54": {
+      "median_rel_area": 0.007957,
+      "median_rel_w": 0.0797,
+      "median_rel_h": 0.1035,
+      "median_aspect_ratio": 0.727,
+      "min_rel_area": 0.004507,
+      "max_rel_area": 0.011727
+    },
+    "55": {
+      "median_rel_area": 0.002845,
+      "median_rel_w": 0.0389,
+      "median_rel_h": 0.0736,
+      "median_aspect_ratio": 0.686,
+      "min_rel_area": 0.00188,
+      "max_rel_area": 0.00518
+    },
+    "56": {
+      "median_rel_area": 0.003737,
+      "median_rel_w": 0.0461,
+      "median_rel_h": 0.0784,
+      "median_aspect_ratio": 0.671,
+      "min_rel_area": 0.001323,
+      "max_rel_area": 0.01094
+    },
+    "57": {
+      "median_rel_area": 0.002367,
+      "median_rel_w": 0.05,
+      "median_rel_h": 0.0473,
+      "median_aspect_ratio": 1.408,
+      "min_rel_area": 0.002367,
+      "max_rel_area": 0.002367
+    },
+    "58": {
+      "median_rel_area": 0.004357,
+      "median_rel_w": 0.0522,
+      "median_rel_h": 0.0805,
+      "median_aspect_ratio": 0.746,
+      "min_rel_area": 0.00185,
+      "max_rel_area": 0.005729
+    },
+    "59": {
+      "median_rel_area": 0.005351,
+      "median_rel_w": 0.0578,
+      "median_rel_h": 0.0926,
+      "median_aspect_ratio": 0.832,
+      "min_rel_area": 0.001826,
+      "max_rel_area": 0.009333
+    },
+    "60": {
+      "median_rel_area": 0.001263,
+      "median_rel_w": 0.0182,
+      "median_rel_h": 0.0694,
+      "median_aspect_ratio": 0.373,
+      "min_rel_area": 0.000558,
+      "max_rel_area": 0.001263
+    },
+    "61": {
+      "median_rel_area": 0.005172,
+      "median_rel_w": 0.0581,
+      "median_rel_h": 0.0877,
+      "median_aspect_ratio": 0.767,
+      "min_rel_area": 0.000912,
+      "max_rel_area": 0.016172
+    },
+    "62": {
+      "median_rel_area": 0.005501,
+      "median_rel_w": 0.0605,
+      "median_rel_h": 0.0913,
+      "median_aspect_ratio": 0.826,
+      "min_rel_area": 0.001372,
+      "max_rel_area": 0.017264
+    },
+    "63": {
+      "median_rel_area": 0.005221,
+      "median_rel_w": 0.0495,
+      "median_rel_h": 0.1014,
+      "median_aspect_ratio": 0.542,
+      "min_rel_area": 0.00162,
+      "max_rel_area": 0.013672
+    },
+    "64": {
+      "median_rel_area": 0.007883,
+      "median_rel_w": 0.0902,
+      "median_rel_h": 0.0865,
+      "median_aspect_ratio": 0.911,
+      "min_rel_area": 0.003204,
+      "max_rel_area": 0.023584
+    },
+    "65": {
+      "median_rel_area": 0.003264,
+      "median_rel_w": 0.0374,
+      "median_rel_h": 0.0809,
+      "median_aspect_ratio": 0.559,
+      "min_rel_area": 0.001341,
+      "max_rel_area": 0.008807
+    },
+    "66": {
+      "median_rel_area": 0.002283,
+      "median_rel_w": 0.0566,
+      "median_rel_h": 0.04,
+      "median_aspect_ratio": 1.728,
+      "min_rel_area": 0.000308,
+      "max_rel_area": 0.019024
+    },
+    "67": {
+      "median_rel_area": 0.003629,
+      "median_rel_w": 0.0851,
+      "median_rel_h": 0.0453,
+      "median_aspect_ratio": 2.18,
+      "min_rel_area": 0.002825,
+      "max_rel_area": 0.004096
+    },
+    "68": {
+      "median_rel_area": 0.001546,
+      "median_rel_w": 0.0286,
+      "median_rel_h": 0.056,
+      "median_aspect_ratio": 0.642,
+      "min_rel_area": 0.000279,
+      "max_rel_area": 0.00393
+    },
+    "69": {
+      "median_rel_area": 0.001529,
+      "median_rel_w": 0.031,
+      "median_rel_h": 0.0493,
+      "median_aspect_ratio": 0.838,
+      "min_rel_area": 0.001529,
+      "max_rel_area": 0.001529
+    },
+    "70": {
+      "median_rel_area": 0.003667,
+      "median_rel_w": 0.0521,
+      "median_rel_h": 0.0714,
+      "median_aspect_ratio": 0.906,
+      "min_rel_area": 0.002216,
+      "max_rel_area": 0.011084
+    },
+    "71": {
+      "median_rel_area": 0.004119,
+      "median_rel_w": 0.0567,
+      "median_rel_h": 0.0642,
+      "median_aspect_ratio": 1.053,
+      "min_rel_area": 0.001882,
+      "max_rel_area": 0.009789
+    },
+    "72": {
+      "median_rel_area": 0.011313,
+      "median_rel_w": 0.2252,
+      "median_rel_h": 0.0523,
+      "median_aspect_ratio": 3.561,
+      "min_rel_area": 0.003117,
+      "max_rel_area": 0.024871
+    },
+    "73": {
+      "median_rel_area": 0.002508,
+      "median_rel_w": 0.0461,
+      "median_rel_h": 0.0536,
+      "median_aspect_ratio": 1.03,
+      "min_rel_area": 0.000577,
+      "max_rel_area": 0.016826
+    },
+    "74": {
+      "median_rel_area": 0.007208,
+      "median_rel_w": 0.063,
+      "median_rel_h": 0.1144,
+      "median_aspect_ratio": 0.837,
+      "min_rel_area": 0.000135,
+      "max_rel_area": 0.008786
+    },
+    "75": {
+      "median_rel_area": 0.007742,
+      "median_rel_w": 0.0676,
+      "median_rel_h": 0.1068,
+      "median_aspect_ratio": 0.738,
+      "min_rel_area": 0.001425,
+      "max_rel_area": 0.026516
+    },
+    "76": {
+      "median_rel_area": 0.002579,
+      "median_rel_w": 0.0365,
+      "median_rel_h": 0.0707,
+      "median_aspect_ratio": 0.689,
+      "min_rel_area": 0.002579,
+      "max_rel_area": 0.002579
+    },
+    "77": {
+      "median_rel_area": 0.004832,
+      "median_rel_w": 0.0741,
+      "median_rel_h": 0.0761,
+      "median_aspect_ratio": 0.849,
+      "min_rel_area": 0.003565,
+      "max_rel_area": 0.005034
+    },
+    "78": {
+      "median_rel_area": 0.006444,
+      "median_rel_w": 0.063,
+      "median_rel_h": 0.099,
+      "median_aspect_ratio": 0.739,
+      "min_rel_area": 0.002218,
+      "max_rel_area": 0.023163
+    },
+    "79": {
+      "median_rel_area": 0.034477,
+      "median_rel_w": 0.1602,
+      "median_rel_h": 0.2152,
+      "median_aspect_ratio": 1.185,
+      "min_rel_area": 0.034477,
+      "max_rel_area": 0.034477
+    },
+    "80": {
+      "median_rel_area": 0.011417,
+      "median_rel_w": 0.2113,
+      "median_rel_h": 0.0566,
+      "median_aspect_ratio": 3.482,
+      "min_rel_area": 0.002351,
+      "max_rel_area": 0.037331
+    },
+    "81": {
+      "median_rel_area": 0.00572,
+      "median_rel_w": 0.0975,
+      "median_rel_h": 0.0587,
+      "median_aspect_ratio": 2.216,
+      "min_rel_area": 0.00572,
+      "max_rel_area": 0.00572
+    },
+    "82": {
+      "median_rel_area": 0.001778,
+      "median_rel_w": 0.0367,
+      "median_rel_h": 0.0479,
+      "median_aspect_ratio": 0.935,
+      "min_rel_area": 0.000433,
+      "max_rel_area": 0.008953
+    },
+    "83": {
+      "median_rel_area": 0.002141,
+      "median_rel_w": 0.0467,
+      "median_rel_h": 0.0452,
+      "median_aspect_ratio": 1.092,
+      "min_rel_area": 0.001099,
+      "max_rel_area": 0.006969
+    },
+    "84": {
+      "median_rel_area": 0.003819,
+      "median_rel_w": 0.0896,
+      "median_rel_h": 0.0499,
+      "median_aspect_ratio": 2.243,
+      "min_rel_area": 0.00043,
+      "max_rel_area": 0.021701
+    },
+    "85": {
+      "median_rel_area": 0.008481,
+      "median_rel_w": 0.0801,
+      "median_rel_h": 0.1089,
+      "median_aspect_ratio": 0.806,
+      "min_rel_area": 0.001835,
+      "max_rel_area": 0.033428
+    },
+    "86": {
+      "median_rel_area": 0.002525,
+      "median_rel_w": 0.0533,
+      "median_rel_h": 0.0479,
+      "median_aspect_ratio": 1.405,
+      "min_rel_area": 0.000319,
+      "max_rel_area": 0.01253
+    },
+    "87": {
+      "median_rel_area": 0.002788,
+      "median_rel_w": 0.0556,
+      "median_rel_h": 0.0448,
+      "median_aspect_ratio": 1.646,
+      "min_rel_area": 0.001001,
+      "max_rel_area": 0.015999
+    },
+    "88": {
+      "median_rel_area": 0.006026,
+      "median_rel_w": 0.1039,
+      "median_rel_h": 0.0581,
+      "median_aspect_ratio": 1.867,
+      "min_rel_area": 0.002355,
+      "max_rel_area": 0.011645
+    },
+    "89": {
+      "median_rel_area": 0.002637,
+      "median_rel_w": 0.0528,
+      "median_rel_h": 0.0505,
+      "median_aspect_ratio": 1.09,
+      "min_rel_area": 0.001125,
+      "max_rel_area": 0.008069
+    },
+    "90": {
+      "median_rel_area": 0.00707,
+      "median_rel_w": 0.0532,
+      "median_rel_h": 0.1328,
+      "median_aspect_ratio": 0.727,
+      "min_rel_area": 0.005692,
+      "max_rel_area": 0.00707
+    },
+    "91": {
+      "median_rel_area": 0.001213,
+      "median_rel_w": 0.0278,
+      "median_rel_h": 0.0437,
+      "median_aspect_ratio": 0.848,
+      "min_rel_area": 0.001213,
+      "max_rel_area": 0.001213
+    },
+    "92": {
+      "median_rel_area": 0.001559,
+      "median_rel_w": 0.0342,
+      "median_rel_h": 0.0427,
+      "median_aspect_ratio": 0.994,
+      "min_rel_area": 4.9e-05,
+      "max_rel_area": 0.010611
+    },
+    "93": {
+      "median_rel_area": 0.006223,
+      "median_rel_w": 0.0618,
+      "median_rel_h": 0.1055,
+      "median_aspect_ratio": 0.787,
+      "min_rel_area": 0.002884,
+      "max_rel_area": 0.015432
+    },
+    "94": {
+      "median_rel_area": 0.010386,
+      "median_rel_w": 0.0893,
+      "median_rel_h": 0.1163,
+      "median_aspect_ratio": 0.576,
+      "min_rel_area": 0.010386,
+      "max_rel_area": 0.010386
+    },
+    "95": {
+      "median_rel_area": 0.014675,
+      "median_rel_w": 0.2289,
+      "median_rel_h": 0.0641,
+      "median_aspect_ratio": 3.39,
+      "min_rel_area": 0.014675,
+      "max_rel_area": 0.014675
+    },
+    "96": {
+      "median_rel_area": 0.002055,
+      "median_rel_w": 0.0429,
+      "median_rel_h": 0.0486,
+      "median_aspect_ratio": 1.154,
+      "min_rel_area": 0.000436,
+      "max_rel_area": 0.008411
+    },
+    "97": {
+      "median_rel_area": 0.010057,
+      "median_rel_w": 0.0781,
+      "median_rel_h": 0.125,
+      "median_aspect_ratio": 0.699,
+      "min_rel_area": 0.001249,
+      "max_rel_area": 0.046208
+    },
+    "98": {
+      "median_rel_area": 0.003108,
+      "median_rel_w": 0.0503,
+      "median_rel_h": 0.0756,
+      "median_aspect_ratio": 0.673,
+      "min_rel_area": 0.001754,
+      "max_rel_area": 0.005478
+    },
+    "99": {
+      "median_rel_area": 0.006708,
+      "median_rel_w": 0.0578,
+      "median_rel_h": 0.0984,
+      "median_aspect_ratio": 0.708,
+      "min_rel_area": 0.000307,
+      "max_rel_area": 0.015319
+    },
+    "100": {
+      "median_rel_area": 0.003072,
+      "median_rel_w": 0.0393,
+      "median_rel_h": 0.0787,
+      "median_aspect_ratio": 0.632,
+      "min_rel_area": 0.000831,
+      "max_rel_area": 0.016113
+    },
+    "101": {
+      "median_rel_area": 0.000903,
+      "median_rel_w": 0.019,
+      "median_rel_h": 0.0475,
+      "median_aspect_ratio": 0.926,
+      "min_rel_area": 4.7e-05,
+      "max_rel_area": 0.005825
+    },
+    "102": {
+      "median_rel_area": 0.016147,
+      "median_rel_w": 0.2368,
+      "median_rel_h": 0.0736,
+      "median_aspect_ratio": 3.589,
+      "min_rel_area": 0.005237,
+      "max_rel_area": 0.040829
+    },
+    "103": {
+      "median_rel_area": 0.003036,
+      "median_rel_w": 0.0391,
+      "median_rel_h": 0.077,
+      "median_aspect_ratio": 0.619,
+      "min_rel_area": 0.001205,
+      "max_rel_area": 0.012929
+    },
+    "104": {
+      "median_rel_area": 0.006358,
+      "median_rel_w": 0.1291,
+      "median_rel_h": 0.0492,
+      "median_aspect_ratio": 3.204,
+      "min_rel_area": 0.000788,
+      "max_rel_area": 0.009965
+    },
+    "105": {
+      "median_rel_area": 0.012827,
+      "median_rel_w": 0.23,
+      "median_rel_h": 0.0558,
+      "median_aspect_ratio": 2.957,
+      "min_rel_area": 0.010295,
+      "max_rel_area": 0.020532
+    },
+    "106": {
+      "median_rel_area": 0.002811,
+      "median_rel_w": 0.037,
+      "median_rel_h": 0.0751,
+      "median_aspect_ratio": 0.512,
+      "min_rel_area": 0.000243,
+      "max_rel_area": 0.008306
+    },
+    "107": {
+      "median_rel_area": 0.006936,
+      "median_rel_w": 0.0731,
+      "median_rel_h": 0.0949,
+      "median_aspect_ratio": 0.77,
+      "min_rel_area": 0.006936,
+      "max_rel_area": 0.006936
+    },
+    "108": {
+      "median_rel_area": 0.006944,
+      "median_rel_w": 0.0693,
+      "median_rel_h": 0.1066,
+      "median_aspect_ratio": 0.735,
+      "min_rel_area": 0.001969,
+      "max_rel_area": 0.024023
+    },
+    "109": {
+      "median_rel_area": 0.002139,
+      "median_rel_w": 0.0435,
+      "median_rel_h": 0.049,
+      "median_aspect_ratio": 1.116,
+      "min_rel_area": 9.3e-05,
+      "max_rel_area": 0.010826
+    },
+    "110": {
+      "median_rel_area": 0.00844,
+      "median_rel_w": 0.1524,
+      "median_rel_h": 0.0491,
+      "median_aspect_ratio": 1.932,
+      "min_rel_area": 0.00252,
+      "max_rel_area": 0.009225
+    },
+    "111": {
+      "median_rel_area": 0.002627,
+      "median_rel_w": 0.0404,
+      "median_rel_h": 0.0682,
+      "median_aspect_ratio": 0.616,
+      "min_rel_area": 0.001042,
+      "max_rel_area": 0.014598
+    },
+    "112": {
+      "median_rel_area": 0.006544,
+      "median_rel_w": 0.0546,
+      "median_rel_h": 0.1093,
+      "median_aspect_ratio": 0.596,
+      "min_rel_area": 0.001306,
+      "max_rel_area": 0.008831
+    },
+    "113": {
+      "median_rel_area": 0.001008,
+      "median_rel_w": 0.032,
+      "median_rel_h": 0.0317,
+      "median_aspect_ratio": 1.317,
+      "min_rel_area": 0.000611,
+      "max_rel_area": 0.002188
+    },
+    "114": {
+      "median_rel_area": 0.002686,
+      "median_rel_w": 0.0441,
+      "median_rel_h": 0.0608,
+      "median_aspect_ratio": 0.967,
+      "min_rel_area": 0.000851,
+      "max_rel_area": 0.009406
+    },
+    "115": {
+      "median_rel_area": 0.004094,
+      "median_rel_w": 0.0511,
+      "median_rel_h": 0.0801,
+      "median_aspect_ratio": 0.934,
+      "min_rel_area": 0.004094,
+      "max_rel_area": 0.004094
+    },
+    "116": {
+      "median_rel_area": 0.003092,
+      "median_rel_w": 0.0145,
+      "median_rel_h": 0.2127,
+      "median_aspect_ratio": 0.098,
+      "min_rel_area": 0.003092,
+      "max_rel_area": 0.003092
+    },
+    "117": {
+      "median_rel_area": 0.006696,
+      "median_rel_w": 0.0682,
+      "median_rel_h": 0.1019,
+      "median_aspect_ratio": 0.76,
+      "min_rel_area": 0.000431,
+      "max_rel_area": 0.026663
+    },
+    "118": {
+      "median_rel_area": 0.006576,
+      "median_rel_w": 0.0594,
+      "median_rel_h": 0.1052,
+      "median_aspect_ratio": 0.642,
+      "min_rel_area": 0.003888,
+      "max_rel_area": 0.013251
+    },
+    "119": {
+      "median_rel_area": 0.002047,
+      "median_rel_w": 0.0348,
+      "median_rel_h": 0.0588,
+      "median_aspect_ratio": 0.73,
+      "min_rel_area": 0.001771,
+      "max_rel_area": 0.002264
+    },
+    "120": {
+      "median_rel_area": 0.004145,
+      "median_rel_w": 0.0565,
+      "median_rel_h": 0.0804,
+      "median_aspect_ratio": 1.065,
+      "min_rel_area": 0.004002,
+      "max_rel_area": 0.004145
+    },
+    "121": {
+      "median_rel_area": 0.00904,
+      "median_rel_w": 0.0705,
+      "median_rel_h": 0.1198,
+      "median_aspect_ratio": 0.674,
+      "min_rel_area": 0.003595,
+      "max_rel_area": 0.048815
+    },
+    "122": {
+      "median_rel_area": 0.002742,
+      "median_rel_w": 0.0765,
+      "median_rel_h": 0.0377,
+      "median_aspect_ratio": 1.897,
+      "min_rel_area": 0.000947,
+      "max_rel_area": 0.010298
+    },
+    "123": {
+      "median_rel_area": 0.002407,
+      "median_rel_w": 0.0415,
+      "median_rel_h": 0.058,
+      "median_aspect_ratio": 0.954,
+      "min_rel_area": 0.002407,
+      "max_rel_area": 0.002407
+    },
+    "124": {
+      "median_rel_area": 0.007906,
+      "median_rel_w": 0.0843,
+      "median_rel_h": 0.0936,
+      "median_aspect_ratio": 0.675,
+      "min_rel_area": 0.0023,
+      "max_rel_area": 0.008799
+    },
+    "125": {
+      "median_rel_area": 0.003427,
+      "median_rel_w": 0.0658,
+      "median_rel_h": 0.0645,
+      "median_aspect_ratio": 0.906,
+      "min_rel_area": 0.00189,
+      "max_rel_area": 0.004417
+    },
+    "126": {
+      "median_rel_area": 0.004156,
+      "median_rel_w": 0.0637,
+      "median_rel_h": 0.0691,
+      "median_aspect_ratio": 1.127,
+      "min_rel_area": 0.003139,
+      "max_rel_area": 0.007707
+    },
+    "127": {
+      "median_rel_area": 0.004581,
+      "median_rel_w": 0.0471,
+      "median_rel_h": 0.0972,
+      "median_aspect_ratio": 0.658,
+      "min_rel_area": 0.00347,
+      "max_rel_area": 0.012197
+    },
+    "128": {
+      "median_rel_area": 0.007429,
+      "median_rel_w": 0.1057,
+      "median_rel_h": 0.0593,
+      "median_aspect_ratio": 2.331,
+      "min_rel_area": 0.00404,
+      "max_rel_area": 0.010761
+    },
+    "129": {
+      "median_rel_area": 0.005153,
+      "median_rel_w": 0.0532,
+      "median_rel_h": 0.1057,
+      "median_aspect_ratio": 0.61,
+      "min_rel_area": 0.004386,
+      "max_rel_area": 0.014837
+    },
+    "130": {
+      "median_rel_area": 0.012728,
+      "median_rel_w": 0.0868,
+      "median_rel_h": 0.1425,
+      "median_aspect_ratio": 0.719,
+      "min_rel_area": 0.002417,
+      "max_rel_area": 0.042344
+    },
+    "131": {
+      "median_rel_area": 0.002542,
+      "median_rel_w": 0.0453,
+      "median_rel_h": 0.062,
+      "median_aspect_ratio": 0.926,
+      "min_rel_area": 0.000269,
+      "max_rel_area": 0.010664
+    },
+    "132": {
+      "median_rel_area": 0.002614,
+      "median_rel_w": 0.0536,
+      "median_rel_h": 0.0488,
+      "median_aspect_ratio": 1.424,
+      "min_rel_area": 3.4e-05,
+      "max_rel_area": 0.010236
+    },
+    "133": {
+      "median_rel_area": 0.000404,
+      "median_rel_w": 0.0419,
+      "median_rel_h": 0.0107,
+      "median_aspect_ratio": 3.5,
+      "min_rel_area": 0.000379,
+      "max_rel_area": 0.004852
+    },
+    "134": {
+      "median_rel_area": 0.008992,
+      "median_rel_w": 0.0852,
+      "median_rel_h": 0.1056,
+      "median_aspect_ratio": 0.605,
+      "min_rel_area": 0.007616,
+      "max_rel_area": 0.008992
+    },
+    "135": {
+      "median_rel_area": 0.011866,
+      "median_rel_w": 0.1998,
+      "median_rel_h": 0.0594,
+      "median_aspect_ratio": 2.915,
+      "min_rel_area": 0.011866,
+      "max_rel_area": 0.011866
+    },
+    "136": {
+      "median_rel_area": 0.003124,
+      "median_rel_w": 0.039,
+      "median_rel_h": 0.072,
+      "median_aspect_ratio": 0.639,
+      "min_rel_area": 0.001257,
+      "max_rel_area": 0.006448
+    },
+    "137": {
+      "median_rel_area": 0.002814,
+      "median_rel_w": 0.0435,
+      "median_rel_h": 0.063,
+      "median_aspect_ratio": 0.714,
+      "min_rel_area": 0.00107,
+      "max_rel_area": 0.008128
+    },
+    "138": {
+      "median_rel_area": 0.010693,
+      "median_rel_w": 0.2002,
+      "median_rel_h": 0.0534,
+      "median_aspect_ratio": 3.438,
+      "min_rel_area": 0.005173,
+      "max_rel_area": 0.015856
+    },
+    "139": {
+      "median_rel_area": 0.006875,
+      "median_rel_w": 0.1253,
+      "median_rel_h": 0.0557,
+      "median_aspect_ratio": 2.016,
+      "min_rel_area": 0.001804,
+      "max_rel_area": 0.023235
+    },
+    "140": {
+      "median_rel_area": 0.011296,
+      "median_rel_w": 0.0843,
+      "median_rel_h": 0.1339,
+      "median_aspect_ratio": 0.839,
+      "min_rel_area": 0.011296,
+      "max_rel_area": 0.011296
+    },
+    "141": {
+      "median_rel_area": 0.0044,
+      "median_rel_w": 0.0451,
+      "median_rel_h": 0.1015,
+      "median_aspect_ratio": 0.55,
+      "min_rel_area": 0.001473,
+      "max_rel_area": 0.01554
+    },
+    "142": {
+      "median_rel_area": 0.00397,
+      "median_rel_w": 0.0505,
+      "median_rel_h": 0.0731,
+      "median_aspect_ratio": 0.773,
+      "min_rel_area": 0.001745,
+      "max_rel_area": 0.018023
+    },
+    "143": {
+      "median_rel_area": 0.002773,
+      "median_rel_w": 0.0648,
+      "median_rel_h": 0.042,
+      "median_aspect_ratio": 2.168,
+      "min_rel_area": 0.000424,
+      "max_rel_area": 0.013349
+    },
+    "144": {
+      "median_rel_area": 0.003808,
+      "median_rel_w": 0.0511,
+      "median_rel_h": 0.1029,
+      "median_aspect_ratio": 0.621,
+      "min_rel_area": 0.002227,
+      "max_rel_area": 0.01408
+    },
+    "145": {
+      "median_rel_area": 0.007702,
+      "median_rel_w": 0.0641,
+      "median_rel_h": 0.1162,
+      "median_aspect_ratio": 0.709,
+      "min_rel_area": 0.002447,
+      "max_rel_area": 0.022322
+    },
+    "146": {
+      "median_rel_area": 0.003053,
+      "median_rel_w": 0.0392,
+      "median_rel_h": 0.0768,
+      "median_aspect_ratio": 0.486,
+      "min_rel_area": 0.000986,
+      "max_rel_area": 0.011794
+    },
+    "147": {
+      "median_rel_area": 0.003031,
+      "median_rel_w": 0.0759,
+      "median_rel_h": 0.0562,
+      "median_aspect_ratio": 2.056,
+      "min_rel_area": 0.001496,
+      "max_rel_area": 0.004266
+    },
+    "148": {
+      "median_rel_area": 0.006356,
+      "median_rel_w": 0.0614,
+      "median_rel_h": 0.1168,
+      "median_aspect_ratio": 0.678,
+      "min_rel_area": 0.003024,
+      "max_rel_area": 0.019799
+    },
+    "149": {
+      "median_rel_area": 0.004271,
+      "median_rel_w": 0.0384,
+      "median_rel_h": 0.1111,
+      "median_aspect_ratio": 0.461,
+      "min_rel_area": 0.004271,
+      "max_rel_area": 0.004271
+    },
+    "150": {
+      "median_rel_area": 0.003364,
+      "median_rel_w": 0.0595,
+      "median_rel_h": 0.068,
+      "median_aspect_ratio": 0.952,
+      "min_rel_area": 0.002163,
+      "max_rel_area": 0.021311
+    },
+    "151": {
+      "median_rel_area": 0.005712,
+      "median_rel_w": 0.0543,
+      "median_rel_h": 0.1029,
+      "median_aspect_ratio": 0.563,
+      "min_rel_area": 0.001829,
+      "max_rel_area": 0.026917
+    },
+    "152": {
+      "median_rel_area": 0.001813,
+      "median_rel_w": 0.0398,
+      "median_rel_h": 0.047,
+      "median_aspect_ratio": 1.14,
+      "min_rel_area": 1.8e-05,
+      "max_rel_area": 0.008915
+    },
+    "153": {
+      "median_rel_area": 0.00811,
+      "median_rel_w": 0.0595,
+      "median_rel_h": 0.1362,
+      "median_aspect_ratio": 0.583,
+      "min_rel_area": 0.00811,
+      "max_rel_area": 0.00811
+    },
+    "154": {
+      "median_rel_area": 0.00026,
+      "median_rel_w": 0.049,
+      "median_rel_h": 0.0053,
+      "median_aspect_ratio": 12.308,
+      "min_rel_area": 0.00026,
+      "max_rel_area": 0.00026
+    },
+    "155": {
+      "median_rel_area": 0.014183,
+      "median_rel_w": 0.0832,
+      "median_rel_h": 0.1705,
+      "median_aspect_ratio": 0.423,
+      "min_rel_area": 0.014183,
+      "max_rel_area": 0.014245
+    },
+    "156": {
+      "median_rel_area": 0.001351,
+      "median_rel_w": 0.0476,
+      "median_rel_h": 0.0324,
+      "median_aspect_ratio": 1.135,
+      "min_rel_area": 0.000887,
+      "max_rel_area": 0.008138
+    },
+    "157": {
+      "median_rel_area": 0.003182,
+      "median_rel_w": 0.0526,
+      "median_rel_h": 0.0622,
+      "median_aspect_ratio": 1.021,
+      "min_rel_area": 0.000681,
+      "max_rel_area": 0.010402
+    },
+    "158": {
+      "median_rel_area": 0.001228,
+      "median_rel_w": 0.033,
+      "median_rel_h": 0.0394,
+      "median_aspect_ratio": 0.926,
+      "min_rel_area": 0.000372,
+      "max_rel_area": 0.004499
+    },
+    "159": {
+      "median_rel_area": 0.015665,
+      "median_rel_w": 0.1364,
+      "median_rel_h": 0.1142,
+      "median_aspect_ratio": 2.593,
+      "min_rel_area": 0.008769,
+      "max_rel_area": 0.019295
+    },
+    "160": {
+      "median_rel_area": 0.003064,
+      "median_rel_w": 0.0367,
+      "median_rel_h": 0.082,
+      "median_aspect_ratio": 0.565,
+      "min_rel_area": 0.001099,
+      "max_rel_area": 0.01276
+    },
+    "161": {
+      "median_rel_area": 0.010311,
+      "median_rel_w": 0.0751,
+      "median_rel_h": 0.1374,
+      "median_aspect_ratio": 0.581,
+      "min_rel_area": 0.009395,
+      "max_rel_area": 0.015348
+    },
+    "162": {
+      "median_rel_area": 0.007773,
+      "median_rel_w": 0.074,
+      "median_rel_h": 0.1115,
+      "median_aspect_ratio": 0.817,
+      "min_rel_area": 0.00348,
+      "max_rel_area": 0.031106
+    },
+    "163": {
+      "median_rel_area": 0.012762,
+      "median_rel_w": 0.1163,
+      "median_rel_h": 0.1135,
+      "median_aspect_ratio": 1.836,
+      "min_rel_area": 0.009806,
+      "max_rel_area": 0.014729
+    },
+    "164": {
+      "median_rel_area": 0.008661,
+      "median_rel_w": 0.0718,
+      "median_rel_h": 0.1212,
+      "median_aspect_ratio": 0.685,
+      "min_rel_area": 0.002724,
+      "max_rel_area": 0.029742
+    },
+    "165": {
+      "median_rel_area": 0.003579,
+      "median_rel_w": 0.0458,
+      "median_rel_h": 0.0853,
+      "median_aspect_ratio": 0.689,
+      "min_rel_area": 0.00256,
+      "max_rel_area": 0.004264
+    },
+    "166": {
+      "median_rel_area": 0.004544,
+      "median_rel_w": 0.0565,
+      "median_rel_h": 0.0889,
+      "median_aspect_ratio": 0.592,
+      "min_rel_area": 0.002201,
+      "max_rel_area": 0.013144
+    },
+    "167": {
+      "median_rel_area": 0.005148,
+      "median_rel_w": 0.0495,
+      "median_rel_h": 0.104,
+      "median_aspect_ratio": 0.635,
+      "min_rel_area": 0.005148,
+      "max_rel_area": 0.005148
+    },
+    "168": {
+      "median_rel_area": 0.006157,
+      "median_rel_w": 0.1048,
+      "median_rel_h": 0.0662,
+      "median_aspect_ratio": 1.552,
+      "min_rel_area": 0.002601,
+      "max_rel_area": 0.009307
+    },
+    "169": {
+      "median_rel_area": 0.003456,
+      "median_rel_w": 0.0533,
+      "median_rel_h": 0.0652,
+      "median_aspect_ratio": 0.89,
+      "min_rel_area": 0.001701,
+      "max_rel_area": 0.008719
+    },
+    "170": {
+      "median_rel_area": 0.002121,
+      "median_rel_w": 0.0362,
+      "median_rel_h": 0.061,
+      "median_aspect_ratio": 0.778,
+      "min_rel_area": 0.001322,
+      "max_rel_area": 0.003157
+    },
+    "171": {
+      "median_rel_area": 0.003453,
+      "median_rel_w": 0.0426,
+      "median_rel_h": 0.0833,
+      "median_aspect_ratio": 0.571,
+      "min_rel_area": 0.00069,
+      "max_rel_area": 0.01144
+    },
+    "172": {
+      "median_rel_area": 0.00849,
+      "median_rel_w": 0.0954,
+      "median_rel_h": 0.089,
+      "median_aspect_ratio": 0.804,
+      "min_rel_area": 0.007513,
+      "max_rel_area": 0.00849
+    },
+    "173": {
+      "median_rel_area": 0.003101,
+      "median_rel_w": 0.067,
+      "median_rel_h": 0.0428,
+      "median_aspect_ratio": 1.898,
+      "min_rel_area": 0.001235,
+      "max_rel_area": 0.015056
+    },
+    "174": {
+      "median_rel_area": 0.003383,
+      "median_rel_w": 0.0662,
+      "median_rel_h": 0.0432,
+      "median_aspect_ratio": 1.806,
+      "min_rel_area": 0.001005,
+      "max_rel_area": 0.007908
+    },
+    "175": {
+      "median_rel_area": 0.005406,
+      "median_rel_w": 0.1049,
+      "median_rel_h": 0.0513,
+      "median_aspect_ratio": 1.964,
+      "min_rel_area": 0.002592,
+      "max_rel_area": 0.014156
+    },
+    "176": {
+      "median_rel_area": 0.006031,
+      "median_rel_w": 0.1343,
+      "median_rel_h": 0.0444,
+      "median_aspect_ratio": 2.515,
+      "min_rel_area": 0.004887,
+      "max_rel_area": 0.007061
+    },
+    "177": {
+      "median_rel_area": 0.003325,
+      "median_rel_w": 0.0486,
+      "median_rel_h": 0.0711,
+      "median_aspect_ratio": 0.673,
+      "min_rel_area": 0.000797,
+      "max_rel_area": 0.012676
+    },
+    "178": {
+      "median_rel_area": 0.003757,
+      "median_rel_w": 0.0428,
+      "median_rel_h": 0.0905,
+      "median_aspect_ratio": 0.502,
+      "min_rel_area": 0.001011,
+      "max_rel_area": 0.014687
+    },
+    "179": {
+      "median_rel_area": 0.002269,
+      "median_rel_w": 0.0377,
+      "median_rel_h": 0.0756,
+      "median_aspect_ratio": 0.835,
+      "min_rel_area": 0.001283,
+      "max_rel_area": 0.004503
+    },
+    "180": {
+      "median_rel_area": 0.002717,
+      "median_rel_w": 0.0463,
+      "median_rel_h": 0.0586,
+      "median_aspect_ratio": 1.333,
+      "min_rel_area": 5.7e-05,
+      "max_rel_area": 0.002717
+    },
+    "181": {
+      "median_rel_area": 0.010569,
+      "median_rel_w": 0.0776,
+      "median_rel_h": 0.1347,
+      "median_aspect_ratio": 0.698,
+      "min_rel_area": 0.0015,
+      "max_rel_area": 0.037885
+    },
+    "182": {
+      "median_rel_area": 0.003396,
+      "median_rel_w": 0.0396,
+      "median_rel_h": 0.0845,
+      "median_aspect_ratio": 0.626,
+      "min_rel_area": 0.001423,
+      "max_rel_area": 0.007801
+    },
+    "183": {
+      "median_rel_area": 0.001723,
+      "median_rel_w": 0.037,
+      "median_rel_h": 0.0466,
+      "median_aspect_ratio": 1.057,
+      "min_rel_area": 0.000321,
+      "max_rel_area": 0.005322
+    },
+    "184": {
+      "median_rel_area": 0.002524,
+      "median_rel_w": 0.0348,
+      "median_rel_h": 0.0667,
+      "median_aspect_ratio": 0.68,
+      "min_rel_area": 0.001108,
+      "max_rel_area": 0.010058
+    },
+    "185": {
+      "median_rel_area": 0.010418,
+      "median_rel_w": 0.084,
+      "median_rel_h": 0.125,
+      "median_aspect_ratio": 0.61,
+      "min_rel_area": 0.007071,
+      "max_rel_area": 0.020337
+    },
+    "186": {
+      "median_rel_area": 0.001902,
+      "median_rel_w": 0.0401,
+      "median_rel_h": 0.0469,
+      "median_aspect_ratio": 1.067,
+      "min_rel_area": 0.000487,
+      "max_rel_area": 0.007502
+    },
+    "187": {
+      "median_rel_area": 0.01074,
+      "median_rel_w": 0.082,
+      "median_rel_h": 0.1236,
+      "median_aspect_ratio": 0.786,
+      "min_rel_area": 0.003378,
+      "max_rel_area": 0.040641
+    },
+    "188": {
+      "median_rel_area": 0.001927,
+      "median_rel_w": 0.0312,
+      "median_rel_h": 0.0602,
+      "median_aspect_ratio": 0.679,
+      "min_rel_area": 0.000168,
+      "max_rel_area": 0.006525
+    },
+    "189": {
+      "median_rel_area": 0.002877,
+      "median_rel_w": 0.065,
+      "median_rel_h": 0.0423,
+      "median_aspect_ratio": 1.854,
+      "min_rel_area": 0.001354,
+      "max_rel_area": 0.008686
+    },
+    "190": {
+      "median_rel_area": 0.008418,
+      "median_rel_w": 0.0786,
+      "median_rel_h": 0.1071,
+      "median_aspect_ratio": 0.791,
+      "min_rel_area": 0.002515,
+      "max_rel_area": 0.008418
+    },
+    "191": {
+      "median_rel_area": 0.010746,
+      "median_rel_w": 0.0854,
+      "median_rel_h": 0.124,
+      "median_aspect_ratio": 0.805,
+      "min_rel_area": 0.003061,
+      "max_rel_area": 0.037709
+    },
+    "192": {
+      "median_rel_area": 0.004551,
+      "median_rel_w": 0.0565,
+      "median_rel_h": 0.0747,
+      "median_aspect_ratio": 0.817,
+      "min_rel_area": 0.00217,
+      "max_rel_area": 0.024375
+    },
+    "193": {
+      "median_rel_area": 0.006175,
+      "median_rel_w": 0.1204,
+      "median_rel_h": 0.0528,
+      "median_aspect_ratio": 2.076,
+      "min_rel_area": 0.002433,
+      "max_rel_area": 0.018054
+    },
+    "194": {
+      "median_rel_area": 0.007607,
+      "median_rel_w": 0.0719,
+      "median_rel_h": 0.1108,
+      "median_aspect_ratio": 0.752,
+      "min_rel_area": 0.001135,
+      "max_rel_area": 0.035404
+    },
+    "195": {
+      "median_rel_area": 0.006366,
+      "median_rel_w": 0.1229,
+      "median_rel_h": 0.0534,
+      "median_aspect_ratio": 1.956,
+      "min_rel_area": 0.004678,
+      "max_rel_area": 0.013159
+    },
+    "196": {
+      "median_rel_area": 0.003063,
+      "median_rel_w": 0.0458,
+      "median_rel_h": 0.0727,
+      "median_aspect_ratio": 0.629,
+      "min_rel_area": 0.001585,
+      "max_rel_area": 0.013301
+    },
+    "197": {
+      "median_rel_area": 0.008495,
+      "median_rel_w": 0.0767,
+      "median_rel_h": 0.1126,
+      "median_aspect_ratio": 0.78,
+      "min_rel_area": 0.00381,
+      "max_rel_area": 0.024962
+    },
+    "198": {
+      "median_rel_area": 0.003929,
+      "median_rel_w": 0.0486,
+      "median_rel_h": 0.0704,
+      "median_aspect_ratio": 1.074,
+      "min_rel_area": 0.000643,
+      "max_rel_area": 0.00888
+    },
+    "199": {
+      "median_rel_area": 0.000455,
+      "median_rel_w": 0.0378,
+      "median_rel_h": 0.012,
+      "median_aspect_ratio": 3.111,
+      "min_rel_area": 0.000455,
+      "max_rel_area": 0.000455
+    },
+    "200": {
+      "median_rel_area": 0.004386,
+      "median_rel_w": 0.0704,
+      "median_rel_h": 0.0616,
+      "median_aspect_ratio": 1.267,
+      "min_rel_area": 0.001549,
+      "max_rel_area": 0.016315
+    },
+    "201": {
+      "median_rel_area": 0.005471,
+      "median_rel_w": 0.0612,
+      "median_rel_h": 0.0879,
+      "median_aspect_ratio": 0.768,
+      "min_rel_area": 0.001482,
+      "max_rel_area": 0.014022
+    },
+    "202": {
+      "median_rel_area": 0.004818,
+      "median_rel_w": 0.062,
+      "median_rel_h": 0.0777,
+      "median_aspect_ratio": 1.064,
+      "min_rel_area": 0.004818,
+      "max_rel_area": 0.004818
+    },
+    "203": {
+      "median_rel_area": 0.002227,
+      "median_rel_w": 0.0701,
+      "median_rel_h": 0.0333,
+      "median_aspect_ratio": 1.603,
+      "min_rel_area": 0.000189,
+      "max_rel_area": 0.00262
+    },
+    "204": {
+      "median_rel_area": 0.002694,
+      "median_rel_w": 0.0474,
+      "median_rel_h": 0.0569,
+      "median_aspect_ratio": 1.049,
+      "min_rel_area": 0.000679,
+      "max_rel_area": 0.022155
+    },
+    "205": {
+      "median_rel_area": 0.012869,
+      "median_rel_w": 0.0789,
+      "median_rel_h": 0.1565,
+      "median_aspect_ratio": 0.559,
+      "min_rel_area": 0.00438,
+      "max_rel_area": 0.034299
+    },
+    "206": {
+      "median_rel_area": 0.003701,
+      "median_rel_w": 0.0458,
+      "median_rel_h": 0.0739,
+      "median_aspect_ratio": 0.774,
+      "min_rel_area": 0.00187,
+      "max_rel_area": 0.017658
+    },
+    "207": {
+      "median_rel_area": 0.002301,
+      "median_rel_w": 0.0459,
+      "median_rel_h": 0.0509,
+      "median_aspect_ratio": 1.143,
+      "min_rel_area": 0.000427,
+      "max_rel_area": 0.024067
+    },
+    "208": {
+      "median_rel_area": 0.002199,
+      "median_rel_w": 0.041,
+      "median_rel_h": 0.0515,
+      "median_aspect_ratio": 1.053,
+      "min_rel_area": 0.000369,
+      "max_rel_area": 0.014525
+    },
+    "209": {
+      "median_rel_area": 0.002026,
+      "median_rel_w": 0.0407,
+      "median_rel_h": 0.0493,
+      "median_aspect_ratio": 1.16,
+      "min_rel_area": 0.000292,
+      "max_rel_area": 0.004177
+    },
+    "210": {
+      "median_rel_area": 0.003269,
+      "median_rel_w": 0.0437,
+      "median_rel_h": 0.0737,
+      "median_aspect_ratio": 0.667,
+      "min_rel_area": 0.000957,
+      "max_rel_area": 0.014337
+    },
+    "211": {
+      "median_rel_area": 0.001813,
+      "median_rel_w": 0.0625,
+      "median_rel_h": 0.029,
+      "median_aspect_ratio": 2.874,
+      "min_rel_area": 0.001813,
+      "max_rel_area": 0.001813
+    },
+    "212": {
+      "median_rel_area": 0.001534,
+      "median_rel_w": 0.0343,
+      "median_rel_h": 0.0444,
+      "median_aspect_ratio": 0.973,
+      "min_rel_area": 0.000251,
+      "max_rel_area": 0.007007
+    },
+    "213": {
+      "median_rel_area": 0.005621,
+      "median_rel_w": 0.1151,
+      "median_rel_h": 0.0511,
+      "median_aspect_ratio": 1.9,
+      "min_rel_area": 0.00202,
+      "max_rel_area": 0.018217
+    },
+    "214": {
+      "median_rel_area": 0.006213,
+      "median_rel_w": 0.0601,
+      "median_rel_h": 0.0979,
+      "median_aspect_ratio": 0.724,
+      "min_rel_area": 0.001166,
+      "max_rel_area": 0.016735
+    },
+    "215": {
+      "median_rel_area": 0.003007,
+      "median_rel_w": 0.0532,
+      "median_rel_h": 0.0533,
+      "median_aspect_ratio": 1.063,
+      "min_rel_area": 0.001197,
+      "max_rel_area": 0.008238
+    },
+    "216": {
+      "median_rel_area": 0.010286,
+      "median_rel_w": 0.188,
+      "median_rel_h": 0.0507,
+      "median_aspect_ratio": 3.362,
+      "min_rel_area": 0.004059,
+      "max_rel_area": 0.012159
+    },
+    "217": {
+      "median_rel_area": 0.003099,
+      "median_rel_w": 0.0507,
+      "median_rel_h": 0.0608,
+      "median_aspect_ratio": 1.005,
+      "min_rel_area": 0.000335,
+      "max_rel_area": 0.009411
+    },
+    "218": {
+      "median_rel_area": 0.013466,
+      "median_rel_w": 0.0865,
+      "median_rel_h": 0.1481,
+      "median_aspect_ratio": 0.629,
+      "min_rel_area": 0.001827,
+      "max_rel_area": 0.042815
+    },
+    "219": {
+      "median_rel_area": 0.004843,
+      "median_rel_w": 0.0516,
+      "median_rel_h": 0.1,
+      "median_aspect_ratio": 0.568,
+      "min_rel_area": 0.002182,
+      "max_rel_area": 0.020633
+    },
+    "220": {
+      "median_rel_area": 0.005229,
+      "median_rel_w": 0.1293,
+      "median_rel_h": 0.0394,
+      "median_aspect_ratio": 2.376,
+      "min_rel_area": 0.00385,
+      "max_rel_area": 0.007259
+    },
+    "221": {
+      "median_rel_area": 0.005109,
+      "median_rel_w": 0.0645,
+      "median_rel_h": 0.0762,
+      "median_aspect_ratio": 0.934,
+      "min_rel_area": 0.001598,
+      "max_rel_area": 0.035126
+    },
+    "222": {
+      "median_rel_area": 0.004028,
+      "median_rel_w": 0.05,
+      "median_rel_h": 0.076,
+      "median_aspect_ratio": 0.763,
+      "min_rel_area": 0.001585,
+      "max_rel_area": 0.017998
+    },
+    "223": {
+      "median_rel_area": 0.00741,
+      "median_rel_w": 0.0667,
+      "median_rel_h": 0.111,
+      "median_aspect_ratio": 0.785,
+      "min_rel_area": 0.000822,
+      "max_rel_area": 0.021538
+    },
+    "224": {
+      "median_rel_area": 0.006073,
+      "median_rel_w": 0.0897,
+      "median_rel_h": 0.0681,
+      "median_aspect_ratio": 1.658,
+      "min_rel_area": 0.004576,
+      "max_rel_area": 0.011795
+    },
+    "225": {
+      "median_rel_area": 0.003409,
+      "median_rel_w": 0.0488,
+      "median_rel_h": 0.0738,
+      "median_aspect_ratio": 0.661,
+      "min_rel_area": 0.000701,
+      "max_rel_area": 0.011205
+    },
+    "226": {
+      "median_rel_area": 0.001744,
+      "median_rel_w": 0.033,
+      "median_rel_h": 0.0511,
+      "median_aspect_ratio": 0.964,
+      "min_rel_area": 0.000545,
+      "max_rel_area": 0.002822
+    },
+    "227": {
+      "median_rel_area": 0.000176,
+      "median_rel_w": 0.0037,
+      "median_rel_h": 0.0478,
+      "median_aspect_ratio": 0.103,
+      "min_rel_area": 0.000176,
+      "max_rel_area": 0.000176
+    },
+    "228": {
+      "median_rel_area": 0.004142,
+      "median_rel_w": 0.0516,
+      "median_rel_h": 0.0826,
+      "median_aspect_ratio": 0.806,
+      "min_rel_area": 0.000822,
+      "max_rel_area": 0.012062
+    },
+    "229": {
+      "median_rel_area": 0.005128,
+      "median_rel_w": 0.0587,
+      "median_rel_h": 0.0904,
+      "median_aspect_ratio": 0.747,
+      "min_rel_area": 0.003203,
+      "max_rel_area": 0.010011
+    },
+    "230": {
+      "median_rel_area": 0.000487,
+      "median_rel_w": 0.0496,
+      "median_rel_h": 0.0098,
+      "median_aspect_ratio": 6.75,
+      "min_rel_area": 0.000487,
+      "max_rel_area": 0.000487
+    },
+    "231": {
+      "median_rel_area": 0.002295,
+      "median_rel_w": 0.0429,
+      "median_rel_h": 0.0503,
+      "median_aspect_ratio": 1.082,
+      "min_rel_area": 0.000469,
+      "max_rel_area": 0.006263
+    },
+    "232": {
+      "median_rel_area": 0.006973,
+      "median_rel_w": 0.1232,
+      "median_rel_h": 0.0566,
+      "median_aspect_ratio": 1.974,
+      "min_rel_area": 0.002499,
+      "max_rel_area": 0.027038
+    },
+    "233": {
+      "median_rel_area": 0.001933,
+      "median_rel_w": 0.0379,
+      "median_rel_h": 0.0516,
+      "median_aspect_ratio": 0.962,
+      "min_rel_area": 0.000194,
+      "max_rel_area": 0.00817
+    },
+    "234": {
+      "median_rel_area": 0.000391,
+      "median_rel_w": 0.023,
+      "median_rel_h": 0.017,
+      "median_aspect_ratio": 1.804,
+      "min_rel_area": 0.000391,
+      "max_rel_area": 0.000391
+    },
+    "235": {
+      "median_rel_area": 0.004385,
+      "median_rel_w": 0.055,
+      "median_rel_h": 0.0794,
+      "median_aspect_ratio": 0.911,
+      "min_rel_area": 0.000188,
+      "max_rel_area": 0.017452
+    },
+    "236": {
+      "median_rel_area": 0.002139,
+      "median_rel_w": 0.045,
+      "median_rel_h": 0.0499,
+      "median_aspect_ratio": 1.143,
+      "min_rel_area": 0.000269,
+      "max_rel_area": 0.010206
+    },
+    "237": {
+      "median_rel_area": 0.010951,
+      "median_rel_w": 0.2045,
+      "median_rel_h": 0.0555,
+      "median_aspect_ratio": 3.156,
+      "min_rel_area": 0.004693,
+      "max_rel_area": 0.019089
+    },
+    "238": {
+      "median_rel_area": 0.00317,
+      "median_rel_w": 0.0754,
+      "median_rel_h": 0.045,
+      "median_aspect_ratio": 1.796,
+      "min_rel_area": 0.001024,
+      "max_rel_area": 0.012513
+    },
+    "239": {
+      "median_rel_area": 0.002591,
+      "median_rel_w": 0.0352,
+      "median_rel_h": 0.0761,
+      "median_aspect_ratio": 0.591,
+      "min_rel_area": 0.000308,
+      "max_rel_area": 0.013542
+    },
+    "240": {
+      "median_rel_area": 0.005921,
+      "median_rel_w": 0.0627,
+      "median_rel_h": 0.0977,
+      "median_aspect_ratio": 0.73,
+      "min_rel_area": 0.003024,
+      "max_rel_area": 0.016372
+    },
+    "241": {
+      "median_rel_area": 0.010781,
+      "median_rel_w": 0.1141,
+      "median_rel_h": 0.0945,
+      "median_aspect_ratio": 0.906,
+      "min_rel_area": 0.010781,
+      "max_rel_area": 0.010781
+    },
+    "242": {
+      "median_rel_area": 0.000355,
+      "median_rel_w": 0.0193,
+      "median_rel_h": 0.0184,
+      "median_aspect_ratio": 1.4,
+      "min_rel_area": 0.000355,
+      "max_rel_area": 0.000355
+    },
+    "243": {
+      "median_rel_area": 0.003671,
+      "median_rel_w": 0.085,
+      "median_rel_h": 0.0453,
+      "median_aspect_ratio": 2.322,
+      "min_rel_area": 0.000232,
+      "max_rel_area": 0.021928
+    },
+    "244": {
+      "median_rel_area": 0.002707,
+      "median_rel_w": 0.0497,
+      "median_rel_h": 0.0516,
+      "median_aspect_ratio": 1.222,
+      "min_rel_area": 0.000122,
+      "max_rel_area": 0.009321
+    },
+    "245": {
+      "median_rel_area": 0.003759,
+      "median_rel_w": 0.0554,
+      "median_rel_h": 0.0678,
+      "median_aspect_ratio": 0.683,
+      "min_rel_area": 0.001313,
+      "max_rel_area": 0.008688
+    },
+    "246": {
+      "median_rel_area": 0.002527,
+      "median_rel_w": 0.0535,
+      "median_rel_h": 0.0483,
+      "median_aspect_ratio": 1.371,
+      "min_rel_area": 7.5e-05,
+      "max_rel_area": 0.011749
+    },
+    "247": {
+      "median_rel_area": 0.004802,
+      "median_rel_w": 0.0541,
+      "median_rel_h": 0.089,
+      "median_aspect_ratio": 0.667,
+      "min_rel_area": 0.002691,
+      "max_rel_area": 0.011413
+    },
+    "248": {
+      "median_rel_area": 0.003063,
+      "median_rel_w": 0.0488,
+      "median_rel_h": 0.0707,
+      "median_aspect_ratio": 0.652,
+      "min_rel_area": 0.001758,
+      "max_rel_area": 0.005388
+    },
+    "249": {
+      "median_rel_area": 0.004572,
+      "median_rel_w": 0.0516,
+      "median_rel_h": 0.075,
+      "median_aspect_ratio": 0.624,
+      "min_rel_area": 0.00168,
+      "max_rel_area": 0.006261
+    },
+    "250": {
+      "median_rel_area": 0.001695,
+      "median_rel_w": 0.035,
+      "median_rel_h": 0.0483,
+      "median_aspect_ratio": 0.93,
+      "min_rel_area": 4.1e-05,
+      "max_rel_area": 0.005342
+    },
+    "251": {
+      "median_rel_area": 0.00138,
+      "median_rel_w": 0.0317,
+      "median_rel_h": 0.0493,
+      "median_aspect_ratio": 1.045,
+      "min_rel_area": 0.000784,
+      "max_rel_area": 0.005239
+    },
+    "252": {
+      "median_rel_area": 0.00565,
+      "median_rel_w": 0.0541,
+      "median_rel_h": 0.1037,
+      "median_aspect_ratio": 0.69,
+      "min_rel_area": 0.003693,
+      "max_rel_area": 0.006353
+    },
+    "253": {
+      "median_rel_area": 0.005232,
+      "median_rel_w": 0.1172,
+      "median_rel_h": 0.0439,
+      "median_aspect_ratio": 2.452,
+      "min_rel_area": 0.002409,
+      "max_rel_area": 0.006193
+    },
+    "254": {
+      "median_rel_area": 0.011256,
+      "median_rel_w": 0.17,
+      "median_rel_h": 0.0662,
+      "median_aspect_ratio": 2.855,
+      "min_rel_area": 0.007502,
+      "max_rel_area": 0.011256
+    },
+    "255": {
+      "median_rel_area": 0.003332,
+      "median_rel_w": 0.0681,
+      "median_rel_h": 0.049,
+      "median_aspect_ratio": 1.043,
+      "min_rel_area": 0.003332,
+      "max_rel_area": 0.003332
+    },
+    "256": {
+      "median_rel_area": 0.005712,
+      "median_rel_w": 0.0595,
+      "median_rel_h": 0.096,
+      "median_aspect_ratio": 0.826,
+      "min_rel_area": 0.005712,
+      "max_rel_area": 0.005712
+    },
+    "257": {
+      "median_rel_area": 0.003375,
+      "median_rel_w": 0.0452,
+      "median_rel_h": 0.071,
+      "median_aspect_ratio": 1.08,
+      "min_rel_area": 0.000125,
+      "max_rel_area": 0.005292
+    },
+    "258": {
+      "median_rel_area": 0.002419,
+      "median_rel_w": 0.0392,
+      "median_rel_h": 0.0617,
+      "median_aspect_ratio": 0.848,
+      "min_rel_area": 0.002419,
+      "max_rel_area": 0.002419
+    },
+    "259": {
+      "median_rel_area": 0.002989,
+      "median_rel_w": 0.0446,
+      "median_rel_h": 0.0665,
+      "median_aspect_ratio": 0.753,
+      "min_rel_area": 0.00112,
+      "max_rel_area": 0.015597
+    },
+    "260": {
+      "median_rel_area": 0.00533,
+      "median_rel_w": 0.0565,
+      "median_rel_h": 0.0865,
+      "median_aspect_ratio": 0.788,
+      "min_rel_area": 0.001169,
+      "max_rel_area": 0.015222
+    },
+    "261": {
+      "median_rel_area": 0.005073,
+      "median_rel_w": 0.0566,
+      "median_rel_h": 0.089,
+      "median_aspect_ratio": 0.782,
+      "min_rel_area": 0.000564,
+      "max_rel_area": 0.017303
+    },
+    "262": {
+      "median_rel_area": 0.006733,
+      "median_rel_w": 0.0649,
+      "median_rel_h": 0.1168,
+      "median_aspect_ratio": 0.729,
+      "min_rel_area": 0.003965,
+      "max_rel_area": 0.016036
+    },
+    "263": {
+      "median_rel_area": 0.001888,
+      "median_rel_w": 0.0665,
+      "median_rel_h": 0.0284,
+      "median_aspect_ratio": 3.222,
+      "min_rel_area": 0.001888,
+      "max_rel_area": 0.001888
+    },
+    "264": {
+      "median_rel_area": 0.002716,
+      "median_rel_w": 0.0459,
+      "median_rel_h": 0.0579,
+      "median_aspect_ratio": 1.005,
+      "min_rel_area": 0.000369,
+      "max_rel_area": 0.00948
+    },
+    "265": {
+      "median_rel_area": 0.002821,
+      "median_rel_w": 0.0474,
+      "median_rel_h": 0.0602,
+      "median_aspect_ratio": 1.018,
+      "min_rel_area": 0.000694,
+      "max_rel_area": 0.014466
+    },
+    "266": {
+      "median_rel_area": 0.002603,
+      "median_rel_w": 0.0377,
+      "median_rel_h": 0.0783,
+      "median_aspect_ratio": 0.692,
+      "min_rel_area": 0.001687,
+      "max_rel_area": 0.016875
+    },
+    "267": {
+      "median_rel_area": 0.009211,
+      "median_rel_w": 0.0801,
+      "median_rel_h": 0.1082,
+      "median_aspect_ratio": 0.598,
+      "min_rel_area": 0.002735,
+      "max_rel_area": 0.019681
+    },
+    "268": {
+      "median_rel_area": 0.001981,
+      "median_rel_w": 0.0429,
+      "median_rel_h": 0.0466,
+      "median_aspect_ratio": 1.049,
+      "min_rel_area": 0.000287,
+      "max_rel_area": 0.006497
+    },
+    "269": {
+      "median_rel_area": 0.013469,
+      "median_rel_w": 0.1858,
+      "median_rel_h": 0.0652,
+      "median_aspect_ratio": 2.935,
+      "min_rel_area": 0.006739,
+      "max_rel_area": 0.038795
+    },
+    "270": {
+      "median_rel_area": 0.007226,
+      "median_rel_w": 0.0774,
+      "median_rel_h": 0.0999,
+      "median_aspect_ratio": 0.797,
+      "min_rel_area": 0.002355,
+      "max_rel_area": 0.020409
+    },
+    "271": {
+      "median_rel_area": 0.002211,
+      "median_rel_w": 0.0452,
+      "median_rel_h": 0.0484,
+      "median_aspect_ratio": 1.155,
+      "min_rel_area": 0.000242,
+      "max_rel_area": 0.010229
+    },
+    "272": {
+      "median_rel_area": 0.005054,
+      "median_rel_w": 0.0475,
+      "median_rel_h": 0.099,
+      "median_aspect_ratio": 0.585,
+      "min_rel_area": 0.002462,
+      "max_rel_area": 0.021967
+    },
+    "273": {
+      "median_rel_area": 0.004692,
+      "median_rel_w": 0.0857,
+      "median_rel_h": 0.0559,
+      "median_aspect_ratio": 1.88,
+      "min_rel_area": 0.003632,
+      "max_rel_area": 0.005119
+    },
+    "274": {
+      "median_rel_area": 0.004256,
+      "median_rel_w": 0.057,
+      "median_rel_h": 0.0747,
+      "median_aspect_ratio": 1.018,
+      "min_rel_area": 0.004256,
+      "max_rel_area": 0.004256
+    },
+    "275": {
+      "median_rel_area": 0.011729,
+      "median_rel_w": 0.2045,
+      "median_rel_h": 0.0576,
+      "median_aspect_ratio": 3.074,
+      "min_rel_area": 0.003448,
+      "max_rel_area": 0.045554
+    },
+    "276": {
+      "median_rel_area": 0.002072,
+      "median_rel_w": 0.042,
+      "median_rel_h": 0.0493,
+      "median_aspect_ratio": 1.135,
+      "min_rel_area": 0.001117,
+      "max_rel_area": 0.002072
+    },
+    "277": {
+      "median_rel_area": 0.00713,
+      "median_rel_w": 0.0664,
+      "median_rel_h": 0.1073,
+      "median_aspect_ratio": 0.869,
+      "min_rel_area": 0.004394,
+      "max_rel_area": 0.015836
+    },
+    "278": {
+      "median_rel_area": 0.004147,
+      "median_rel_w": 0.0485,
+      "median_rel_h": 0.0901,
+      "median_aspect_ratio": 0.714,
+      "min_rel_area": 0.001261,
+      "max_rel_area": 0.00544
+    },
+    "279": {
+      "median_rel_area": 0.00081,
+      "median_rel_w": 0.0797,
+      "median_rel_h": 0.0102,
+      "median_aspect_ratio": 5.878,
+      "min_rel_area": 0.00081,
+      "max_rel_area": 0.00081
+    },
+    "280": {
+      "median_rel_area": 0.002327,
+      "median_rel_w": 0.0342,
+      "median_rel_h": 0.0678,
+      "median_aspect_ratio": 0.63,
+      "min_rel_area": 0.000147,
+      "max_rel_area": 0.010206
+    },
+    "281": {
+      "median_rel_area": 0.002291,
+      "median_rel_w": 0.0434,
+      "median_rel_h": 0.0593,
+      "median_aspect_ratio": 1.106,
+      "min_rel_area": 0.000295,
+      "max_rel_area": 0.01178
+    },
+    "282": {
+      "median_rel_area": 0.004857,
+      "median_rel_w": 0.0635,
+      "median_rel_h": 0.0721,
+      "median_aspect_ratio": 1.0,
+      "min_rel_area": 0.00019,
+      "max_rel_area": 0.014596
+    },
+    "283": {
+      "median_rel_area": 0.013339,
+      "median_rel_w": 0.2303,
+      "median_rel_h": 0.0568,
+      "median_aspect_ratio": 3.441,
+      "min_rel_area": 0.002711,
+      "max_rel_area": 0.059236
+    },
+    "284": {
+      "median_rel_area": 0.002993,
+      "median_rel_w": 0.0508,
+      "median_rel_h": 0.0572,
+      "median_aspect_ratio": 1.01,
+      "min_rel_area": 0.000569,
+      "max_rel_area": 0.013884
+    },
+    "285": {
+      "median_rel_area": 0.02767,
+      "median_rel_w": 0.3093,
+      "median_rel_h": 0.0895,
+      "median_aspect_ratio": 3.881,
+      "min_rel_area": 0.019083,
+      "max_rel_area": 0.02767
+    },
+    "286": {
+      "median_rel_area": 0.011583,
+      "median_rel_w": 0.2022,
+      "median_rel_h": 0.0576,
+      "median_aspect_ratio": 3.273,
+      "min_rel_area": 0.010764,
+      "max_rel_area": 0.013267
+    },
+    "287": {
+      "median_rel_area": 0.003187,
+      "median_rel_w": 0.0681,
+      "median_rel_h": 0.0385,
+      "median_aspect_ratio": 1.959,
+      "min_rel_area": 0.001419,
+      "max_rel_area": 0.010684
+    },
+    "288": {
+      "median_rel_area": 0.017683,
+      "median_rel_w": 0.2051,
+      "median_rel_h": 0.0862,
+      "median_aspect_ratio": 3.42,
+      "min_rel_area": 0.01714,
+      "max_rel_area": 0.021059
+    },
+    "289": {
+      "median_rel_area": 0.012629,
+      "median_rel_w": 0.0937,
+      "median_rel_h": 0.1423,
+      "median_aspect_ratio": 0.777,
+      "min_rel_area": 0.003023,
+      "max_rel_area": 0.039257
+    },
+    "290": {
+      "median_rel_area": 0.002892,
+      "median_rel_w": 0.0387,
+      "median_rel_h": 0.0688,
+      "median_aspect_ratio": 0.884,
+      "min_rel_area": 0.000315,
+      "max_rel_area": 0.005796
+    },
+    "291": {
+      "median_rel_area": 0.001057,
+      "median_rel_w": 0.026,
+      "median_rel_h": 0.0407,
+      "median_aspect_ratio": 0.852,
+      "min_rel_area": 0.001057,
+      "max_rel_area": 0.001057
+    },
+    "292": {
+      "median_rel_area": 0.002333,
+      "median_rel_w": 0.0352,
+      "median_rel_h": 0.0605,
+      "median_aspect_ratio": 0.673,
+      "min_rel_area": 0.000949,
+      "max_rel_area": 0.009005
+    },
+    "293": {
+      "median_rel_area": 0.007075,
+      "median_rel_w": 0.0652,
+      "median_rel_h": 0.1085,
+      "median_aspect_ratio": 0.842,
+      "min_rel_area": 0.006683,
+      "max_rel_area": 0.007075
+    },
+    "294": {
+      "median_rel_area": 0.005077,
+      "median_rel_w": 0.0506,
+      "median_rel_h": 0.1081,
+      "median_aspect_ratio": 0.624,
+      "min_rel_area": 0.001591,
+      "max_rel_area": 0.015349
+    },
+    "295": {
+      "median_rel_area": 0.012842,
+      "median_rel_w": 0.0724,
+      "median_rel_h": 0.1705,
+      "median_aspect_ratio": 0.423,
+      "min_rel_area": 0.008034,
+      "max_rel_area": 0.014183
+    },
+    "296": {
+      "median_rel_area": 0.002223,
+      "median_rel_w": 0.045,
+      "median_rel_h": 0.0479,
+      "median_aspect_ratio": 1.174,
+      "min_rel_area": 0.00026,
+      "max_rel_area": 0.009342
+    },
+    "297": {
+      "median_rel_area": 0.003195,
+      "median_rel_w": 0.0727,
+      "median_rel_h": 0.04,
+      "median_aspect_ratio": 1.947,
+      "min_rel_area": 0.001104,
+      "max_rel_area": 0.007486
+    },
+    "298": {
+      "median_rel_area": 0.004282,
+      "median_rel_w": 0.0491,
+      "median_rel_h": 0.0888,
+      "median_aspect_ratio": 0.625,
+      "min_rel_area": 0.001485,
+      "max_rel_area": 0.011355
+    },
+    "299": {
+      "median_rel_area": 0.002646,
+      "median_rel_w": 0.0535,
+      "median_rel_h": 0.06,
+      "median_aspect_ratio": 0.911,
+      "min_rel_area": 0.00246,
+      "max_rel_area": 0.008708
+    },
+    "300": {
+      "median_rel_area": 0.000452,
+      "median_rel_w": 0.0126,
+      "median_rel_h": 0.0359,
+      "median_aspect_ratio": 0.466,
+      "min_rel_area": 0.000452,
+      "max_rel_area": 0.000452
+    },
+    "301": {
+      "median_rel_area": 0.011361,
+      "median_rel_w": 0.2074,
+      "median_rel_h": 0.0541,
+      "median_aspect_ratio": 3.483,
+      "min_rel_area": 0.008243,
+      "max_rel_area": 0.012148
+    },
+    "302": {
+      "median_rel_area": 0.004785,
+      "median_rel_w": 0.0962,
+      "median_rel_h": 0.053,
+      "median_aspect_ratio": 2.024,
+      "min_rel_area": 0.003356,
+      "max_rel_area": 0.00989
+    },
+    "303": {
+      "median_rel_area": 0.0012,
+      "median_rel_w": 0.0288,
+      "median_rel_h": 0.0396,
+      "median_aspect_ratio": 1.013,
+      "min_rel_area": 0.000442,
+      "max_rel_area": 0.002117
+    },
+    "304": {
+      "median_rel_area": 0.004604,
+      "median_rel_w": 0.0471,
+      "median_rel_h": 0.0984,
+      "median_aspect_ratio": 0.607,
+      "min_rel_area": 0.001913,
+      "max_rel_area": 0.028093
+    },
+    "305": {
+      "median_rel_area": 0.006814,
+      "median_rel_w": 0.0646,
+      "median_rel_h": 0.1028,
+      "median_aspect_ratio": 0.741,
+      "min_rel_area": 0.000663,
+      "max_rel_area": 0.019778
+    },
+    "306": {
+      "median_rel_area": 0.003971,
+      "median_rel_w": 0.0447,
+      "median_rel_h": 0.0967,
+      "median_aspect_ratio": 0.614,
+      "min_rel_area": 0.000518,
+      "max_rel_area": 0.022025
+    },
+    "307": {
+      "median_rel_area": 0.002146,
+      "median_rel_w": 0.0337,
+      "median_rel_h": 0.0611,
+      "median_aspect_ratio": 0.667,
+      "min_rel_area": 0.00031,
+      "max_rel_area": 0.012395
+    },
+    "308": {
+      "median_rel_area": 0.00616,
+      "median_rel_w": 0.0625,
+      "median_rel_h": 0.0979,
+      "median_aspect_ratio": 0.819,
+      "min_rel_area": 0.002048,
+      "max_rel_area": 0.025568
+    },
+    "309": {
+      "median_rel_area": 0.003586,
+      "median_rel_w": 0.077,
+      "median_rel_h": 0.0434,
+      "median_aspect_ratio": 1.906,
+      "min_rel_area": 0.001274,
+      "max_rel_area": 0.01672
+    },
+    "310": {
+      "median_rel_area": 0.002686,
+      "median_rel_w": 0.0653,
+      "median_rel_h": 0.0411,
+      "median_aspect_ratio": 1.19,
+      "min_rel_area": 0.002686,
+      "max_rel_area": 0.002686
+    },
+    "311": {
+      "median_rel_area": 0.001384,
+      "median_rel_w": 0.038,
+      "median_rel_h": 0.0393,
+      "median_aspect_ratio": 1.31,
+      "min_rel_area": 0.000849,
+      "max_rel_area": 0.005873
+    },
+    "312": {
+      "median_rel_area": 0.012079,
+      "median_rel_w": 0.2146,
+      "median_rel_h": 0.0563,
+      "median_aspect_ratio": 3.527,
+      "min_rel_area": 0.004111,
+      "max_rel_area": 0.020107
+    },
+    "313": {
+      "median_rel_area": 0.013861,
+      "median_rel_w": 0.1799,
+      "median_rel_h": 0.0858,
+      "median_aspect_ratio": 1.413,
+      "min_rel_area": 0.011393,
+      "max_rel_area": 0.021551
+    },
+    "314": {
+      "median_rel_area": 0.004394,
+      "median_rel_w": 0.0665,
+      "median_rel_h": 0.065,
+      "median_aspect_ratio": 1.103,
+      "min_rel_area": 0.001783,
+      "max_rel_area": 0.009597
+    },
+    "315": {
+      "median_rel_area": 0.004909,
+      "median_rel_w": 0.0565,
+      "median_rel_h": 0.0847,
+      "median_aspect_ratio": 0.801,
+      "min_rel_area": 0.001003,
+      "max_rel_area": 0.01838
+    },
+    "316": {
+      "median_rel_area": 0.00235,
+      "median_rel_w": 0.0613,
+      "median_rel_h": 0.0384,
+      "median_aspect_ratio": 2.108,
+      "min_rel_area": 0.000625,
+      "max_rel_area": 0.008579
+    },
+    "317": {
+      "median_rel_area": 0.00076,
+      "median_rel_w": 0.029,
+      "median_rel_h": 0.0262,
+      "median_aspect_ratio": 1.966,
+      "min_rel_area": 0.00076,
+      "max_rel_area": 0.00076
+    },
+    "318": {
+      "median_rel_area": 0.028425,
+      "median_rel_w": 0.1725,
+      "median_rel_h": 0.1648,
+      "median_aspect_ratio": 1.667,
+      "min_rel_area": 0.028425,
+      "max_rel_area": 0.028425
+    },
+    "319": {
+      "median_rel_area": 0.002028,
+      "median_rel_w": 0.0342,
+      "median_rel_h": 0.0439,
+      "median_aspect_ratio": 1.165,
+      "min_rel_area": 0.001458,
+      "max_rel_area": 0.002922
+    },
+    "320": {
+      "median_rel_area": 0.004134,
+      "median_rel_w": 0.0522,
+      "median_rel_h": 0.0653,
+      "median_aspect_ratio": 1.11,
+      "min_rel_area": 0.00107,
+      "max_rel_area": 0.010169
+    },
+    "321": {
+      "median_rel_area": 0.00281,
+      "median_rel_w": 0.0442,
+      "median_rel_h": 0.06,
+      "median_aspect_ratio": 1.237,
+      "min_rel_area": 0.002595,
+      "max_rel_area": 0.003085
+    },
+    "322": {
+      "median_rel_area": 0.006212,
+      "median_rel_w": 0.1015,
+      "median_rel_h": 0.059,
+      "median_aspect_ratio": 1.374,
+      "min_rel_area": 0.003162,
+      "max_rel_area": 0.008176
+    },
+    "323": {
+      "median_rel_area": 0.015249,
+      "median_rel_w": 0.1035,
+      "median_rel_h": 0.1297,
+      "median_aspect_ratio": 0.66,
+      "min_rel_area": 0.005016,
+      "max_rel_area": 0.023222
+    },
+    "324": {
+      "median_rel_area": 0.003696,
+      "median_rel_w": 0.0528,
+      "median_rel_h": 0.0736,
+      "median_aspect_ratio": 0.753,
+      "min_rel_area": 0.001934,
+      "max_rel_area": 0.018525
+    },
+    "325": {
+      "median_rel_area": 0.002516,
+      "median_rel_w": 0.0341,
+      "median_rel_h": 0.0752,
+      "median_aspect_ratio": 0.506,
+      "min_rel_area": 0.000982,
+      "max_rel_area": 0.010361
+    },
+    "326": {
+      "median_rel_area": 0.005955,
+      "median_rel_w": 0.0999,
+      "median_rel_h": 0.0613,
+      "median_aspect_ratio": 1.546,
+      "min_rel_area": 0.00217,
+      "max_rel_area": 0.009478
+    },
+    "327": {
+      "median_rel_area": 0.002288,
+      "median_rel_w": 0.0555,
+      "median_rel_h": 0.0413,
+      "median_aspect_ratio": 1.792,
+      "min_rel_area": 0.002288,
+      "max_rel_area": 0.002288
+    },
+    "328": {
+      "median_rel_area": 0.005859,
+      "median_rel_w": 0.0603,
+      "median_rel_h": 0.0978,
+      "median_aspect_ratio": 0.729,
+      "min_rel_area": 0.001721,
+      "max_rel_area": 0.017705
+    },
+    "329": {
+      "median_rel_area": 0.005229,
+      "median_rel_w": 0.0605,
+      "median_rel_h": 0.0836,
+      "median_aspect_ratio": 0.881,
+      "min_rel_area": 0.001054,
+      "max_rel_area": 0.018982
+    },
+    "330": {
+      "median_rel_area": 0.007922,
+      "median_rel_w": 0.0729,
+      "median_rel_h": 0.1048,
+      "median_aspect_ratio": 0.786,
+      "min_rel_area": 0.002395,
+      "max_rel_area": 0.02526
+    },
+    "331": {
+      "median_rel_area": 0.001714,
+      "median_rel_w": 0.028,
+      "median_rel_h": 0.0622,
+      "median_aspect_ratio": 0.774,
+      "min_rel_area": 0.00037,
+      "max_rel_area": 0.001831
+    },
+    "332": {
+      "median_rel_area": 0.00322,
+      "median_rel_w": 0.0542,
+      "median_rel_h": 0.0761,
+      "median_aspect_ratio": 0.648,
+      "min_rel_area": 0.001648,
+      "max_rel_area": 0.00717
+    },
+    "333": {
+      "median_rel_area": 0.003247,
+      "median_rel_w": 0.0461,
+      "median_rel_h": 0.0668,
+      "median_aspect_ratio": 0.898,
+      "min_rel_area": 0.000915,
+      "max_rel_area": 0.013786
+    },
+    "334": {
+      "median_rel_area": 0.003649,
+      "median_rel_w": 0.0509,
+      "median_rel_h": 0.069,
+      "median_aspect_ratio": 0.685,
+      "min_rel_area": 0.001367,
+      "max_rel_area": 0.015597
+    },
+    "335": {
+      "median_rel_area": 0.000243,
+      "median_rel_w": 0.0052,
+      "median_rel_h": 0.0466,
+      "median_aspect_ratio": 0.149,
+      "min_rel_area": 0.000243,
+      "max_rel_area": 0.000243
+    },
+    "336": {
+      "median_rel_area": 0.007962,
+      "median_rel_w": 0.062,
+      "median_rel_h": 0.1315,
+      "median_aspect_ratio": 0.64,
+      "min_rel_area": 0.003826,
+      "max_rel_area": 0.021115
+    },
+    "337": {
+      "median_rel_area": 0.004437,
+      "median_rel_w": 0.0501,
+      "median_rel_h": 0.088,
+      "median_aspect_ratio": 0.717,
+      "min_rel_area": 0.001736,
+      "max_rel_area": 0.006441
+    },
+    "338": {
+      "median_rel_area": 0.005425,
+      "median_rel_w": 0.0915,
+      "median_rel_h": 0.0539,
+      "median_aspect_ratio": 2.124,
+      "min_rel_area": 0.000392,
+      "max_rel_area": 0.021795
+    },
+    "339": {
+      "median_rel_area": 0.003721,
+      "median_rel_w": 0.0625,
+      "median_rel_h": 0.0603,
+      "median_aspect_ratio": 1.248,
+      "min_rel_area": 0.001386,
+      "max_rel_area": 0.018477
+    },
+    "340": {
+      "median_rel_area": 0.005994,
+      "median_rel_w": 0.0562,
+      "median_rel_h": 0.1092,
+      "median_aspect_ratio": 0.65,
+      "min_rel_area": 0.001709,
+      "max_rel_area": 0.021516
+    },
+    "341": {
+      "median_rel_area": 0.006431,
+      "median_rel_w": 0.06,
+      "median_rel_h": 0.111,
+      "median_aspect_ratio": 0.649,
+      "min_rel_area": 0.003361,
+      "max_rel_area": 0.025875
+    },
+    "342": {
+      "median_rel_area": 0.008887,
+      "median_rel_w": 0.0751,
+      "median_rel_h": 0.1231,
+      "median_aspect_ratio": 0.724,
+      "min_rel_area": 0.000606,
+      "max_rel_area": 0.038186
+    },
+    "343": {
+      "median_rel_area": 0.001262,
+      "median_rel_w": 0.0312,
+      "median_rel_h": 0.0457,
+      "median_aspect_ratio": 0.993,
+      "min_rel_area": 0.000921,
+      "max_rel_area": 0.003065
+    },
+    "344": {
+      "median_rel_area": 0.004069,
+      "median_rel_w": 0.0605,
+      "median_rel_h": 0.0629,
+      "median_aspect_ratio": 1.2,
+      "min_rel_area": 0.001073,
+      "max_rel_area": 0.009362
+    },
+    "345": {
+      "median_rel_area": 0.001457,
+      "median_rel_w": 0.0343,
+      "median_rel_h": 0.0417,
+      "median_aspect_ratio": 0.935,
+      "min_rel_area": 0.000138,
+      "max_rel_area": 0.00915
+    },
+    "346": {
+      "median_rel_area": 0.003058,
+      "median_rel_w": 0.0357,
+      "median_rel_h": 0.0839,
+      "median_aspect_ratio": 0.757,
+      "min_rel_area": 0.003,
+      "max_rel_area": 0.003137
+    },
+    "347": {
+      "median_rel_area": 0.005326,
+      "median_rel_w": 0.0525,
+      "median_rel_h": 0.1,
+      "median_aspect_ratio": 0.552,
+      "min_rel_area": 0.002269,
+      "max_rel_area": 0.029908
+    },
+    "348": {
+      "median_rel_area": 0.004552,
+      "median_rel_w": 0.0437,
+      "median_rel_h": 0.085,
+      "median_aspect_ratio": 0.642,
+      "min_rel_area": 0.001695,
+      "max_rel_area": 0.008911
+    },
+    "349": {
+      "median_rel_area": 0.002011,
+      "median_rel_w": 0.0423,
+      "median_rel_h": 0.046,
+      "median_aspect_ratio": 1.175,
+      "min_rel_area": 0.000209,
+      "max_rel_area": 0.01013
+    },
+    "350": {
+      "median_rel_area": 0.004429,
+      "median_rel_w": 0.0446,
+      "median_rel_h": 0.0992,
+      "median_aspect_ratio": 0.6,
+      "min_rel_area": 0.004429,
+      "max_rel_area": 0.004429
+    },
+    "351": {
+      "median_rel_area": 0.007008,
+      "median_rel_w": 0.1099,
+      "median_rel_h": 0.0644,
+      "median_aspect_ratio": 1.697,
+      "min_rel_area": 0.003866,
+      "max_rel_area": 0.010662
+    },
+    "352": {
+      "median_rel_area": 0.004367,
+      "median_rel_w": 0.05,
+      "median_rel_h": 0.0732,
+      "median_aspect_ratio": 0.683,
+      "min_rel_area": 0.001242,
+      "max_rel_area": 0.011873
+    },
+    "353": {
+      "median_rel_area": 0.005807,
+      "median_rel_w": 0.0526,
+      "median_rel_h": 0.1019,
+      "median_aspect_ratio": 0.635,
+      "min_rel_area": 0.00315,
+      "max_rel_area": 0.01388
+    },
+    "354": {
+      "median_rel_area": 0.002745,
+      "median_rel_w": 0.0457,
+      "median_rel_h": 0.062,
+      "median_aspect_ratio": 1.017,
+      "min_rel_area": 0.002697,
+      "max_rel_area": 0.002745
+    },
+    "355": {
+      "median_rel_area": 0.003608,
+      "median_rel_w": 0.0499,
+      "median_rel_h": 0.0657,
+      "median_aspect_ratio": 0.883,
+      "min_rel_area": 5.5e-05,
+      "max_rel_area": 0.02175
+    }
+  },
+  "image_stats": [
+    {
+      "id": 267,
+      "file_name": "img_00267.jpg",
+      "width": 3264,
+      "height": 2448,
+      "megapixels": 7.99,
+      "n_annotations": 235,
+      "n_categories": 49,
+      "density": 29.4,
+      "avg_bbox_area": 14879,
+      "avg_rel_bbox_area": 0.001862
+    },
+    {
+      "id": 260,
+      "file_name": "img_00260.jpg",
+      "width": 4000,
+      "height": 3000,
+      "megapixels": 12.0,
+      "n_annotations": 226,
+      "n_categories": 49,
+      "density": 18.8,
+      "avg_bbox_area": 24903,
+      "avg_rel_bbox_area": 0.002075
+    },
+    {
+      "id": 66,
+      "file_name": "img_00066.jpg",
+      "width": 1810,
+      "height": 976,
+      "megapixels": 1.77,
+      "n_annotations": 209,
+      "n_categories": 70,
+      "density": 118.3,
+      "avg_bbox_area": 3799,
+      "avg_rel_bbox_area": 0.002151
+    },
+    {
+      "id": 18,
+      "file_name": "img_00018.jpg",
+      "width": 3618,
+      "height": 2473,
+      "megapixels": 8.95,
+      "n_annotations": 198,
+      "n_categories": 75,
+      "density": 22.1,
+      "avg_bbox_area": 34562,
+      "avg_rel_bbox_area": 0.003863
+    },
+    {
+      "id": 14,
+      "file_name": "img_00014.jpg",
+      "width": 2978,
+      "height": 1938,
+      "megapixels": 5.77,
+      "n_annotations": 191,
+      "n_categories": 75,
+      "density": 33.1,
+      "avg_bbox_area": 13181,
+      "avg_rel_bbox_area": 0.002284
+    },
+    {
+      "id": 261,
+      "file_name": "img_00261.jpg",
+      "width": 4000,
+      "height": 3000,
+      "megapixels": 12.0,
+      "n_annotations": 182,
+      "n_categories": 48,
+      "density": 15.2,
+      "avg_bbox_area": 25459,
+      "avg_rel_bbox_area": 0.002122
+    },
+    {
+      "id": 305,
+      "file_name": "img_00305.jpg",
+      "width": 2550,
+      "height": 3031,
+      "megapixels": 7.73,
+      "n_annotations": 182,
+      "n_categories": 37,
+      "density": 23.5,
+      "avg_bbox_area": 19882,
+      "avg_rel_bbox_area": 0.002572
+    },
+    {
+      "id": 6,
+      "file_name": "img_00006.jpg",
+      "width": 2728,
+      "height": 2070,
+      "megapixels": 5.65,
+      "n_annotations": 177,
+      "n_categories": 78,
+      "density": 31.3,
+      "avg_bbox_area": 18095,
+      "avg_rel_bbox_area": 0.003204
+    },
+    {
+      "id": 376,
+      "file_name": "img_00376.jpg",
+      "width": 1920,
+      "height": 1440,
+      "megapixels": 2.76,
+      "n_annotations": 176,
+      "n_categories": 49,
+      "density": 63.7,
+      "avg_bbox_area": 4956,
+      "avg_rel_bbox_area": 0.001792
+    },
+    {
+      "id": 308,
+      "file_name": "img_00308.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 174,
+      "n_categories": 51,
+      "density": 14.3,
+      "avg_bbox_area": 34800,
+      "avg_rel_bbox_area": 0.002854
+    },
+    {
+      "id": 12,
+      "file_name": "img_00012.jpg",
+      "width": 4000,
+      "height": 3000,
+      "megapixels": 12.0,
+      "n_annotations": 172,
+      "n_categories": 49,
+      "density": 14.3,
+      "avg_bbox_area": 30424,
+      "avg_rel_bbox_area": 0.002535
+    },
+    {
+      "id": 244,
+      "file_name": "img_00244.jpg",
+      "width": 3264,
+      "height": 2448,
+      "megapixels": 7.99,
+      "n_annotations": 166,
+      "n_categories": 55,
+      "density": 20.8,
+      "avg_bbox_area": 16343,
+      "avg_rel_bbox_area": 0.002045
+    },
+    {
+      "id": 353,
+      "file_name": "img_00353.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 166,
+      "n_categories": 45,
+      "density": 13.6,
+      "avg_bbox_area": 18643,
+      "avg_rel_bbox_area": 0.001529
+    },
+    {
+      "id": 298,
+      "file_name": "img_00298.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 162,
+      "n_categories": 38,
+      "density": 13.3,
+      "avg_bbox_area": 21987,
+      "avg_rel_bbox_area": 0.001803
+    },
+    {
+      "id": 321,
+      "file_name": "img_00321.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 162,
+      "n_categories": 50,
+      "density": 13.3,
+      "avg_bbox_area": 27614,
+      "avg_rel_bbox_area": 0.002265
+    },
+    {
+      "id": 33,
+      "file_name": "img_00033.jpeg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 161,
+      "n_categories": 56,
+      "density": 13.2,
+      "avg_bbox_area": 29998,
+      "avg_rel_bbox_area": 0.00246
+    },
+    {
+      "id": 17,
+      "file_name": "img_00017.jpg",
+      "width": 2000,
+      "height": 1500,
+      "megapixels": 3.0,
+      "n_annotations": 160,
+      "n_categories": 77,
+      "density": 53.3,
+      "avg_bbox_area": 7313,
+      "avg_rel_bbox_area": 0.002438
+    },
+    {
+      "id": 323,
+      "file_name": "img_00323.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 160,
+      "n_categories": 46,
+      "density": 13.1,
+      "avg_bbox_area": 16286,
+      "avg_rel_bbox_area": 0.001336
+    },
+    {
+      "id": 367,
+      "file_name": "img_00367.jpg",
+      "width": 4032,
+      "height": 3024,
+      "megapixels": 12.19,
+      "n_annotations": 157,
+      "n_categories": 43,
+      "density": 12.9,
+      "avg_bbox_area": 31926,
+      "avg_rel_bbox_area": 0.002618
+    },
+    {
+      "id": 4,
+      "file_name": "img_00004.jpg",
+      "width": 3200,
+      "height": 1440,
+      "megapixels": 4.61,
+      "n_annotations": 155,
+      "n_categories": 50,
+      "density": 33.6,
+      "avg_bbox_area": 10099,
+      "avg_rel_bbox_area": 0.002192
+    }
+  ],
+  "product_groups": {
+    "EGGS": [
+      {
+        "cat_id": 4,
+        "name": "Økologiske Egg 6stk",
+        "count": 10
+      },
+      {
+        "cat_id": 6,
+        "name": "Eldorado Økologiske Gårdsegg",
+        "count": 46
+      },
+      {
+        "cat_id": 10,
+        "name": "Jacobs 10 Gårdsegg",
+        "count": 12
+      },
+      {
+        "cat_id": 51,
+        "name": "Tørresvik Gårdsegg 6stk",
+        "count": 5
+      },
+      {
+        "cat_id": 72,
+        "name": "EGG FRITTGÅENDE 12STK PRIOR",
+        "count": 84
+      },
+      {
+        "cat_id": 80,
+        "name": "FROKOSTEGG FRITTGÅENDE L 12STK PRIOR",
+        "count": 243
+      },
+      {
+        "cat_id": 95,
+        "name": "EGG M/L ØKOLOGISKE 10STK VILJE",
+        "count": 1
+      },
+      {
+        "cat_id": 102,
+        "name": "EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO",
+        "count": 50
+      },
+      {
+        "cat_id": 105,
+        "name": "EGG ØKOLOGISK M/L 12STK VINGULMARK",
+        "count": 15
+      },
+      {
+        "cat_id": 135,
+        "name": "GÅRDSEGG EKSTRA STORE 6STK EK",
+        "count": 1
+      },
+      {
+        "cat_id": 138,
+        "name": "Økologiske Egg 10stk",
+        "count": 14
+      },
+      {
+        "cat_id": 139,
+        "name": "EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR",
+        "count": 135
+      },
+      {
+        "cat_id": 159,
+        "name": "Galåvolden Store Gårdsegg 10stk",
+        "count": 4
+      },
+      {
+        "cat_id": 163,
+        "name": "Galåvolden Store Gårdsegg 6stk",
+        "count": 6
+      },
+      {
+        "cat_id": 185,
+        "name": "Eldorado Flytende Gårdsegg",
+        "count": 28
+      },
+      {
+        "cat_id": 193,
+        "name": "EGG ØKOLOGISK 6STK 375G JACOBS UTVALGTE",
+        "count": 50
+      },
+      {
+        "cat_id": 195,
+        "name": "Økologiske Egg Brune 6stk",
+        "count": 10
+      },
+      {
+        "cat_id": 213,
+        "name": "EGG FRITTGÅENDE M/L 6PK PRIOR",
+        "count": 64
+      },
+      {
+        "cat_id": 216,
+        "name": "Sunnmørsegg",
+        "count": 13
+      },
+      {
+        "cat_id": 232,
+        "name": "EGG ØKOLOGISK M/L/XL 6STK PRIOR",
+        "count": 167
+      },
+      {
+        "cat_id": 237,
+        "name": "EGG FRITTGÅENDE L/XL 10STK PRIOR",
+        "count": 66
+      },
+      {
+        "cat_id": 267,
+        "name": "EGGEHVITE 500G ELDORADO",
+        "count": 19
+      },
+      {
+        "cat_id": 269,
+        "name": "Eldorado Egg fra Toten",
+        "count": 33
+      },
+      {
+        "cat_id": 275,
+        "name": "EGG FRITTGÅENDE 18STK S/M FIRST PRICE",
+        "count": 223
+      },
+      {
+        "cat_id": 283,
+        "name": "GÅRDSEGG M/L 12STK ELDORADO",
+        "count": 127
+      },
+      {
+        "cat_id": 285,
+        "name": "Leka Egg 10stk",
+        "count": 2
+      },
+      {
+        "cat_id": 286,
+        "name": "EGG L 10STK TOTEN",
+        "count": 9
+      },
+      {
+        "cat_id": 288,
+        "name": "Sunnmørsegg 10stk",
+        "count": 3
+      },
+      {
+        "cat_id": 301,
+        "name": "Gårdsegg fra Fana 10stk",
+        "count": 6
+      },
+      {
+        "cat_id": 312,
+        "name": "Tørresvik Gård Kvalitetsegg 10stk",
+        "count": 33
+      }
+    ],
+    "COFFEE_CAPSULES": [
+      {
+        "cat_id": 9,
+        "name": "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO",
+        "count": 6
+      },
+      {
+        "cat_id": 16,
+        "name": "CAPPUCCINO 8KAPSLER DOLCE GUSTO",
+        "count": 6
+      },
+      {
+        "cat_id": 19,
+        "name": "MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO",
+        "count": 20
+      },
+      {
+        "cat_id": 25,
+        "name": "ALI MØRKBRENT KAFFEKAPSEL 16STK",
+        "count": 33
+      },
+      {
+        "cat_id": 31,
+        "name": "TASSIMO EVERGOOD DARK ROAST 16KAPSLER",
+        "count": 17
+      },
+      {
+        "cat_id": 55,
+        "name": "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK",
+        "count": 5
+      },
+      {
+        "cat_id": 58,
+        "name": "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK",
+        "count": 6
+      },
+      {
+        "cat_id": 64,
+        "name": "TASSIMO EVERGOOD CLASSIC 16KAPSLER",
+        "count": 35
+      },
+      {
+        "cat_id": 71,
+        "name": "AMERICANO 16 KAPSLER DOLCE GUSTO",
+        "count": 28
+      },
+      {
+        "cat_id": 103,
+        "name": "EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA",
+        "count": 56
+      },
+      {
+        "cat_id": 107,
+        "name": "FLAT WHITE 16KAPSLER DOLCE GUSTO",
+        "count": 1
+      },
+      {
+        "cat_id": 126,
+        "name": "GRANDE INTENSO 16KAPSLER DOLCE GUSTO",
+        "count": 9
+      },
+      {
+        "cat_id": 165,
+        "name": "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK",
+        "count": 5
+      },
+      {
+        "cat_id": 196,
+        "name": "COTW LUNGO KAFFEKAPSEL 10STK",
+        "count": 30
+      },
+      {
+        "cat_id": 200,
+        "name": "EVERGOOD CLASSIC KAFFEKAPSEL 16STK",
+        "count": 68
+      },
+      {
+        "cat_id": 210,
+        "name": "COTW ESPRESSO KAFFEKAPSEL 10STK",
+        "count": 20
+      },
+      {
+        "cat_id": 225,
+        "name": "EVERGOOD CLASSIC KAFFEKAPSEL 10STK",
+        "count": 74
+      },
+      {
+        "cat_id": 248,
+        "name": "COTW DARK ROAST KAFFEKAPSEL 10STK",
+        "count": 6
+      },
+      {
+        "cat_id": 249,
+        "name": "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK",
+        "count": 9
+      },
+      {
+        "cat_id": 281,
+        "name": "GRANDE 16KAPSLER DOLCE GUSTO",
+        "count": 14
+      },
+      {
+        "cat_id": 314,
+        "name": "CAFE AU LAIT 16KAPSLER DOLCE GUSTO",
+        "count": 18
+      },
+      {
+        "cat_id": 332,
+        "name": "COTW LUNGO DARK KAFFEKAPSEL 10STK",
+        "count": 12
+      },
+      {
+        "cat_id": 339,
+        "name": "ALI ORIGINAL KAFFEKAPSEL 16STK",
+        "count": 57
+      },
+      {
+        "cat_id": 344,
+        "name": "EVERGOOD DARK ROAST KAFFEKAPSEL 16STK",
+        "count": 33
+      }
+    ],
+    "COFFEE_GROUND": [
+      {
+        "cat_id": 40,
+        "name": "FRIELE FROKOST FILTERMALT 250G",
+        "count": 95
+      },
+      {
+        "cat_id": 49,
+        "name": "EVERGOOD DARK ROAST FILTERMALT 250G",
+        "count": 92
+      },
+      {
+        "cat_id": 63,
+        "name": "ALI MØRKBRENT FILTERMALT 250G",
+        "count": 101
+      },
+      {
+        "cat_id": 100,
+        "name": "EVERGOOD CLASSIC FILTERMALT 250G",
+        "count": 368
+      },
+      {
+        "cat_id": 141,
+        "name": "EVERGOOD CLASSIC PRESSMALT 250G",
+        "count": 63
+      },
+      {
+        "cat_id": 144,
+        "name": "FRIELE FROKOST KOKMALT 250G",
+        "count": 19
+      },
+      {
+        "cat_id": 151,
+        "name": "FARMERS COFFEE FILTERMALT 250G",
+        "count": 72
+      },
+      {
+        "cat_id": 153,
+        "name": "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G",
+        "count": 1
+      },
+      {
+        "cat_id": 160,
+        "name": "ALI ORIGINAL KOKMALT 250G",
+        "count": 74
+      },
+      {
+        "cat_id": 167,
+        "name": "TROPISK AROMA FILTERMALT 200G JACOBS",
+        "count": 1
+      },
+      {
+        "cat_id": 171,
+        "name": "ALI ORIGINAL FILTERMALT 250G",
+        "count": 231
+      },
+      {
+        "cat_id": 219,
+        "name": "GREEN WORLD KAFFE ØKOL FILTERMALT 250G",
+        "count": 63
+      },
+      {
+        "cat_id": 247,
+        "name": "MOUNT KENYA FILTERMALT 200G JACOBS",
+        "count": 13
+      },
+      {
+        "cat_id": 272,
+        "name": "EVERGOOD KOFFEINFRI FILTERMALT 250G",
+        "count": 67
+      },
+      {
+        "cat_id": 304,
+        "name": "EVERGOOD CLASSIC KOKMALT 250G",
+        "count": 147
+      },
+      {
+        "cat_id": 347,
+        "name": "EVERGOOD DARK ROAST PRESSMALT 250G",
+        "count": 53
+      },
+      {
+        "cat_id": 353,
+        "name": "EXCELSO COLOMBIA FILTERMALT 200G JACOBS",
+        "count": 5
+      }
+    ],
+    "COFFEE_BEANS": [
+      {
+        "cat_id": 112,
+        "name": "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS",
+        "count": 5
+      },
+      {
+        "cat_id": 115,
+        "name": "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS",
+        "count": 1
+      },
+      {
+        "cat_id": 118,
+        "name": "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT",
+        "count": 11
+      },
+      {
+        "cat_id": 134,
+        "name": "EVERGOOD ESPRESSO HELE BØNNER 500G",
+        "count": 2
+      },
+      {
+        "cat_id": 252,
+        "name": "SIDAMO ETIOPIA HELE BØNNER 340G COTW",
+        "count": 4
+      },
+      {
+        "cat_id": 340,
+        "name": "EVERGOOD DARK ROAST HELE BØNNER 500G",
+        "count": 54
+      },
+      {
+        "cat_id": 341,
+        "name": "EVERGOOD CLASSIC HELE BØNNER 500G",
+        "count": 76
+      },
+      {
+        "cat_id": 348,
+        "name": "ALI ORIGINAL HELE BØNNER 250G",
+        "count": 24
+      },
+      {
+        "cat_id": 350,
+        "name": "BLÅ JAVA HELE BØNNER 340G COTW",
+        "count": 1
+      }
+    ],
+    "COFFEE_INSTANT": [
+      {
+        "cat_id": 65,
+        "name": "PULVERKAFFE INSTANT 200G FIRST PRICE",
+        "count": 27
+      },
+      {
+        "cat_id": 74,
+        "name": "NESCAFE BRASERO REFILL 180G",
+        "count": 5
+      },
+      {
+        "cat_id": 99,
+        "name": "NESCAFE ORIGINAL 180G REFILL",
+        "count": 14
+      },
+      {
+        "cat_id": 106,
+        "name": "NESCAFE GOLD KOFFEINFRI 100G",
+        "count": 34
+      },
+      {
+        "cat_id": 111,
+        "name": "NESCAFE BRASERO 100G",
+        "count": 91
+      },
+      {
+        "cat_id": 137,
+        "name": "NESCAFE AZERA ESPRESSO 100G",
+        "count": 54
+      },
+      {
+        "cat_id": 146,
+        "name": "NESCAFE GULL 200G NESTLE",
+        "count": 54
+      },
+      {
+        "cat_id": 172,
+        "name": "FRIELE INSTANT GULL 100G REFILL",
+        "count": 2
+      },
+      {
+        "cat_id": 178,
+        "name": "NESCAFE GOLD ORGANIC&FAIRTRADE 100G",
+        "count": 73
+      },
+      {
+        "cat_id": 182,
+        "name": "FRIELE INSTANT 200G",
+        "count": 13
+      },
+      {
+        "cat_id": 192,
+        "name": "ICE COFFEE 8POS NESCAFE",
+        "count": 39
+      },
+      {
+        "cat_id": 206,
+        "name": "NESCAFE VANILLA LATTE 136G NESTLE",
+        "count": 14
+      },
+      {
+        "cat_id": 292,
+        "name": "NESCAFE AZERA AMERICANO 100G",
+        "count": 35
+      },
+      {
+        "cat_id": 306,
+        "name": "NESCAFE GULL 100G REFILL",
+        "count": 47
+      },
+      {
+        "cat_id": 324,
+        "name": "NESCAFE LATTE 144G",
+        "count": 29
+      },
+      {
+        "cat_id": 325,
+        "name": "NESCAFE GULL 100G",
+        "count": 58
+      }
+    ],
+    "TEA": [
+      {
+        "cat_id": 1,
+        "name": "COFFEE MATE 180G  NESTLE",
+        "count": 59
+      },
+      {
+        "cat_id": 20,
+        "name": "GRØNN TE 20POS LIPTON",
+        "count": 20
+      },
+      {
+        "cat_id": 24,
+        "name": "GRØNN MINT TE 20POS LIPTON",
+        "count": 38
+      },
+      {
+        "cat_id": 27,
+        "name": "YELLOW LABEL TEA 50POS LIPTON",
+        "count": 34
+      },
+      {
+        "cat_id": 28,
+        "name": "LADY GREY TE 200G TWININGS",
+        "count": 6
+      },
+      {
+        "cat_id": 33,
+        "name": "FLATBRØD MORS HJEMMEBAKTE 520G",
+        "count": 161
+      },
+      {
+        "cat_id": 37,
+        "name": "URTETE 200G RICOLA",
+        "count": 29
+      },
+      {
+        "cat_id": 45,
+        "name": "LADY GREY TEA 25POS TWININGS",
+        "count": 43
+      },
+      {
+        "cat_id": 46,
+        "name": "GRØNN TE SITRON 25POS TWININGS",
+        "count": 108
+      },
+      {
+        "cat_id": 70,
+        "name": "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI",
+        "count": 15
+      },
+      {
+        "cat_id": 79,
+        "name": "PANNEKAKER GROVE STEKTE 480G ÅMLI",
+        "count": 1
+      },
+      {
+        "cat_id": 81,
+        "name": "GRØNN TE CHAI 25POS TWININGS",
+        "count": 1
+      },
+      {
+        "cat_id": 83,
+        "name": "BLACK TEA PEACG&MANGO 20PS LIPTON",
+        "count": 33
+      },
+      {
+        "cat_id": 87,
+        "name": "SPICY INDIAN CHAI TEA 20POS TWININGS",
+        "count": 68
+      },
+      {
+        "cat_id": 89,
+        "name": "FOREST FRUIT TEA 20POS LIPTON",
+        "count": 76
+      },
+      {
+        "cat_id": 98,
+        "name": "NIGHT TE 20POS PUKKA",
+        "count": 7
+      },
+      {
+        "cat_id": 114,
+        "name": "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA",
+        "count": 3
+      },
+      {
+        "cat_id": 122,
+        "name": "NYPETE 24POS CONFECTA",
+        "count": 62
+      },
+      {
+        "cat_id": 129,
+        "name": "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE",
+        "count": 6
+      },
+      {
+        "cat_id": 147,
+        "name": "ROOIBOS TE ØKOLOGISK 20PS",
+        "count": 4
+      },
+      {
+        "cat_id": 173,
+        "name": "EARL GREY TEA 25POS TWININGS",
+        "count": 95
+      },
+      {
+        "cat_id": 174,
+        "name": "EPLE&KANEL&ROSIN TE 25POS TWININGS",
+        "count": 59
+      },
+      {
+        "cat_id": 177,
+        "name": "LEMON TEA GINGER 20POS PUKKA",
+        "count": 32
+      },
+      {
+        "cat_id": 184,
+        "name": "EARL GREY TEA 200G TWININGS",
+        "count": 36
+      },
+      {
+        "cat_id": 189,
+        "name": "YELLOW LABEL TEA 25POS LIPTON",
+        "count": 72
+      },
+      {
+        "cat_id": 190,
+        "name": "EARL GREY TEA ØKOLOGISK 15POS JACOBS",
+        "count": 2
+      },
+      {
+        "cat_id": 199,
+        "name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA",
+        "count": 1
+      },
+      {
+        "cat_id": 202,
+        "name": "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL",
+        "count": 1
+      },
+      {
+        "cat_id": 203,
+        "name": "ROOIBOS TE 20POS LIPTON",
+        "count": 11
+      },
+      {
+        "cat_id": 215,
+        "name": "BLUE FRUIT TE PYRAMIDE 20POS LIPTON",
+        "count": 54
+      },
+      {
+        "cat_id": 221,
+        "name": "PUFFET HVETE 260G FIRST PRICE",
+        "count": 17
+      },
+      {
+        "cat_id": 227,
+        "name": "STORFE ENTRECOTE 180G FIRST PRICE",
+        "count": 1
+      },
+      {
+        "cat_id": 228,
+        "name": "BRUSCHETTE FINE CHEESE MARETTI",
+        "count": 25
+      },
+      {
+        "cat_id": 238,
+        "name": "KAMILLE TE ØKOLOGISK 24PK",
+        "count": 30
+      },
+      {
+        "cat_id": 245,
+        "name": "ENGLISH BREAKFAST TEA 200G TWININGS",
+        "count": 4
+      },
+      {
+        "cat_id": 255,
+        "name": "LIPTON ICETEA MANGO PULVER 50G",
+        "count": 1
+      },
+      {
+        "cat_id": 262,
+        "name": "HAVREGRØT STEEL CUT DEN SORTE HAVRE",
+        "count": 14
+      },
+      {
+        "cat_id": 278,
+        "name": "DELICATE CRACKERS SEA SALT 180G WASA",
+        "count": 10
+      },
+      {
+        "cat_id": 287,
+        "name": "ENGLISH BREAKFAST TEA 25POS TWININGS",
+        "count": 23
+      },
+      {
+        "cat_id": 297,
+        "name": "SOLBÆR TE 25POS TWININGS",
+        "count": 48
+      },
+      {
+        "cat_id": 299,
+        "name": "KAMILLE TE 20POS LIPTON",
+        "count": 3
+      },
+      {
+        "cat_id": 310,
+        "name": "LIPTON ICETEA LEMON PULVER 50G",
+        "count": 1
+      },
+      {
+        "cat_id": 319,
+        "name": "LIPTON ICETEA PEACH PULVER 50G",
+        "count": 3
+      },
+      {
+        "cat_id": 320,
+        "name": "EARL GREY TEA 50POS FIRST PRICE",
+        "count": 30
+      },
+      {
+        "cat_id": 334,
+        "name": "CHAI-TE ORIGINAL 20POS PUKKA",
+        "count": 50
+      },
+      {
+        "cat_id": 336,
+        "name": "SVARTHAVRERIS ØKOLOGISK DEN SORTE HAVRE",
+        "count": 19
+      },
+      {
+        "cat_id": 337,
+        "name": "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA",
+        "count": 6
+      },
+      {
+        "cat_id": 352,
+        "name": "PEPPERMINT&LICORICE URTETE 20POS PUKKA",
+        "count": 18
+      }
+    ],
+    "KNEKKEBRØD": [
+      {
+        "cat_id": 0,
+        "name": "FRØKRISP KNEKKEBRØD ØKOLOGISK 170G BERIT",
+        "count": 85
+      },
+      {
+        "cat_id": 3,
+        "name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G",
+        "count": 178
+      },
+      {
+        "cat_id": 17,
+        "name": "KNEKKEBRØD GL.FRI 150G BRISK",
+        "count": 4
+      },
+      {
+        "cat_id": 21,
+        "name": "KNEKKEBRØD RUNDA SESAM&HAVSALT 290G WASA",
+        "count": 271
+      },
+      {
+        "cat_id": 38,
+        "name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W",
+        "count": 265
+      },
+      {
+        "cat_id": 39,
+        "name": "KNEKKEBRØD RUNDA KANEL 330G WASA",
+        "count": 120
+      },
+      {
+        "cat_id": 42,
+        "name": "KNEKKS KJEKS M/SPELT&HAVSALT 190G RØROS",
+        "count": 22
+      },
+      {
+        "cat_id": 44,
+        "name": "KNEKKS KJEKS HAVRE 190G RØROS",
+        "count": 2
+      },
+      {
+        "cat_id": 60,
+        "name": "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G",
+        "count": 2
+      },
+      {
+        "cat_id": 66,
+        "name": "RYVITA KNEKKEBRØD SESAM 250G",
+        "count": 121
+      },
+      {
+        "cat_id": 84,
+        "name": "HAVRE KNEKKEBRØD ØKONOMI 600G WASA",
+        "count": 109
+      },
+      {
+        "cat_id": 86,
+        "name": "HAVRE KNEKKEBRØD 300G WASA",
+        "count": 398
+      },
+      {
+        "cat_id": 92,
+        "name": "KNEKKEBRØD GODT FOR DEG 235G SIGDAL",
+        "count": 247
+      },
+      {
+        "cat_id": 109,
+        "name": "KNEKKEBRØD 100 FRØ&HAVSALT 245G WASA",
+        "count": 374
+      },
+      {
+        "cat_id": 131,
+        "name": "KNEKKEBRØD HAVRE GL.FRI 190G SIGDAL",
+        "count": 22
+      },
+      {
+        "cat_id": 143,
+        "name": "KORNMO KNEKKEBRØD HAVRE&SOLSIKKE 200G",
+        "count": 129
+      },
+      {
+        "cat_id": 149,
+        "name": "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G",
+        "count": 1
+      },
+      {
+        "cat_id": 152,
+        "name": "HAVREKNEKKEBRØD TYNT 265G WASA",
+        "count": 185
+      },
+      {
+        "cat_id": 158,
+        "name": "SURDEIG KNEKKEBRØD WASA",
+        "count": 55
+      },
+      {
+        "cat_id": 183,
+        "name": "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL",
+        "count": 5
+      },
+      {
+        "cat_id": 207,
+        "name": "LEKSANDS KNEKKE FIBERBIT 240G",
+        "count": 297
+      },
+      {
+        "cat_id": 212,
+        "name": "KNEKKEBRØD 220G SIGDAL",
+        "count": 140
+      },
+      {
+        "cat_id": 233,
+        "name": "LEKSANDS KNEKKE GODT STEKT 200G",
+        "count": 260
+      },
+      {
+        "cat_id": 236,
+        "name": "LEKSANDS KNEKKE RUTBIT 200G",
+        "count": 187
+      },
+      {
+        "cat_id": 243,
+        "name": "RYVITA KNEKKEBRØD RUG 400G",
+        "count": 198
+      },
+      {
+        "cat_id": 246,
+        "name": "HUSMAN KNEKKEBRØD 260G WASA",
+        "count": 322
+      },
+      {
+        "cat_id": 250,
+        "name": "LEKSANDS KNEKKE NORMALT STEKT 200G",
+        "count": 271
+      },
+      {
+        "cat_id": 251,
+        "name": "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL",
+        "count": 15
+      },
+      {
+        "cat_id": 271,
+        "name": "FRUKOST KNEKKEBRØD 240G WASA",
+        "count": 307
+      },
+      {
+        "cat_id": 279,
+        "name": "KNEKKEBRØD NATURELL GL.FRI 240G WASA",
+        "count": 1
+      },
+      {
+        "cat_id": 303,
+        "name": "KNEKKEBRØD HAVRE 220G SIGDAL",
+        "count": 19
+      },
+      {
+        "cat_id": 317,
+        "name": "POWERKNEKKEBRØD GL.FRI 225G SCHÄR",
+        "count": 1
+      },
+      {
+        "cat_id": 338,
+        "name": "HUSMAN KNEKKEBRØD 520G WASA",
+        "count": 159
+      },
+      {
+        "cat_id": 343,
+        "name": "KNEKKS KJEKS ORIGINAL 190G RØROS",
+        "count": 20
+      },
+      {
+        "cat_id": 345,
+        "name": "KNEKKEBRØD URTER&HAVSALT 220G SIGDAL",
+        "count": 223
+      },
+      {
+        "cat_id": 349,
+        "name": "KNEKKEBRØD SPORT+ 210G WASA",
+        "count": 364
+      }
+    ],
+    "FLATBRØD": [
+      {
+        "cat_id": 8,
+        "name": "FLATBRØD MORS",
+        "count": 68
+      },
+      {
+        "cat_id": 96,
+        "name": "FLATBRØD 275G KORNI",
+        "count": 247
+      },
+      {
+        "cat_id": 113,
+        "name": "ERTERFLATBRØD CRISP 210G",
+        "count": 15
+      },
+      {
+        "cat_id": 208,
+        "name": "FLATBRØD 190G IDEAL",
+        "count": 160
+      },
+      {
+        "cat_id": 235,
+        "name": "FLATBRØD ØKOLOGISK 190G RØROS",
+        "count": 115
+      },
+      {
+        "cat_id": 274,
+        "name": "VESTLANDSLEFSA TØRRE 10STK 360G",
+        "count": 1
+      }
+    ],
+    "MÜSLI_GRANOLA": [
+      {
+        "cat_id": 14,
+        "name": "GRANOLA NØTTER 375G JACOBS UTVALGTE",
+        "count": 48
+      },
+      {
+        "cat_id": 15,
+        "name": "FRUKT MÜSLI 1KG FIRST PRICE",
+        "count": 105
+      },
+      {
+        "cat_id": 22,
+        "name": "MÜSLI RISTET HAVRE&TRANEBÆR 700G AXA",
+        "count": 18
+      },
+      {
+        "cat_id": 35,
+        "name": "CRUNCHY MUSLI 750G FIRST PRICE",
+        "count": 108
+      },
+      {
+        "cat_id": 36,
+        "name": "MÜSLI FRUKT MÜSLI 700G AXA",
+        "count": 14
+      },
+      {
+        "cat_id": 47,
+        "name": "GRANOLA EPLE&KANEL 430G BARE BRA",
+        "count": 88
+      },
+      {
+        "cat_id": 50,
+        "name": "BERIT GRANOLA M/PUFFET HAVRE 350G",
+        "count": 123
+      },
+      {
+        "cat_id": 59,
+        "name": "MÜSLI BLÅBÆR 630G AXA",
+        "count": 8
+      },
+      {
+        "cat_id": 61,
+        "name": "MUSLI BLÅBÆR 630G AXA",
+        "count": 144
+      },
+      {
+        "cat_id": 78,
+        "name": "MUSLI HAVRE&MANDEL 400G BARE BRA",
+        "count": 101
+      },
+      {
+        "cat_id": 90,
+        "name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN",
+        "count": 2
+      },
+      {
+        "cat_id": 93,
+        "name": "GRANOLA KAKAO KOKOS&MANDEL BARE BRA",
+        "count": 23
+      },
+      {
+        "cat_id": 94,
+        "name": "HAVREGRYN STORE GLUTENFRI 1KG AXA",
+        "count": 1
+      },
+      {
+        "cat_id": 108,
+        "name": "MUSLI M/BELGISK SJOKOLADE DSH",
+        "count": 103
+      },
+      {
+        "cat_id": 117,
+        "name": "GRANOLA HASSELNØTT&KOKOS 450G BARE BRA",
+        "count": 115
+      },
+      {
+        "cat_id": 145,
+        "name": "GRANOLA MANDLER &QUINOA 475G ELDORADO",
+        "count": 69
+      },
+      {
+        "cat_id": 148,
+        "name": "GRANOLA SJOKOLADE&NØTTER 375G JACOBS",
+        "count": 28
+      },
+      {
+        "cat_id": 156,
+        "name": "GRANOLA CRAZELNUT 500G START!",
+        "count": 3
+      },
+      {
+        "cat_id": 164,
+        "name": "GRANOLA NATURELL 475G ELDORADO",
+        "count": 121
+      },
+      {
+        "cat_id": 170,
+        "name": "MÜSLI ENERGI 650G AXA",
+        "count": 8
+      },
+      {
+        "cat_id": 180,
+        "name": "MÜSLI PAPAYA GLUTENFRI 350G AXA",
+        "count": 2
+      },
+      {
+        "cat_id": 201,
+        "name": "MUSLI FRUKT 700G AXA",
+        "count": 144
+      },
+      {
+        "cat_id": 214,
+        "name": "HAVREGRØT ROSIN&VANILJE 525G AXA",
+        "count": 107
+      },
+      {
+        "cat_id": 223,
+        "name": "GRANOLA PEKAN HONNINGSRISTET 350G SYNNØV",
+        "count": 86
+      },
+      {
+        "cat_id": 240,
+        "name": "SUPERGRANOLA GLUTENFRI 350G BARE BRA",
+        "count": 24
+      },
+      {
+        "cat_id": 260,
+        "name": "MUSLI ENERGI 675G AXA",
+        "count": 108
+      },
+      {
+        "cat_id": 261,
+        "name": "MÜSLI HASSELNØTT 600G AXA",
+        "count": 144
+      },
+      {
+        "cat_id": 263,
+        "name": "GRANOLA RASPBERRY  500G START!",
+        "count": 1
+      },
+      {
+        "cat_id": 277,
+        "name": "ALPEN MÜSLI WEETABIX",
+        "count": 12
+      },
+      {
+        "cat_id": 305,
+        "name": "GRANOLA KAKAO&BRINGEBÆR 430G BARE BRA",
+        "count": 122
+      },
+      {
+        "cat_id": 308,
+        "name": "HAVREGRANOLA  JORDBÆR&BRINGEBÆR 400G URK",
+        "count": 18
+      },
+      {
+        "cat_id": 328,
+        "name": "GRANOLA EPLE&BÆR 375G JACOBS UTVALGTE",
+        "count": 40
+      },
+      {
+        "cat_id": 330,
+        "name": "GRANOLA MED JORDBÆR 390G SYNNØVE",
+        "count": 103
+      }
+    ],
+    "FROKOSTBLANDING": [
+      {
+        "cat_id": 29,
+        "name": "NESQUIK FROKOSTBLANDING 375G NESTLE",
+        "count": 192
+      },
+      {
+        "cat_id": 34,
+        "name": "SMACKS 330G KELLOGG\\'S",
+        "count": 181
+      },
+      {
+        "cat_id": 53,
+        "name": "COCO POPS CHOCOS 330G KELLOGG\\'S",
+        "count": 157
+      },
+      {
+        "cat_id": 97,
+        "name": "CHEERIOS MULTI 375G NESTLE",
+        "count": 190
+      },
+      {
+        "cat_id": 116,
+        "name": "FROKOSTBLANDING LION 350G NESTLE",
+        "count": 1
+      },
+      {
+        "cat_id": 121,
+        "name": "FROKOST-TALL 250G ELDORADO",
+        "count": 48
+      },
+      {
+        "cat_id": 166,
+        "name": "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO",
+        "count": 8
+      },
+      {
+        "cat_id": 181,
+        "name": "CHEERIOS HAVRE 375G NESTLE",
+        "count": 190
+      },
+      {
+        "cat_id": 187,
+        "name": "WEETABIX ORIGINAL FROKOSTBLANDING 430G",
+        "count": 106
+      },
+      {
+        "cat_id": 205,
+        "name": "CORN FLAKES 750G FIRST PRICE",
+        "count": 158
+      },
+      {
+        "cat_id": 218,
+        "name": "CORN FLAKES 500G KELLOGGS",
+        "count": 178
+      },
+      {
+        "cat_id": 289,
+        "name": "OREO O\\'S FROKOSTBLANDING 350G",
+        "count": 18
+      }
+    ],
+    "MARGARIN_BUTTER": [
+      {
+        "cat_id": 18,
+        "name": "MELANGE MARGARIN U/MELK/SALT/SOYA 500G",
+        "count": 13
+      },
+      {
+        "cat_id": 41,
+        "name": "VITA HJERTEGO MYK PLANTEMARGARIN 370G",
+        "count": 11
+      },
+      {
+        "cat_id": 43,
+        "name": "MEIERISMØR 500G TINE",
+        "count": 25
+      },
+      {
+        "cat_id": 48,
+        "name": "SMØREMYK 600G ELDORADO",
+        "count": 8
+      },
+      {
+        "cat_id": 67,
+        "name": "SOFT FLORA ORIGINAL 230G",
+        "count": 8
+      },
+      {
+        "cat_id": 88,
+        "name": "OLIVERO SMØR&OLIVENOLJE 400G",
+        "count": 15
+      },
+      {
+        "cat_id": 104,
+        "name": "SMØR USALTET 250G TINE",
+        "count": 3
+      },
+      {
+        "cat_id": 110,
+        "name": "BREMYKT 250G",
+        "count": 12
+      },
+      {
+        "cat_id": 119,
+        "name": "SOFT FLORA STEKE&BAKE 500G",
+        "count": 3
+      },
+      {
+        "cat_id": 128,
+        "name": "SMØREMYK LETT 400G ELDORADO",
+        "count": 20
+      },
+      {
+        "cat_id": 155,
+        "name": "MELANGE FLYTENDE MARGARIN M/SMØR 500ML",
+        "count": 3
+      },
+      {
+        "cat_id": 168,
+        "name": "BRELETT 540G",
+        "count": 21
+      },
+      {
+        "cat_id": 175,
+        "name": "MELANGE MARGARIN 500G",
+        "count": 47
+      },
+      {
+        "cat_id": 176,
+        "name": "BORDMARGARIN 400G FIRST PRICE",
+        "count": 10
+      },
+      {
+        "cat_id": 220,
+        "name": "MEIERISMØR 250G BORDPK TINE",
+        "count": 9
+      },
+      {
+        "cat_id": 224,
+        "name": "SOFT FLORA LETT 540G",
+        "count": 18
+      },
+      {
+        "cat_id": 253,
+        "name": "SOFT FLORA LETT 235G",
+        "count": 20
+      },
+      {
+        "cat_id": 254,
+        "name": "SMØREMYK MELKEFRI 400G BERIT",
+        "count": 2
+      },
+      {
+        "cat_id": 273,
+        "name": "VITA HJERTEGO LETTMARGARIN 370G",
+        "count": 16
+      },
+      {
+        "cat_id": 295,
+        "name": "MELANGE FLYTENDE 500ML",
+        "count": 7
+      },
+      {
+        "cat_id": 302,
+        "name": "MELANGE MARGARIN 250G",
+        "count": 9
+      },
+      {
+        "cat_id": 322,
+        "name": "STEKEMARGARIN 500G FIRST PRICE",
+        "count": 8
+      },
+      {
+        "cat_id": 326,
+        "name": "SOFT FLORA ORIGINAL 540G",
+        "count": 45
+      },
+      {
+        "cat_id": 351,
+        "name": "BREMYKT MYKERE 500G",
+        "count": 26
+      }
+    ],
+    "CHOCOLATE_DRINK": [
+      {
+        "cat_id": 32,
+        "name": "SOLBÆRTODDY 10PK 320G FREIA",
+        "count": 67
+      },
+      {
+        "cat_id": 56,
+        "name": "SJOKOLADEDRIKK 10PK 320G REGIA",
+        "count": 101
+      },
+      {
+        "cat_id": 77,
+        "name": "BAKEKAKAO 250G REGIA",
+        "count": 4
+      },
+      {
+        "cat_id": 125,
+        "name": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+        "count": 5
+      },
+      {
+        "cat_id": 136,
+        "name": "SJOKOLADEDRIKK 450G BOKS REGIA",
+        "count": 31
+      },
+      {
+        "cat_id": 169,
+        "name": "SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN",
+        "count": 33
+      },
+      {
+        "cat_id": 179,
+        "name": "SJOKOLADEDRIKK 10X32G RETT I KOPPEN",
+        "count": 4
+      },
+      {
+        "cat_id": 229,
+        "name": "NESQUIK KAKAOPULVER 700G",
+        "count": 19
+      },
+      {
+        "cat_id": 259,
+        "name": "REGIA KAKAO ORIGINAL 260G",
+        "count": 81
+      },
+      {
+        "cat_id": 266,
+        "name": "SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN",
+        "count": 55
+      }
+    ],
+    "SANDWICH_WASA": [
+      {
+        "cat_id": 91,
+        "name": "SANDWICH PESTO 37G WASA",
+        "count": 1
+      },
+      {
+        "cat_id": 101,
+        "name": "SANDWICH CHEESE HERBS 30G WASA",
+        "count": 13
+      },
+      {
+        "cat_id": 241,
+        "name": "SANDWICH CHEESE GRESSLØK 37G WASA",
+        "count": 1
+      },
+      {
+        "cat_id": 257,
+        "name": "SANDWICH BRUNOST 36G WASA",
+        "count": 7
+      },
+      {
+        "cat_id": 290,
+        "name": "SANDWICH CHEESE TOMAT&BASILIKUM 40G WASA",
+        "count": 29
+      },
+      {
+        "cat_id": 331,
+        "name": "SANDWICH PIZZA 37G WASA",
+        "count": 7
+      },
+      {
+        "cat_id": 346,
+        "name": "SANDWICH SOUR CREAM&ONION 33G WASA",
+        "count": 3
+      }
+    ],
+    "GRISSINI": [
+      {
+        "cat_id": 5,
+        "name": "GRISSINI HVITLØK 125G GRANFORNO",
+        "count": 45
+      },
+      {
+        "cat_id": 11,
+        "name": "GRISSINI M/OLIVENOLJE 200G JACOBS UTVALG",
+        "count": 58
+      },
+      {
+        "cat_id": 13,
+        "name": "GRISSINI 125G GRANFORNO",
+        "count": 13
+      },
+      {
+        "cat_id": 270,
+        "name": "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE",
+        "count": 14
+      },
+      {
+        "cat_id": 294,
+        "name": "GRISSINI SALT 125G GRANFORNO",
+        "count": 12
+      }
+    ],
+    "MELLOMBAR": [
+      {
+        "cat_id": 73,
+        "name": "MELLOMBAR SJOKOLADE&KRISP 138G ELDORADO",
+        "count": 178
+      },
+      {
+        "cat_id": 157,
+        "name": "MELLOMBAR SOMMERVIBBER 138G ELDORADO",
+        "count": 90
+      },
+      {
+        "cat_id": 204,
+        "name": "MELLOMBAR SALT KARAMELL 138G ELDORADO",
+        "count": 177
+      },
+      {
+        "cat_id": 217,
+        "name": "MELLOMBAR POPCORN&SJOKOLADE 126G ELDORAD",
+        "count": 144
+      },
+      {
+        "cat_id": 231,
+        "name": "MELLOMBAR CHIA,QUINOA&NØTTER 138G",
+        "count": 43
+      },
+      {
+        "cat_id": 264,
+        "name": "MELLOMBAR JORDBÆR HVIT SJOKOLADE 138G EL",
+        "count": 116
+      },
+      {
+        "cat_id": 265,
+        "name": "MELLOMBAR SUKKERFRI M/SJOKO 138G",
+        "count": 121
+      },
+      {
+        "cat_id": 284,
+        "name": "MELLOMBAR KOKOS&SJOKOLADE 138G ELDORADO",
+        "count": 168
+      }
+    ],
+    "MAISKAKER": [
+      {
+        "cat_id": 68,
+        "name": "MAISKAKER SOURCREAM&ONION 125G FRIGGS",
+        "count": 76
+      },
+      {
+        "cat_id": 188,
+        "name": "MAISKAKER POPCORN 125G FRIGGS",
+        "count": 195
+      },
+      {
+        "cat_id": 239,
+        "name": "MAISKAKER CHIA/HAVSALT 130G FRIGGS",
+        "count": 240
+      },
+      {
+        "cat_id": 280,
+        "name": "RISKAKER 100G FIRST PRICE",
+        "count": 262
+      },
+      {
+        "cat_id": 307,
+        "name": "MAISKAKER OST 125G FRIGGS",
+        "count": 283
+      }
+    ],
+    "OTHER": [
+      {
+        "cat_id": 2,
+        "name": "FROKOSTRINGER FRUKTSMAK 350G ELDORADO",
+        "count": 6
+      },
+      {
+        "cat_id": 7,
+        "name": "PUFFET HAVRE 340G FIRST PRICE",
+        "count": 106
+      },
+      {
+        "cat_id": 12,
+        "name": "Leksands Rutbit",
+        "count": 150
+      },
+      {
+        "cat_id": 23,
+        "name": "FITNESS FROKOST 375G NESTLE",
+        "count": 113
+      },
+      {
+        "cat_id": 26,
+        "name": "OB PROCOMFORT NORMAL 16ST",
+        "count": 1
+      },
+      {
+        "cat_id": 30,
+        "name": "SJOKORINGER 375G ELDORADO",
+        "count": 129
+      },
+      {
+        "cat_id": 52,
+        "name": "RUGSPRØ 200G WASA",
+        "count": 227
+      },
+      {
+        "cat_id": 54,
+        "name": "FILTERPOSER NR.4 100STK EVERGOOD",
+        "count": 10
+      },
+      {
+        "cat_id": 57,
+        "name": "MORENEPOTETER GULE 650G BJERTNÆS&HOEL",
+        "count": 1
+      },
+      {
+        "cat_id": 62,
+        "name": "KAVRINGER 350G WASA",
+        "count": 134
+      },
+      {
+        "cat_id": 69,
+        "name": "DAVE&JON\\'S DADLER SOUR COLA 125G",
+        "count": 1
+      },
+      {
+        "cat_id": 75,
+        "name": "CRUESLI 4 NUTS 450G QUAKER",
+        "count": 139
+      },
+      {
+        "cat_id": 76,
+        "name": "BRUSCHETTA LIGURISK 130G OLIVINO",
+        "count": 1
+      },
+      {
+        "cat_id": 82,
+        "name": "FRØ & HAVSALT 200G LEKSANDS",
+        "count": 205
+      },
+      {
+        "cat_id": 85,
+        "name": "RIS PUFFET 260G FIRST PRICE",
+        "count": 139
+      },
+      {
+        "cat_id": 120,
+        "name": "TOM&JERRY KJEKS 175G SÆTRE",
+        "count": 2
+      },
+      {
+        "cat_id": 123,
+        "name": "ASPARGES GRØNN",
+        "count": 1
+      },
+      {
+        "cat_id": 124,
+        "name": "O\\'BOY MINDRE SUKKER 500G POSE FREIA",
+        "count": 4
+      },
+      {
+        "cat_id": 127,
+        "name": "FRIELE FROKOST HEL 500G",
+        "count": 9
+      },
+      {
+        "cat_id": 130,
+        "name": "WEETOS CHOCO 375G WEETABIX",
+        "count": 145
+      },
+      {
+        "cat_id": 132,
+        "name": "FRUKOST FULLKORN 320G WASA",
+        "count": 300
+      },
+      {
+        "cat_id": 133,
+        "name": "ZOEGAS KAFFE SKÅNEROST 450G",
+        "count": 5
+      },
+      {
+        "cat_id": 140,
+        "name": "SURDEIGKJEKS 100G SÆTRES BESTE",
+        "count": 1
+      },
+      {
+        "cat_id": 142,
+        "name": "NESCAFÉ CAPPUCCINO 100G NESTLE",
+        "count": 61
+      },
+      {
+        "cat_id": 150,
+        "name": "Sætre GullBar",
+        "count": 17
+      },
+      {
+        "cat_id": 154,
+        "name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU",
+        "count": 1
+      },
+      {
+        "cat_id": 161,
+        "name": "HAVRERINGER 250G SYNNØVE FINDEN",
+        "count": 3
+      },
+      {
+        "cat_id": 162,
+        "name": "TRESOR CHOCO NUT 410G KELLOGGS",
+        "count": 46
+      },
+      {
+        "cat_id": 186,
+        "name": "SUPERGRØT SKOGSBÆR 57G BARE BRA",
+        "count": 126
+      },
+      {
+        "cat_id": 191,
+        "name": "ALL-BRAN REGULAR 375G KELLOGG\\'S",
+        "count": 69
+      },
+      {
+        "cat_id": 194,
+        "name": "CRUESLI SOLFROKOST 450G QUAKER",
+        "count": 141
+      },
+      {
+        "cat_id": 197,
+        "name": "SPECIAL K CLASSIC 335G KELLOGG\\'S",
+        "count": 59
+      },
+      {
+        "cat_id": 198,
+        "name": "ALI ORIGINAL KAFFEPUTER 18STK",
+        "count": 23
+      },
+      {
+        "cat_id": 209,
+        "name": "DELIKATESS SESAM 285G WASA",
+        "count": 17
+      },
+      {
+        "cat_id": 211,
+        "name": "BJØRN HAVREMEL 1KG AXA",
+        "count": 1
+      },
+      {
+        "cat_id": 222,
+        "name": "NESCAFÉ MOCHA 136G NESTLE",
+        "count": 54
+      },
+      {
+        "cat_id": 226,
+        "name": "LEKSANDS TREKANT HAVRE 200G",
+        "count": 12
+      },
+      {
+        "cat_id": 230,
+        "name": "JARLSBERG 27% SKIVET 120G TINE",
+        "count": 1
+      },
+      {
+        "cat_id": 234,
+        "name": "LANO SÅPE 2X125G",
+        "count": 1
+      },
+      {
+        "cat_id": 242,
+        "name": "BOG 390G GILDE",
+        "count": 1
+      },
+      {
+        "cat_id": 244,
+        "name": "RUGSPRØ HAVRE 180G WASA",
+        "count": 107
+      },
+      {
+        "cat_id": 256,
+        "name": "KAFFEFILTER PRESSKANNE 25STK EVERGOOD",
+        "count": 1
+      },
+      {
+        "cat_id": 258,
+        "name": "EXTRA SWEET FRUIT 14G",
+        "count": 1
+      },
+      {
+        "cat_id": 268,
+        "name": "SUPERGRØT KANEL&PUFFET QUINOA 54G",
+        "count": 177
+      },
+      {
+        "cat_id": 276,
+        "name": "HVITLØK 100G PK",
+        "count": 2
+      },
+      {
+        "cat_id": 282,
+        "name": "FILTERPOSER NR.4 200STK ALI",
+        "count": 98
+      },
+      {
+        "cat_id": 291,
+        "name": "PREMIUM DARK ORANGE 100G FREIA",
+        "count": 1
+      },
+      {
+        "cat_id": 293,
+        "name": "NUTELLA BISCUITS 193G",
+        "count": 2
+      },
+      {
+        "cat_id": 296,
+        "name": "FIBER BALANCE 230G WASA",
+        "count": 309
+      },
+      {
+        "cat_id": 298,
+        "name": "O\\'BOY ORIGINAL 450G FREIA",
+        "count": 109
+      },
+      {
+        "cat_id": 300,
+        "name": "",
+        "count": 1
+      },
+      {
+        "cat_id": 309,
+        "name": "FIRE RØDE FRUKTER 25POS TWININGS",
+        "count": 67
+      },
+      {
+        "cat_id": 311,
+        "name": "MELBA TOAST FIRKANTET 100G MEULEN",
+        "count": 33
+      },
+      {
+        "cat_id": 313,
+        "name": "FLOTT MATFETT 500G",
+        "count": 4
+      },
+      {
+        "cat_id": 315,
+        "name": "4-KORN 675G AXA",
+        "count": 134
+      },
+      {
+        "cat_id": 316,
+        "name": "FIBERRIK SOLSIKKE 125G SÆTRE",
+        "count": 23
+      },
+      {
+        "cat_id": 318,
+        "name": "PANNEKAKER 6STK ELDORADO",
+        "count": 1
+      },
+      {
+        "cat_id": 321,
+        "name": "GIFFLAR KANEL 300G PÅGEN",
+        "count": 3
+      },
+      {
+        "cat_id": 323,
+        "name": "KRUTONGER CHEESE&GARLIC 142G CHATHAM",
+        "count": 5
+      },
+      {
+        "cat_id": 327,
+        "name": "POTETCHIPS SORT TRØFFEL 125G TORRES",
+        "count": 1
+      },
+      {
+        "cat_id": 329,
+        "name": "SKORPOR FULLKORN 240G PÅGEN",
+        "count": 170
+      },
+      {
+        "cat_id": 333,
+        "name": "MELBATOAST RUND 110G MEULEN",
+        "count": 101
+      },
+      {
+        "cat_id": 335,
+        "name": "STORFE SHORT RIBS GREATER OMAHA LV",
+        "count": 1
+      },
+      {
+        "cat_id": 342,
+        "name": "HAVREFRAS 375G",
+        "count": 167
+      },
+      {
+        "cat_id": 354,
+        "name": "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN",
+        "count": 2
+      },
+      {
+        "cat_id": 355,
+        "name": "unknown_product",
+        "count": 422
+      }
+    ]
+  },
+  "photo_recommendations": {
+    "critical_classes": [
+      {
+        "cat_id": 81,
+        "count": 1,
+        "name": "GRØNN TE CHAI 25POS TWININGS"
+      },
+      {
+        "cat_id": 107,
+        "count": 1,
+        "name": "FLAT WHITE 16KAPSLER DOLCE GUSTO"
+      },
+      {
+        "cat_id": 167,
+        "count": 1,
+        "name": "TROPISK AROMA FILTERMALT 200G JACOBS"
+      },
+      {
+        "cat_id": 115,
+        "count": 1,
+        "name": "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS"
+      },
+      {
+        "cat_id": 350,
+        "count": 1,
+        "name": "BLÅ JAVA HELE BØNNER 340G COTW"
+      },
+      {
+        "cat_id": 256,
+        "count": 1,
+        "name": "KAFFEFILTER PRESSKANNE 25STK EVERGOOD"
+      },
+      {
+        "cat_id": 202,
+        "count": 1,
+        "name": "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL"
+      },
+      {
+        "cat_id": 199,
+        "count": 1,
+        "name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA"
+      },
+      {
+        "cat_id": 153,
+        "count": 1,
+        "name": "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G"
+      },
+      {
+        "cat_id": 255,
+        "count": 1,
+        "name": "LIPTON ICETEA MANGO PULVER 50G"
+      },
+      {
+        "cat_id": 310,
+        "count": 1,
+        "name": "LIPTON ICETEA LEMON PULVER 50G"
+      },
+      {
+        "cat_id": 95,
+        "count": 1,
+        "name": "EGG M/L ØKOLOGISKE 10STK VILJE"
+      },
+      {
+        "cat_id": 318,
+        "count": 1,
+        "name": "PANNEKAKER 6STK ELDORADO"
+      },
+      {
+        "cat_id": 79,
+        "count": 1,
+        "name": "PANNEKAKER GROVE STEKTE 480G ÅMLI"
+      },
+      {
+        "cat_id": 135,
+        "count": 1,
+        "name": "GÅRDSEGG EKSTRA STORE 6STK EK"
+      },
+      {
+        "cat_id": 94,
+        "count": 1,
+        "name": "HAVREGRYN STORE GLUTENFRI 1KG AXA"
+      },
+      {
+        "cat_id": 211,
+        "count": 1,
+        "name": "BJØRN HAVREMEL 1KG AXA"
+      },
+      {
+        "cat_id": 116,
+        "count": 1,
+        "name": "FROKOSTBLANDING LION 350G NESTLE"
+      },
+      {
+        "cat_id": 263,
+        "count": 1,
+        "name": "GRANOLA RASPBERRY  500G START!"
+      },
+      {
+        "cat_id": 227,
+        "count": 1,
+        "name": "STORFE ENTRECOTE 180G FIRST PRICE"
+      },
+      {
+        "cat_id": 300,
+        "count": 1,
+        "name": ""
+      },
+      {
+        "cat_id": 230,
+        "count": 1,
+        "name": "JARLSBERG 27% SKIVET 120G TINE"
+      },
+      {
+        "cat_id": 327,
+        "count": 1,
+        "name": "POTETCHIPS SORT TRØFFEL 125G TORRES"
+      },
+      {
+        "cat_id": 242,
+        "count": 1,
+        "name": "BOG 390G GILDE"
+      },
+      {
+        "cat_id": 154,
+        "count": 1,
+        "name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU"
+      },
+      {
+        "cat_id": 335,
+        "count": 1,
+        "name": "STORFE SHORT RIBS GREATER OMAHA LV"
+      },
+      {
+        "cat_id": 258,
+        "count": 1,
+        "name": "EXTRA SWEET FRUIT 14G"
+      },
+      {
+        "cat_id": 26,
+        "count": 1,
+        "name": "OB PROCOMFORT NORMAL 16ST"
+      },
+      {
+        "cat_id": 76,
+        "count": 1,
+        "name": "BRUSCHETTA LIGURISK 130G OLIVINO"
+      },
+      {
+        "cat_id": 69,
+        "count": 1,
+        "name": "DAVE&JON\\'S DADLER SOUR COLA 125G"
+      },
+      {
+        "cat_id": 291,
+        "count": 1,
+        "name": "PREMIUM DARK ORANGE 100G FREIA"
+      },
+      {
+        "cat_id": 57,
+        "count": 1,
+        "name": "MORENEPOTETER GULE 650G BJERTNÆS&HOEL"
+      },
+      {
+        "cat_id": 123,
+        "count": 1,
+        "name": "ASPARGES GRØNN"
+      },
+      {
+        "cat_id": 234,
+        "count": 1,
+        "name": "LANO SÅPE 2X125G"
+      },
+      {
+        "cat_id": 274,
+        "count": 1,
+        "name": "VESTLANDSLEFSA TØRRE 10STK 360G"
+      },
+      {
+        "cat_id": 140,
+        "count": 1,
+        "name": "SURDEIGKJEKS 100G SÆTRES BESTE"
+      },
+      {
+        "cat_id": 317,
+        "count": 1,
+        "name": "POWERKNEKKEBRØD GL.FRI 225G SCHÄR"
+      },
+      {
+        "cat_id": 91,
+        "count": 1,
+        "name": "SANDWICH PESTO 37G WASA"
+      },
+      {
+        "cat_id": 279,
+        "count": 1,
+        "name": "KNEKKEBRØD NATURELL GL.FRI 240G WASA"
+      },
+      {
+        "cat_id": 241,
+        "count": 1,
+        "name": "SANDWICH CHEESE GRESSLØK 37G WASA"
+      },
+      {
+        "cat_id": 149,
+        "count": 1,
+        "name": "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G"
+      },
+      {
+        "cat_id": 190,
+        "count": 2,
+        "name": "EARL GREY TEA ØKOLOGISK 15POS JACOBS"
+      },
+      {
+        "cat_id": 172,
+        "count": 2,
+        "name": "FRIELE INSTANT GULL 100G REFILL"
+      },
+      {
+        "cat_id": 134,
+        "count": 2,
+        "name": "EVERGOOD ESPRESSO HELE BØNNER 500G"
+      },
+      {
+        "cat_id": 285,
+        "count": 2,
+        "name": "Leka Egg 10stk"
+      },
+      {
+        "cat_id": 254,
+        "count": 2,
+        "name": "SMØREMYK MELKEFRI 400G BERIT"
+      },
+      {
+        "cat_id": 90,
+        "count": 2,
+        "name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN"
+      },
+      {
+        "cat_id": 180,
+        "count": 2,
+        "name": "MÜSLI PAPAYA GLUTENFRI 350G AXA"
+      },
+      {
+        "cat_id": 276,
+        "count": 2,
+        "name": "HVITLØK 100G PK"
+      },
+      {
+        "cat_id": 354,
+        "count": 2,
+        "name": "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN"
+      },
+      {
+        "cat_id": 60,
+        "count": 2,
+        "name": "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G"
+      },
+      {
+        "cat_id": 120,
+        "count": 2,
+        "name": "TOM&JERRY KJEKS 175G SÆTRE"
+      },
+      {
+        "cat_id": 293,
+        "count": 2,
+        "name": "NUTELLA BISCUITS 193G"
+      },
+      {
+        "cat_id": 44,
+        "count": 2,
+        "name": "KNEKKS KJEKS HAVRE 190G RØROS"
+      },
+      {
+        "cat_id": 114,
+        "count": 3,
+        "name": "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA"
+      },
+      {
+        "cat_id": 299,
+        "count": 3,
+        "name": "KAMILLE TE 20POS LIPTON"
+      },
+      {
+        "cat_id": 319,
+        "count": 3,
+        "name": "LIPTON ICETEA PEACH PULVER 50G"
+      },
+      {
+        "cat_id": 104,
+        "count": 3,
+        "name": "SMØR USALTET 250G TINE"
+      },
+      {
+        "cat_id": 119,
+        "count": 3,
+        "name": "SOFT FLORA STEKE&BAKE 500G"
+      },
+      {
+        "cat_id": 288,
+        "count": 3,
+        "name": "Sunnmørsegg 10stk"
+      },
+      {
+        "cat_id": 155,
+        "count": 3,
+        "name": "MELANGE FLYTENDE MARGARIN M/SMØR 500ML"
+      },
+      {
+        "cat_id": 161,
+        "count": 3,
+        "name": "HAVRERINGER 250G SYNNØVE FINDEN"
+      },
+      {
+        "cat_id": 156,
+        "count": 3,
+        "name": "GRANOLA CRAZELNUT 500G START!"
+      },
+      {
+        "cat_id": 321,
+        "count": 3,
+        "name": "GIFFLAR KANEL 300G PÅGEN"
+      },
+      {
+        "cat_id": 346,
+        "count": 3,
+        "name": "SANDWICH SOUR CREAM&ONION 33G WASA"
+      },
+      {
+        "cat_id": 179,
+        "count": 4,
+        "name": "SJOKOLADEDRIKK 10X32G RETT I KOPPEN"
+      },
+      {
+        "cat_id": 147,
+        "count": 4,
+        "name": "ROOIBOS TE ØKOLOGISK 20PS"
+      },
+      {
+        "cat_id": 124,
+        "count": 4,
+        "name": "O\\'BOY MINDRE SUKKER 500G POSE FREIA"
+      },
+      {
+        "cat_id": 252,
+        "count": 4,
+        "name": "SIDAMO ETIOPIA HELE BØNNER 340G COTW"
+      },
+      {
+        "cat_id": 77,
+        "count": 4,
+        "name": "BAKEKAKAO 250G REGIA"
+      },
+      {
+        "cat_id": 245,
+        "count": 4,
+        "name": "ENGLISH BREAKFAST TEA 200G TWININGS"
+      },
+      {
+        "cat_id": 313,
+        "count": 4,
+        "name": "FLOTT MATFETT 500G"
+      },
+      {
+        "cat_id": 159,
+        "count": 4,
+        "name": "Galåvolden Store Gårdsegg 10stk"
+      },
+      {
+        "cat_id": 17,
+        "count": 4,
+        "name": "KNEKKEBRØD GL.FRI 150G BRISK"
+      },
+      {
+        "cat_id": 165,
+        "count": 5,
+        "name": "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 353,
+        "count": 5,
+        "name": "EXCELSO COLOMBIA FILTERMALT 200G JACOBS"
+      },
+      {
+        "cat_id": 133,
+        "count": 5,
+        "name": "ZOEGAS KAFFE SKÅNEROST 450G"
+      },
+      {
+        "cat_id": 55,
+        "count": 5,
+        "name": "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 112,
+        "count": 5,
+        "name": "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS"
+      },
+      {
+        "cat_id": 74,
+        "count": 5,
+        "name": "NESCAFE BRASERO REFILL 180G"
+      },
+      {
+        "cat_id": 125,
+        "count": 5,
+        "name": "SJOKOLADEDRIKK 512G RETT I KOPPEN"
+      },
+      {
+        "cat_id": 51,
+        "count": 5,
+        "name": "Tørresvik Gårdsegg 6stk"
+      },
+      {
+        "cat_id": 183,
+        "count": 5,
+        "name": "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL"
+      },
+      {
+        "cat_id": 323,
+        "count": 5,
+        "name": "KRUTONGER CHEESE&GARLIC 142G CHATHAM"
+      }
+    ],
+    "important_classes": [
+      {
+        "cat_id": 58,
+        "count": 6,
+        "name": "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 28,
+        "count": 6,
+        "name": "LADY GREY TE 200G TWININGS"
+      },
+      {
+        "cat_id": 16,
+        "count": 6,
+        "name": "CAPPUCCINO 8KAPSLER DOLCE GUSTO"
+      },
+      {
+        "cat_id": 248,
+        "count": 6,
+        "name": "COTW DARK ROAST KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 9,
+        "count": 6,
+        "name": "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO"
+      },
+      {
+        "cat_id": 337,
+        "count": 6,
+        "name": "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA"
+      },
+      {
+        "cat_id": 301,
+        "count": 6,
+        "name": "Gårdsegg fra Fana 10stk"
+      },
+      {
+        "cat_id": 163,
+        "count": 6,
+        "name": "Galåvolden Store Gårdsegg 6stk"
+      },
+      {
+        "cat_id": 129,
+        "count": 6,
+        "name": "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE"
+      },
+      {
+        "cat_id": 2,
+        "count": 6,
+        "name": "FROKOSTRINGER FRUKTSMAK 350G ELDORADO"
+      },
+      {
+        "cat_id": 98,
+        "count": 7,
+        "name": "NIGHT TE 20POS PUKKA"
+      },
+      {
+        "cat_id": 295,
+        "count": 7,
+        "name": "MELANGE FLYTENDE 500ML"
+      },
+      {
+        "cat_id": 331,
+        "count": 7,
+        "name": "SANDWICH PIZZA 37G WASA"
+      },
+      {
+        "cat_id": 257,
+        "count": 7,
+        "name": "SANDWICH BRUNOST 36G WASA"
+      },
+      {
+        "cat_id": 67,
+        "count": 8,
+        "name": "SOFT FLORA ORIGINAL 230G"
+      },
+      {
+        "cat_id": 48,
+        "count": 8,
+        "name": "SMØREMYK 600G ELDORADO"
+      },
+      {
+        "cat_id": 322,
+        "count": 8,
+        "name": "STEKEMARGARIN 500G FIRST PRICE"
+      },
+      {
+        "cat_id": 170,
+        "count": 8,
+        "name": "MÜSLI ENERGI 650G AXA"
+      },
+      {
+        "cat_id": 59,
+        "count": 8,
+        "name": "MÜSLI BLÅBÆR 630G AXA"
+      },
+      {
+        "cat_id": 166,
+        "count": 8,
+        "name": "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO"
+      },
+      {
+        "cat_id": 127,
+        "count": 9,
+        "name": "FRIELE FROKOST HEL 500G"
+      },
+      {
+        "cat_id": 126,
+        "count": 9,
+        "name": "GRANDE INTENSO 16KAPSLER DOLCE GUSTO"
+      },
+      {
+        "cat_id": 249,
+        "count": 9,
+        "name": "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 302,
+        "count": 9,
+        "name": "MELANGE MARGARIN 250G"
+      },
+      {
+        "cat_id": 220,
+        "count": 9,
+        "name": "MEIERISMØR 250G BORDPK TINE"
+      },
+      {
+        "cat_id": 286,
+        "count": 9,
+        "name": "EGG L 10STK TOTEN"
+      },
+      {
+        "cat_id": 54,
+        "count": 10,
+        "name": "FILTERPOSER NR.4 100STK EVERGOOD"
+      },
+      {
+        "cat_id": 195,
+        "count": 10,
+        "name": "Økologiske Egg Brune 6stk"
+      },
+      {
+        "cat_id": 176,
+        "count": 10,
+        "name": "BORDMARGARIN 400G FIRST PRICE"
+      },
+      {
+        "cat_id": 4,
+        "count": 10,
+        "name": "Økologiske Egg 6stk"
+      },
+      {
+        "cat_id": 278,
+        "count": 10,
+        "name": "DELICATE CRACKERS SEA SALT 180G WASA"
+      },
+      {
+        "cat_id": 118,
+        "count": 11,
+        "name": "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT"
+      },
+      {
+        "cat_id": 203,
+        "count": 11,
+        "name": "ROOIBOS TE 20POS LIPTON"
+      },
+      {
+        "cat_id": 41,
+        "count": 11,
+        "name": "VITA HJERTEGO MYK PLANTEMARGARIN 370G"
+      },
+      {
+        "cat_id": 332,
+        "count": 12,
+        "name": "COTW LUNGO DARK KAFFEKAPSEL 10STK"
+      },
+      {
+        "cat_id": 110,
+        "count": 12,
+        "name": "BREMYKT 250G"
+      },
+      {
+        "cat_id": 10,
+        "count": 12,
+        "name": "Jacobs 10 Gårdsegg"
+      },
+      {
+        "cat_id": 277,
+        "count": 12,
+        "name": "ALPEN MÜSLI WEETABIX"
+      },
+      {
+        "cat_id": 294,
+        "count": 12,
+        "name": "GRISSINI SALT 125G GRANFORNO"
+      },
+      {
+        "cat_id": 226,
+        "count": 12,
+        "name": "LEKSANDS TREKANT HAVRE 200G"
+      },
+      {
+        "cat_id": 182,
+        "count": 13,
+        "name": "FRIELE INSTANT 200G"
+      },
+      {
+        "cat_id": 247,
+        "count": 13,
+        "name": "MOUNT KENYA FILTERMALT 200G JACOBS"
+      },
+      {
+        "cat_id": 18,
+        "count": 13,
+        "name": "MELANGE MARGARIN U/MELK/SALT/SOYA 500G"
+      },
+      {
+        "cat_id": 216,
+        "count": 13,
+        "name": "Sunnmørsegg"
+      },
+      {
+        "cat_id": 101,
+        "count": 13,
+        "name": "SANDWICH CHEESE HERBS 30G WASA"
+      },
+      {
+        "cat_id": 13,
+        "count": 13,
+        "name": "GRISSINI 125G GRANFORNO"
+      },
+      {
+        "cat_id": 206,
+        "count": 14,
+        "name": "NESCAFE VANILLA LATTE 136G NESTLE"
+      },
+      {
+        "cat_id": 281,
+        "count": 14,
+        "name": "GRANDE 16KAPSLER DOLCE GUSTO"
+      },
+      {
+        "cat_id": 99,
+        "count": 14,
+        "name": "NESCAFE ORIGINAL 180G REFILL"
+      },
+      {
+        "cat_id": 138,
+        "count": 14,
+        "name": "Økologiske Egg 10stk"
+      },
+      {
+        "cat_id": 262,
+        "count": 14,
+        "name": "HAVREGRØT STEEL CUT DEN SORTE HAVRE"
+      },
+      {
+        "cat_id": 36,
+        "count": 14,
+        "name": "MÜSLI FRUKT MÜSLI 700G AXA"
+      },
+      {
+        "cat_id": 270,
+        "count": 14,
+        "name": "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE"
+      },
+      {
+        "cat_id": 88,
+        "count": 15,
+        "name": "OLIVERO SMØR&OLIVENOLJE 400G"
+      },
+      {
+        "cat_id": 105,
+        "count": 15,
+        "name": "EGG ØKOLOGISK M/L 12STK VINGULMARK"
+      },
+      {
+        "cat_id": 70,
+        "count": 15,
+        "name": "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI"
+      },
+      {
+        "cat_id": 113,
+        "count": 15,
+        "name": "ERTERFLATBRØD CRISP 210G"
+      },
+      {
+        "cat_id": 251,
+        "count": 15,
+        "name": "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL"
+      }
+    ],
+    "critical_aisles": {
+      "TEA aisle": [
+        "GRØNN TE CHAI 25POS TWININGS",
+        "FLAT WHITE 16KAPSLER DOLCE GUSTO",
+        "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL",
+        "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA",
+        "LIPTON ICETEA MANGO PULVER 50G",
+        "LIPTON ICETEA LEMON PULVER 50G",
+        "PANNEKAKER GROVE STEKTE 480G ÅMLI",
+        "STORFE ENTRECOTE 180G FIRST PRICE",
+        "EARL GREY TEA ØKOLOGISK 15POS JACOBS",
+        "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA",
+        "KAMILLE TE 20POS LIPTON",
+        "LIPTON ICETEA PEACH PULVER 50G",
+        "ROOIBOS TE ØKOLOGISK 20PS",
+        "ENGLISH BREAKFAST TEA 200G TWININGS",
+        "LADY GREY TE 200G TWININGS",
+        "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA",
+        "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE",
+        "NIGHT TE 20POS PUKKA",
+        "DELICATE CRACKERS SEA SALT 180G WASA",
+        "ROOIBOS TE 20POS LIPTON",
+        "HAVREGRØT STEEL CUT DEN SORTE HAVRE",
+        "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI"
+      ],
+      "COFFEE aisle": [
+        "TROPISK AROMA FILTERMALT 200G JACOBS",
+        "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS",
+        "BLÅ JAVA HELE BØNNER 340G COTW",
+        "KAFFEFILTER PRESSKANNE 25STK EVERGOOD",
+        "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G",
+        "EVERGOOD ESPRESSO HELE BØNNER 500G",
+        "SIDAMO ETIOPIA HELE BØNNER 340G COTW",
+        "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK",
+        "EXCELSO COLOMBIA FILTERMALT 200G JACOBS",
+        "ZOEGAS KAFFE SKÅNEROST 450G",
+        "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK",
+        "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS",
+        "NESCAFE BRASERO REFILL 180G",
+        "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK",
+        "COTW DARK ROAST KAFFEKAPSEL 10STK",
+        "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK",
+        "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT",
+        "COTW LUNGO DARK KAFFEKAPSEL 10STK",
+        "MOUNT KENYA FILTERMALT 200G JACOBS",
+        "NESCAFE VANILLA LATTE 136G NESTLE",
+        "NESCAFE ORIGINAL 180G REFILL"
+      ],
+      "EGGS/DAIRY (cooler section)": [
+        "EGG M/L ØKOLOGISKE 10STK VILJE",
+        "GÅRDSEGG EKSTRA STORE 6STK EK",
+        "Leka Egg 10stk",
+        "Sunnmørsegg 10stk",
+        "Galåvolden Store Gårdsegg 10stk",
+        "Tørresvik Gårdsegg 6stk",
+        "Gårdsegg fra Fana 10stk",
+        "Galåvolden Store Gårdsegg 6stk",
+        "EGG L 10STK TOTEN",
+        "Økologiske Egg Brune 6stk",
+        "Økologiske Egg 6stk",
+        "Jacobs 10 Gårdsegg",
+        "Sunnmørsegg",
+        "Økologiske Egg 10stk",
+        "EGG ØKOLOGISK M/L 12STK VINGULMARK"
+      ],
+      "OTHER/SPECIALTY": [
+        "PANNEKAKER 6STK ELDORADO",
+        "",
+        "JARLSBERG 27% SKIVET 120G TINE",
+        "POTETCHIPS SORT TRØFFEL 125G TORRES",
+        "BOG 390G GILDE",
+        "KRYDDERMIKS SHISH KEBAB 10G POS HINDU",
+        "STORFE SHORT RIBS GREATER OMAHA LV",
+        "EXTRA SWEET FRUIT 14G",
+        "OB PROCOMFORT NORMAL 16ST",
+        "BRUSCHETTA LIGURISK 130G OLIVINO",
+        "DAVE&JON\\'S DADLER SOUR COLA 125G",
+        "PREMIUM DARK ORANGE 100G FREIA",
+        "MORENEPOTETER GULE 650G BJERTNÆS&HOEL",
+        "ASPARGES GRØNN",
+        "LANO SÅPE 2X125G",
+        "VESTLANDSLEFSA TØRRE 10STK 360G",
+        "SURDEIGKJEKS 100G SÆTRES BESTE",
+        "FRIELE INSTANT GULL 100G REFILL",
+        "HVITLØK 100G PK",
+        "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN",
+        "TOM&JERRY KJEKS 175G SÆTRE",
+        "NUTELLA BISCUITS 193G",
+        "GIFFLAR KANEL 300G PÅGEN",
+        "O\\'BOY MINDRE SUKKER 500G POSE FREIA",
+        "FLOTT MATFETT 500G",
+        "KRUTONGER CHEESE&GARLIC 142G CHATHAM",
+        "CAPPUCCINO 8KAPSLER DOLCE GUSTO",
+        "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO",
+        "GRANDE INTENSO 16KAPSLER DOLCE GUSTO",
+        "FILTERPOSER NR.4 100STK EVERGOOD",
+        "GRISSINI SALT 125G GRANFORNO",
+        "FRIELE INSTANT 200G",
+        "GRISSINI 125G GRANFORNO",
+        "GRANDE 16KAPSLER DOLCE GUSTO",
+        "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE"
+      ],
+      "CEREAL/BREAKFAST aisle": [
+        "HAVREGRYN STORE GLUTENFRI 1KG AXA",
+        "BJØRN HAVREMEL 1KG AXA",
+        "FROKOSTBLANDING LION 350G NESTLE",
+        "GRANOLA RASPBERRY  500G START!",
+        "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN",
+        "MÜSLI PAPAYA GLUTENFRI 350G AXA",
+        "KNEKKS KJEKS HAVRE 190G RØROS",
+        "HAVRERINGER 250G SYNNØVE FINDEN",
+        "GRANOLA CRAZELNUT 500G START!",
+        "FROKOSTRINGER FRUKTSMAK 350G ELDORADO",
+        "MÜSLI ENERGI 650G AXA",
+        "MÜSLI BLÅBÆR 630G AXA",
+        "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO",
+        "FRIELE FROKOST HEL 500G",
+        "ALPEN MÜSLI WEETABIX",
+        "MÜSLI FRUKT MÜSLI 700G AXA"
+      ],
+      "BREAD/CRISPBREAD aisle": [
+        "POWERKNEKKEBRØD GL.FRI 225G SCHÄR",
+        "SANDWICH PESTO 37G WASA",
+        "KNEKKEBRØD NATURELL GL.FRI 240G WASA",
+        "SANDWICH CHEESE GRESSLØK 37G WASA",
+        "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G",
+        "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G",
+        "SANDWICH SOUR CREAM&ONION 33G WASA",
+        "KNEKKEBRØD GL.FRI 150G BRISK",
+        "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL",
+        "SANDWICH PIZZA 37G WASA",
+        "SANDWICH BRUNOST 36G WASA",
+        "LEKSANDS TREKANT HAVRE 200G",
+        "SANDWICH CHEESE HERBS 30G WASA",
+        "ERTERFLATBRØD CRISP 210G",
+        "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL"
+      ],
+      "BUTTER/MARGARINE (cooler)": [
+        "SMØREMYK MELKEFRI 400G BERIT",
+        "SMØR USALTET 250G TINE",
+        "SOFT FLORA STEKE&BAKE 500G",
+        "MELANGE FLYTENDE MARGARIN M/SMØR 500ML",
+        "MELANGE FLYTENDE 500ML",
+        "SOFT FLORA ORIGINAL 230G",
+        "SMØREMYK 600G ELDORADO",
+        "STEKEMARGARIN 500G FIRST PRICE",
+        "MELANGE MARGARIN 250G",
+        "MEIERISMØR 250G BORDPK TINE",
+        "BORDMARGARIN 400G FIRST PRICE",
+        "VITA HJERTEGO MYK PLANTEMARGARIN 370G",
+        "BREMYKT 250G",
+        "MELANGE MARGARIN U/MELK/SALT/SOYA 500G",
+        "OLIVERO SMØR&OLIVENOLJE 400G"
+      ],
+      "HOT DRINKS (cocoa section)": [
+        "SJOKOLADEDRIKK 10X32G RETT I KOPPEN",
+        "BAKEKAKAO 250G REGIA",
+        "SJOKOLADEDRIKK 512G RETT I KOPPEN"
+      ]
+    }
+  },
+  "spatial": {
+    "top_third": 5625,
+    "middle_third": 10288,
+    "bottom_third": 6818
+  },
+  "quality_signals": {
+    "tiny_bboxes": 237,
+    "large_bboxes": 5,
+    "extreme_aspect": 125,
+    "empty_name_cat300": 1,
+    "unknown_cat355": 422
+  }
+}

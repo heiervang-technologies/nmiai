@@ -1,0 +1,5085 @@
+{
+  "store_photo_audit": {
+    "total": 39,
+    "rotated": 0,
+    "blurry": 0,
+    "dark": 0,
+    "details": [
+      {
+        "file": "IMG_20260320_123456.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 112.7,
+        "variance": 3619.9,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123458.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 107.3,
+        "variance": 4363.6,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123501.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 131.5,
+        "variance": 4307.2,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123504.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 125.3,
+        "variance": 4288.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123531.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 113.4,
+        "variance": 4429.1,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123535.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 117.8,
+        "variance": 3756.8,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123547.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 106.4,
+        "variance": 4010.0,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123549.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 121.2,
+        "variance": 2962.5,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123551.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 118.3,
+        "variance": 3037.5,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123608.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 120.5,
+        "variance": 4061.5,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123609.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 126.2,
+        "variance": 3341.7,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123610.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 131.2,
+        "variance": 2569.8,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123614.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 110.9,
+        "variance": 3065.7,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123616.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 129.0,
+        "variance": 3147.1,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123629.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 116.8,
+        "variance": 1985.0,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123630.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 131.6,
+        "variance": 2530.1,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123857.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 114.8,
+        "variance": 4444.0,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123858.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 108.1,
+        "variance": 4815.7,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123901.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 147.0,
+        "variance": 3492.9,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123910.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 113.5,
+        "variance": 3310.3,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123911.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 134.5,
+        "variance": 4373.2,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123912.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 133.6,
+        "variance": 4447.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123914.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 133.9,
+        "variance": 3154.5,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123920.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 137.7,
+        "variance": 3238.8,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123925.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 134.1,
+        "variance": 2909.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123926.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 155.9,
+        "variance": 2762.8,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123928.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 145.8,
+        "variance": 2237.2,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123930.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 148.4,
+        "variance": 2955.2,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123936.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 123.7,
+        "variance": 4325.5,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_123940.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 139.9,
+        "variance": 3126.3,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124004.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 115.5,
+        "variance": 3004.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124016.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 117.1,
+        "variance": 2416.3,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124018.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 119.2,
+        "variance": 2663.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124022.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 113.5,
+        "variance": 1828.2,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124042.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 134.8,
+        "variance": 3185.1,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124044.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 111.4,
+        "variance": 2748.3,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124055.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 124.1,
+        "variance": 2150.4,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124057.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 131.3,
+        "variance": 1976.0,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      },
+      {
+        "file": "IMG_20260320_124103.jpg",
+        "width": 4096,
+        "height": 3072,
+        "megapixels": 12.58,
+        "is_rotated": false,
+        "avg_brightness": 133.1,
+        "variance": 2673.1,
+        "likely_blurry": false,
+        "aspect_ratio": 1.33
+      }
+    ]
+  },
+  "training_lighting": {
+    "sample_size": 50,
+    "stats": {
+      "avg": 106.9,
+      "min": 76.6,
+      "max": 138.5
+    }
+  },
+  "difficulty_ranking": [
+    {
+      "rank": 1,
+      "cat_id": 279,
+      "name": "KNEKKEBRØD NATURELL GL.FRI 240G WASA",
+      "count": 1,
+      "scores": {
+        "total": 91,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 2,
+      "cat_id": 317,
+      "name": "POWERKNEKKEBRØD GL.FRI 225G SCHÄR",
+      "count": 1,
+      "scores": {
+        "total": 91,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 3,
+      "cat_id": 199,
+      "name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA",
+      "count": 1,
+      "scores": {
+        "total": 87,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 4,
+      "cat_id": 227,
+      "name": "STORFE ENTRECOTE 180G FIRST PRICE",
+      "count": 1,
+      "scores": {
+        "total": 87,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 5,
+      "cat_id": 60,
+      "name": "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G",
+      "count": 2,
+      "scores": {
+        "total": 85,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 6,
+      "cat_id": 91,
+      "name": "SANDWICH PESTO 37G WASA",
+      "count": 1,
+      "scores": {
+        "total": 85,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 7,
+      "cat_id": 149,
+      "name": "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G",
+      "count": 1,
+      "scores": {
+        "total": 85,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 8,
+      "cat_id": 346,
+      "name": "SANDWICH SOUR CREAM&ONION 33G WASA",
+      "count": 3,
+      "scores": {
+        "total": 85,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 9,
+      "cat_id": 133,
+      "name": "ZOEGAS KAFFE SKÅNEROST 450G",
+      "count": 5,
+      "scores": {
+        "total": 84,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 20,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 10,
+      "cat_id": 17,
+      "name": "KNEKKEBRØD GL.FRI 150G BRISK",
+      "count": 4,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 11,
+      "cat_id": 114,
+      "name": "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA",
+      "count": 3,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 12,
+      "cat_id": 183,
+      "name": "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL",
+      "count": 5,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 13,
+      "cat_id": 202,
+      "name": "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL",
+      "count": 1,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 14,
+      "cat_id": 255,
+      "name": "LIPTON ICETEA MANGO PULVER 50G",
+      "count": 1,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 15,
+      "cat_id": 310,
+      "name": "LIPTON ICETEA LEMON PULVER 50G",
+      "count": 1,
+      "scores": {
+        "total": 81,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 16,
+      "cat_id": 119,
+      "name": "SOFT FLORA STEKE&BAKE 500G",
+      "count": 3,
+      "scores": {
+        "total": 79,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 17,
+      "cat_id": 180,
+      "name": "MÜSLI PAPAYA GLUTENFRI 350G AXA",
+      "count": 2,
+      "scores": {
+        "total": 79,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 18,
+      "cat_id": 263,
+      "name": "GRANOLA RASPBERRY  500G START!",
+      "count": 1,
+      "scores": {
+        "total": 79,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 19,
+      "cat_id": 55,
+      "name": "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK",
+      "count": 5,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 20,
+      "cat_id": 154,
+      "name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 21,
+      "cat_id": 165,
+      "name": "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK",
+      "count": 5,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 22,
+      "cat_id": 230,
+      "name": "JARLSBERG 27% SKIVET 120G TINE",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 23,
+      "cat_id": 234,
+      "name": "LANO SÅPE 2X125G",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 24,
+      "cat_id": 242,
+      "name": "BOG 390G GILDE",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 25,
+      "cat_id": 300,
+      "name": "",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 26,
+      "cat_id": 331,
+      "name": "SANDWICH PIZZA 37G WASA",
+      "count": 7,
+      "scores": {
+        "total": 78,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 27,
+      "cat_id": 335,
+      "name": "STORFE SHORT RIBS GREATER OMAHA LV",
+      "count": 1,
+      "scores": {
+        "total": 78,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 20,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 28,
+      "cat_id": 51,
+      "name": "Tørresvik Gårdsegg 6stk",
+      "count": 5,
+      "scores": {
+        "total": 77,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 29,
+      "cat_id": 147,
+      "name": "ROOIBOS TE ØKOLOGISK 20PS",
+      "count": 4,
+      "scores": {
+        "total": 77,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 30,
+      "cat_id": 245,
+      "name": "ENGLISH BREAKFAST TEA 200G TWININGS",
+      "count": 4,
+      "scores": {
+        "total": 77,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 31,
+      "cat_id": 299,
+      "name": "KAMILLE TE 20POS LIPTON",
+      "count": 3,
+      "scores": {
+        "total": 77,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 32,
+      "cat_id": 319,
+      "name": "LIPTON ICETEA PEACH PULVER 50G",
+      "count": 3,
+      "scores": {
+        "total": 77,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 33,
+      "cat_id": 134,
+      "name": "EVERGOOD ESPRESSO HELE BØNNER 500G",
+      "count": 2,
+      "scores": {
+        "total": 76,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 34,
+      "cat_id": 153,
+      "name": "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G",
+      "count": 1,
+      "scores": {
+        "total": 76,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 35,
+      "cat_id": 172,
+      "name": "FRIELE INSTANT GULL 100G REFILL",
+      "count": 2,
+      "scores": {
+        "total": 76,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 36,
+      "cat_id": 256,
+      "name": "KAFFEFILTER PRESSKANNE 25STK EVERGOOD",
+      "count": 1,
+      "scores": {
+        "total": 76,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 37,
+      "cat_id": 81,
+      "name": "GRØNN TE CHAI 25POS TWININGS",
+      "count": 1,
+      "scores": {
+        "total": 75,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 38,
+      "cat_id": 107,
+      "name": "FLAT WHITE 16KAPSLER DOLCE GUSTO",
+      "count": 1,
+      "scores": {
+        "total": 75,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 39,
+      "cat_id": 156,
+      "name": "GRANOLA CRAZELNUT 500G START!",
+      "count": 3,
+      "scores": {
+        "total": 75,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 40,
+      "cat_id": 190,
+      "name": "EARL GREY TEA ØKOLOGISK 15POS JACOBS",
+      "count": 2,
+      "scores": {
+        "total": 75,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 41,
+      "cat_id": 241,
+      "name": "SANDWICH CHEESE GRESSLØK 37G WASA",
+      "count": 1,
+      "scores": {
+        "total": 75,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 42,
+      "cat_id": 101,
+      "name": "SANDWICH CHEESE HERBS 30G WASA",
+      "count": 13,
+      "scores": {
+        "total": 74,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 20,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 43,
+      "cat_id": 226,
+      "name": "LEKSANDS TREKANT HAVRE 200G",
+      "count": 12,
+      "scores": {
+        "total": 74,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 44,
+      "cat_id": 257,
+      "name": "SANDWICH BRUNOST 36G WASA",
+      "count": 7,
+      "scores": {
+        "total": 74,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 45,
+      "cat_id": 278,
+      "name": "DELICATE CRACKERS SEA SALT 180G WASA",
+      "count": 10,
+      "scores": {
+        "total": 74,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 46,
+      "cat_id": 90,
+      "name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN",
+      "count": 2,
+      "scores": {
+        "total": 73,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 47,
+      "cat_id": 95,
+      "name": "EGG M/L ØKOLOGISKE 10STK VILJE",
+      "count": 1,
+      "scores": {
+        "total": 73,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 48,
+      "cat_id": 135,
+      "name": "GÅRDSEGG EKSTRA STORE 6STK EK",
+      "count": 1,
+      "scores": {
+        "total": 73,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 49,
+      "cat_id": 159,
+      "name": "Galåvolden Store Gårdsegg 10stk",
+      "count": 4,
+      "scores": {
+        "total": 73,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 50,
+      "cat_id": 288,
+      "name": "Sunnmørsegg 10stk",
+      "count": 3,
+      "scores": {
+        "total": 73,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 51,
+      "cat_id": 26,
+      "name": "OB PROCOMFORT NORMAL 16ST",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 52,
+      "cat_id": 44,
+      "name": "KNEKKS KJEKS HAVRE 190G RØROS",
+      "count": 2,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 53,
+      "cat_id": 57,
+      "name": "MORENEPOTETER GULE 650G BJERTNÆS&HOEL",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 54,
+      "cat_id": 67,
+      "name": "SOFT FLORA ORIGINAL 230G",
+      "count": 8,
+      "scores": {
+        "total": 72,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 55,
+      "cat_id": 69,
+      "name": "DAVE&JON\\'S DADLER SOUR COLA 125G",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 56,
+      "cat_id": 76,
+      "name": "BRUSCHETTA LIGURISK 130G OLIVINO",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 57,
+      "cat_id": 77,
+      "name": "BAKEKAKAO 250G REGIA",
+      "count": 4,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 58,
+      "cat_id": 115,
+      "name": "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 59,
+      "cat_id": 116,
+      "name": "FROKOSTBLANDING LION 350G NESTLE",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 60,
+      "cat_id": 120,
+      "name": "TOM&JERRY KJEKS 175G SÆTRE",
+      "count": 2,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 61,
+      "cat_id": 123,
+      "name": "ASPARGES GRØNN",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 62,
+      "cat_id": 211,
+      "name": "BJØRN HAVREMEL 1KG AXA",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 63,
+      "cat_id": 258,
+      "name": "EXTRA SWEET FRUIT 14G",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 64,
+      "cat_id": 274,
+      "name": "VESTLANDSLEFSA TØRRE 10STK 360G",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 65,
+      "cat_id": 276,
+      "name": "HVITLØK 100G PK",
+      "count": 2,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 66,
+      "cat_id": 291,
+      "name": "PREMIUM DARK ORANGE 100G FREIA",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 67,
+      "cat_id": 302,
+      "name": "MELANGE MARGARIN 250G",
+      "count": 9,
+      "scores": {
+        "total": 72,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 68,
+      "cat_id": 321,
+      "name": "GIFFLAR KANEL 300G PÅGEN",
+      "count": 3,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 69,
+      "cat_id": 327,
+      "name": "POTETCHIPS SORT TRØFFEL 125G TORRES",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 70,
+      "cat_id": 350,
+      "name": "BLÅ JAVA HELE BØNNER 340G COTW",
+      "count": 1,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 71,
+      "cat_id": 354,
+      "name": "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN",
+      "count": 2,
+      "scores": {
+        "total": 72,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 72,
+      "cat_id": 127,
+      "name": "FRIELE FROKOST HEL 500G",
+      "count": 9,
+      "scores": {
+        "total": 71,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 73,
+      "cat_id": 248,
+      "name": "COTW DARK ROAST KAFFEKAPSEL 10STK",
+      "count": 6,
+      "scores": {
+        "total": 71,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 74,
+      "cat_id": 4,
+      "name": "Økologiske Egg 6stk",
+      "count": 10,
+      "scores": {
+        "total": 70,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 75,
+      "cat_id": 28,
+      "name": "LADY GREY TE 200G TWININGS",
+      "count": 6,
+      "scores": {
+        "total": 70,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 76,
+      "cat_id": 195,
+      "name": "Økologiske Egg Brune 6stk",
+      "count": 10,
+      "scores": {
+        "total": 70,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 77,
+      "cat_id": 203,
+      "name": "ROOIBOS TE 20POS LIPTON",
+      "count": 11,
+      "scores": {
+        "total": 70,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 78,
+      "cat_id": 285,
+      "name": "Leka Egg 10stk",
+      "count": 2,
+      "scores": {
+        "total": 70,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 1,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 79,
+      "cat_id": 337,
+      "name": "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA",
+      "count": 6,
+      "scores": {
+        "total": 70,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 80,
+      "cat_id": 104,
+      "name": "SMØR USALTET 250G TINE",
+      "count": 3,
+      "scores": {
+        "total": 69,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 81,
+      "cat_id": 155,
+      "name": "MELANGE FLYTENDE MARGARIN M/SMØR 500ML",
+      "count": 3,
+      "scores": {
+        "total": 69,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 82,
+      "cat_id": 254,
+      "name": "SMØREMYK MELKEFRI 400G BERIT",
+      "count": 2,
+      "scores": {
+        "total": 69,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 83,
+      "cat_id": 36,
+      "name": "MÜSLI FRUKT MÜSLI 700G AXA",
+      "count": 14,
+      "scores": {
+        "total": 68,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 84,
+      "cat_id": 79,
+      "name": "PANNEKAKER GROVE STEKTE 480G ÅMLI",
+      "count": 1,
+      "scores": {
+        "total": 68,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 1,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 85,
+      "cat_id": 125,
+      "name": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+      "count": 5,
+      "scores": {
+        "total": 68,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 86,
+      "cat_id": 170,
+      "name": "MÜSLI ENERGI 650G AXA",
+      "count": 8,
+      "scores": {
+        "total": 68,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 87,
+      "cat_id": 179,
+      "name": "SJOKOLADEDRIKK 10X32G RETT I KOPPEN",
+      "count": 4,
+      "scores": {
+        "total": 68,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 88,
+      "cat_id": 251,
+      "name": "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL",
+      "count": 15,
+      "scores": {
+        "total": 68,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 89,
+      "cat_id": 41,
+      "name": "VITA HJERTEGO MYK PLANTEMARGARIN 370G",
+      "count": 11,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 90,
+      "cat_id": 138,
+      "name": "Økologiske Egg 10stk",
+      "count": 14,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 91,
+      "cat_id": 163,
+      "name": "Galåvolden Store Gårdsegg 6stk",
+      "count": 6,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 92,
+      "cat_id": 167,
+      "name": "TROPISK AROMA FILTERMALT 200G JACOBS",
+      "count": 1,
+      "scores": {
+        "total": 66,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 93,
+      "cat_id": 176,
+      "name": "BORDMARGARIN 400G FIRST PRICE",
+      "count": 10,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 94,
+      "cat_id": 216,
+      "name": "Sunnmørsegg",
+      "count": 13,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 95,
+      "cat_id": 220,
+      "name": "MEIERISMØR 250G BORDPK TINE",
+      "count": 9,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 96,
+      "cat_id": 286,
+      "name": "EGG L 10STK TOTEN",
+      "count": 9,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 97,
+      "cat_id": 293,
+      "name": "NUTELLA BISCUITS 193G",
+      "count": 2,
+      "scores": {
+        "total": 66,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 98,
+      "cat_id": 301,
+      "name": "Gårdsegg fra Fana 10stk",
+      "count": 6,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 99,
+      "cat_id": 322,
+      "name": "STEKEMARGARIN 500G FIRST PRICE",
+      "count": 8,
+      "scores": {
+        "total": 66,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 100,
+      "cat_id": 58,
+      "name": "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK",
+      "count": 6,
+      "scores": {
+        "total": 65,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 101,
+      "cat_id": 182,
+      "name": "FRIELE INSTANT 200G",
+      "count": 13,
+      "scores": {
+        "total": 65,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 102,
+      "cat_id": 249,
+      "name": "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK",
+      "count": 9,
+      "scores": {
+        "total": 65,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 103,
+      "cat_id": 332,
+      "name": "COTW LUNGO DARK KAFFEKAPSEL 10STK",
+      "count": 12,
+      "scores": {
+        "total": 65,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 104,
+      "cat_id": 70,
+      "name": "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI",
+      "count": 15,
+      "scores": {
+        "total": 64,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 105,
+      "cat_id": 98,
+      "name": "NIGHT TE 20POS PUKKA",
+      "count": 7,
+      "scores": {
+        "total": 64,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 106,
+      "cat_id": 129,
+      "name": "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE",
+      "count": 6,
+      "scores": {
+        "total": 64,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 107,
+      "cat_id": 206,
+      "name": "NESCAFE VANILLA LATTE 136G NESTLE",
+      "count": 14,
+      "scores": {
+        "total": 64,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 108,
+      "cat_id": 10,
+      "name": "Jacobs 10 Gårdsegg",
+      "count": 12,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 109,
+      "cat_id": 18,
+      "name": "MELANGE MARGARIN U/MELK/SALT/SOYA 500G",
+      "count": 13,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 110,
+      "cat_id": 48,
+      "name": "SMØREMYK 600G ELDORADO",
+      "count": 8,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 111,
+      "cat_id": 74,
+      "name": "NESCAFE BRASERO REFILL 180G",
+      "count": 5,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 112,
+      "cat_id": 88,
+      "name": "OLIVERO SMØR&OLIVENOLJE 400G",
+      "count": 15,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 113,
+      "cat_id": 94,
+      "name": "HAVREGRYN STORE GLUTENFRI 1KG AXA",
+      "count": 1,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 114,
+      "cat_id": 105,
+      "name": "EGG ØKOLOGISK M/L 12STK VINGULMARK",
+      "count": 15,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 115,
+      "cat_id": 112,
+      "name": "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS",
+      "count": 5,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 116,
+      "cat_id": 124,
+      "name": "O\\'BOY MINDRE SUKKER 500G POSE FREIA",
+      "count": 4,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 117,
+      "cat_id": 140,
+      "name": "SURDEIGKJEKS 100G SÆTRES BESTE",
+      "count": 1,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 118,
+      "cat_id": 161,
+      "name": "HAVRERINGER 250G SYNNØVE FINDEN",
+      "count": 3,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 119,
+      "cat_id": 252,
+      "name": "SIDAMO ETIOPIA HELE BØNNER 340G COTW",
+      "count": 4,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 120,
+      "cat_id": 277,
+      "name": "ALPEN MÜSLI WEETABIX",
+      "count": 12,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 121,
+      "cat_id": 295,
+      "name": "MELANGE FLYTENDE 500ML",
+      "count": 7,
+      "scores": {
+        "total": 62,
+        "scarcity": 28,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 122,
+      "cat_id": 313,
+      "name": "FLOTT MATFETT 500G",
+      "count": 4,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 123,
+      "cat_id": 353,
+      "name": "EXCELSO COLOMBIA FILTERMALT 200G JACOBS",
+      "count": 5,
+      "scores": {
+        "total": 62,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 124,
+      "cat_id": 2,
+      "name": "FROKOSTRINGER FRUKTSMAK 350G ELDORADO",
+      "count": 6,
+      "scores": {
+        "total": 61,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 125,
+      "cat_id": 9,
+      "name": "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO",
+      "count": 6,
+      "scores": {
+        "total": 61,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 126,
+      "cat_id": 16,
+      "name": "CAPPUCCINO 8KAPSLER DOLCE GUSTO",
+      "count": 6,
+      "scores": {
+        "total": 61,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 127,
+      "cat_id": 113,
+      "name": "ERTERFLATBRØD CRISP 210G",
+      "count": 15,
+      "scores": {
+        "total": 61,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 128,
+      "cat_id": 166,
+      "name": "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO",
+      "count": 8,
+      "scores": {
+        "total": 61,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 129,
+      "cat_id": 209,
+      "name": "DELIKATESS SESAM 285G WASA",
+      "count": 17,
+      "scores": {
+        "total": 60,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 130,
+      "cat_id": 273,
+      "name": "VITA HJERTEGO LETTMARGARIN 370G",
+      "count": 16,
+      "scores": {
+        "total": 60,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 14,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 131,
+      "cat_id": 303,
+      "name": "KNEKKEBRØD HAVRE 220G SIGDAL",
+      "count": 19,
+      "scores": {
+        "total": 60,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 132,
+      "cat_id": 54,
+      "name": "FILTERPOSER NR.4 100STK EVERGOOD",
+      "count": 10,
+      "scores": {
+        "total": 59,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 133,
+      "cat_id": 318,
+      "name": "PANNEKAKER 6STK ELDORADO",
+      "count": 1,
+      "scores": {
+        "total": 59,
+        "scarcity": 35,
+        "diversity": 18,
+        "size": 1,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 134,
+      "cat_id": 253,
+      "name": "SOFT FLORA LETT 235G",
+      "count": 20,
+      "scores": {
+        "total": 58,
+        "scarcity": 20,
+        "diversity": 18,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 135,
+      "cat_id": 262,
+      "name": "HAVREGRØT STEEL CUT DEN SORTE HAVRE",
+      "count": 14,
+      "scores": {
+        "total": 58,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 136,
+      "cat_id": 323,
+      "name": "KRUTONGER CHEESE&GARLIC 142G CHATHAM",
+      "count": 5,
+      "scores": {
+        "total": 58,
+        "scarcity": 35,
+        "diversity": 14,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 137,
+      "cat_id": 144,
+      "name": "FRIELE FROKOST KOKMALT 250G",
+      "count": 19,
+      "scores": {
+        "total": 57,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 138,
+      "cat_id": 348,
+      "name": "ALI ORIGINAL HELE BØNNER 250G",
+      "count": 24,
+      "scores": {
+        "total": 57,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 139,
+      "cat_id": 59,
+      "name": "MÜSLI BLÅBÆR 630G AXA",
+      "count": 8,
+      "scores": {
+        "total": 56,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 140,
+      "cat_id": 238,
+      "name": "KAMILLE TE ØKOLOGISK 24PK",
+      "count": 30,
+      "scores": {
+        "total": 56,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 141,
+      "cat_id": 131,
+      "name": "KNEKKEBRØD HAVRE GL.FRI 190G SIGDAL",
+      "count": 22,
+      "scores": {
+        "total": 55.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 142,
+      "cat_id": 290,
+      "name": "SANDWICH CHEESE TOMAT&BASILIKUM 40G WASA",
+      "count": 29,
+      "scores": {
+        "total": 55.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 143,
+      "cat_id": 110,
+      "name": "BREMYKT 250G",
+      "count": 12,
+      "scores": {
+        "total": 55,
+        "scarcity": 28,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 144,
+      "cat_id": 126,
+      "name": "GRANDE INTENSO 16KAPSLER DOLCE GUSTO",
+      "count": 9,
+      "scores": {
+        "total": 55,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 145,
+      "cat_id": 247,
+      "name": "MOUNT KENYA FILTERMALT 200G JACOBS",
+      "count": 13,
+      "scores": {
+        "total": 55,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 146,
+      "cat_id": 281,
+      "name": "GRANDE 16KAPSLER DOLCE GUSTO",
+      "count": 14,
+      "scores": {
+        "total": 55,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 147,
+      "cat_id": 43,
+      "name": "MEIERISMØR 500G TINE",
+      "count": 25,
+      "scores": {
+        "total": 54,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 148,
+      "cat_id": 128,
+      "name": "SMØREMYK LETT 400G ELDORADO",
+      "count": 20,
+      "scores": {
+        "total": 54,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 149,
+      "cat_id": 224,
+      "name": "SOFT FLORA LETT 540G",
+      "count": 18,
+      "scores": {
+        "total": 54,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 150,
+      "cat_id": 65,
+      "name": "PULVERKAFFE INSTANT 200G FIRST PRICE",
+      "count": 27,
+      "scores": {
+        "total": 52.4,
+        "scarcity": 20,
+        "diversity": 3.4,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 151,
+      "cat_id": 31,
+      "name": "TASSIMO EVERGOOD DARK ROAST 16KAPSLER",
+      "count": 17,
+      "scores": {
+        "total": 52.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 152,
+      "cat_id": 198,
+      "name": "ALI ORIGINAL KAFFEPUTER 18STK",
+      "count": 23,
+      "scores": {
+        "total": 52.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 153,
+      "cat_id": 267,
+      "name": "EGGEHVITE 500G ELDORADO",
+      "count": 19,
+      "scores": {
+        "total": 52,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 154,
+      "cat_id": 20,
+      "name": "GRØNN TE 20POS LIPTON",
+      "count": 20,
+      "scores": {
+        "total": 51.8,
+        "scarcity": 20,
+        "diversity": 3.8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 155,
+      "cat_id": 210,
+      "name": "COTW ESPRESSO KAFFEKAPSEL 10STK",
+      "count": 20,
+      "scores": {
+        "total": 51.8,
+        "scarcity": 20,
+        "diversity": 2.8,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 156,
+      "cat_id": 228,
+      "name": "BRUSCHETTE FINE CHEESE MARETTI",
+      "count": 25,
+      "scores": {
+        "total": 51.8,
+        "scarcity": 20,
+        "diversity": 3.8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 157,
+      "cat_id": 287,
+      "name": "ENGLISH BREAKFAST TEA 25POS TWININGS",
+      "count": 23,
+      "scores": {
+        "total": 51.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 158,
+      "cat_id": 352,
+      "name": "PEPPERMINT&LICORICE URTETE 20POS PUKKA",
+      "count": 18,
+      "scores": {
+        "total": 51.2,
+        "scarcity": 20,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 159,
+      "cat_id": 37,
+      "name": "URTETE 200G RICOLA",
+      "count": 29,
+      "scores": {
+        "total": 51.0,
+        "scarcity": 20,
+        "diversity": 3.0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 160,
+      "cat_id": 320,
+      "name": "EARL GREY TEA 50POS FIRST PRICE",
+      "count": 30,
+      "scores": {
+        "total": 50.6,
+        "scarcity": 20,
+        "diversity": 2.6,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 161,
+      "cat_id": 196,
+      "name": "COTW LUNGO KAFFEKAPSEL 10STK",
+      "count": 30,
+      "scores": {
+        "total": 50.2,
+        "scarcity": 20,
+        "diversity": 1.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 162,
+      "cat_id": 221,
+      "name": "PUFFET HVETE 260G FIRST PRICE",
+      "count": 17,
+      "scores": {
+        "total": 50,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 163,
+      "cat_id": 324,
+      "name": "NESCAFE LATTE 144G",
+      "count": 29,
+      "scores": {
+        "total": 49.8,
+        "scarcity": 20,
+        "diversity": 1.8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 164,
+      "cat_id": 13,
+      "name": "GRISSINI 125G GRANFORNO",
+      "count": 13,
+      "scores": {
+        "total": 49,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 165,
+      "cat_id": 99,
+      "name": "NESCAFE ORIGINAL 180G REFILL",
+      "count": 14,
+      "scores": {
+        "total": 49,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 166,
+      "cat_id": 118,
+      "name": "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT",
+      "count": 11,
+      "scores": {
+        "total": 49,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 167,
+      "cat_id": 294,
+      "name": "GRISSINI SALT 125G GRANFORNO",
+      "count": 12,
+      "scores": {
+        "total": 49,
+        "scarcity": 28,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 168,
+      "cat_id": 22,
+      "name": "MÜSLI RISTET HAVRE&TRANEBÆR 700G AXA",
+      "count": 18,
+      "scores": {
+        "total": 48,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 169,
+      "cat_id": 42,
+      "name": "KNEKKS KJEKS M/SPELT&HAVSALT 190G RØROS",
+      "count": 22,
+      "scores": {
+        "total": 47,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 170,
+      "cat_id": 150,
+      "name": "Sætre GullBar",
+      "count": 17,
+      "scores": {
+        "total": 47,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 171,
+      "cat_id": 168,
+      "name": "BRELETT 540G",
+      "count": 21,
+      "scores": {
+        "total": 47,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 172,
+      "cat_id": 343,
+      "name": "KNEKKS KJEKS ORIGINAL 190G RØROS",
+      "count": 20,
+      "scores": {
+        "total": 47,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 173,
+      "cat_id": 351,
+      "name": "BREMYKT MYKERE 500G",
+      "count": 26,
+      "scores": {
+        "total": 47,
+        "scarcity": 20,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 174,
+      "cat_id": 158,
+      "name": "SURDEIG KNEKKEBRØD WASA",
+      "count": 55,
+      "scores": {
+        "total": 46.6,
+        "scarcity": 12,
+        "diversity": 2.6,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 175,
+      "cat_id": 312,
+      "name": "Tørresvik Gård Kvalitetsegg 10stk",
+      "count": 33,
+      "scores": {
+        "total": 46,
+        "scarcity": 12,
+        "diversity": 14,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 176,
+      "cat_id": 326,
+      "name": "SOFT FLORA ORIGINAL 540G",
+      "count": 45,
+      "scores": {
+        "total": 46,
+        "scarcity": 12,
+        "diversity": 14,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 177,
+      "cat_id": 336,
+      "name": "SVARTHAVRERIS ØKOLOGISK DEN SORTE HAVRE",
+      "count": 19,
+      "scores": {
+        "total": 45.8,
+        "scarcity": 20,
+        "diversity": 3.8,
+        "size": 8,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 178,
+      "cat_id": 270,
+      "name": "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE",
+      "count": 14,
+      "scores": {
+        "total": 44.8,
+        "scarcity": 28,
+        "diversity": 3.8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 179,
+      "cat_id": 193,
+      "name": "EGG ØKOLOGISK 6STK 375G JACOBS UTVALGTE",
+      "count": 50,
+      "scores": {
+        "total": 44,
+        "scarcity": 12,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 180,
+      "cat_id": 308,
+      "name": "HAVREGRANOLA  JORDBÆR&BRINGEBÆR 400G URK",
+      "count": 18,
+      "scores": {
+        "total": 43.8,
+        "scarcity": 20,
+        "diversity": 3.8,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 181,
+      "cat_id": 93,
+      "name": "GRANOLA KAKAO KOKOS&MANDEL BARE BRA",
+      "count": 23,
+      "scores": {
+        "total": 43.6,
+        "scarcity": 20,
+        "diversity": 3.6,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 182,
+      "cat_id": 344,
+      "name": "EVERGOOD DARK ROAST KAFFEKAPSEL 16STK",
+      "count": 33,
+      "scores": {
+        "total": 43.6,
+        "scarcity": 12,
+        "diversity": 2.6,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 183,
+      "cat_id": 185,
+      "name": "Eldorado Flytende Gårdsegg",
+      "count": 28,
+      "scores": {
+        "total": 43.4,
+        "scarcity": 20,
+        "diversity": 3.4,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 184,
+      "cat_id": 25,
+      "name": "ALI MØRKBRENT KAFFEKAPSEL 16STK",
+      "count": 33,
+      "scores": {
+        "total": 43.2,
+        "scarcity": 12,
+        "diversity": 2.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 185,
+      "cat_id": 240,
+      "name": "SUPERGRANOLA GLUTENFRI 350G BARE BRA",
+      "count": 24,
+      "scores": {
+        "total": 43.0,
+        "scarcity": 20,
+        "diversity": 3.0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 186,
+      "cat_id": 24,
+      "name": "GRØNN MINT TE 20POS LIPTON",
+      "count": 38,
+      "scores": {
+        "total": 42.8,
+        "scarcity": 12,
+        "diversity": 2.8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 187,
+      "cat_id": 83,
+      "name": "BLACK TEA PEACG&MANGO 20PS LIPTON",
+      "count": 33,
+      "scores": {
+        "total": 42.6,
+        "scarcity": 12,
+        "diversity": 2.6,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 188,
+      "cat_id": 316,
+      "name": "FIBERRIK SOLSIKKE 125G SÆTRE",
+      "count": 23,
+      "scores": {
+        "total": 42.6,
+        "scarcity": 20,
+        "diversity": 3.6,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 189,
+      "cat_id": 148,
+      "name": "GRANOLA SJOKOLADE&NØTTER 375G JACOBS",
+      "count": 28,
+      "scores": {
+        "total": 42.4,
+        "scarcity": 20,
+        "diversity": 2.4,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 190,
+      "cat_id": 19,
+      "name": "MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO",
+      "count": 20,
+      "scores": {
+        "total": 42.0,
+        "scarcity": 20,
+        "diversity": 3.0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 191,
+      "cat_id": 184,
+      "name": "EARL GREY TEA 200G TWININGS",
+      "count": 36,
+      "scores": {
+        "total": 42.0,
+        "scarcity": 12,
+        "diversity": 2.0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 192,
+      "cat_id": 314,
+      "name": "CAFE AU LAIT 16KAPSLER DOLCE GUSTO",
+      "count": 18,
+      "scores": {
+        "total": 42.0,
+        "scarcity": 20,
+        "diversity": 3.0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 193,
+      "cat_id": 27,
+      "name": "YELLOW LABEL TEA 50POS LIPTON",
+      "count": 34,
+      "scores": {
+        "total": 41.8,
+        "scarcity": 12,
+        "diversity": 1.8,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 194,
+      "cat_id": 71,
+      "name": "AMERICANO 16 KAPSLER DOLCE GUSTO",
+      "count": 28,
+      "scores": {
+        "total": 41.8,
+        "scarcity": 20,
+        "diversity": 2.8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 195,
+      "cat_id": 1,
+      "name": "COFFEE MATE 180G  NESTLE",
+      "count": 59,
+      "scores": {
+        "total": 41.6,
+        "scarcity": 12,
+        "diversity": 0.6,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 196,
+      "cat_id": 192,
+      "name": "ICE COFFEE 8POS NESCAFE",
+      "count": 39,
+      "scores": {
+        "total": 41.6,
+        "scarcity": 12,
+        "diversity": 0.6,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 197,
+      "cat_id": 297,
+      "name": "SOLBÆR TE 25POS TWININGS",
+      "count": 48,
+      "scores": {
+        "total": 41.6,
+        "scarcity": 12,
+        "diversity": 1.6,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 198,
+      "cat_id": 45,
+      "name": "LADY GREY TEA 25POS TWININGS",
+      "count": 43,
+      "scores": {
+        "total": 41.4,
+        "scarcity": 12,
+        "diversity": 1.4,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 199,
+      "cat_id": 339,
+      "name": "ALI ORIGINAL KAFFEKAPSEL 16STK",
+      "count": 57,
+      "scores": {
+        "total": 41.4,
+        "scarcity": 12,
+        "diversity": 0.4,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 200,
+      "cat_id": 177,
+      "name": "LEMON TEA GINGER 20POS PUKKA",
+      "count": 32,
+      "scores": {
+        "total": 41.2,
+        "scarcity": 12,
+        "diversity": 1.2,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 201,
+      "cat_id": 103,
+      "name": "EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA",
+      "count": 56,
+      "scores": {
+        "total": 41,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 202,
+      "cat_id": 229,
+      "name": "NESQUIK KAKAOPULVER 700G",
+      "count": 19,
+      "scores": {
+        "total": 41,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 203,
+      "cat_id": 215,
+      "name": "BLUE FRUIT TE PYRAMIDE 20POS LIPTON",
+      "count": 54,
+      "scores": {
+        "total": 40.4,
+        "scarcity": 12,
+        "diversity": 0.4,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 204,
+      "cat_id": 174,
+      "name": "EPLE&KANEL&ROSIN TE 25POS TWININGS",
+      "count": 59,
+      "scores": {
+        "total": 40,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 205,
+      "cat_id": 175,
+      "name": "MELANGE MARGARIN 500G",
+      "count": 47,
+      "scores": {
+        "total": 40,
+        "scarcity": 12,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 206,
+      "cat_id": 334,
+      "name": "CHAI-TE ORIGINAL 20POS PUKKA",
+      "count": 50,
+      "scores": {
+        "total": 40,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 207,
+      "cat_id": 0,
+      "name": "FRØKRISP KNEKKEBRØD ØKOLOGISK 170G BERIT",
+      "count": 85,
+      "scores": {
+        "total": 38,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 208,
+      "cat_id": 213,
+      "name": "EGG FRITTGÅENDE M/L 6PK PRIOR",
+      "count": 64,
+      "scores": {
+        "total": 38,
+        "scarcity": 6,
+        "diversity": 8,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 209,
+      "cat_id": 40,
+      "name": "FRIELE FROKOST FILTERMALT 250G",
+      "count": 95,
+      "scores": {
+        "total": 37.2,
+        "scarcity": 6,
+        "diversity": 2.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 210,
+      "cat_id": 289,
+      "name": "OREO O\\'S FROKOSTBLANDING 350G",
+      "count": 18,
+      "scores": {
+        "total": 37,
+        "scarcity": 20,
+        "diversity": 8,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 211,
+      "cat_id": 64,
+      "name": "TASSIMO EVERGOOD CLASSIC 16KAPSLER",
+      "count": 35,
+      "scores": {
+        "total": 36.6,
+        "scarcity": 12,
+        "diversity": 1.6,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 212,
+      "cat_id": 160,
+      "name": "ALI ORIGINAL KOKMALT 250G",
+      "count": 74,
+      "scores": {
+        "total": 36.6,
+        "scarcity": 6,
+        "diversity": 1.6,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 213,
+      "cat_id": 49,
+      "name": "EVERGOOD DARK ROAST FILTERMALT 250G",
+      "count": 92,
+      "scores": {
+        "total": 36.4,
+        "scarcity": 6,
+        "diversity": 1.4,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 214,
+      "cat_id": 340,
+      "name": "EVERGOOD DARK ROAST HELE BØNNER 500G",
+      "count": 54,
+      "scores": {
+        "total": 36.2,
+        "scarcity": 12,
+        "diversity": 1.2,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 215,
+      "cat_id": 347,
+      "name": "EVERGOOD DARK ROAST PRESSMALT 250G",
+      "count": 53,
+      "scores": {
+        "total": 36.2,
+        "scarcity": 12,
+        "diversity": 1.2,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 216,
+      "cat_id": 269,
+      "name": "Eldorado Egg fra Toten",
+      "count": 33,
+      "scores": {
+        "total": 35.8,
+        "scarcity": 12,
+        "diversity": 3.8,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 217,
+      "cat_id": 102,
+      "name": "EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO",
+      "count": 50,
+      "scores": {
+        "total": 35.6,
+        "scarcity": 12,
+        "diversity": 3.6,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 218,
+      "cat_id": 219,
+      "name": "GREEN WORLD KAFFE ØKOL FILTERMALT 250G",
+      "count": 63,
+      "scores": {
+        "total": 35.6,
+        "scarcity": 6,
+        "diversity": 0.6,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 219,
+      "cat_id": 6,
+      "name": "Eldorado Økologiske Gårdsegg",
+      "count": 46,
+      "scores": {
+        "total": 35.4,
+        "scarcity": 12,
+        "diversity": 3.4,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 220,
+      "cat_id": 141,
+      "name": "EVERGOOD CLASSIC PRESSMALT 250G",
+      "count": 63,
+      "scores": {
+        "total": 35.4,
+        "scarcity": 6,
+        "diversity": 0.4,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 221,
+      "cat_id": 200,
+      "name": "EVERGOOD CLASSIC KAFFEKAPSEL 16STK",
+      "count": 68,
+      "scores": {
+        "total": 35,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 222,
+      "cat_id": 225,
+      "name": "EVERGOOD CLASSIC KAFFEKAPSEL 10STK",
+      "count": 74,
+      "scores": {
+        "total": 35,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 223,
+      "cat_id": 84,
+      "name": "HAVRE KNEKKEBRØD ØKONOMI 600G WASA",
+      "count": 109,
+      "scores": {
+        "total": 34.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 224,
+      "cat_id": 244,
+      "name": "RUGSPRØ HAVRE 180G WASA",
+      "count": 107,
+      "scores": {
+        "total": 34.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 225,
+      "cat_id": 39,
+      "name": "KNEKKEBRØD RUNDA KANEL 330G WASA",
+      "count": 120,
+      "scores": {
+        "total": 34.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 226,
+      "cat_id": 66,
+      "name": "RYVITA KNEKKEBRØD SESAM 250G",
+      "count": 121,
+      "scores": {
+        "total": 34.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 227,
+      "cat_id": 143,
+      "name": "KORNMO KNEKKEBRØD HAVRE&SOLSIKKE 200G",
+      "count": 129,
+      "scores": {
+        "total": 34.7,
+        "scarcity": 2.7,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 228,
+      "cat_id": 122,
+      "name": "NYPETE 24POS CONFECTA",
+      "count": 62,
+      "scores": {
+        "total": 34.6,
+        "scarcity": 6,
+        "diversity": 0.6,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 229,
+      "cat_id": 212,
+      "name": "KNEKKEBRØD 220G SIGDAL",
+      "count": 140,
+      "scores": {
+        "total": 34.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 230,
+      "cat_id": 12,
+      "name": "Leksands Rutbit",
+      "count": 150,
+      "scores": {
+        "total": 34.5,
+        "scarcity": 2.5,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 231,
+      "cat_id": 136,
+      "name": "SJOKOLADEDRIKK 450G BOKS REGIA",
+      "count": 31,
+      "scores": {
+        "total": 34.4,
+        "scarcity": 12,
+        "diversity": 3.4,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 232,
+      "cat_id": 3,
+      "name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G",
+      "count": 178,
+      "scores": {
+        "total": 34.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 233,
+      "cat_id": 311,
+      "name": "MELBA TOAST FIRKANTET 100G MEULEN",
+      "count": 33,
+      "scores": {
+        "total": 34.2,
+        "scarcity": 12,
+        "diversity": 3.2,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 234,
+      "cat_id": 152,
+      "name": "HAVREKNEKKEBRØD TYNT 265G WASA",
+      "count": 185,
+      "scores": {
+        "total": 34.1,
+        "scarcity": 2.1,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 235,
+      "cat_id": 236,
+      "name": "LEKSANDS KNEKKE RUTBIT 200G",
+      "count": 187,
+      "scores": {
+        "total": 34.1,
+        "scarcity": 2.1,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 236,
+      "cat_id": 82,
+      "name": "FRØ & HAVSALT 200G LEKSANDS",
+      "count": 205,
+      "scores": {
+        "total": 34.0,
+        "scarcity": 1.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 237,
+      "cat_id": 87,
+      "name": "SPICY INDIAN CHAI TEA 20POS TWININGS",
+      "count": 68,
+      "scores": {
+        "total": 34,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 238,
+      "cat_id": 89,
+      "name": "FOREST FRUIT TEA 20POS LIPTON",
+      "count": 76,
+      "scores": {
+        "total": 34,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 239,
+      "cat_id": 173,
+      "name": "EARL GREY TEA 25POS TWININGS",
+      "count": 95,
+      "scores": {
+        "total": 34,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 240,
+      "cat_id": 189,
+      "name": "YELLOW LABEL TEA 25POS LIPTON",
+      "count": 72,
+      "scores": {
+        "total": 34,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 241,
+      "cat_id": 243,
+      "name": "RYVITA KNEKKEBRØD RUG 400G",
+      "count": 198,
+      "scores": {
+        "total": 34.0,
+        "scarcity": 2.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 242,
+      "cat_id": 292,
+      "name": "NESCAFE AZERA AMERICANO 100G",
+      "count": 35,
+      "scores": {
+        "total": 34.0,
+        "scarcity": 12,
+        "diversity": 3.0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 243,
+      "cat_id": 309,
+      "name": "FIRE RØDE FRUKTER 25POS TWININGS",
+      "count": 67,
+      "scores": {
+        "total": 34,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 244,
+      "cat_id": 5,
+      "name": "GRISSINI HVITLØK 125G GRANFORNO",
+      "count": 45,
+      "scores": {
+        "total": 33.8,
+        "scarcity": 12,
+        "diversity": 2.8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 245,
+      "cat_id": 345,
+      "name": "KNEKKEBRØD URTER&HAVSALT 220G SIGDAL",
+      "count": 223,
+      "scores": {
+        "total": 33.8,
+        "scarcity": 1.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 246,
+      "cat_id": 52,
+      "name": "RUGSPRØ 200G WASA",
+      "count": 227,
+      "scores": {
+        "total": 33.7,
+        "scarcity": 1.7,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 247,
+      "cat_id": 266,
+      "name": "SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN",
+      "count": 55,
+      "scores": {
+        "total": 33.6,
+        "scarcity": 12,
+        "diversity": 2.6,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 248,
+      "cat_id": 92,
+      "name": "KNEKKEBRØD GODT FOR DEG 235G SIGDAL",
+      "count": 247,
+      "scores": {
+        "total": 33.5,
+        "scarcity": 1.5,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 249,
+      "cat_id": 38,
+      "name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W",
+      "count": 265,
+      "scores": {
+        "total": 33.4,
+        "scarcity": 1.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 250,
+      "cat_id": 169,
+      "name": "SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN",
+      "count": 33,
+      "scores": {
+        "total": 33.4,
+        "scarcity": 12,
+        "diversity": 2.4,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 251,
+      "cat_id": 233,
+      "name": "LEKSANDS KNEKKE GODT STEKT 200G",
+      "count": 260,
+      "scores": {
+        "total": 33.4,
+        "scarcity": 1.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 252,
+      "cat_id": 21,
+      "name": "KNEKKEBRØD RUNDA SESAM&HAVSALT 290G WASA",
+      "count": 271,
+      "scores": {
+        "total": 33.3,
+        "scarcity": 1.3,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 253,
+      "cat_id": 250,
+      "name": "LEKSANDS KNEKKE NORMALT STEKT 200G",
+      "count": 271,
+      "scores": {
+        "total": 33.3,
+        "scarcity": 1.3,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 254,
+      "cat_id": 328,
+      "name": "GRANOLA EPLE&BÆR 375G JACOBS UTVALGTE",
+      "count": 40,
+      "scores": {
+        "total": 33.2,
+        "scarcity": 12,
+        "diversity": 1.2,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 255,
+      "cat_id": 132,
+      "name": "FRUKOST FULLKORN 320G WASA",
+      "count": 300,
+      "scores": {
+        "total": 33.0,
+        "scarcity": 1.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 256,
+      "cat_id": 207,
+      "name": "LEKSANDS KNEKKE FIBERBIT 240G",
+      "count": 297,
+      "scores": {
+        "total": 33.0,
+        "scarcity": 1.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 257,
+      "cat_id": 271,
+      "name": "FRUKOST KNEKKEBRØD 240G WASA",
+      "count": 307,
+      "scores": {
+        "total": 32.9,
+        "scarcity": 0.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 258,
+      "cat_id": 296,
+      "name": "FIBER BALANCE 230G WASA",
+      "count": 309,
+      "scores": {
+        "total": 32.9,
+        "scarcity": 0.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 259,
+      "cat_id": 246,
+      "name": "HUSMAN KNEKKEBRØD 260G WASA",
+      "count": 322,
+      "scores": {
+        "total": 32.8,
+        "scarcity": 0.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 260,
+      "cat_id": 14,
+      "name": "GRANOLA NØTTER 375G JACOBS UTVALGTE",
+      "count": 48,
+      "scores": {
+        "total": 32.6,
+        "scarcity": 12,
+        "diversity": 0.6,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 261,
+      "cat_id": 106,
+      "name": "NESCAFE GOLD KOFFEINFRI 100G",
+      "count": 34,
+      "scores": {
+        "total": 32.6,
+        "scarcity": 12,
+        "diversity": 1.6,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 262,
+      "cat_id": 231,
+      "name": "MELLOMBAR CHIA,QUINOA&NØTTER 138G",
+      "count": 43,
+      "scores": {
+        "total": 32.6,
+        "scarcity": 12,
+        "diversity": 1.6,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 263,
+      "cat_id": 325,
+      "name": "NESCAFE GULL 100G",
+      "count": 58,
+      "scores": {
+        "total": 32.6,
+        "scarcity": 12,
+        "diversity": 1.6,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 264,
+      "cat_id": 349,
+      "name": "KNEKKEBRØD SPORT+ 210G WASA",
+      "count": 364,
+      "scores": {
+        "total": 32.4,
+        "scarcity": 0.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 265,
+      "cat_id": 109,
+      "name": "KNEKKEBRØD 100 FRØ&HAVSALT 245G WASA",
+      "count": 374,
+      "scores": {
+        "total": 32.3,
+        "scarcity": 0.3,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 266,
+      "cat_id": 306,
+      "name": "NESCAFE GULL 100G REFILL",
+      "count": 47,
+      "scores": {
+        "total": 32.2,
+        "scarcity": 12,
+        "diversity": 1.2,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 267,
+      "cat_id": 86,
+      "name": "HAVRE KNEKKEBRØD 300G WASA",
+      "count": 398,
+      "scores": {
+        "total": 32.0,
+        "scarcity": 0.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 268,
+      "cat_id": 304,
+      "name": "EVERGOOD CLASSIC KOKMALT 250G",
+      "count": 147,
+      "scores": {
+        "total": 31.5,
+        "scarcity": 2.5,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 269,
+      "cat_id": 137,
+      "name": "NESCAFE AZERA ESPRESSO 100G",
+      "count": 54,
+      "scores": {
+        "total": 31,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 270,
+      "cat_id": 146,
+      "name": "NESCAFE GULL 200G NESTLE",
+      "count": 54,
+      "scores": {
+        "total": 31,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 271,
+      "cat_id": 222,
+      "name": "NESCAFÉ MOCHA 136G NESTLE",
+      "count": 54,
+      "scores": {
+        "total": 31,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 272,
+      "cat_id": 46,
+      "name": "GRØNN TE SITRON 25POS TWININGS",
+      "count": 108,
+      "scores": {
+        "total": 30.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 273,
+      "cat_id": 171,
+      "name": "ALI ORIGINAL FILTERMALT 250G",
+      "count": 231,
+      "scores": {
+        "total": 30.7,
+        "scarcity": 1.7,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 274,
+      "cat_id": 33,
+      "name": "FLATBRØD MORS HJEMMEBAKTE 520G",
+      "count": 161,
+      "scores": {
+        "total": 30.4,
+        "scarcity": 2.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 14
+      }
+    },
+    {
+      "rank": 275,
+      "cat_id": 341,
+      "name": "EVERGOOD CLASSIC HELE BØNNER 500G",
+      "count": 76,
+      "scores": {
+        "total": 29.8,
+        "scarcity": 6,
+        "diversity": 0.8,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 276,
+      "cat_id": 72,
+      "name": "EGG FRITTGÅENDE 12STK PRIOR",
+      "count": 84,
+      "scores": {
+        "total": 29.6,
+        "scarcity": 6,
+        "diversity": 3.6,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 277,
+      "cat_id": 237,
+      "name": "EGG FRITTGÅENDE L/XL 10STK PRIOR",
+      "count": 66,
+      "scores": {
+        "total": 29.6,
+        "scarcity": 6,
+        "diversity": 3.6,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 278,
+      "cat_id": 100,
+      "name": "EVERGOOD CLASSIC FILTERMALT 250G",
+      "count": 368,
+      "scores": {
+        "total": 29.5,
+        "scarcity": 0.3,
+        "diversity": 0.2,
+        "size": 14,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 279,
+      "cat_id": 151,
+      "name": "FARMERS COFFEE FILTERMALT 250G",
+      "count": 72,
+      "scores": {
+        "total": 29,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 280,
+      "cat_id": 272,
+      "name": "EVERGOOD KOFFEINFRI FILTERMALT 250G",
+      "count": 67,
+      "scores": {
+        "total": 29,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 281,
+      "cat_id": 62,
+      "name": "KAVRINGER 350G WASA",
+      "count": 134,
+      "scores": {
+        "total": 28.7,
+        "scarcity": 2.7,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 282,
+      "cat_id": 139,
+      "name": "EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR",
+      "count": 135,
+      "scores": {
+        "total": 28.4,
+        "scarcity": 2.6,
+        "diversity": 1.8,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 283,
+      "cat_id": 338,
+      "name": "HUSMAN KNEKKEBRØD 520G WASA",
+      "count": 159,
+      "scores": {
+        "total": 28.4,
+        "scarcity": 2.4,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 18
+      }
+    },
+    {
+      "rank": 284,
+      "cat_id": 232,
+      "name": "EGG ØKOLOGISK M/L/XL 6STK PRIOR",
+      "count": 167,
+      "scores": {
+        "total": 27.7,
+        "scarcity": 2.3,
+        "diversity": 1.4,
+        "size": 8,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 285,
+      "cat_id": 68,
+      "name": "MAISKAKER SOURCREAM&ONION 125G FRIGGS",
+      "count": 76,
+      "scores": {
+        "total": 26.8,
+        "scarcity": 6,
+        "diversity": 1.8,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 286,
+      "cat_id": 162,
+      "name": "TRESOR CHOCO NUT 410G KELLOGGS",
+      "count": 46,
+      "scores": {
+        "total": 26.4,
+        "scarcity": 12,
+        "diversity": 1.4,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 287,
+      "cat_id": 47,
+      "name": "GRANOLA EPLE&KANEL 430G BARE BRA",
+      "count": 88,
+      "scores": {
+        "total": 26,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 288,
+      "cat_id": 63,
+      "name": "ALI MØRKBRENT FILTERMALT 250G",
+      "count": 101,
+      "scores": {
+        "total": 26.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 15
+      }
+    },
+    {
+      "rank": 289,
+      "cat_id": 121,
+      "name": "FROKOST-TALL 250G ELDORADO",
+      "count": 48,
+      "scores": {
+        "total": 26.0,
+        "scarcity": 12,
+        "diversity": 1.0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 290,
+      "cat_id": 145,
+      "name": "GRANOLA MANDLER &QUINOA 475G ELDORADO",
+      "count": 69,
+      "scores": {
+        "total": 26,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 291,
+      "cat_id": 223,
+      "name": "GRANOLA PEKAN HONNINGSRISTET 350G SYNNØV",
+      "count": 86,
+      "scores": {
+        "total": 26,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 292,
+      "cat_id": 197,
+      "name": "SPECIAL K CLASSIC 335G KELLOGG\\'S",
+      "count": 59,
+      "scores": {
+        "total": 25.6,
+        "scarcity": 12,
+        "diversity": 0.6,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 293,
+      "cat_id": 8,
+      "name": "FLATBRØD MORS",
+      "count": 68,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 294,
+      "cat_id": 11,
+      "name": "GRISSINI M/OLIVENOLJE 200G JACOBS UTVALG",
+      "count": 58,
+      "scores": {
+        "total": 25,
+        "scarcity": 12,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 295,
+      "cat_id": 32,
+      "name": "SOLBÆRTODDY 10PK 320G FREIA",
+      "count": 67,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 296,
+      "cat_id": 111,
+      "name": "NESCAFE BRASERO 100G",
+      "count": 91,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 297,
+      "cat_id": 142,
+      "name": "NESCAFÉ CAPPUCCINO 100G NESTLE",
+      "count": 61,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 298,
+      "cat_id": 157,
+      "name": "MELLOMBAR SOMMERVIBBER 138G ELDORADO",
+      "count": 90,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 299,
+      "cat_id": 178,
+      "name": "NESCAFE GOLD ORGANIC&FAIRTRADE 100G",
+      "count": 73,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 300,
+      "cat_id": 259,
+      "name": "REGIA KAKAO ORIGINAL 260G",
+      "count": 81,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 301,
+      "cat_id": 282,
+      "name": "FILTERPOSER NR.4 200STK ALI",
+      "count": 98,
+      "scores": {
+        "total": 25,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 302,
+      "cat_id": 283,
+      "name": "GÅRDSEGG M/L 12STK ELDORADO",
+      "count": 127,
+      "scores": {
+        "total": 24.1,
+        "scarcity": 2.7,
+        "diversity": 1.4,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 303,
+      "cat_id": 78,
+      "name": "MUSLI HAVRE&MANDEL 400G BARE BRA",
+      "count": 101,
+      "scores": {
+        "total": 23.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 304,
+      "cat_id": 108,
+      "name": "MUSLI M/BELGISK SJOKOLADE DSH",
+      "count": 103,
+      "scores": {
+        "total": 23.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 305,
+      "cat_id": 330,
+      "name": "GRANOLA MED JORDBÆR 390G SYNNØVE",
+      "count": 103,
+      "scores": {
+        "total": 23.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 306,
+      "cat_id": 15,
+      "name": "FRUKT MÜSLI 1KG FIRST PRICE",
+      "count": 105,
+      "scores": {
+        "total": 22.9,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 307,
+      "cat_id": 35,
+      "name": "CRUNCHY MUSLI 750G FIRST PRICE",
+      "count": 108,
+      "scores": {
+        "total": 22.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 308,
+      "cat_id": 117,
+      "name": "GRANOLA HASSELNØTT&KOKOS 450G BARE BRA",
+      "count": 115,
+      "scores": {
+        "total": 22.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 309,
+      "cat_id": 260,
+      "name": "MUSLI ENERGI 675G AXA",
+      "count": 108,
+      "scores": {
+        "total": 22.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 310,
+      "cat_id": 50,
+      "name": "BERIT GRANOLA M/PUFFET HAVRE 350G",
+      "count": 123,
+      "scores": {
+        "total": 22.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 311,
+      "cat_id": 164,
+      "name": "GRANOLA NATURELL 475G ELDORADO",
+      "count": 121,
+      "scores": {
+        "total": 22.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 312,
+      "cat_id": 305,
+      "name": "GRANOLA KAKAO&BRINGEBÆR 430G BARE BRA",
+      "count": 122,
+      "scores": {
+        "total": 22.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 313,
+      "cat_id": 61,
+      "name": "MUSLI BLÅBÆR 630G AXA",
+      "count": 144,
+      "scores": {
+        "total": 22.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 314,
+      "cat_id": 201,
+      "name": "MUSLI FRUKT 700G AXA",
+      "count": 144,
+      "scores": {
+        "total": 22.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 315,
+      "cat_id": 261,
+      "name": "MÜSLI HASSELNØTT 600G AXA",
+      "count": 144,
+      "scores": {
+        "total": 22.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 12
+      }
+    },
+    {
+      "rank": 316,
+      "cat_id": 80,
+      "name": "FROKOSTEGG FRITTGÅENDE L 12STK PRIOR",
+      "count": 243,
+      "scores": {
+        "total": 22.4,
+        "scarcity": 1.6,
+        "diversity": 0.8,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 317,
+      "cat_id": 275,
+      "name": "EGG FRITTGÅENDE 18STK S/M FIRST PRICE",
+      "count": 223,
+      "scores": {
+        "total": 22.4,
+        "scarcity": 1.8,
+        "diversity": 0.6,
+        "size": 4,
+        "confusability": 16
+      }
+    },
+    {
+      "rank": 318,
+      "cat_id": 56,
+      "name": "SJOKOLADEDRIKK 10PK 320G REGIA",
+      "count": 101,
+      "scores": {
+        "total": 22.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 319,
+      "cat_id": 333,
+      "name": "MELBATOAST RUND 110G MEULEN",
+      "count": 101,
+      "scores": {
+        "total": 22.0,
+        "scarcity": 3.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 320,
+      "cat_id": 235,
+      "name": "FLATBRØD ØKOLOGISK 190G RØROS",
+      "count": 115,
+      "scores": {
+        "total": 21.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 321,
+      "cat_id": 298,
+      "name": "O\\'BOY ORIGINAL 450G FREIA",
+      "count": 109,
+      "scores": {
+        "total": 21.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 322,
+      "cat_id": 264,
+      "name": "MELLOMBAR JORDBÆR HVIT SJOKOLADE 138G EL",
+      "count": 116,
+      "scores": {
+        "total": 21.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 323,
+      "cat_id": 265,
+      "name": "MELLOMBAR SUKKERFRI M/SJOKO 138G",
+      "count": 121,
+      "scores": {
+        "total": 21.8,
+        "scarcity": 2.8,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 324,
+      "cat_id": 186,
+      "name": "SUPERGRØT SKOGSBÆR 57G BARE BRA",
+      "count": 126,
+      "scores": {
+        "total": 21.7,
+        "scarcity": 2.7,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 325,
+      "cat_id": 315,
+      "name": "4-KORN 675G AXA",
+      "count": 134,
+      "scores": {
+        "total": 21.7,
+        "scarcity": 2.7,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 326,
+      "cat_id": 217,
+      "name": "MELLOMBAR POPCORN&SJOKOLADE 126G ELDORAD",
+      "count": 144,
+      "scores": {
+        "total": 21.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 327,
+      "cat_id": 208,
+      "name": "FLATBRØD 190G IDEAL",
+      "count": 160,
+      "scores": {
+        "total": 21.4,
+        "scarcity": 2.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 328,
+      "cat_id": 284,
+      "name": "MELLOMBAR KOKOS&SJOKOLADE 138G ELDORADO",
+      "count": 168,
+      "scores": {
+        "total": 21.3,
+        "scarcity": 2.3,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 329,
+      "cat_id": 73,
+      "name": "MELLOMBAR SJOKOLADE&KRISP 138G ELDORADO",
+      "count": 178,
+      "scores": {
+        "total": 21.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 330,
+      "cat_id": 204,
+      "name": "MELLOMBAR SALT KARAMELL 138G ELDORADO",
+      "count": 177,
+      "scores": {
+        "total": 21.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 331,
+      "cat_id": 268,
+      "name": "SUPERGRØT KANEL&PUFFET QUINOA 54G",
+      "count": 177,
+      "scores": {
+        "total": 21.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 332,
+      "cat_id": 188,
+      "name": "MAISKAKER POPCORN 125G FRIGGS",
+      "count": 195,
+      "scores": {
+        "total": 21.1,
+        "scarcity": 2.0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 333,
+      "cat_id": 239,
+      "name": "MAISKAKER CHIA/HAVSALT 130G FRIGGS",
+      "count": 240,
+      "scores": {
+        "total": 20.6,
+        "scarcity": 1.6,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 334,
+      "cat_id": 96,
+      "name": "FLATBRØD 275G KORNI",
+      "count": 247,
+      "scores": {
+        "total": 20.5,
+        "scarcity": 1.5,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 335,
+      "cat_id": 280,
+      "name": "RISKAKER 100G FIRST PRICE",
+      "count": 262,
+      "scores": {
+        "total": 20.4,
+        "scarcity": 1.4,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 336,
+      "cat_id": 307,
+      "name": "MAISKAKER OST 125G FRIGGS",
+      "count": 283,
+      "scores": {
+        "total": 20.2,
+        "scarcity": 1.2,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 337,
+      "cat_id": 355,
+      "name": "unknown_product",
+      "count": 422,
+      "scores": {
+        "total": 19,
+        "scarcity": 0,
+        "diversity": 0,
+        "size": 14,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 338,
+      "cat_id": 7,
+      "name": "PUFFET HAVRE 340G FIRST PRICE",
+      "count": 106,
+      "scores": {
+        "total": 15.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 339,
+      "cat_id": 214,
+      "name": "HAVREGRØT ROSIN&VANILJE 525G AXA",
+      "count": 107,
+      "scores": {
+        "total": 15.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 340,
+      "cat_id": 75,
+      "name": "CRUESLI 4 NUTS 450G QUAKER",
+      "count": 139,
+      "scores": {
+        "total": 15.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 341,
+      "cat_id": 85,
+      "name": "RIS PUFFET 260G FIRST PRICE",
+      "count": 139,
+      "scores": {
+        "total": 15.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 342,
+      "cat_id": 194,
+      "name": "CRUESLI SOLFROKOST 450G QUAKER",
+      "count": 141,
+      "scores": {
+        "total": 15.6,
+        "scarcity": 2.6,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 343,
+      "cat_id": 329,
+      "name": "SKORPOR FULLKORN 240G PÅGEN",
+      "count": 170,
+      "scores": {
+        "total": 15.3,
+        "scarcity": 2.3,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 344,
+      "cat_id": 342,
+      "name": "HAVREFRAS 375G",
+      "count": 167,
+      "scores": {
+        "total": 15.3,
+        "scarcity": 2.3,
+        "diversity": 0,
+        "size": 8,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 345,
+      "cat_id": 191,
+      "name": "ALL-BRAN REGULAR 375G KELLOGG\\'S",
+      "count": 69,
+      "scores": {
+        "total": 15,
+        "scarcity": 6,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 346,
+      "cat_id": 23,
+      "name": "FITNESS FROKOST 375G NESTLE",
+      "count": 113,
+      "scores": {
+        "total": 11.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 347,
+      "cat_id": 187,
+      "name": "WEETABIX ORIGINAL FROKOSTBLANDING 430G",
+      "count": 106,
+      "scores": {
+        "total": 11.9,
+        "scarcity": 2.9,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 348,
+      "cat_id": 30,
+      "name": "SJOKORINGER 375G ELDORADO",
+      "count": 129,
+      "scores": {
+        "total": 11.7,
+        "scarcity": 2.7,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 349,
+      "cat_id": 130,
+      "name": "WEETOS CHOCO 375G WEETABIX",
+      "count": 145,
+      "scores": {
+        "total": 11.6,
+        "scarcity": 2.5,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 350,
+      "cat_id": 53,
+      "name": "COCO POPS CHOCOS 330G KELLOGG\\'S",
+      "count": 157,
+      "scores": {
+        "total": 11.4,
+        "scarcity": 2.4,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 351,
+      "cat_id": 205,
+      "name": "CORN FLAKES 750G FIRST PRICE",
+      "count": 158,
+      "scores": {
+        "total": 11.4,
+        "scarcity": 2.4,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 352,
+      "cat_id": 34,
+      "name": "SMACKS 330G KELLOGG\\'S",
+      "count": 181,
+      "scores": {
+        "total": 11.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 353,
+      "cat_id": 218,
+      "name": "CORN FLAKES 500G KELLOGGS",
+      "count": 178,
+      "scores": {
+        "total": 11.2,
+        "scarcity": 2.2,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 354,
+      "cat_id": 29,
+      "name": "NESQUIK FROKOSTBLANDING 375G NESTLE",
+      "count": 192,
+      "scores": {
+        "total": 11.1,
+        "scarcity": 2.1,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 355,
+      "cat_id": 97,
+      "name": "CHEERIOS MULTI 375G NESTLE",
+      "count": 190,
+      "scores": {
+        "total": 11.1,
+        "scarcity": 2.1,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    },
+    {
+      "rank": 356,
+      "cat_id": 181,
+      "name": "CHEERIOS HAVRE 375G NESTLE",
+      "count": 190,
+      "scores": {
+        "total": 11.1,
+        "scarcity": 2.1,
+        "diversity": 0,
+        "size": 4,
+        "confusability": 5
+      }
+    }
+  ],
+  "coverage_gaps": {
+    "coffee": "ZERO store photos, 21 weak classes",
+    "tea": "ZERO store photos, 22 weak classes",
+    "eggs": "ZERO store photos, 15 weak classes",
+    "butter_margarine": "ZERO store photos, 15 weak classes",
+    "cereal": "Partial coverage (blurry/rotated), 16 weak classes",
+    "crispbread": "Has coverage but quality issues, 15 weak classes"
+  }
+}
