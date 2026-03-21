@@ -160,13 +160,70 @@ print('Blitz done')
         say "Astar round $ROUND_NUM: running optimizer and submitting." 2>/dev/null
         cd /home/me/ht/nmiai
 
-        # Run the optimizer which tries 8 strategies and submits the best
-        uv run python3 tasks/astar-island/round_optimizer.py >> "$LOG_FILE" 2>&1
+        # Direct regime_predictor + tau=20 overlay (proven safe-best)
+        uv run python3 -c "
+import json, sys, time, numpy as np, requests
+from pathlib import Path
+sys.path.insert(0, 'tasks/astar-island')
+import regime_predictor as rp
 
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: optimizer done" >> "$LOG_FILE"
-        say "Astar round $ROUND_NUM optimizer submitted." 2>/dev/null
+def ccc(cell):
+    if cell in (0,10,11): return 0
+    if cell==1: return 1
+    if cell==2: return 2
+    if cell==3: return 3
+    if cell==4: return 4
+    if cell==5: return 5
+    return 0
+
+TOKEN = open('tasks/astar-island/.token').read().strip()
+s = requests.Session()
+s.cookies.set('access_token', TOKEN)
+s.headers['Authorization'] = f'Bearer {TOKEN}'
+BASE = 'https://api.ainm.no'
+rounds = s.get(f'{BASE}/astar-island/rounds').json()
+active = next(r for r in rounds if r['status'] == 'active')
+rid = active['id']; rn = active['round_number']
+details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
+rd = Path(f'tasks/astar-island/logs/round{rn}')
+
+all_obs = {}; all_combined = []
+for si in range(5):
+    op = rd / f'observations_seed{si}.json'
+    seed_obs = json.loads(op.read_text()) if op.exists() else []
+    all_obs[si] = seed_obs; all_combined.extend(seed_obs)
+
+weights = rp.detect_regime_from_observations(np.array(details['initial_states'][0]['grid'],dtype=np.int32), all_combined)
+print(f'Regime (pooled {len(all_combined)} obs): {weights}')
+
+for si in range(5):
+    pred = rp.predict(details['initial_states'][si]['grid'], observations=all_combined)
+    obs = all_obs[si]
+    if obs:
+        init = np.array(details['initial_states'][si]['grid'])
+        counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
+        for o in obs:
+            for dy,row in enumerate(o['grid']):
+                for dx,cell in enumerate(row):
+                    y,x = o['viewport_y']+dy, o['viewport_x']+dx
+                    if 0<=y<40 and 0<=x<40: counts[y,x,ccc(cell)]+=1; oc[y,x]+=1
+        for y in range(40):
+            for x in range(40):
+                if oc[y,x]>=2 and init[y,x] not in (10,5):
+                    alpha=20.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
+    pred=np.maximum(pred,1e-6); pred/=pred.sum(axis=2,keepdims=True)
+    for attempt in range(3):
+        r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
+        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs)} obs)'); break
+        time.sleep(2)
+    time.sleep(0.3)
+print('Safe-best submission done')
+" >> "$LOG_FILE" 2>&1
+
+        echo "\$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: safe-best submitted" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
-        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: optimizer submitted (8 strategies tested).</agent>" 2>/dev/null
+        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: safe-best submitted.</agent>" 2>/dev/null
         sleep 0.5
         tmux send-keys -t %5 Enter 2>/dev/null
     fi
