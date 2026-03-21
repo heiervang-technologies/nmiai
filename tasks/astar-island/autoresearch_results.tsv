@@ -1,1 +1,17 @@
-timestamp	experiment_id	model	cv_weighted_kl	cv_rounds	live_score	queries_used	compute_minutes	submissions_used	override_safe_best	status	description
+timestamp	round	raw_score	weighted_score	rank	total_teams	cv_wkl	pipeline_change	regime
+2026-03-19T20:42	R1	59.3	62.3	17	117	0.149	Hand-tuned Dirichlet priors, 50q full coverage	moderate
+2026-03-19T23:47	R2	-	-	-	-	-	Missed (overnight)	-
+2026-03-20T02:53	R3	-	-	-	-	-	Missed (overnight)	-
+2026-03-20T05:46	R4	-	-	-	-	-	Missed (overnight)	-
+2026-03-20T08:48	R5	71.5	91.3	60	144	0.119	Empirical bucket priors, minimal obs	moderate
+2026-03-20T11:53	R6	58.2	78.0	87	186	0.104	HistGBT hybrid (regressed)	prosperous
+2026-03-20T14:48	R7	60.4	84.9	84	199	0.104	Recursive conv model	moderate
+2026-03-20T17:46	R8	61.4	90.7	128	214	0.080	55/45 blend regime+neighborhood	harsh
+2026-03-20T20:47	R9	83.5	129.6	84	221	0.100	Temp-scaled bucket priors, NO obs	moderate
+2026-03-20T23:48	R10	55.9	91.1	149	238	0.096	Smooth predictor, wasted 50q	harsh
+2026-03-21T02:48	R11	74.5	127.5	79	171	0.089	Template predictor + 5 regime obs	prosperous
+2026-03-21T05:48	R12	41.8	75.0	98	146	0.085	Template predictor no obs (prosperous round)	prosperous
+2026-03-21T08:48	R13	87.9	165.8	47	186	0.080	Blitz 50q (10/seed hottest vp) + bucket priors + tau=2	moderate
+2026-03-21T11:59	R14	79.0	156.4	53	244	0.070	Regime predictor + blitz + tau=10	prosperous
+2026-03-21T14:52	R15	88.6	184.2	69	262	0.058	Bayesian regime detection + structural zeros + tau=10 + floor 1e-6	prosperous
+2026-03-21T17:46	R16	pending	-	-	-	0.070	Per-seed obs + tau=20 + port boost + 3vp (old blitz ran before fix)	pending
