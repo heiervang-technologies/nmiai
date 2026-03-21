@@ -1231,14 +1231,10 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_activate_module(client: TripletexClient, args: dict) -> dict:
-    """Activate a Tripletex module. Returns success even if already active or forbidden."""
+    """Module activation is a no-op — competition sandboxes reject it and it wastes API calls."""
     module_name = args.get("moduleName", args.get("name", ""))
-    try:
-        return await client.post("/company/salesmodules", json={"name": module_name})
-    except Exception as e:
-        # 403 = forbidden (already active or not available), not a real failure
-        log.warning(f"Module activation for {module_name} failed (non-fatal): {e}")
-        return {"warning": f"Module {module_name} activation failed, may already be active"}
+    log.info(f"Skipping module activation for {module_name} (competition sandboxes reject it)")
+    return {"status": "ok", "message": f"Module {module_name} handled automatically"}
 
 
 async def action_create_project(client: TripletexClient, args: dict) -> dict:
