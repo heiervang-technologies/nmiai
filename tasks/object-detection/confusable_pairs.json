@@ -1,0 +1,172 @@
+{
+  "description": "Near-duplicate category pairs that the classifier will confuse. Use for hard negative mining in DINOv2/classifier training.",
+  "usage": "For each pair, ensure training batches include both categories together so the model learns to distinguish them.",
+  "pairs": [
+    {
+      "cat_a": 200, "cat_b": 225,
+      "name_a": "EVERGOOD CLASSIC KAFFEKAPSEL 16STK",
+      "name_b": "EVERGOOD CLASSIC KAFFEKAPSEL 10STK",
+      "similarity": 0.97, "difference": "pack_size",
+      "visual_hint": "Number on front: 16 vs 10"
+    },
+    {
+      "cat_a": 27, "cat_b": 189,
+      "name_a": "YELLOW LABEL TEA 50POS LIPTON",
+      "name_b": "YELLOW LABEL TEA 25POS LIPTON",
+      "similarity": 0.97, "difference": "pack_size",
+      "visual_hint": "Number on box: 50 vs 25"
+    },
+    {
+      "cat_a": 246, "cat_b": 338,
+      "name_a": "HUSMAN KNEKKEBRØD 260G WASA",
+      "name_b": "HUSMAN KNEKKEBRØD 520G WASA",
+      "similarity": 0.96, "difference": "weight",
+      "visual_hint": "Package size difference, weight text"
+    },
+    {
+      "cat_a": 59, "cat_b": 61,
+      "name_a": "MÜSLI BLÅBÆR 630G AXA",
+      "name_b": "MUSLI BLÅBÆR 630G AXA",
+      "similarity": 0.95, "difference": "spelling_variant",
+      "visual_hint": "IDENTICAL product - annotation inconsistency, may be same SKU"
+    },
+    {
+      "cat_a": 102, "cat_b": 139,
+      "name_a": "EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIOR",
+      "name_b": "EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR",
+      "similarity": 0.95, "difference": "pack_size",
+      "visual_hint": "Carton size: 12-pack vs 6-pack"
+    },
+    {
+      "cat_a": 159, "cat_b": 163,
+      "name_a": "Galåvolden Store Gårdsegg 10stk",
+      "name_b": "Galåvolden Store Gårdsegg 6stk",
+      "similarity": 0.95, "difference": "pack_size",
+      "visual_hint": "Carton size: 10 vs 6"
+    },
+    {
+      "cat_a": 3, "cat_b": 38,
+      "name_a": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G",
+      "name_b": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W",
+      "similarity": 0.95, "difference": "weight",
+      "visual_hint": "Nearly identical weight: 260G vs 270G"
+    },
+    {
+      "cat_a": 175, "cat_b": 302,
+      "name_a": "MELANGE MARGARIN 500G",
+      "name_b": "MELANGE MARGARIN 250G",
+      "similarity": 0.95, "difference": "weight",
+      "visual_hint": "Package size: 500G vs 250G tub"
+    },
+    {
+      "cat_a": 103, "cat_b": 344,
+      "name_a": "EVERGOOD DARK ROAST KAFFEKAPSEL 10STK",
+      "name_b": "EVERGOOD DARK ROAST KAFFEKAPSEL 16STK",
+      "similarity": 0.94, "difference": "pack_size",
+      "visual_hint": "Box size and number: 10 vs 16"
+    },
+    {
+      "cat_a": 125, "cat_b": 179,
+      "name_a": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+      "name_b": "SJOKOLADEDRIKK 10X32G RETT I KOPPEN",
+      "similarity": 0.94, "difference": "packaging",
+      "visual_hint": "Bulk canister vs individual sachets"
+    },
+    {
+      "cat_a": 4, "cat_b": 138,
+      "name_a": "Økologiske Egg 6stk",
+      "name_b": "Økologiske Egg 10stk",
+      "similarity": 0.92, "difference": "pack_size",
+      "visual_hint": "Carton size: 6 vs 10"
+    },
+    {
+      "cat_a": 196, "cat_b": 332,
+      "name_a": "COTW LUNGO KAFFEKAPSEL 10STK",
+      "name_b": "COTW LUNGO DARK KAFFEKAPSEL 10STK",
+      "similarity": 0.92, "difference": "variant",
+      "visual_hint": "Regular vs Dark roast, color difference on box"
+    },
+    {
+      "cat_a": 67, "cat_b": 326,
+      "name_a": "SOFT FLORA ORIGINAL 230G",
+      "name_b": "SOFT FLORA ORIGINAL 540G",
+      "similarity": 0.92, "difference": "weight",
+      "visual_hint": "Tub size: small vs large"
+    },
+    {
+      "cat_a": 170, "cat_b": 260,
+      "name_a": "MÜSLI ENERGI 650G AXA",
+      "name_b": "MUSLI ENERGI 675G AXA",
+      "similarity": 0.90, "difference": "spelling_and_weight",
+      "visual_hint": "Likely same product - umlaut + tiny weight difference"
+    },
+    {
+      "cat_a": 125, "cat_b": 169,
+      "name_a": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+      "name_b": "SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN",
+      "similarity": 0.90, "difference": "packaging",
+      "visual_hint": "Original canister vs refill bag"
+    },
+    {
+      "cat_a": 40, "cat_b": 144,
+      "name_a": "FRIELE FROKOST FILTERMALT 250G",
+      "name_b": "FRIELE FROKOST KOKMALT 250G",
+      "similarity": 0.89, "difference": "grind_type",
+      "visual_hint": "Same bag, different grind label text"
+    },
+    {
+      "cat_a": 49, "cat_b": 347,
+      "name_a": "EVERGOOD DARK ROAST FILTERMALT 250G",
+      "name_b": "EVERGOOD DARK ROAST PRESSMALT 250G",
+      "similarity": 0.89, "difference": "grind_type",
+      "visual_hint": "Same bag design, grind label differs"
+    },
+    {
+      "cat_a": 100, "cat_b": 304,
+      "name_a": "EVERGOOD CLASSIC FILTERMALT 250G",
+      "name_b": "EVERGOOD CLASSIC KOKMALT 250G",
+      "similarity": 0.89, "difference": "grind_type",
+      "visual_hint": "Same bag design, grind label differs"
+    },
+    {
+      "cat_a": 141, "cat_b": 304,
+      "name_a": "EVERGOOD CLASSIC PRESSMALT 250G",
+      "name_b": "EVERGOOD CLASSIC KOKMALT 250G",
+      "similarity": 0.89, "difference": "grind_type",
+      "visual_hint": "Same bag design, grind label differs"
+    },
+    {
+      "cat_a": 224, "cat_b": 253,
+      "name_a": "SOFT FLORA LETT 540G",
+      "name_b": "SOFT FLORA LETT 235G",
+      "similarity": 0.89, "difference": "weight",
+      "visual_hint": "Tub size difference"
+    },
+    {
+      "cat_a": 213, "cat_b": 237,
+      "name_a": "EGG FRITTGÅENDE M/L 6PK PRIOR",
+      "name_b": "EGG FRITTGÅENDE L/XL 10STK PRIOR",
+      "similarity": 0.87, "difference": "size_and_count",
+      "visual_hint": "Egg size class + carton count differ"
+    },
+    {
+      "cat_a": 340, "cat_b": 341,
+      "name_a": "EVERGOOD DARK ROAST HELE BØNNER 500G",
+      "name_b": "EVERGOOD CLASSIC HELE BØNNER 500G",
+      "similarity": 0.87, "difference": "roast_type",
+      "visual_hint": "Bag color: dark vs red"
+    },
+    {
+      "cat_a": 36, "cat_b": 201,
+      "name_a": "MÜSLI FRUKT MÜSLI 700G AXA",
+      "name_b": "MUSLI FRUKT 700G AXA",
+      "similarity": 0.86, "difference": "spelling_variant",
+      "visual_hint": "Likely same product - umlaut difference"
+    }
+  ],
+  "likely_same_product": [
+    {"cats": [59, 61], "note": "MÜSLI vs MUSLI BLÅBÆR - umlaut only"},
+    {"cats": [170, 260], "note": "MÜSLI vs MUSLI ENERGI - umlaut + 650G vs 675G"},
+    {"cats": [36, 201], "note": "MÜSLI FRUKT MÜSLI vs MUSLI FRUKT - umlaut"}
+  ]
+}
