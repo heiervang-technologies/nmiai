@@ -172,6 +172,14 @@ async def _find_customer_id(
 
 async def _grant_employee_all_privileges(client: TripletexClient, employee_id: int) -> None:
     """Grant ALL_PRIVILEGES to employee so they can do travel/timesheet/salary."""
+    try:
+        emp_data = await client.get(f"/employee/{employee_id}")
+        emp = emp_data.get("value", emp_data)
+        if emp.get("allowInformationRegistration"):
+            return
+    except Exception:
+        pass
+
     # Try entitlement template first
     try:
         await client.put(
@@ -181,19 +189,19 @@ async def _grant_employee_all_privileges(client: TripletexClient, employee_id: i
         log.info(f"Granted ALL_PRIVILEGES to employee {employee_id}")
         return
     except Exception as e:
-        log.warning(f"Entitlement template failed, trying userType upgrade: {e}")
+        log.warning(f"Entitlement template failed (non-fatal): {e}")
 
-    # Fallback: upgrade employee to EXTENDED userType (enables travel/timesheet access)
-    try:
-        emp_data = await client.get(f"/employee/{employee_id}")
-        emp = emp_data.get("value", emp_data)
-        if emp.get("userType") != "EXTENDED":
-            emp["userType"] = "EXTENDED"
-            emp["allowInformationRegistration"] = True
-            await client.put(f"/employee/{employee_id}", json=emp)
-            log.info(f"Upgraded employee {employee_id} to EXTENDED userType")
-    except Exception as e2:
-        log.warning(f"Employee upgrade also failed (non-fatal): {e2}")
+
+def _is_placeholder_employee(employee: dict | None) -> bool:
+    if not employee:
+        return True
+    return (
+        not employee.get("allowInformationRegistration")
+        and not employee.get("department")
+        and not employee.get("employments")
+        and not (employee.get("email") or "").strip()
+        and not employee.get("userType")
+    )
 
 
 async def _find_employee_id(
@@ -205,10 +213,27 @@ async def _find_employee_id(
 ) -> int | None:
     """Find an employee by ID/email/name. Optionally create them if missing and enough data exists."""
     if employee_id:
-        return employee_id
+        try:
+            employee_data = await client.get(f"/employee/{employee_id}")
+            employee = employee_data.get("value", employee_data)
+            if not _is_placeholder_employee(employee):
+                return employee_id
+            log.info(f"Ignoring placeholder employee id={employee_id}")
+        except Exception:
+            pass
 
     employees = await client.get("/employee", params={"count": 25})
-    for employee in employees.get("values", []):
+    values = employees.get("values", [])
+    if employee_id:
+        for employee in values:
+            if employee.get("id") == employee_id:
+                return employee_id
+        if 1 <= int(employee_id) <= len(values):
+            ordinal_match = values[int(employee_id) - 1]
+            log.info(f"Mapped employee ordinal {employee_id} to employee id={ordinal_match['id']}")
+            return ordinal_match["id"]
+
+    for employee in values:
         if employee_email and employee.get("email") == employee_email:
             return employee["id"]
         if employee_name and employee_name.lower() in employee.get("displayName", "").lower():
@@ -230,7 +255,10 @@ async def _find_employee_id(
         if employee_value.get("id"):
             return employee_value["id"]
 
-    values = employees.get("values", [])
+    for employee in values:
+        if employee.get("allowInformationRegistration"):
+            return employee["id"]
+
     return values[0]["id"] if values else None
 
 
@@ -331,7 +359,20 @@ async def _resolve_travel_per_diem_rate(
         log.warning(f"Per diem rate category lookup failed: {_error_text(exc)[:200]}")
         return None, None
 
-    for category in category_resp.get("values", []):
+    # Pick the best category based on trip type.
+    # Domestic overnight with >12h is the most common per diem scenario.
+    best_category = None
+    categories = category_resp.get("values", [])
+    for category in categories:
+        cat_name = (category.get("name") or "").lower()
+        # Prefer overnight > 12h for multi-day, dagsreise for day trips
+        if is_day_trip and "dagsreise" in cat_name:
+            best_category = category
+        elif not is_day_trip and "overnatting" in cat_name and "12" in cat_name:
+            best_category = category
+        elif best_category is None:
+            best_category = category
+
         params = {
             "rateCategoryId": category["id"],
             "type": "PER_DIEM",
@@ -349,6 +390,10 @@ async def _resolve_travel_per_diem_rate(
         if values:
             return category, values[0]
 
+    # Rates are empty but categories exist — return best category without rate.
+    # The per diem body will include rateCategory which may be enough.
+    if best_category:
+        return best_category, None
     return None, None
 
 
@@ -1174,13 +1219,6 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         project_id=args.get("projectId"),
         project_name=args.get("projectName"),
     )
-    if not project_id:
-        try:
-            projects = await client.get("/project", params={"count": 1})
-            if projects.get("values"):
-                project_id = projects["values"][0]["id"]
-        except Exception:
-            pass
 
     entry_date = args.get("date", TODAY)
 
@@ -1220,6 +1258,10 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 params={"count": 100, "name": args["activityName"]},
             )
             for act in activities.get("values", []):
+                if project_id and not act.get("isProjectActivity"):
+                    continue
+                if not project_id and act.get("isProjectActivity"):
+                    continue
                 if args["activityName"].lower() in act.get("name", "").lower():
                     activity_id = act["id"]
                     break
