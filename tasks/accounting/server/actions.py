@@ -374,9 +374,8 @@ async def action_activate_module(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_project(client: TripletexClient, args: dict) -> dict:
-    """Create a project. Activates module if needed. Handles customer and employee lookup."""
-    # Try to activate project module (non-fatal if fails)
-    await action_activate_module(client, {"name": "PROJECT"})
+    """Create a project. Handles customer and employee lookup."""
+    # Skip module activation — burns API calls with 403 in competition sandboxes
 
     # Find or create customer if needed
     customer_id = args.get("customerId")
@@ -562,9 +561,8 @@ async def action_update_employee(client: TripletexClient, args: dict) -> dict:
 
 async def action_register_timesheet(client: TripletexClient, args: dict) -> dict:
     """Register hours on a timesheet for an employee on a project activity."""
-    # Activate project + timesheet modules (non-fatal)
-    for module in ["PROJECT", "TIME_TRACKING"]:
-        await action_activate_module(client, {"name": module})
+    # Skip module activation — modules are usually pre-activated in competition sandboxes.
+    # Trying to activate burns 2-6 API calls with 403 errors every time.
 
     # Find or use provided IDs
     employee_id = args.get("employeeId")
