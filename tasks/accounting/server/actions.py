@@ -2276,6 +2276,15 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
     params = args.get("params") or {}
     body = args.get("body")
 
+    # Fix common LLM endpoint mistakes
+    if "/expense/:deliver" in path and "/travelExpense" not in path:
+        # LLM uses wrong endpoint — redirect to correct one
+        path = path.replace("/expense/:deliver", "/travelExpense/:deliver")
+        log.warning(f"Redirected /expense/:deliver to /travelExpense/:deliver")
+    if "/expense/cost" in path and "/travelExpense" not in path:
+        path = path.replace("/expense/cost", "/travelExpense/cost")
+        log.warning(f"Redirected /expense/cost to /travelExpense/cost")
+
     # Auto-add required date params for endpoints that need them
     if method == "GET":
         if "/invoice" in path and "invoiceDateFrom" not in params:
