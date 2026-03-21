@@ -1,6 +1,6 @@
 # Accounting Log Analysis
 
-Analyzed `255` runs from `/tmp/accounting-logs`.
+Analyzed `271` runs from `/tmp/accounting-logs`.
 
 ## Global
 
@@ -11,11 +11,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ## Alerts
 
-- annual_close clean rate is 33.3%; blockers: none; likely missing fields: none
+- annual_close clean rate is 25.0%; blockers: none; likely missing fields: none
 - cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee
-- department clean rate is 57.1%; blockers: duplicate_identifier; likely missing fields: department
-- employee clean rate is 44.4%; blockers: email_validation; likely missing fields: employee, department
-- invoice clean rate is 62.5%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none
+- department clean rate is 60.9%; blockers: duplicate_identifier; likely missing fields: department
+- employee clean rate is 46.4%; blockers: email_validation; likely missing fields: employee, department
+- invoice clean rate is 66.7%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none
 - product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none
 - timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
 - travel_expense clean rate is 41.2%; blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind, travel_expense_contents_required; likely missing fields: delivered_state, employee, rate_type, project
@@ -25,15 +25,15 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### annual_close
 
-- Runs: 3
-- Proxy clean rate: 33.3%
+- Runs: 4
+- Proxy clean rate: 25.0%
 - Likely full runs: 1
 - Likely partial runs: 0
-- Mean API errors: 0.67
+- Mean API errors: 1.75
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: none
-- Top error: /ledger/account: HTTP 403 with no captured body
+- Top error: /ledger/account: {"error":"Invalid or expired proxy token. Each submission receives a unique token - do not reuse tokens from previous submissions.","source":"nmiai-proxy"}
 
 ### bank_reconciliation
 
@@ -60,23 +60,23 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### customer
 
-- Runs: 28
-- Proxy clean rate: 89.3%
-- Likely full runs: 24
-- Likely partial runs: 3
-- Mean API errors: 0.68
+- Runs: 30
+- Proxy clean rate: 90.0%
+- Likely full runs: 25
+- Likely partial runs: 4
+- Mean API errors: 0.67
 - Prompt-required fields: none
 - Likely blockers: none
-- Missing-field hypotheses: customer
+- Missing-field hypotheses: customer, vat_type
 - Top error: /ledger/voucher: HTTP 422 with no captured body
 
 ### department
 
-- Runs: 21
-- Proxy clean rate: 57.1%
-- Likely full runs: 10
+- Runs: 23
+- Proxy clean rate: 60.9%
+- Likely full runs: 12
 - Likely partial runs: 2
-- Mean API errors: 0.62
+- Mean API errors: 0.57
 - Prompt-required fields: none
 - Likely blockers: duplicate_identifier
 - Missing-field hypotheses: department
@@ -84,11 +84,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### employee
 
-- Runs: 27
-- Proxy clean rate: 44.4%
-- Likely full runs: 10
+- Runs: 28
+- Proxy clean rate: 46.4%
+- Likely full runs: 11
 - Likely partial runs: 2
-- Mean API errors: 0.67
+- Mean API errors: 0.64
 - Prompt-required fields: none
 - Likely blockers: email_validation
 - Missing-field hypotheses: employee, department
@@ -96,11 +96,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### invoice
 
-- Runs: 24
-- Proxy clean rate: 62.5%
-- Likely full runs: 14
+- Runs: 27
+- Proxy clean rate: 66.7%
+- Likely full runs: 17
 - Likely partial runs: 3
-- Mean API errors: 1.83
+- Mean API errors: 1.63
 - Prompt-required fields: none
 - Likely blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked
 - Missing-field hypotheses: none
@@ -108,11 +108,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### ledger_correction
 
-- Runs: 5
-- Proxy clean rate: 80.0%
-- Likely full runs: 3
+- Runs: 7
+- Proxy clean rate: 85.7%
+- Likely full runs: 5
 - Likely partial runs: 2
-- Mean API errors: 1.60
+- Mean API errors: 1.14
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: none
@@ -132,11 +132,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### project
 
-- Runs: 15
-- Proxy clean rate: 73.3%
-- Likely full runs: 4
+- Runs: 16
+- Proxy clean rate: 75.0%
+- Likely full runs: 5
 - Likely partial runs: 9
-- Mean API errors: 3.60
+- Mean API errors: 3.38
 - Prompt-required fields: none
 - Likely blockers: project_hourly_rates_endpoint, module_permission_blocked
 - Missing-field hypotheses: project, activity, rate_type
@@ -144,11 +144,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### salary
 
-- Runs: 16
-- Proxy clean rate: 93.8%
-- Likely full runs: 13
+- Runs: 18
+- Proxy clean rate: 88.9%
+- Likely full runs: 14
 - Likely partial runs: 2
-- Mean API errors: 0.25
+- Mean API errors: 0.22
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: employee
@@ -156,11 +156,11 @@ Analyzed `255` runs from `/tmp/accounting-logs`.
 
 ### supplier
 
-- Runs: 25
-- Proxy clean rate: 88.0%
-- Likely full runs: 22
+- Runs: 27
+- Proxy clean rate: 88.9%
+- Likely full runs: 24
 - Likely partial runs: 2
-- Mean API errors: 0.88
+- Mean API errors: 0.81
 - Prompt-required fields: none
 - Likely blockers: none
 - Missing-field hypotheses: project, activity

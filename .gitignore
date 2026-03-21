@@ -52,3 +52,5 @@ lora_adapter/
 checkpoint-*/
 merged_ties_adapter/
 merged_adapter/
+hf_parquet_tmp/
+tasks/object-detection/data-creation/hf_parquet_tmp/

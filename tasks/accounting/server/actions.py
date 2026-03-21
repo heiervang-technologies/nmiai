@@ -1204,7 +1204,20 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
         "postings": postings,
     }
 
-    return await client.post("/ledger/voucher", json=body)
+    try:
+        return await client.post("/ledger/voucher", json=body)
+    except Exception as e:
+        error_text = str(e)
+        if hasattr(e, 'response'):
+            try: error_text = e.response.text
+            except: pass
+        # If VAT validation error, retry without vatType on all postings
+        if 'mva' in error_text.lower() or 'vat' in error_text.lower():
+            log.warning("Voucher VAT error, retrying without vatType on all postings")
+            for p in postings:
+                p.pop("vatType", None)
+            return await client.post("/ledger/voucher", json=body)
+        raise
 
 
 async def action_activate_module(client: TripletexClient, args: dict) -> dict:

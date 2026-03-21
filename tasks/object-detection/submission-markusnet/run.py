@@ -421,6 +421,9 @@ class VisionEncoder(nn.Module):
         grid_thw: list of (t, h, w) tuples
         Returns: merged features (num_merged_tokens, VIS_OUT_HIDDEN)
         """
+        # Cast input to match model dtype (half/bfloat16 on CUDA, float on CPU)
+        pixel_values = pixel_values.to(self.patch_embed_proj.weight.dtype)
+
         # Patch embed
         x = pixel_values.view(-1, 3, VIS_TEMPORAL_PATCH, VIS_PATCH_SIZE, VIS_PATCH_SIZE)
         x = self.patch_embed_proj(x).view(-1, VIS_HIDDEN)

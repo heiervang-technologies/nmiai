@@ -87,8 +87,8 @@ CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWL
 # min_pixels = 65536
 # max_pixels = 16777216
 QWEN_IMAGE_FACTOR = 32
-QWEN_MIN_PIXELS = 65536
-QWEN_MAX_PIXELS = 16777216
+QWEN_MIN_PIXELS = 12544   # 112x112 minimum, saves VRAM vs 65536
+QWEN_MAX_PIXELS = 65536   # Cap at 256x256 equivalent
 QWEN_MEAN = [0.5, 0.5, 0.5]
 QWEN_STD = [0.5, 0.5, 0.5]
 
@@ -968,8 +968,9 @@ class MarkusNet(nn.Module):
                 all_patches_list = []
                 merge = VIS_SPATIAL_MERGE  # 2
                 for crop in batch_crops:
-                    img = np.array(crop.convert("RGB"))
-                    resized = cv2.resize(img, (target_w, target_h), interpolation=cv2.INTER_LINEAR)
+                    # Use PIL BICUBIC resize to match transformers processor exactly
+                    resized_pil = crop.convert("RGB").resize((target_w, target_h), Image.BICUBIC)
+                    resized = np.array(resized_pil)
                     tensor = torch.from_numpy(resized).to(device).float() / 255.0
                     tensor = tensor.permute(2, 0, 1)
                     tensor = (tensor - mean_t) / std_t

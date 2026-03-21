@@ -29,8 +29,8 @@ CROPS_DIR = SCRIPT_DIR / "data-creation" / "data" / "classifier_crops"
 HARD_PAIRS = SCRIPT_DIR / "data-creation" / "data" / "hard_negative_pairs" / "pair_manifest.json"
 NUM_CLASSES = 356
 BATCH_SIZE = 64
-EPOCHS = 30
-LR = 0.01
+EPOCHS = 40
+LR = 0.1  # Higher LR needed for linear probe on normalized features
 
 
 class ImageFolderDataset(Dataset):
@@ -90,7 +90,7 @@ def load_confusable_weights():
                 confusable_cats.add(cat_b)
 
         for cat in confusable_cats:
-            weights[cat] = 2.0  # Double the loss weight for confusable categories
+            weights[cat] = 1.5  # 1.5x loss weight for confusable categories (was 2.0, too aggressive)
         print(f"Loaded {len(confusable_cats)} confusable categories with 2x loss weight")
     else:
         print("No hard negative pairs file found, using uniform weights")
@@ -175,7 +175,7 @@ def main():
     # Train linear probe
     print(f"Training linear probe ({EPOCHS} epochs, lr={LR})...")
     probe = nn.Linear(embed_dim, NUM_CLASSES).to(device)
-    optimizer = torch.optim.SGD(probe.parameters(), lr=LR, momentum=0.9, weight_decay=1e-4)
+    optimizer = torch.optim.SGD(probe.parameters(), lr=LR, momentum=0.9, weight_decay=0)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
 
     train_feats_gpu = train_feats.to(device)

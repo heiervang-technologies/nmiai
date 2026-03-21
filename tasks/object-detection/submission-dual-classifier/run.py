@@ -238,7 +238,7 @@ def dino_classify(crops_pil, dino_model, transform, probe, device):
             with torch.autocast(device_type=device.type, dtype=torch.float16,
                                 enabled=device.type == "cuda"):
                 embeddings = dino_model(tensors)
-            embeddings = F.normalize(embeddings.float(), dim=-1)
+            embeddings = embeddings.float()  # raw features (no normalize) for v4 probe
             logits = probe(embeddings)
             probs = F.softmax(logits, dim=-1)
         all_probs.append(probs.cpu().numpy())

@@ -1,0 +1,82 @@
+{
+  "recommended_remove": [
+    3,
+    6,
+    7,
+    11
+  ],
+  "recommended_keep": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    8,
+    9,
+    10
+  ],
+  "original_layers": 12,
+  "target_layers": 8,
+  "per_layer": {
+    "0": {
+      "angular_distance": 0.6114453077316284,
+      "skip_rate": 0.0,
+      "importance_score": 0.6114453077316284
+    },
+    "1": {
+      "angular_distance": 0.38164061307907104,
+      "skip_rate": 0.0010570824524312897,
+      "importance_score": 0.38151958540050473
+    },
+    "2": {
+      "angular_distance": 0.3309375047683716,
+      "skip_rate": 0.004492600422832981,
+      "importance_score": 0.33049147377621546
+    },
+    "3": {
+      "angular_distance": 0.13939453661441803,
+      "skip_rate": 0.01638477801268499,
+      "importance_score": 0.13870935205283552
+    },
+    "4": {
+      "angular_distance": 0.23224610090255737,
+      "skip_rate": 0.022198731501057084,
+      "importance_score": 0.2306994302517264
+    },
+    "5": {
+      "angular_distance": 0.18705077469348907,
+      "skip_rate": 0.037526427061310784,
+      "importance_score": 0.1849449705175
+    },
+    "6": {
+      "angular_distance": 0.144775390625,
+      "skip_rate": 0.05919661733615222,
+      "importance_score": 0.142204326605444
+    },
+    "7": {
+      "angular_distance": 0.11589843779802322,
+      "skip_rate": 0.07584566596194503,
+      "importance_score": 0.11326131953840118
+    },
+    "8": {
+      "angular_distance": 0.234375,
+      "skip_rate": 0.09963002114164905,
+      "importance_score": 0.22736976413847781
+    },
+    "9": {
+      "angular_distance": 0.19499999284744263,
+      "skip_rate": 0.13530655391120508,
+      "importance_score": 0.1870845597339735
+    },
+    "10": {
+      "angular_distance": 0.15842773020267487,
+      "skip_rate": 0.1649048625792812,
+      "importance_score": 0.15059007927932902
+    },
+    "11": {
+      "angular_distance": 0.11973632872104645,
+      "skip_rate": 0.20348837209302326,
+      "importance_score": 0.1124268435374942
+    }
+  }
+}
