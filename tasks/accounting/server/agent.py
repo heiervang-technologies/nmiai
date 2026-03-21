@@ -487,6 +487,11 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
         "/employee/employment": "Use create_employee tool with startDate, annualSalary, percentageOfFullTimeEquivalent instead. It handles employment creation automatically.",
     }
+    # Intercept empty POST /project/projectActivity — LLM sometimes sends {}
+    if method == "POST" and path == "/project/projectActivity":
+        body = args_dict.get("body") or {}
+        if not body.get("activity") or not body.get("project"):
+            return json.dumps({"error": "POST /project/projectActivity requires body with {project:{id:N}, activity:{name:'...', activityType:'PROJECT_SPECIFIC_ACTIVITY'}}. Use create_project tool instead."})
     if method == "POST" and path == "/activity":
         body = args_dict.get("body") or {}
         activity_type = body.get("activityType", "")
