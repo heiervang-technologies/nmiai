@@ -100,6 +100,53 @@ TEST_CASES = [
         },
         "expect_keys": ["value"],
     },
+    {
+        "name": "create_travel_expense",
+        "action": "create_travel_expense",
+        "args": {
+            "title": "Test trip",
+            "departureDate": "2026-03-20",
+            "returnDate": "2026-03-22",
+            "departure": "Oslo",
+            "destination": "Bergen",
+            "perDiemDays": 2,
+            "perDiemRate": 850,
+        },
+        "expect_keys": ["value"],
+    },
+    {
+        "name": "register_timesheet",
+        "action": "register_timesheet",
+        "args": {
+            "hours": 4,
+            "date": "2026-03-20",
+            "activityName": "Administrasjon",
+        },
+        "expect_keys": ["value"],
+    },
+    {
+        "name": "register_supplier_invoice",
+        "action": "register_supplier_invoice",
+        "args": {
+            "supplierName": f"SupInv-{int(time.time())}",
+            "amountIncludingVat": 12500,
+            "accountNumber": 6300,
+            "description": "Office supplies",
+        },
+        "expect_keys": ["value"],
+    },
+    {
+        "name": "activate_module",
+        "action": "activate_module",
+        "args": {"name": "PROJECT"},
+        "expect_keys": [],  # May fail with 403, that's ok
+    },
+    {
+        "name": "generic_api_call_get_vattype",
+        "action": "generic_api_call",
+        "args": {"method": "GET", "path": "/ledger/vatType", "params": {"count": 5}},
+        "expect_keys": ["values"],
+    },
 ]
 
 
