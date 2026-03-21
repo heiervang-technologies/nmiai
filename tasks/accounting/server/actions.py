@@ -1541,17 +1541,18 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         except Exception:
             pass
 
-    # Link activity to project if both exist
+    # Link activity to project if both exist and not already linked
     if activity_id and project_id:
-        try:
-            await client.post("/project/projectActivity", json={
-                "project": {"id": project_id},
-                "activity": {"id": activity_id},
-                "startDate": entry_date,
-            })
-        except Exception as e:
-            if not _error_mentions(e, "duplicate entry", "already exist"):
-                pass  # Non-fatal best-effort link step
+        already_linked = any(a.get("id") == activity_id for a in applicable_activities)
+        if not already_linked:
+            try:
+                await client.post("/project/projectActivity", json={
+                    "project": {"id": project_id},
+                    "activity": {"id": activity_id},
+                    "startDate": entry_date,
+                })
+            except Exception:
+                pass  # Non-fatal, may already be linked
 
     # Activity is REQUIRED for timesheet entry — abort if missing
     if not activity_id:
