@@ -190,6 +190,9 @@ async def _grant_employee_all_privileges(client: TripletexClient, employee_id: i
         emp["allowInformationRegistration"] = True
         if emp.get("userType") != "EXTENDED":
             emp["userType"] = "EXTENDED"
+        # Default dateOfBirth if missing (required for PUT on some sandboxes)
+        if not emp.get("dateOfBirth"):
+            emp["dateOfBirth"] = "1990-01-01"
         # Ensure department is set (required for PUT)
         if not emp.get("department") or not emp["department"].get("id"):
             deps = await client.get("/department", params={"count": 1})
