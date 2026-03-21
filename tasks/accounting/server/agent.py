@@ -632,7 +632,8 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
                     import fitz
                     doc = fitz.open(stream=raw, filetype="pdf")
                     text = "\n".join(page.get_text() for page in doc)
-                    user_content += f"PDF TEXT CONTENT:\n{text[:3000]}\n"
+                    # Use 6000 chars for PDFs — emails often appear late in contracts/offer letters
+                    user_content += f"PDF TEXT CONTENT:\n{text[:6000]}\n"
                 elif f['mime_type'] == 'text/csv' or f['filename'].endswith('.csv'):
                     csv_text = raw.decode('utf-8', errors='replace')
                     user_content += f"CSV CONTENT:\n{csv_text[:3000]}\n"

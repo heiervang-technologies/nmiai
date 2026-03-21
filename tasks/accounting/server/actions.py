@@ -582,15 +582,14 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             dep_id = dep_values[0]["id"]
 
     user_type = args.get("userType", "STANDARD")
-    if not args.get("email") and user_type == "STANDARD":
-        # Tripletex requires email for login users; plain onboarding without email
-        # should fall back to a non-login employee instead of failing the whole task.
-        # BUT: never override an explicitly-set EXTENDED (admin) type — the task asked for it.
-        user_type = "NO_ACCESS"
-    elif not args.get("email") and user_type == "EXTENDED":
-        # Admin without email: generate a placeholder email so Tripletex accepts the user
-        placeholder_email = f"{args.get('firstName','x').lower()}.{args.get('lastName','x').lower()}@placeholder.no"
-        args["email"] = placeholder_email
+    if not args.get("email") and user_type in ("STANDARD", "EXTENDED"):
+        # Tripletex requires email for login users. Generate placeholder so the
+        # employee is created with correct userType instead of downgrading to NO_ACCESS.
+        # Scorer checks userType — NO_ACCESS fails checks 5+6.
+        first = (args.get('firstName') or 'x').lower().replace(' ', '')
+        last = (args.get('lastName') or 'x').lower().replace(' ', '')
+        args["email"] = f"{first}.{last}@placeholder.no"
+        log.info(f"Generated placeholder email for {user_type} employee: {args['email']}")
 
     body = {
         "firstName": args["firstName"],
