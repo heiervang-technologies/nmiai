@@ -1,0 +1,195 @@
+#!/usr/bin/env python3
+"""Build a compact family-level scoreboard from dashboard, projection, and priority data."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+TASK_DIR = ROOT / 'tasks' / 'accounting'
+DEFAULT_DASHBOARD = TASK_DIR / 'dashboard_scores.tsv'
+DEFAULT_PRIORITY = TASK_DIR / 'analysis' / 'priority_queue.json'
+DEFAULT_PROJECTION = TASK_DIR / 'analysis' / 'projection_report.json'
+DEFAULT_JSON = TASK_DIR / 'analysis' / 'family_scoreboard.json'
+DEFAULT_MD = TASK_DIR / 'analysis' / 'family_scoreboard.md'
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dashboard', type=Path, default=DEFAULT_DASHBOARD)
+    parser.add_argument('--priority', type=Path, default=DEFAULT_PRIORITY)
+    parser.add_argument('--projection', type=Path, default=DEFAULT_PROJECTION)
+    parser.add_argument('--output-json', type=Path, default=DEFAULT_JSON)
+    parser.add_argument('--output-md', type=Path, default=DEFAULT_MD)
+    return parser.parse_args()
+
+
+def read_tsv(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open(encoding='utf-8', newline='') as handle:
+        return list(csv.DictReader(handle, delimiter='\t'))
+
+
+def read_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def to_float(value: object) -> float | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def best_dashboard_by_family(rows: list[dict[str, str]]) -> dict[str, dict[str, object]]:
+    best: dict[str, dict[str, object]] = {}
+    for row in rows:
+        family = row.get('family', 'unknown')
+        score = to_float(row.get('dashboard_score'))
+        if score is None:
+            continue
+        current = best.get(family)
+        if current is None or score >= float(current['score']):
+            best[family] = {
+                'score': score,
+                'log_ts': row.get('log_ts', ''),
+                'notes': row.get('notes', ''),
+            }
+    return best
+
+
+def projection_by_family(payload: dict) -> dict[str, dict]:
+    family_rows = payload.get('family_projections', []) or []
+    return {row.get('family', 'unknown'): row for row in family_rows if row.get('family')}
+
+
+def priority_by_family(payload: dict) -> dict[str, dict]:
+    items = payload.get('priority_targets', []) or []
+    return {row.get('family', 'unknown'): row for row in items if row.get('family')}
+
+
+def score_estimate(best_observed: float | None, projected: float | None) -> tuple[float | None, str]:
+    if best_observed is not None:
+        return best_observed, 'observed'
+    if projected is not None:
+        return projected, 'projected'
+    return None, 'none'
+
+
+def render_markdown(rows: list[dict[str, object]], generated_at: str, calibration_status: str) -> str:
+    lines = [
+        '# Accounting Family Scoreboard',
+        '',
+        f'Generated: `{generated_at}`',
+        f'Projection status: `{calibration_status}`',
+        '',
+        '## Best Observed / Estimated By Family',
+        '',
+    ]
+    for row in rows:
+        observed = row.get('best_observed_dashboard_score')
+        projected = row.get('projected_dashboard_score')
+        estimated = row.get('current_estimated_score')
+        blockers = ', '.join(row.get('blockers', [])[:3]) or 'none'
+        missing = ', '.join(row.get('missing_fields', [])[:3]) or 'none'
+        lines.append(
+            '- '
+            + f"{row['family']}: est={estimated if estimated is not None else 'n/a'} "
+            + f"({row['estimate_source']}), observed_best={observed if observed is not None else 'n/a'}, "
+            + f"projected={projected if projected is not None else 'n/a'}, gap_to_100={row['gap_to_100'] if row['gap_to_100'] is not None else 'n/a'}, "
+            + f"clean={row['proxy_clean_rate'] if row['proxy_clean_rate'] is not None else 'n/a'}, priority={row['priority_score'] if row['priority_score'] is not None else 'n/a'}, "
+            + f"blockers={blockers}, missing={missing}"
+        )
+
+    lines.extend(['', '## Fix First', ''])
+    urgent = sorted(
+        [row for row in rows if row.get('priority_score') is not None],
+        key=lambda row: (-float(row['priority_score']), float(row.get('current_estimated_score') or 0.0)),
+    )
+    for row in urgent[:8]:
+        lines.append(
+            '- '
+            + f"{row['family']}: priority={row['priority_score']:.2f}, est={row['current_estimated_score'] if row['current_estimated_score'] is not None else 'n/a'}, "
+            + f"gap={row['gap_to_100'] if row['gap_to_100'] is not None else 'n/a'}, blockers={', '.join(row.get('blockers', [])[:4]) or 'none'}"
+        )
+    if not urgent:
+        lines.append('- none')
+    return '\n'.join(lines) + '\n'
+
+
+def main() -> None:
+    args = parse_args()
+    dashboard = read_tsv(args.dashboard)
+    priority = read_json(args.priority)
+    projection = read_json(args.projection)
+
+    best_dashboard = best_dashboard_by_family(dashboard)
+    projections = projection_by_family(projection)
+    priorities = priority_by_family(priority)
+    families = sorted(set(best_dashboard) | set(projections) | set(priorities))
+
+    rows = []
+    for family in families:
+        observed = to_float((best_dashboard.get(family) or {}).get('score'))
+        projected = to_float((projections.get(family) or {}).get('projected_dashboard_score'))
+        proxy_clean_rate = to_float((projections.get(family) or {}).get('proxy_clean_rate'))
+        estimate, source = score_estimate(observed, projected)
+        gap_to_100 = None if estimate is None else round(max(0.0, 100.0 - estimate), 1)
+        priority_item = priorities.get(family) or {}
+        rows.append(
+            {
+                'family': family,
+                'best_observed_dashboard_score': observed,
+                'projected_dashboard_score': None if projected is None else round(projected, 1),
+                'current_estimated_score': None if estimate is None else round(estimate, 1),
+                'estimate_source': source,
+                'gap_to_100': gap_to_100,
+                'proxy_clean_rate': None if proxy_clean_rate is None else round(proxy_clean_rate, 3),
+                'priority_score': to_float(priority_item.get('priority_score')),
+                'blockers': priority_item.get('blockers', []) or [],
+                'missing_fields': priority_item.get('missing_fields', []) or [],
+                'status': (projections.get(family) or {}).get('status') or priority_item.get('status') or '',
+                'best_observed_log_ts': (best_dashboard.get(family) or {}).get('log_ts', ''),
+            }
+        )
+
+    rows.sort(
+        key=lambda row: (
+            float(row['current_estimated_score']) if row['current_estimated_score'] is not None else -1.0,
+            -(float(row['priority_score']) if row['priority_score'] is not None else 0.0),
+            row['family'],
+        ),
+        reverse=True,
+    )
+
+    payload = {
+        'generated_at': datetime.now(timezone.utc).isoformat(),
+        'projection_status': projection.get('projection_status', 'unavailable'),
+        'family_scores': rows,
+    }
+
+    args.output_json.parent.mkdir(parents=True, exist_ok=True)
+    args.output_md.parent.mkdir(parents=True, exist_ok=True)
+    args.output_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    args.output_md.write_text(
+        render_markdown(rows, payload['generated_at'], str(payload['projection_status'])),
+        encoding='utf-8',
+    )
+    print(f'Wrote {args.output_json}')
+    print(f'Wrote {args.output_md}')
+
+
+if __name__ == '__main__':
+    main()

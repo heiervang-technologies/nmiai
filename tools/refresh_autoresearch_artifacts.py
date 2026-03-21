@@ -18,6 +18,7 @@ def run(*args: str) -> None:
 def main() -> None:
     run('python', 'tasks/accounting/plot_progress.py')
     run('python', 'tasks/accounting/project_progress.py')
+    run('python', 'tasks/accounting/report_family_scores.py')
     run('python', 'tasks/object-detection/plot_progress.py')
     run('python', 'tasks/object-detection/project_progress.py')
     run('python', 'tasks/astar-island/plot_progress.py')

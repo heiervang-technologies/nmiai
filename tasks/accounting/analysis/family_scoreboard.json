@@ -1,0 +1,263 @@
+{
+  "generated_at": "2026-03-21T19:58:27.667894+00:00",
+  "projection_status": "noisy_calibration",
+  "family_scores": [
+    {
+      "family": "supplier",
+      "best_observed_dashboard_score": 100.0,
+      "projected_dashboard_score": 85.3,
+      "current_estimated_score": 100.0,
+      "estimate_source": "observed",
+      "gap_to_100": 0.0,
+      "proxy_clean_rate": 0.862,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_180618"
+    },
+    {
+      "family": "customer",
+      "best_observed_dashboard_score": 100.0,
+      "projected_dashboard_score": 94.1,
+      "current_estimated_score": 100.0,
+      "estimate_source": "observed",
+      "gap_to_100": 0.0,
+      "proxy_clean_rate": 0.912,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_181615"
+    },
+    {
+      "family": "bank_reconciliation",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 100.0,
+      "current_estimated_score": 100.0,
+      "estimate_source": "projected",
+      "gap_to_100": 0.0,
+      "proxy_clean_rate": 1.0,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "invoice",
+      "best_observed_dashboard_score": 100.0,
+      "projected_dashboard_score": 64.0,
+      "current_estimated_score": 100.0,
+      "estimate_source": "observed",
+      "gap_to_100": 0.0,
+      "proxy_clean_rate": 0.743,
+      "priority_score": 13.8,
+      "blockers": [
+        "sandbox_valid_vat_type",
+        "vat_account_mapping",
+        "module_permission_blocked"
+      ],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_183404"
+    },
+    {
+      "family": "voucher",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 85.5,
+      "current_estimated_score": 85.5,
+      "estimate_source": "projected",
+      "gap_to_100": 14.5,
+      "proxy_clean_rate": 0.864,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "project",
+      "best_observed_dashboard_score": 79.0,
+      "projected_dashboard_score": 57.4,
+      "current_estimated_score": 79.0,
+      "estimate_source": "observed",
+      "gap_to_100": 21.0,
+      "proxy_clean_rate": 0.706,
+      "priority_score": 6.0,
+      "blockers": [
+        "project_hourly_rates_endpoint",
+        "module_permission_blocked"
+      ],
+      "missing_fields": [
+        "project",
+        "activity",
+        "rate_type"
+      ],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_181427"
+    },
+    {
+      "family": "salary",
+      "best_observed_dashboard_score": 70.0,
+      "projected_dashboard_score": 92.9,
+      "current_estimated_score": 70.0,
+      "estimate_source": "observed",
+      "gap_to_100": 30.0,
+      "proxy_clean_rate": 0.905,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_185929"
+    },
+    {
+      "family": "ledger_correction",
+      "best_observed_dashboard_score": 70.0,
+      "projected_dashboard_score": 90.0,
+      "current_estimated_score": 70.0,
+      "estimate_source": "observed",
+      "gap_to_100": 30.0,
+      "proxy_clean_rate": 0.889,
+      "priority_score": null,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "keep",
+      "best_observed_log_ts": "20260321_183012"
+    },
+    {
+      "family": "department",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 38.5,
+      "current_estimated_score": 38.5,
+      "estimate_source": "projected",
+      "gap_to_100": 61.5,
+      "proxy_clean_rate": 0.6,
+      "priority_score": 10.25,
+      "blockers": [
+        "duplicate_identifier"
+      ],
+      "missing_fields": [
+        "department"
+      ],
+      "status": "watch",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "travel_expense",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 10.8,
+      "current_estimated_score": 10.8,
+      "estimate_source": "projected",
+      "gap_to_100": 89.2,
+      "proxy_clean_rate": 0.444,
+      "priority_score": 12.75,
+      "blockers": [
+        "employee_time_access",
+        "rate_category_date_mismatch",
+        "travel_expense_kind",
+        "travel_expense_contents_required"
+      ],
+      "missing_fields": [
+        "delivered_state",
+        "employee",
+        "rate_type",
+        "project"
+      ],
+      "status": "watch",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "annual_close",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 2.9,
+      "current_estimated_score": 2.9,
+      "estimate_source": "projected",
+      "gap_to_100": 97.1,
+      "proxy_clean_rate": 0.4,
+      "priority_score": 3.0,
+      "blockers": [],
+      "missing_fields": [],
+      "status": "watch",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "cost_analysis",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 0.0,
+      "current_estimated_score": 0.0,
+      "estimate_source": "projected",
+      "gap_to_100": 100.0,
+      "proxy_clean_rate": 0.2,
+      "priority_score": 3.35,
+      "blockers": [
+        "activity_type_required"
+      ],
+      "missing_fields": [
+        "activity",
+        "employee"
+      ],
+      "status": "manual_review",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "employee",
+      "best_observed_dashboard_score": 0.0,
+      "projected_dashboard_score": 23.6,
+      "current_estimated_score": 0.0,
+      "estimate_source": "observed",
+      "gap_to_100": 100.0,
+      "proxy_clean_rate": 0.516,
+      "priority_score": 17.1,
+      "blockers": [
+        "email_validation"
+      ],
+      "missing_fields": [
+        "employee",
+        "department"
+      ],
+      "status": "watch",
+      "best_observed_log_ts": "20260321_182557"
+    },
+    {
+      "family": "timesheet",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 0.0,
+      "current_estimated_score": 0.0,
+      "estimate_source": "projected",
+      "gap_to_100": 100.0,
+      "proxy_clean_rate": 0.286,
+      "priority_score": 21.7,
+      "blockers": [
+        "sandbox_valid_vat_type",
+        "employee_time_access",
+        "activity_type_required",
+        "vat_account_mapping"
+      ],
+      "missing_fields": [
+        "activity",
+        "project",
+        "employee",
+        "hours"
+      ],
+      "status": "manual_review",
+      "best_observed_log_ts": ""
+    },
+    {
+      "family": "product",
+      "best_observed_dashboard_score": null,
+      "projected_dashboard_score": 0.0,
+      "current_estimated_score": 0.0,
+      "estimate_source": "projected",
+      "gap_to_100": 100.0,
+      "proxy_clean_rate": 0.36,
+      "priority_score": 44.65,
+      "blockers": [
+        "sandbox_valid_vat_type"
+      ],
+      "missing_fields": [],
+      "status": "manual_review",
+      "best_observed_log_ts": ""
+    }
+  ]
+}

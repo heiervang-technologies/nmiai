@@ -36,6 +36,7 @@ python tools/refresh_autoresearch_artifacts.py
   - [Latest log analysis](tasks/accounting/analysis/latest_log_analysis.md)
   - [Progress plot](tasks/accounting/analysis/progress.png)
   - [Projection plot](tasks/accounting/analysis/projection.png)
+  - [Family scoreboard](tasks/accounting/analysis/family_scoreboard.md)
 
 ### Object Detection
 
