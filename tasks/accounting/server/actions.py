@@ -542,18 +542,36 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
     account_cache = {}
     accounts_resp = await client.get("/ledger/account", params={"count": 1000})
     for acc in accounts_resp.get("values", []):
-        account_cache[acc["number"]] = acc["id"]
+        account_cache[acc["number"]] = acc
+
+    customer_id = await _find_customer_id(
+        client,
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
 
     postings = []
     for i, p in enumerate(args.get("postings", []), start=1):
         account_number = p.get("accountNumber")
         account_id = p.get("accountId")
+        account_obj = None
 
         if account_number and not account_id:
-            account_id = account_cache.get(int(account_number))
+            account_obj = account_cache.get(int(account_number))
+            if account_obj:
+                account_id = account_obj["id"]
+        elif account_number:
+            account_obj = account_cache.get(int(account_number))
 
         if not account_id:
             return {"error": f"Account not found: {account_number}"}
+
+        if not account_obj:
+            for acc in accounts_resp.get("values", []):
+                if acc.get("id") == account_id:
+                    account_obj = acc
+                    break
 
         amount = float(p.get("amountGross", p.get("amount", 0)))
         posting = {
@@ -566,6 +584,11 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
             posting["vatType"] = {"id": int(p["vatTypeId"])}
         if p.get("description"):
             posting["description"] = p["description"]
+
+        posting_customer_id = p.get("customerId") or customer_id
+        if posting_customer_id and account_obj and account_obj.get("ledgerType") == "CUSTOMER":
+            posting["customer"] = {"id": int(posting_customer_id)}
+
         postings.append(posting)
 
     body = {
@@ -814,14 +837,35 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
             except Exception:
                 pass
 
+    # If still no activity, create a default one
+    if not activity_id:
+        try:
+            act_result = await client.post("/activity", json={"name": "General"})
+            activity_id = act_result.get("value", {}).get("id")
+        except Exception:
+            pass
+
+    # Link activity to project if both exist
+    if activity_id and project_id:
+        try:
+            await client.post("/project/projectActivity", json={
+                "project": {"id": project_id},
+                "activity": {"id": activity_id},
+            })
+        except Exception:
+            pass  # May already be linked
+
+    # Activity is REQUIRED for timesheet entry — abort if missing
+    if not activity_id:
+        return {"error": "Cannot register timesheet: no activity could be found or created"}
+
     # Register hours via /timesheet/entry
     entry_body = {
         "employee": {"id": employee_id},
+        "activity": {"id": activity_id},
         "date": args.get("date", TODAY),
         "hours": float(args.get("hours", 0)),
     }
-    if activity_id:
-        entry_body["activity"] = {"id": activity_id}
     if project_id:
         entry_body["project"] = {"id": project_id}
     if args.get("comment"):
@@ -856,43 +900,11 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                 account_id = acc["id"]
                 break
 
-    # Create the incoming invoice via voucher
     amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
-    # Use POST /incomingInvoice (BETA) with correct schema
-    body = {
-        "invoiceHeader": {
-            "invoiceNumber": args.get("invoiceNumber", ""),
-            "invoiceDate": invoice_date,
-            "vendorId": supplier_id,
-            "invoiceAmount": amount,
-        },
-        "orderLines": [],
-    }
-    if args.get("dueDate"):
-        body["invoiceHeader"]["dueDate"] = args["dueDate"]
-    if args.get("description"):
-        body["invoiceHeader"]["description"] = args["description"]
-
-    # Add order line if account is specified
-    if account_id:
-        body["orderLines"].append({
-            "description": args.get("description", "Supplier invoice"),
-            "account": {"id": account_id},
-            "amountExcludingVat": _money(amount * 0.8),  # Estimate ex-VAT from inc-VAT at 25%
-            "amountExcludingVatCurrency": _money(amount * 0.8),
-            "vatType": {"id": int(args.get("vatTypeId", 1))},  # id=1 = 25% inngående MVA
-        })
-
-    try:
-        result = await client.post("/incomingInvoice", json=body)
-        return result
-    except Exception as e:
-        log.warning(f"incomingInvoice failed, trying voucher approach: {e}")
-
-    # Fallback: create a voucher with supplier reference
-    # Look up all needed accounts
+    # Use voucher posting directly. /incomingInvoice is beta, permission-gated in some
+    # competition sandboxes, and our previous payload shape triggered validation errors.
     account_cache = {}
     accounts = await client.get("/ledger/account", params={"count": 1000})
     for acc in accounts.get("values", []):
@@ -1007,6 +1019,17 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     # Add per diem if specified
     if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
         try:
+            # Lookup rate categories to find a valid rateType
+            rate_type_id = None
+            try:
+                rate_cats = await client.get("/travelExpense/rateCategory", params={"count": 50})
+                for rc in rate_cats.get("values", []):
+                    # Pick first available rate category (usually "Domestic" or similar)
+                    rate_type_id = rc.get("id")
+                    break
+            except Exception:
+                pass
+
             per_diem_body = {
                 "travelExpense": {"id": expense_id},
                 "count": int(args["perDiemDays"]),
@@ -1015,6 +1038,11 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 "location": args.get("destination", args.get("title", "Norway")),
                 "address": args.get("destination", ""),
             }
+            if rate_type_id:
+                per_diem_body["rateType"] = {"id": rate_type_id}
+            else:
+                log.warning("No rateType ID found, perDiemCompensation may fail.")
+                
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
         except Exception as e:
             log.warning(f"Per diem creation failed, trying cost fallback: {e}")
@@ -1031,6 +1059,21 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 await client.post("/travelExpense/cost", json=cost_body)
             except Exception as e2:
                 log.warning(f"Cost fallback also failed: {e2}")
+
+    # Add individual expense items (flights, taxi, hotel, etc.)
+    if expense_id and args.get("expenses"):
+        for item in args["expenses"]:
+            try:
+                cost_body = {
+                    "travelExpense": {"id": expense_id},
+                    "date": departure_date,
+                    "amountCurrencyIncVat": _money(item.get("amount", 0)),
+                    "isPaidByEmployee": True,
+                    "comments": item.get("description", "Expense"),
+                }
+                await client.post("/travelExpense/cost", json=cost_body)
+            except Exception as e:
+                log.warning(f"Failed to add expense item '{item.get('description')}': {e}")
 
     # Deliver the expense
     if expense_id:
@@ -1136,7 +1179,7 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
             project_obj = project_data.get("value", project_data)
             project_obj["startDate"] = project_obj.get("startDate") or args.get("startDate", TODAY)
             project_obj["isFixedPrice"] = True
-            project_obj["fixedprice"] = _money(args["fixedPrice"])
+            project_obj["fixedPrice"] = _money(args["fixedPrice"])
             project_result = await client.put(f"/project/{project_id}", json=project_obj)
         except Exception as e:
             log.warning(f"Could not update existing project {project_id} with fixed price: {e}")

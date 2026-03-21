@@ -44,6 +44,7 @@ class CreateEmployeeArgs(BaseModel):
     userType: str = Field(default="STANDARD", description="STANDARD, EXTENDED (admin), or NO_ACCESS")
     dateOfBirth: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     phoneNumberMobile: Optional[str] = None
+    address: Optional[dict] = Field(default=None, description='Employee address, e.g. {"addressLine1":"...", "postalCode":"...", "city":"..."}')
     startDate: Optional[str] = Field(default=None, description="Employment start date YYYY-MM-DD")
     endDate: Optional[str] = Field(default=None, description="Employment end date YYYY-MM-DD")
 
@@ -125,11 +126,15 @@ class VoucherPosting(BaseModel):
     amountGross: float = Field(description="Positive=debit, negative=credit. Postings must sum to zero.")
     vatTypeId: Optional[int] = None
     description: Optional[str] = None
+    customerId: Optional[int] = Field(default=None, description="Customer ID if this posting must be linked to a customer")
 
 
 class CreateVoucherArgs(BaseModel):
     date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     description: str
+    customerId: Optional[int] = Field(default=None, description="Customer ID to attach to customer-related voucher postings")
+    customerName: Optional[str] = Field(default=None, description="Customer name to find or create when voucher postings require a customer")
+    customerOrgNumber: Optional[str] = Field(default=None, description="Customer organization number")
     postings: list[VoucherPosting]
 
 
@@ -193,6 +198,11 @@ class RegisterTimesheetArgs(BaseModel):
     comment: Optional[str] = None
 
 
+class TravelExpenseItem(BaseModel):
+    description: str = Field(description="E.g. 'Flight ticket', 'Taxi', 'Hotel'")
+    amount: float = Field(description="Amount in NOK including VAT")
+
+
 class CreateTravelExpenseArgs(BaseModel):
     employeeName: Optional[str] = None
     employeeEmail: Optional[str] = None
@@ -204,6 +214,7 @@ class CreateTravelExpenseArgs(BaseModel):
     perDiemRate: Optional[float] = Field(default=None, description="Daily per diem rate in NOK")
     departure: Optional[str] = Field(default=None, description="Departure city")
     destination: Optional[str] = Field(default=None, description="Destination city")
+    expenses: Optional[list[TravelExpenseItem]] = Field(default=None, description="Individual expense items like flights, taxi, hotel")
 
 
 class ProcessSalaryArgs(BaseModel):
@@ -482,7 +493,7 @@ KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
 - ONLY call discover_sandbox if you need to find existing entities (invoices, customers, etc). Skip it for simple creation tasks.
 - For invoices: create_invoice handles bank account setup and customer creation automatically.
-- For admin/administrator roles: use userType="EXTENDED" in create_employee.
+- CRITICAL: For admin/administrator/Administratorrolle/tilgang/full access roles: ALWAYS set userType="EXTENDED" in create_employee. This is worth 50% of the employee task score!
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
 - Dates must be YYYY-MM-DD format.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
