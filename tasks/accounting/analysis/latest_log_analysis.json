@@ -1,13 +1,16 @@
 {
-  "generated_at": "2026-03-21T14:53:09.693863+00:00",
+  "generated_at": "2026-03-21T18:00:38.737238+00:00",
   "log_dir": "/tmp/accounting-logs",
-  "total_runs": 144,
+  "total_runs": 255,
   "seen_families": [
+    "annual_close",
     "bank_reconciliation",
+    "cost_analysis",
     "customer",
     "department",
     "employee",
     "invoice",
+    "ledger_correction",
     "product",
     "project",
     "salary",
@@ -17,32 +20,72 @@
     "voucher"
   ],
   "new_families_since_last_run": [],
-  "unseen_families": [
-    "annual_close",
-    "ledger_correction"
-  ],
+  "unseen_families": [],
   "unknown_families": [],
   "empty_attachment_runs": 0,
   "alerts": [
-    "department clean rate is 25.0%; blockers: duplicate_identifier; likely missing fields: none",
-    "employee clean rate is 25.0%; blockers: email_validation; likely missing fields: employee, department",
-    "invoice clean rate is 22.2%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none",
-    "product clean rate is 6.2%; blockers: sandbox_valid_vat_type; likely missing fields: none",
-    "timesheet clean rate is 6.7%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
-    "travel_expense clean rate is 16.7%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project",
-    "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries",
-    "Still unseen families: annual_close, ledger_correction"
+    "annual_close clean rate is 33.3%; blockers: none; likely missing fields: none",
+    "cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee",
+    "department clean rate is 57.1%; blockers: duplicate_identifier; likely missing fields: department",
+    "employee clean rate is 44.4%; blockers: email_validation; likely missing fields: employee, department",
+    "invoice clean rate is 62.5%; blockers: sandbox_valid_vat_type, vat_account_mapping, module_permission_blocked; likely missing fields: none",
+    "product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none",
+    "timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
+    "travel_expense clean rate is 41.2%; blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind, travel_expense_contents_required; likely missing fields: delivered_state, employee, rate_type, project",
+    "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries"
   ],
   "families": [
     {
-      "family": "bank_reconciliation",
-      "runs": 1,
-      "proxy_clean_rate": 1.0,
+      "family": "annual_close",
+      "runs": 3,
+      "proxy_clean_rate": 0.3333333333333333,
       "likely_full_runs": 1,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 0.6666666666666666,
+      "mean_api_calls": 4.666666666666667,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/ledger/account: HTTP 403 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/ledger/account: {\"error\":\"Invalid or expired proxy token. Each submission receives a unique token - do not reuse tokens from previous submissions.\",\"source\":\"nmiai-proxy\"}",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [],
+      "likely_blockers": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_150558",
+          "prompt": "Führen Sie den vereinfachten Jahresabschluss für 2025 durch: 1) Berechnen und buchen Sie die jährliche Abschreibung für drei Anlagen: Inventar (148150 NOK, 9 Jahre linear, Konto 1240), Programvare (316600 NOK, 3 Jahre, K",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_154110",
+          "prompt": "Effectuez la clôture annuelle simplifiée pour 2025 : 1) Calculez et comptabilisez l'amortissement annuel de trois immobilisations : Programvare (111950 NOK, 9 ans linéaire, compte 1250), Kontormaskiner (351450 NOK, 9 ans",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_170325",
+          "prompt": "Utfør forenklet årsoppgjør for 2025: 1) Beregn og bokfør årlige avskrivninger for tre eiendeler: Programvare (90200 kr, 7 år lineært, konto 1250), Kontormaskiner (484450 kr, 9 år, konto 1200), IT-utstyr (246550 kr, 5 år,",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "bank_reconciliation",
+      "runs": 7,
+      "proxy_clean_rate": 1.0,
+      "likely_full_runs": 7,
       "likely_partial_runs": 0,
       "mean_api_errors": 0.0,
       "mean_api_calls": 23.0,
-      "attachment_runs": 1,
+      "attachment_runs": 7,
       "empty_attachment_runs": 0,
       "top_error_patterns": [],
       "likely_missing_fields": [],
@@ -50,8 +93,81 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_143933",
+          "timestamp": "20260321_154159",
+          "prompt": "Avstem bankutskrifta (vedlagt CSV) mot opne fakturaer i Tripletex. Match innbetalingar til kundefakturaer og utbetalingar til leverandorfakturaer. Handter delbetalingar korrekt.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_154536",
           "prompt": "Avstem bankutskriften (vedlagt CSV) mot apne fakturaer i Tripletex. Match innbetalinger til kundefakturaer og utbetalinger til leverandorfakturaer. Handter delbetalinger korrekt.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_154538",
+          "prompt": "Reconcilie o extrato bancario (CSV anexo) com as faturas em aberto no Tripletex. Relacione os pagamentos recebidos com as faturas de clientes e os pagamentos efetuados com as faturas de fornecedores. Trate os pagamentos ",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "cost_analysis",
+      "runs": 2,
+      "proxy_clean_rate": 0.0,
+      "likely_full_runs": 0,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 10.0,
+      "mean_api_calls": 22.5,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/activity: HTTP 422 with no captured body",
+          "count": 6
+        },
+        {
+          "pattern": "/activity: activityType -> Kan ikke være null.",
+          "count": 6
+        },
+        {
+          "pattern": "/activity: name -> Aktivitetsnavn må fylles ut.",
+          "count": 6
+        },
+        {
+          "pattern": "/activity/type: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/activity/type: {\"status\":422,\"code\":21000,\"message\":\"Wrong data format! Expected number. For input string: \\\"type\\\"\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":null,\"validationMessages\":null,\"requestId\":\"4a13c2dc-1ec0-4d38-a361-9714a1200c0d\"}",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "activity",
+          "count": 8
+        },
+        {
+          "field": "employee",
+          "count": 1
+        }
+      ],
+      "likely_blockers": [
+        {
+          "field": "activity_type_required",
+          "count": 6
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_154012",
+          "prompt": "Os custos totais aumentaram significativamente de janeiro a fevereiro de 2026. Analise o livro razão e identifique as três contas de despesa com o maior aumento em valor. Crie um projeto interno para cada uma das três co",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_172812",
+          "prompt": "Total costs increased significantly from January to February 2026. Analyze the general ledger and identify the three expense accounts with the largest increase in amount. Create an internal project for each of the three ",
           "omissions": []
         }
       ],
@@ -59,12 +175,12 @@
     },
     {
       "family": "customer",
-      "runs": 12,
-      "proxy_clean_rate": 0.8333333333333334,
-      "likely_full_runs": 10,
-      "likely_partial_runs": 1,
-      "mean_api_errors": 1.1666666666666667,
-      "mean_api_calls": 5.25,
+      "runs": 28,
+      "proxy_clean_rate": 0.8928571428571429,
+      "likely_full_runs": 24,
+      "likely_partial_runs": 3,
+      "mean_api_errors": 0.6785714285714286,
+      "mean_api_calls": 8.357142857142858,
       "attachment_runs": 1,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -111,34 +227,32 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140025",
-          "prompt": "Opprett en kunde med navn Bedrift AS, org.nr 987654321, e-post kontakt@bedrift.no",
+          "timestamp": "20260321_174850",
+          "prompt": "Opprett kunden Strandvik AS med organisasjonsnummer 808795132. Adressa er Parkveien 146, 7010 Trondheim. E-post: post@strandvik.no.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140056",
-          "prompt": "Opprett en kunde med navn Bedrift AS, org.nr 987654321, e-post kontakt@bedrift.no",
+          "timestamp": "20260321_175454",
+          "prompt": "Crie o cliente Porto Alegre Lda com número de organização 964528136. O endereço é Sjøgata 128, 4611 Kristiansand. E-mail: post@porto.no.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141106",
-          "prompt": "Concilia el extracto bancario (CSV adjunto) con las facturas abiertas en Tripletex. Relaciona los pagos entrantes con las facturas de clientes y los pagos salientes con las facturas de proveedores. Maneja los pagos parci",
-          "omissions": [
-            "left_open"
-          ]
+          "timestamp": "20260321_175958",
+          "prompt": "Uno de sus clientes tiene una factura vencida. Encuentre la factura vencida y registre un cargo por recordatorio de 40 NOK. Debito cuentas por cobrar (1500), credito ingresos por recordatorio (3400). También cree una fac",
+          "omissions": []
         }
       ],
       "scorer_hypotheses": []
     },
     {
       "family": "department",
-      "runs": 12,
-      "proxy_clean_rate": 0.25,
-      "likely_full_runs": 2,
-      "likely_partial_runs": 1,
-      "mean_api_errors": 1.0,
-      "mean_api_calls": 1.5833333333333333,
-      "attachment_runs": 0,
+      "runs": 21,
+      "proxy_clean_rate": 0.5714285714285714,
+      "likely_full_runs": 10,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 0.6190476190476191,
+      "mean_api_calls": 4.142857142857143,
+      "attachment_runs": 7,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
@@ -148,9 +262,18 @@
         {
           "pattern": "/department: departmentNumber -> Nummeret er i bruk.",
           "count": 6
+        },
+        {
+          "pattern": "/ledger/voucher: Summen av posteringene for 2026-02-09 er ikke lik 0.",
+          "count": 2
         }
       ],
-      "likely_missing_fields": [],
+      "likely_missing_fields": [
+        {
+          "field": "department",
+          "count": 1
+        }
+      ],
       "likely_blockers": [
         {
           "field": "duplicate_identifier",
@@ -160,18 +283,18 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_135855",
-          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
+          "timestamp": "20260321_170817",
+          "prompt": "Necesitamos el gasto de Togbillett de este recibo registrado en el departamento HR. Usa la cuenta de gastos correcta y asegura el tratamiento correcto del IVA.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140136",
-          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
+          "timestamp": "20260321_172815",
+          "prompt": "Opprett tre avdelingar i Tripletex: \"IT\", \"HR\" og \"Økonomi\".",
           "omissions": []
         },
         {
-          "timestamp": "20260321_144217",
-          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
+          "timestamp": "20260321_172946",
+          "prompt": "Vi trenger Whiteboard fra denne kvitteringen bokfort pa avdeling Lager. Bruk riktig utgiftskonto basert pa kjopet, og sorg for korrekt MVA-behandling.",
           "omissions": []
         }
       ],
@@ -179,13 +302,13 @@
     },
     {
       "family": "employee",
-      "runs": 20,
-      "proxy_clean_rate": 0.25,
-      "likely_full_runs": 4,
-      "likely_partial_runs": 1,
-      "mean_api_errors": 0.8,
-      "mean_api_calls": 2.75,
-      "attachment_runs": 2,
+      "runs": 27,
+      "proxy_clean_rate": 0.4444444444444444,
+      "likely_full_runs": 10,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 0.6666666666666666,
+      "mean_api_calls": 3.5185185185185186,
+      "attachment_runs": 8,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
@@ -199,16 +322,24 @@
         {
           "pattern": "/employee: email -> Må angis for Tripletex-brukere.",
           "count": 1
+        },
+        {
+          "pattern": "/employee/employment/details: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/employee/employment/details: payrollPercentage -> Feltet eksisterer ikke i objektet.",
+          "count": 1
         }
       ],
       "likely_missing_fields": [
         {
           "field": "employee",
-          "count": 13
+          "count": 18
         },
         {
           "field": "department",
-          "count": 1
+          "count": 3
         }
       ],
       "likely_blockers": [
@@ -220,18 +351,18 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140053",
-          "prompt": "Create employee John Smith, email john@test.com, with administrator access",
+          "timestamp": "20260321_164043",
+          "prompt": "Opprett en ansatt med navn Ola Nordmann, e-post ola@testfirma.no, med administratortilgang.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140835",
+          "timestamp": "20260321_170641",
           "prompt": "You received an employment contract (see attached PDF). Create the employee in Tripletex with all details from the contract: national identity number, date of birth, department, occupation code, salary, employment percen",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141307",
-          "prompt": "Du har mottatt et tilbudsbrev (se vedlagt PDF) for en ny ansatt. Utfor komplett onboarding: opprett den ansatte, tilknytt riktig avdeling, sett opp ansettelsesforhold med stillingsprosent og arslonn, og konfigurer standa",
+          "timestamp": "20260321_172750",
+          "prompt": "Sie haben einen Arbeitsvertrag erhalten (siehe beigefugte PDF). Erstellen Sie den Mitarbeiter in Tripletex mit allen Details aus dem Vertrag: Personalnummer, Geburtsdatum, Abteilung, Berufsschluessel, Gehalt, Beschaeftig",
           "omissions": []
         }
       ],
@@ -239,22 +370,30 @@
     },
     {
       "family": "invoice",
-      "runs": 9,
-      "proxy_clean_rate": 0.2222222222222222,
-      "likely_full_runs": 2,
-      "likely_partial_runs": 1,
-      "mean_api_errors": 3.3333333333333335,
-      "mean_api_calls": 9.88888888888889,
+      "runs": 24,
+      "proxy_clean_rate": 0.625,
+      "likely_full_runs": 14,
+      "likely_partial_runs": 3,
+      "mean_api_errors": 1.8333333333333333,
+      "mean_api_calls": 8.458333333333334,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
           "pattern": "/invoice: HTTP 422 with no captured body",
-          "count": 15
+          "count": 19
         },
         {
           "pattern": "/invoice: orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id -> Ugyldig mva-kode.",
-          "count": 10
+          "count": 14
+        },
+        {
+          "pattern": "/invoice/2147602537/:payment: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/invoice/2147602537/:payment: paidAmountCurrency -> Mangler",
+          "count": 2
         },
         {
           "pattern": "/invoice: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":null,\"message\":\"Finner ikke en gyldig regnskapskonto for mva-koden 1: Fradrag inngående avgift, høy sats.\",\"path\":null,\"rootId\":null},{\"field\":\"orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id\",\"message\":\"Ugyldig mva-kode.\",\"path\":null,\"rootId\":0}],\"requestId\":\"2258f102-d58f-4fc1-87d9-a017c",
@@ -271,38 +410,80 @@
         {
           "pattern": "/invoice: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":null,\"message\":\"Finner ikke en gyldig regnskapskonto for mva-koden UT-2: Direktepostert fradrag inngående avgift, høy sats (mva-kode utgikk 01.01.2017).\",\"path\":null,\"rootId\":null},{\"field\":\"orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id\",\"message\":\"Ugyldig mva-kode.\",\"path\":null,\"rootId\"",
           "count": 1
-        },
-        {
-          "pattern": "/invoice: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":null,\"message\":\"Finner ikke en gyldig regnskapskonto for mva-koden 4: Direktepostert utgående avgift, høy sats.\",\"path\":null,\"rootId\":null},{\"field\":\"orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id\",\"message\":\"Ugyldig mva-kode.\",\"path\":null,\"rootId\":0}],\"requestId\":\"7cd279da-a12d-4570-a192",
-          "count": 1
         }
       ],
       "likely_missing_fields": [],
       "likely_blockers": [
         {
           "field": "sandbox_valid_vat_type",
-          "count": 20
+          "count": 25
         },
         {
           "field": "vat_account_mapping",
           "count": 6
+        },
+        {
+          "field": "module_permission_blocked",
+          "count": 1
         }
       ],
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140116",
-          "prompt": "Opprett en faktura til kunde Testfirma AS for konsulenttjenester, beløp 15000 NOK ekskl. mva. Forfallsdato 2026-04-15.",
+          "timestamp": "20260321_173140",
+          "prompt": "Fixez un prix forfaitaire de 342600 NOK sur le projet \"Sécurité des données\" pour Forêt SARL (nº org. 855570742). Le chef de projet est Lucas Leroy (lucas.leroy@example.org). Facturez au client 75 % du prix fixe comme pa",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140839",
-          "prompt": "Vi sendte en faktura på 1381 EUR til Fjordkraft AS (org.nr 857800206) da kursen var 10.19 NOK/EUR. Kunden har nå betalt, men kursen er 11.15 NOK/EUR. Registrer betalingen og bokfør valutadifferansen (agio) på korrekt kon",
+          "timestamp": "20260321_173236",
+          "prompt": "Registrieren Sie den Lieferanten Brückentor GmbH mit der Organisationsnummer 949229122. E-Mail: faktura@brckentorgmbh.no.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_144026",
-          "prompt": "Realice el cierre anual simplificado de 2025: 1) Calcule y contabilice la depreciación anual de tres activos: Kjøretøy (81750 NOK, 3 años lineales, cuenta 1230), IT-utstyr (360050 NOK, 4 años, cuenta 1210), Kontormaskine",
+          "timestamp": "20260321_175614",
+          "prompt": "Registrieren Sie den Lieferanten Brückentor GmbH mit der Organisationsnummer 867835989. E-Mail: faktura@brckentorgmbh.no.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "ledger_correction",
+      "runs": 5,
+      "proxy_clean_rate": 0.8,
+      "likely_full_runs": 3,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 1.6,
+      "mean_api_calls": 13.6,
+      "attachment_runs": 2,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/ledger/voucher: HTTP 422 with no captured body",
+          "count": 4
+        },
+        {
+          "pattern": "/ledger/voucher: postings.supplier.id -> Leverandør mangler.",
+          "count": 4
+        }
+      ],
+      "likely_missing_fields": [],
+      "likely_blockers": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_153124",
+          "prompt": "Descobrimos erros no livro razão de janeiro e fevereiro de 2026. Revise todos os vouchers e encontre os 4 erros: um lançamento na conta errada (conta 6340 usada em vez de 6390, valor 3100 NOK), um voucher duplicado (cont",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_153512",
+          "prompt": "Has recibido una factura de proveedor (ver PDF adjunto). Registra la factura en Tripletex. Crea el proveedor si no existe. Usa la cuenta de gastos correcta y el IVA de entrada.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_170726",
+          "prompt": "Wir haben Fehler im Hauptbuch für Januar und Februar 2026 entdeckt. Überprüfen Sie alle Belege und finden Sie die 4 Fehler: eine Buchung auf das falsche Konto (Konto 7300 statt 7000, Betrag 4900 NOK), ein doppelter Beleg",
           "omissions": []
         }
       ],
@@ -310,12 +491,12 @@
     },
     {
       "family": "product",
-      "runs": 16,
-      "proxy_clean_rate": 0.0625,
-      "likely_full_runs": 1,
+      "runs": 22,
+      "proxy_clean_rate": 0.2727272727272727,
+      "likely_full_runs": 6,
       "likely_partial_runs": 2,
-      "mean_api_errors": 22.0,
-      "mean_api_calls": 22.875,
+      "mean_api_errors": 16.0,
+      "mean_api_calls": 18.09090909090909,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -346,18 +527,18 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140159",
-          "prompt": "Opprett et produkt 'Konsulenttjeneste' med pris 1500 NOK ekskl. mva (25% MVA).",
+          "timestamp": "20260321_174034",
+          "prompt": "Opprett ein ordre for kunden Bølgekraft AS (org.nr 995789191) med produkta Systemutvikling (4339) til 17450 kr og Nettverksteneste (9529) til 24400 kr. Konverter ordren til faktura og registrer full betaling.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140842",
+          "timestamp": "20260321_174108",
+          "prompt": "Opprett produktet \"Analyserapport\" med produktnummer 3637. Prisen er 31900 kr eksklusiv MVA, og standard MVA-sats på 25 % skal nyttast.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_174648",
           "prompt": "Crea una factura para el cliente Dorada SL (org. nº 884244307) con tres líneas de producto: Desarrollo de sistemas (5012) a 17450 NOK con 25 % IVA, Mantenimiento (3548) a 3600 NOK con 15 % IVA (alimentos), y Almacenamien",
-          "omissions": []
-        },
-        {
-          "timestamp": "20260321_144218",
-          "prompt": "Opprett et produkt 'Konsulenttjeneste' med pris 1500 NOK ekskl. mva (25% MVA).",
           "omissions": []
         }
       ],
@@ -365,12 +546,12 @@
     },
     {
       "family": "project",
-      "runs": 8,
-      "proxy_clean_rate": 0.75,
-      "likely_full_runs": 0,
-      "likely_partial_runs": 7,
-      "mean_api_errors": 3.0,
-      "mean_api_calls": 8.375,
+      "runs": 15,
+      "proxy_clean_rate": 0.7333333333333333,
+      "likely_full_runs": 4,
+      "likely_partial_runs": 9,
+      "mean_api_errors": 3.6,
+      "mean_api_calls": 12.0,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -410,11 +591,11 @@
       "likely_missing_fields": [
         {
           "field": "project",
-          "count": 9
+          "count": 11
         },
         {
           "field": "activity",
-          "count": 2
+          "count": 4
         },
         {
           "field": "rate_type",
@@ -434,18 +615,18 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_135435",
-          "prompt": "Opprett prosjekt 'Ny nettside' for kunde Testfirma AS. Fastpris 250000 NOK. Startdato 2026-04-01.",
+          "timestamp": "20260321_170808",
+          "prompt": "Erstellen Sie das Projekt \"Integration Windkraft\" verknüpft mit dem Kunden Windkraft GmbH (Org.-Nr. 964854629). Projektleiter ist Sophia Meyer (sophia.meyer@example.org).",
           "omissions": []
         },
         {
-          "timestamp": "20260321_135842",
-          "prompt": "Opprett prosjekt 'Ny nettside' for kunde Testfirma AS. Fastpris 250000 NOK. Startdato 2026-04-01.",
+          "timestamp": "20260321_173800",
+          "prompt": "Crie o projeto \"Migração Montanha\" vinculado ao cliente Montanha Lda (org. nº 986713344). O gerente de projeto é Bruno Pereira (bruno.pereira@example.org).",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140149",
-          "prompt": "Opprett prosjekt 'Ny nettside' for kunde Testfirma AS. Fastpris 250000 NOK. Startdato 2026-04-01.",
+          "timestamp": "20260321_175812",
+          "prompt": "Die Gesamtkosten sind von Januar bis Februar 2026 deutlich gestiegen. Analysieren Sie das Hauptbuch und identifizieren Sie die drei Aufwandskonten mit dem größten Anstieg. Erstellen Sie für jedes der drei Konten ein inte",
           "omissions": []
         }
       ],
@@ -453,13 +634,13 @@
     },
     {
       "family": "salary",
-      "runs": 12,
-      "proxy_clean_rate": 1.0,
-      "likely_full_runs": 10,
+      "runs": 16,
+      "proxy_clean_rate": 0.9375,
+      "likely_full_runs": 13,
       "likely_partial_runs": 2,
-      "mean_api_errors": 0.3333333333333333,
-      "mean_api_calls": 2.8333333333333335,
-      "attachment_runs": 3,
+      "mean_api_errors": 0.25,
+      "mean_api_calls": 2.875,
+      "attachment_runs": 4,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
@@ -474,25 +655,25 @@
       "likely_missing_fields": [
         {
           "field": "employee",
-          "count": 10
+          "count": 11
         }
       ],
       "likely_blockers": [],
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140144",
-          "prompt": "Kjør lønn for ansatt nummer 1. Grunnlønn 45000 NOK, ingen bonus.",
+          "timestamp": "20260321_164059",
+          "prompt": "Kjør lønn for den ansatte. Grunnlønn er 45000 kr, bonus 5000 kr.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140931",
-          "prompt": "Has recibido un contrato de trabajo (ver PDF adjunto). Crea el empleado en Tripletex con todos los datos del contrato: numero de identidad, fecha de nacimiento, departamento, codigo de ocupacion, salario, porcentaje de e",
+          "timestamp": "20260321_170452",
+          "prompt": "Effectuez la clôture mensuelle de mars 2026. Comptabilisez la régularisation (13850 NOK par mois du compte 1700 vers charges). Enregistrez l'amortissement mensuel d'une immobilisation avec un coût d'acquisition de 116900",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141256",
-          "prompt": "Køyr løn for Eirik Lunde (eirik.lunde@example.org) for denne månaden. Grunnløn er 39100 kr. Legg til ein eingongsbonus på 8200 kr i tillegg til grunnløna.",
+          "timestamp": "20260321_170453",
+          "prompt": "Effectuez la clôture mensuelle de mars 2026. Comptabilisez la régularisation (2100 NOK par mois du compte 1700 vers charges). Enregistrez l'amortissement mensuel d'une immobilisation avec un coût d'acquisition de 76250 N",
           "omissions": []
         }
       ],
@@ -500,15 +681,23 @@
     },
     {
       "family": "supplier",
-      "runs": 9,
-      "proxy_clean_rate": 0.8888888888888888,
-      "likely_full_runs": 8,
-      "likely_partial_runs": 1,
-      "mean_api_errors": 0.8888888888888888,
-      "mean_api_calls": 5.0,
-      "attachment_runs": 1,
+      "runs": 25,
+      "proxy_clean_rate": 0.88,
+      "likely_full_runs": 22,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 0.88,
+      "mean_api_calls": 5.16,
+      "attachment_runs": 6,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
+        {
+          "pattern": "/timesheet/entry: dateFrom -> Kan ikke være null.",
+          "count": 7
+        },
+        {
+          "pattern": "/timesheet/entry: dateTo -> Kan ikke være null.",
+          "count": 7
+        },
         {
           "pattern": "/incomingInvoice: HTTP 422 with no captured body",
           "count": 2
@@ -524,25 +713,42 @@
         {
           "pattern": "/ledger/voucher: postings.supplier.id -> Leverandør mangler.",
           "count": 2
+        },
+        {
+          "pattern": "/supplier: HTTP 403 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/supplier: {\"error\":\"Invalid or expired proxy token. Each submission receives a unique token - do not reuse tokens from previous submissions.\",\"source\":\"nmiai-proxy\"}",
+          "count": 1
         }
       ],
-      "likely_missing_fields": [],
+      "likely_missing_fields": [
+        {
+          "field": "project",
+          "count": 1
+        },
+        {
+          "field": "activity",
+          "count": 1
+        }
+      ],
       "likely_blockers": [],
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_135803",
-          "prompt": "Registrer en leverandørfaktura fra Leverandør AS (org.nr 123456789) på 12500 NOK inkl. mva. Fakturanummer LF-2026-001. Utgiftskonto 6300.",
+          "timestamp": "20260321_173118",
+          "prompt": "Recebemos a fatura INV-2026-4811 do fornecedor Montanha Lda (org. nº 859712355) no valor de 33200 NOK com IVA incluído. O montante refere-se a serviços de escritório (conta 7300). Registe a fatura do fornecedor com o IVA",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140033",
-          "prompt": "Registrer en leverandørfaktura fra Leverandør AS (org.nr 123456789) på 12500 NOK inkl. mva. Fakturanummer LF-2026-001. Utgiftskonto 6300.",
+          "timestamp": "20260321_173254",
+          "prompt": "Du har mottatt en leverandorfaktura (se vedlagt PDF). Registrer fakturaen i Tripletex. Opprett leverandoren hvis den ikke finnes. Bruk riktig utgiftskonto og inngaende MVA.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_140103",
-          "prompt": "Registrer en leverandørfaktura fra Leverandør AS (org.nr 123456789) på 12500 NOK inkl. mva. Fakturanummer LF-2026-001. Utgiftskonto 6300.",
+          "timestamp": "20260321_174056",
+          "prompt": "Exécutez le cycle de vie complet du projet 'Portail Numérique Étoile' (Étoile SARL, nº org. 834437961) : 1) Le projet a un budget de 383650 NOK. 2) Enregistrez le temps : Jade Martin (chef de projet, jade.martin@example.",
           "omissions": []
         }
       ],
@@ -550,12 +756,12 @@
     },
     {
       "family": "timesheet",
-      "runs": 15,
-      "proxy_clean_rate": 0.06666666666666667,
-      "likely_full_runs": 1,
-      "likely_partial_runs": 3,
-      "mean_api_errors": 3.4,
-      "mean_api_calls": 8.466666666666667,
+      "runs": 21,
+      "proxy_clean_rate": 0.2857142857142857,
+      "likely_full_runs": 4,
+      "likely_partial_runs": 5,
+      "mean_api_errors": 2.6666666666666665,
+      "mean_api_calls": 10.571428571428571,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -588,26 +794,26 @@
           "count": 3
         },
         {
-          "pattern": "/invoice: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":\"orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id\",\"message\":\"Ugyldig mva-kode.\",\"path\":null,\"rootId\":0},{\"field\":null,\"message\":\"Finner ikke en gyldig regnskapskonto for mva-koden 4: Direktepostert utgående avgift, høy sats.\",\"path\":null,\"rootId\":null}],\"requestId\":\"71a0de2c-6224-4990-8d8c",
-          "count": 1
+          "pattern": "/project/projectActivity: HTTP 409 with no captured body",
+          "count": 2
         }
       ],
       "likely_missing_fields": [
         {
           "field": "activity",
-          "count": 23
+          "count": 29
         },
         {
           "field": "project",
-          "count": 13
+          "count": 23
         },
         {
           "field": "employee",
-          "count": 8
+          "count": 13
         },
         {
           "field": "hours",
-          "count": 1
+          "count": 3
         },
         {
           "field": "department",
@@ -634,32 +840,36 @@
         {
           "field": "project_hourly_rates_endpoint",
           "count": 2
+        },
+        {
+          "field": "duplicate_identifier",
+          "count": 1
         }
       ],
       "prompt_required_fields": [
         {
           "field": "project",
-          "count": 12
+          "count": 18
         },
         {
           "field": "activity",
-          "count": 10
+          "count": 14
         }
       ],
       "prompt_examples": [
         {
-          "timestamp": "20260321_141040",
-          "prompt": "Log 29 hours for Ella Williams (ella.williams@example.org) on the activity \"Testing\" in the project \"Platform Integration\" for Windmill Ltd (org no. 839360274). Hourly rate: 1350 NOK/h. Generate a project invoice to the ",
+          "timestamp": "20260321_154252",
+          "prompt": "Gjennomfør heile prosjektsyklusen for 'Digitalportal Strandvik' (Strandvik AS, org.nr 842328004): 1) Prosjektet har budsjett 392650 kr. 2) Registrer timar: Geir Lunde (prosjektleiar, geir.lunde@example.org) 35 timar og G",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141056",
-          "prompt": "Gjennomfør heile prosjektsyklusen for 'Dataplattform Sjøbris' (Sjøbris AS, org.nr 868541946): 1) Prosjektet har budsjett 361050 kr. 2) Registrer timar: Eirik Stølsvik (prosjektleiar, eirik.stlsvik@example.org) 41 timar o",
+          "timestamp": "20260321_172624",
+          "prompt": "Registrer 29 timar for Håkon Eide (hakon.eide@example.org) på aktiviteten \"Design\" i prosjektet \"Plattformintegrasjon\" for Nordlys AS (org.nr 868345195). Timesats: 1550 kr/t. Generer ein prosjektfaktura til kunden basert",
           "omissions": []
         },
         {
-          "timestamp": "20260321_144258",
-          "prompt": "Registrer 8 timer for ansatt nummer 1 på et prosjekt den 2026-03-20. Aktivitet: utvikling.",
+          "timestamp": "20260321_172830",
+          "prompt": "Execute the complete project lifecycle for 'Cloud Migration Northwave' (Northwave Ltd, org no. 932075482): 1) The project has a budget of 396900 NOK. 2) Log time: Samuel Brown (project manager, samuel.brown@example.org) ",
           "omissions": []
         }
       ],
@@ -670,12 +880,12 @@
     },
     {
       "family": "travel_expense",
-      "runs": 12,
-      "proxy_clean_rate": 0.16666666666666666,
-      "likely_full_runs": 1,
-      "likely_partial_runs": 3,
-      "mean_api_errors": 2.9166666666666665,
-      "mean_api_calls": 4.25,
+      "runs": 17,
+      "proxy_clean_rate": 0.4117647058823529,
+      "likely_full_runs": 5,
+      "likely_partial_runs": 4,
+      "mean_api_errors": 2.176470588235294,
+      "mean_api_calls": 5.588235294117647,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -688,6 +898,10 @@
           "count": 7
         },
         {
+          "pattern": "/travelExpense/perDiemCompensation: HTTP 422 with no captured body",
+          "count": 3
+        },
+        {
           "pattern": "/travelExpense/:deliver: HTTP 422 with no captured body",
           "count": 3
         },
@@ -696,7 +910,7 @@
           "count": 3
         },
         {
-          "pattern": "/travelExpense/perDiemCompensation: HTTP 422 with no captured body",
+          "pattern": "/travelExpense/perDiemCompensation: rateCategory.id -> Reiseregningens dato samsvarer ikke med valgt satskategori.",
           "count": 2
         },
         {
@@ -706,10 +920,6 @@
         {
           "pattern": "/travelExpense/:deliver: 11148042 -> Du kan ikke levere eller godkjenne et utlegg uten kostnader.",
           "count": 1
-        },
-        {
-          "pattern": "/travelExpense/:deliver: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":\"project.invoicingPlan.orders.travelReports.perDiemCompensations.rateType.id,project.invoicingPlan.travelReports.perDiemCompensations.rateType.id,invoice.orders.travelReports.perDiemCompensations.rateType.id,invoice.travelReports.perDiemCompensations.rateType.id,perDiemCompensations.rateType.id\",\"message\":\"Sats eller satskategori må",
-          "count": 1
         }
       ],
       "likely_missing_fields": [
@@ -718,12 +928,12 @@
           "count": 7
         },
         {
-          "field": "rate_type",
-          "count": 4
+          "field": "employee",
+          "count": 7
         },
         {
-          "field": "employee",
-          "count": 3
+          "field": "rate_type",
+          "count": 6
         },
         {
           "field": "project",
@@ -752,6 +962,10 @@
           "count": 7
         },
         {
+          "field": "rate_category_date_mismatch",
+          "count": 2
+        },
+        {
           "field": "travel_expense_kind",
           "count": 1
         },
@@ -762,40 +976,38 @@
         {
           "field": "per_diem_rate_required",
           "count": 1
-        },
-        {
-          "field": "rate_category_date_mismatch",
-          "count": 1
         }
       ],
       "prompt_required_fields": [
         {
-          "field": "per_diem",
-          "count": 12
-        },
-        {
           "field": "duration",
-          "count": 12
+          "count": 17
         },
         {
           "field": "departure_or_destination",
-          "count": 12
+          "count": 17
+        },
+        {
+          "field": "per_diem",
+          "count": 16
         }
       ],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140134",
+          "timestamp": "20260321_151747",
           "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
           "omissions": []
         },
         {
-          "timestamp": "20260321_144257",
-          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
-          "omissions": []
+          "timestamp": "20260321_151909",
+          "prompt": "Registre una nota de gastos de viaje para Ricardo Romero (ricardo.romero@example.org) por \"Conferencia Ålesund\". El viaje duró 5 días con dietas (tarifa diaria 800 NOK). Gastos: billete de avión 4700 NOK y taxi 550 NOK.",
+          "omissions": [
+            "left_open"
+          ]
         },
         {
-          "timestamp": "20260321_145305",
-          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
+          "timestamp": "20260321_164216",
+          "prompt": "Registrer en reiseregning for den ansatte for \"Kundebesøk Bergen\". Reisen varte 2 dager med diett (dagssats 800 kr). Utlegg: togbillett 950 kr.",
           "omissions": []
         }
       ],
@@ -806,12 +1018,12 @@
     },
     {
       "family": "voucher",
-      "runs": 18,
-      "proxy_clean_rate": 0.8888888888888888,
-      "likely_full_runs": 15,
-      "likely_partial_runs": 2,
-      "mean_api_errors": 0.8888888888888888,
-      "mean_api_calls": 5.0,
+      "runs": 22,
+      "proxy_clean_rate": 0.8636363636363636,
+      "likely_full_runs": 17,
+      "likely_partial_runs": 3,
+      "mean_api_errors": 0.9090909090909091,
+      "mean_api_calls": 5.363636363636363,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -829,11 +1041,19 @@
         },
         {
           "pattern": "/ledger/voucher: HTTP 422 with no captured body",
-          "count": 3
+          "count": 4
         },
         {
           "pattern": "/ledger/voucher: postings.supplier.id -> Leverandør mangler.",
-          "count": 3
+          "count": 4
+        },
+        {
+          "pattern": "/ledger/accountingDimensionName: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/ledger/accountingDimensionName: Navnet er i bruk.",
+          "count": 1
         }
       ],
       "likely_missing_fields": [],
@@ -841,18 +1061,18 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_141016",
-          "prompt": "Create a custom accounting dimension \"Kostsenter\" with the values \"Logistikk\" and \"Produktutvikling\". Then post a voucher on account 6300 for 14800 NOK, linked to the dimension value \"Logistikk\".",
+          "timestamp": "20260321_164116",
+          "prompt": "Opprett en fri regnskapsdimensjon \"Kostsenter\" med verdiene \"IT\" og \"Drift\". Bokfør deretter et bilag på 10000 kr debet konto 6300, kredit konto 1920, koblet til dimensjonsverdien \"IT\".",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141022",
-          "prompt": "Descobrimos erros no livro razão de janeiro e fevereiro de 2026. Revise todos os vouchers e encontre os 4 erros: um lançamento na conta errada (conta 6340 usada em vez de 6390, valor 3100 NOK), um voucher duplicado (cont",
+          "timestamp": "20260321_170408",
+          "prompt": "Me har oppdaga feil i hovudboka for januar og februar 2026. Gå gjennom alle bilag og finn dei 4 feila: ei postering på feil konto (konto 6860 brukt i staden for 6590, beløp 5250 kr), eit duplikat bilag (konto 6300, beløp",
           "omissions": []
         },
         {
-          "timestamp": "20260321_141258",
-          "prompt": "Cree una dimensión contable personalizada \"Region\" con los valores \"Nord-Norge\" y \"Vestlandet\". Luego registre un asiento en la cuenta 7100 por 34350 NOK, vinculado al valor de dimensión \"Nord-Norge\".",
+          "timestamp": "20260321_170844",
+          "prompt": "Me har oppdaga feil i hovudboka for januar og februar 2026. Gå gjennom alle bilag og finn dei 4 feila: ei postering på feil konto (konto 7140 brukt i staden for 7100, beløp 2950 kr), eit duplikat bilag (konto 7300, beløp",
           "omissions": []
         }
       ],
