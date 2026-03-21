@@ -119,7 +119,8 @@ class RegisterPaymentArgs(BaseModel):
     invoiceId: Optional[int] = Field(default=None, description="Invoice ID. If not provided, searches by customer name.")
     invoiceNumber: Optional[str] = Field(default=None, description="Invoice number/reference from the prompt or bank statement. Prefer this when an external invoice number is provided.")
     customerName: Optional[str] = Field(default=None, description="Customer name to match the correct invoice")
-    amount: float = Field(description="Payment amount. Use negative for reversal.")
+    amount: float = Field(description="Payment amount in NOK. Use negative for reversal.")
+    paidAmountCurrency: Optional[float] = Field(default=None, description="Payment amount in foreign currency (e.g. EUR). Required for foreign currency invoice payments.")
     paymentDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
     paymentTypeId: Optional[int] = Field(default=None, description="Payment type ID. Auto-detected if not provided.")
 
