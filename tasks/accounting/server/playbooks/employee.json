@@ -1,18 +1,20 @@
 {
   "family": "employee",
-  "keywords": ["ansatt", "employee", "Mitarbeiter", "employé", "empleado", "empregado", "tilsett"],
-  "description": "Create, update, or manage employees",
+  "keywords": ["ansatt", "employee", "Mitarbeiter", "employé", "empleado", "empregado", "tilsett", "onboarding", "tilbudsbrev", "contract", "contrato"],
+  "description": "Create, update, or manage employees. Includes onboarding from contracts.",
   "preflight": ["GET /department to find department ID"],
   "endpoints": [
-    "POST /employee — body: {firstName, lastName, userType:'STANDARD', department:{id:DEP_ID}, email, dateOfBirth, phoneNumberMobile}",
+    "POST /employee — body: {firstName, lastName, userType, department:{id}, email, dateOfBirth, phoneNumberMobile, nationalIdentityNumber}",
     "PUT /employee/{id} — GET first for id+version, then PUT full object",
-    "POST /employee/employment — {employee:{id}, startDate, employmentType}"
+    "POST /employee/employment — {employee:{id}, startDate, employmentType, percentageOfFullTimeEquivalent, occupationCode:{code:'NNNN'}}",
+    "POST /employee/employment/details — {employment:{id}, date, annualSalary, payrollPercentage}"
   ],
   "required_fields": ["firstName", "lastName", "userType", "department"],
   "common_errors": [
     "userType cannot be 0 or empty — always set to STANDARD, EXTENDED, or NO_ACCESS",
     "department.id is required — GET /department first",
-    "admin/administrator role = userType EXTENDED"
+    "admin/administrator role = userType EXTENDED",
+    "PDF files may be empty (content_base64='') — extract data from prompt text instead"
   ],
-  "tips": "CRITICAL: If the task mentions 'administrator', 'admin', 'Administratorrolle', 'tilgang', 'administrateur', 'administrador', 'Verwaltung', 'full access', or 'full tilgang', you MUST set userType to EXTENDED. This is worth 50% of the employee task score. Default is STANDARD."
+  "tips": "CRITICAL ONBOARDING CHECKLIST — set ALL of these fields when the prompt mentions them: 1) firstName + lastName, 2) email, 3) dateOfBirth (YYYY-MM-DD), 4) nationalIdentityNumber (11-digit personnummer), 5) userType (EXTENDED for admin), 6) startDate on employment, 7) percentageOfFullTimeEquivalent (e.g. 100.0), 8) annualSalary (årslønn), 9) occupationCode (STYRK code like '2511'). If PDF is empty, use whatever data is in the prompt text. ADMIN ROLE = 50% of employee score — if prompt says 'administrator/admin/tilgang', ALWAYS set userType=EXTENDED."
 }

@@ -465,6 +465,8 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/travelexpense": "Use create_travel_expense tool instead",
         "/incominginvoice": "Use register_supplier_invoice tool instead",
         "/supplierinvoice": "Use register_supplier_invoice tool instead",
+        "/product": "Use create_product tool instead",
+        "/department": "Use create_department tool instead",
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
     }
     for pattern, msg in redirects.items():
@@ -478,6 +480,8 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
 CORE_PROMPT = """You are an expert Tripletex accounting agent. Complete the task by calling the available tools.
 
 MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_call for these tasks:
+- Products → create_product
+- Departments → create_department
 - Supplier/incoming invoices → register_supplier_invoice
 - Salary/payroll → process_salary
 - Time tracking/hours only → register_timesheet

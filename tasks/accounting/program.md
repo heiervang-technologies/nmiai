@@ -8,14 +8,16 @@ Unlike the original repo, this is not a closed offline training loop. The real w
 
 - Win the Tripletex task.
 - Correctness comes before efficiency.
-- Immediate priorities: fix `timesheet` and `travel_expense`, then exploit Tier 3 as it unlocks.
+- Immediate priorities: maximize Tripletex points fast by fixing zero-categories, hardening weak families from live logs, and correlating dashboard scores with log-derived failure patterns.
 
 ## Current Reality
 
 - The live system is a FastAPI `/solve` endpoint on port `8000`.
 - The runtime stack is `Pydantic AI + typed tools + planner + playbooks + actions layer`.
-- We do not get competition scores back programmatically.
-- Markus must still submit the endpoint URL on the dashboard after reboot events.
+- The global competition pivot is real: Tripletex is now the largest leaderboard gap and the highest-value task.
+- We do not get competition scores back programmatically; dashboard checks by the human remain the score source of truth.
+- Old logs were cleared on reboot, so the analyzer must treat current logs as the active epoch and update continuously from new traffic.
+- The current high-value loop is: analyzer first, dashboard/log correlation second, plots third.
 
 ## Setup
 
@@ -26,6 +28,7 @@ Before running the loop:
 3. Read the current playbooks under `tasks/accounting/server/playbooks/`.
 4. Initialize `tasks/accounting/autoresearch_results.tsv` if missing.
 5. Treat the current tunnel URL as unstable unless Tailscale Funnel is active.
+6. Confirm the analyzer outputs under `tasks/accounting/analysis/` can be regenerated from the current log epoch.
 
 ## In-Scope Files
 
@@ -50,7 +53,8 @@ Use this ranking of trust:
 
 1. Dashboard score observed by the human.
 2. Proxy clean rate from logs.
-3. API success pattern quality by family.
+3. Family-level evidence about which scorer-checked fields are still missing.
+4. API success pattern quality by family.
 
 Proxy signal for a likely-good run:
 
@@ -100,8 +104,10 @@ Autoresearch should automate these tasks:
 3. Alert when a new family appears, with the prompt text.
 4. Flag any family whose clean rate drops below `70%`.
 5. Surface top recurring error patterns by family.
-6. Track unseen families versus known families.
-7. Flag attachment-based tasks, especially if `content_base64` is empty.
+6. Infer likely scorer-checked missing fields per family from repeated failures.
+7. Correlate dashboard checks with the corresponding submission-batch logs.
+8. Track unseen families versus known families.
+9. Flag attachment-based tasks, especially if `content_base64` is empty.
 
 ## The Loop
 
@@ -111,10 +117,12 @@ Loop forever unless interrupted.
 2. Group runs by task family.
 3. Update family-level clean rates, error patterns, and task coverage.
 4. If a new family appears, create a human-facing alert immediately.
-5. If `timesheet` or `travel_expense` remain weak, prioritize those families over already-good ones.
-6. When a family appears stable, tighten its playbook and reduce API-call waste.
-7. When Tier 3 or attachment tasks appear, route them for manual review before broad automation.
-8. Record every batch-level conclusion in the tracker.
+5. Prioritize zero-categories and the weakest partial-score families before polishing already-strong ones.
+6. Use the analyzer to identify what the scorer likely checks that we are still missing, then patch playbooks/tools/actions accordingly.
+7. Correlate human dashboard reads with the matching log window so improvements can be attributed to concrete changes.
+8. When a family appears stable, tighten its playbook and reduce API-call waste for the efficiency bonus.
+9. When Tier 3 or attachment tasks appear, route them for manual review before broad automation.
+10. Record every batch-level conclusion in the tracker.
 
 ## Keep / Discard Rules
 
@@ -125,8 +133,8 @@ Loop forever unless interrupted.
 
 ## Priority Order
 
-1. `timesheet`
-2. `travel_expense`
+1. Zero-categories and low-performing families identified from fresh logs
+2. Dashboard/log correlation so we know what actually moves score
 3. Tier 3 discovery and attachment handling
 4. Efficiency bonus work on solved families
 
@@ -153,7 +161,7 @@ python tools/pareto_frontier.py \
 
 The correct accounting autoresearch loop is:
 
-`submission batch -> log parse -> family diagnosis -> playbook/tool fix -> next batch`
+`submission batch -> log parse -> scorer-gap diagnosis -> playbook/tool fix -> dashboard correlation -> next batch`
 
 Not:
 
