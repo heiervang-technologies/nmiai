@@ -540,13 +540,15 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
             # For supplier invoice paths, auto-execute instead of just warning
             if "incominginvoice" in path.lower() or "supplierinvoice" in path.lower():
                 body = args_dict.get("body") or {}
+                # Handle both direct body and invoiceHeader wrapper
+                header = body.get("invoiceHeader", body)
                 si_args = {
-                    "supplierName": body.get("supplier", {}).get("name", body.get("supplierName", "Unknown")),
-                    "supplierId": body.get("supplier", {}).get("id"),
-                    "invoiceNumber": body.get("invoiceNumber", ""),
-                    "amountIncludingVat": float(body.get("amount", body.get("amountExcludingVat", 0)) or 0),
-                    "invoiceDate": body.get("invoiceDate", body.get("date", "")),
-                    "description": body.get("description", ""),
+                    "supplierName": header.get("supplier", {}).get("name", header.get("supplierName", header.get("vendorName", "Unknown"))),
+                    "supplierId": header.get("supplier", {}).get("id", header.get("vendorId")),
+                    "invoiceNumber": header.get("invoiceNumber", body.get("invoiceNumber", "")),
+                    "amountIncludingVat": float(header.get("invoiceAmount", header.get("amount", header.get("amountExcludingVat", 0))) or 0),
+                    "invoiceDate": header.get("invoiceDate", header.get("date", "")),
+                    "description": header.get("description", ""),
                 }
                 if si_args["amountIncludingVat"] > 0 and (si_args.get("supplierId") or si_args["supplierName"] != "Unknown"):
                     return await _safe_action("register_supplier_invoice", ctx.deps.client, si_args, 3000)
