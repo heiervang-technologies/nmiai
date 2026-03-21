@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import re
+import unicodedata
 from pathlib import Path
 
 from openai import OpenAI
@@ -40,14 +41,28 @@ FAMILY_PRIORITY = {
 
 
 def _compile_keyword_pattern(keyword: str) -> re.Pattern[str]:
-    escaped = re.escape(keyword.lower()).replace(r"\ ", r"\s+")
-    return re.compile(rf"(?<!\w){escaped}(?!\w)", re.IGNORECASE)
+    normalized = _normalize_text(keyword)
+    tokens = normalized.split()
+    if not tokens:
+        return re.compile(r"$^")
+
+    # Match inflected forms like "prosjektet", "kunden", and "avdelingar"
+    # while keeping a word boundary on the left to avoid noisy substring hits.
+    escaped_tokens = [re.escape(token) + r"\w*" for token in tokens]
+    pattern = r"(?<!\w)" + r"\s+".join(escaped_tokens)
+    return re.compile(pattern, re.IGNORECASE)
+
+
+def _normalize_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text)
+    stripped = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+    return stripped.lower()
 
 
 # Build keyword patterns for fast, boundary-aware matching.
 KEYWORD_PATTERNS = {
     family: [
-        (kw.lower(), _compile_keyword_pattern(kw))
+        (_normalize_text(kw), _compile_keyword_pattern(kw))
         for kw in pb.get("keywords", [])
     ]
     for family, pb in PLAYBOOKS.items()
@@ -80,7 +95,7 @@ If the task doesn't fit any family well, use the closest match with confidence "
 
 def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
     """Fast keyword-based classification. Returns (family, confidence)."""
-    prompt_lower = prompt.lower()
+    prompt_lower = _normalize_text(prompt)
     matches = {}
 
     for family, patterns in KEYWORD_PATTERNS.items():
@@ -89,6 +104,8 @@ def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
             if pattern.search(prompt_lower):
                 # Multi-word phrases are more informative than generic single words.
                 score += 2.0 if " " in kw else 1.0
+                if " " not in kw and len(kw) >= 10:
+                    score += 0.5
         if score:
             matches[family] = score
 
