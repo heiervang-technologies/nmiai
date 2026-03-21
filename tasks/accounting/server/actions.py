@@ -1144,14 +1144,34 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
 
         # Add customer ref for CUSTOMER ledger accounts
         posting_customer_id = p.get("customerId") or customer_id
-        if posting_customer_id and account_obj and account_obj.get("ledgerType") == "CUSTOMER":
-            posting["customer"] = {"id": int(posting_customer_id)}
+        if account_obj and account_obj.get("ledgerType") == "CUSTOMER":
+            if not posting_customer_id:
+                # Auto-discover first customer — CUSTOMER accounts require customer ref
+                try:
+                    customers = await client.get("/customer", params={"count": 1})
+                    if customers.get("values"):
+                        posting_customer_id = customers["values"][0]["id"]
+                        customer_id = posting_customer_id  # cache for subsequent postings
+                except Exception:
+                    pass
+            if posting_customer_id:
+                posting["customer"] = {"id": int(posting_customer_id)}
 
         # Add supplier ref for VENDOR/SUPPLIER ledger accounts
         posting_supplier_id = p.get("supplierId") or supplier_id
         ledger_type = (account_obj or {}).get("ledgerType")
-        if posting_supplier_id and ledger_type in {"VENDOR", "SUPPLIER"}:
-            posting["supplier"] = {"id": int(posting_supplier_id)}
+        if ledger_type in {"VENDOR", "SUPPLIER"}:
+            if not posting_supplier_id:
+                # Auto-discover first supplier — VENDOR accounts require supplier ref
+                try:
+                    suppliers = await client.get("/supplier", params={"count": 1})
+                    if suppliers.get("values"):
+                        posting_supplier_id = suppliers["values"][0]["id"]
+                        supplier_id = posting_supplier_id  # cache for subsequent postings
+                except Exception:
+                    pass
+            if posting_supplier_id:
+                posting["supplier"] = {"id": int(posting_supplier_id)}
 
         postings.append(posting)
 
