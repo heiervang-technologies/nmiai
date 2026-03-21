@@ -369,49 +369,24 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
         log.warning(f"Bank account setup failed (may already exist): {e}")
 
     # Find or create customer
-    customer_id = args.get("customerId")
-    if not customer_id and args.get("customerName"):
-        custs = await client.get("/customer", params={"count": 100})
-        for c in custs.get("values", []):
-            if args["customerName"].lower() in c.get("name", "").lower():
-                customer_id = c["id"]
-                break
-        if not customer_id:
-            # Create customer
-            cust_body = {"name": args["customerName"]}
-            if args.get("customerOrgNumber"):
-                cust_body["organizationNumber"] = args["customerOrgNumber"]
-            cust_result = await client.post("/customer", json=cust_body)
-            customer_id = cust_result.get("value", {}).get("id")
+    customer_id = await _find_customer_id(
+        client,
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
 
     if not customer_id:
         return {"error": "Could not find or create customer"}
 
     # Look up default VAT type (25% utgående) — ID may differ per sandbox
-    default_vat_id = 3
-    vat_types = {"values": []}
-    try:
-        vat_types = await client.get("/ledger/vatType", params={"count": 50})
-        for vt in vat_types.get("values", []):
-            # Find "Utgående avgift, høy sats" (25% outgoing VAT)
-            if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
-                default_vat_id = vt["id"]
-                break
-    except Exception:
-        pass
+    vat_types = await _get_outgoing_vat_types(client)
+    default_vat_id = _resolve_default_vat_id(vat_types, 3)
 
     # Build order lines
     order_lines = []
     for line in args.get("orderLines", []):
-        vat_id = int(line.get("vatTypeId", default_vat_id))
-        # Map common VAT percentages to correct IDs
-        if line.get("vatTypeId") and int(line["vatTypeId"]) in (25, 15, 12, 0):
-            pct = int(line["vatTypeId"])
-            # These are percentages, not IDs — need to look up
-            for vt in vat_types.get("values", []):
-                if vt.get("percentage") == pct and "utgående" in vt.get("name", "").lower():
-                    vat_id = vt["id"]
-                    break
+        vat_id = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)
         ol = {
             "description": line.get("description", ""),
             "count": float(line.get("count", 1)),
@@ -454,24 +429,15 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
 
 async def action_create_order(client: TripletexClient, args: dict) -> dict:
     """Create an order."""
-    customer_id = args.get("customerId")
-    if not customer_id and args.get("customerName"):
-        custs = await client.get("/customer", params={"count": 100})
-        for c in custs.get("values", []):
-            if args["customerName"].lower() in c.get("name", "").lower():
-                customer_id = c["id"]
-                break
+    customer_id = await _find_customer_id(
+        client,
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
 
-    # Dynamic VAT type lookup
-    default_vat_id = 3
-    try:
-        vat_types = await client.get("/ledger/vatType", params={"count": 50})
-        for vt in vat_types.get("values", []):
-            if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
-                default_vat_id = vt["id"]
-                break
-    except Exception:
-        pass
+    vat_types = await _get_outgoing_vat_types(client)
+    default_vat_id = _resolve_default_vat_id(vat_types, 3)
 
     order_lines = []
     for line in args.get("orderLines", []):
@@ -479,7 +445,7 @@ async def action_create_order(client: TripletexClient, args: dict) -> dict:
             "description": line.get("description", ""),
             "count": float(line.get("count", 1)),
             "unitPriceExcludingVatCurrency": float(line.get("unitPrice", line.get("unitPriceExcludingVat", 0))),
-            "vatType": {"id": int(line.get("vatTypeId", default_vat_id))},
+            "vatType": {"id": _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)},
         }
         order_lines.append(ol)
 
@@ -504,15 +470,8 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
             "invoiceDateTo": "2030-12-31",
             "count": 50,
         })
-        customer_name = (args.get("customerName") or "").lower()
         for inv in invoices.get("values", []):
-            # Match by customer name if provided
-            if customer_name:
-                inv_customer = inv.get("customer", {}).get("name", "").lower()
-                if customer_name in inv_customer or inv_customer in customer_name:
-                    invoice_id = inv["id"]
-                    break
-            else:
+            if _invoice_matches(inv, args):
                 invoice_id = inv["id"]
                 break
         # Fallback: take last invoice if no customer match
@@ -553,16 +512,10 @@ async def action_create_credit_note(client: TripletexClient, args: dict) -> dict
             "invoiceDateTo": "2030-12-31",
             "count": 50,
         })
-        customer_name = (args.get("customerName") or "").lower()
         for inv in invoices.get("values", []):
             if inv.get("isCredited"):
                 continue
-            if customer_name:
-                inv_customer = inv.get("customer", {}).get("name", "").lower()
-                if customer_name in inv_customer or inv_customer in customer_name:
-                    invoice_id = inv["id"]
-                    break
-            else:
+            if _invoice_matches(inv, args):
                 invoice_id = inv["id"]
                 break
         # Fallback: take first non-credited
@@ -679,6 +632,7 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
                 proj_data = await client.get(f"/project/{project_id}")
                 proj_obj = proj_data.get("value", proj_data)
                 proj_obj["isFixedPrice"] = True
+                proj_obj["fixedPrice"] = float(args["fixedPrice"])
                 proj_obj["fixedprice"] = float(args["fixedPrice"])
                 result = await client.put(f"/project/{project_id}", json=proj_obj)
             except Exception as e:
@@ -1032,6 +986,23 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     result = await client.post("/travelExpense", json=body)
     expense = result.get("value", result)
     expense_id = expense.get("id")
+
+    # Add explicit travel outlays before per diem/delivery when the prompt includes them.
+    for cost in args.get("costs", []):
+        if not expense_id:
+            break
+        try:
+            amount = _money(cost.get("amount", 0))
+            cost_body = {
+                "travelExpense": {"id": expense_id},
+                "category": cost.get("category") or cost.get("description") or "Expense",
+                "comments": cost.get("description") or cost.get("category") or "Travel expense cost",
+                "amountCurrencyIncVat": amount,
+                "amountNOKInclVAT": amount,
+            }
+            await client.post("/travelExpense/cost", json=cost_body)
+        except Exception as e:
+            log.warning(f"Travel cost creation failed: {e}")
 
     # Add per diem if specified
     if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
