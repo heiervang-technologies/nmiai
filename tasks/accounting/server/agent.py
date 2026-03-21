@@ -303,6 +303,11 @@ class GenericApiCallArgs(BaseModel):
     body: Optional[dict] = Field(default=None, description="JSON request body")
 
 
+class RunPythonArgs(BaseModel):
+    """Execute Python code for data processing, CSV parsing, calculations, etc."""
+    code: str = Field(description="Python code to execute. Has access to 'client' (TripletexClient with auth) and 'httpx'. Print results to stdout.")
+
+
 # --- Build the agent ---
 
 agent = Agent(
@@ -482,7 +487,10 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
     }
     if method == "POST" and path == "/activity":
         body = args_dict.get("body") or {}
-        body.setdefault("activityType", "GENERAL_ACTIVITY")
+        body.setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY" if "project" in str(body).lower() else "GENERAL_ACTIVITY")
+        # Ensure name is non-blank (Tripletex requires it)
+        name = body.get("name") or body.get("displayName") or body.get("description") or "General"
+        body["name"] = name
         args_dict["body"] = body
         return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
     # Fix wrong activity endpoint: /project/{id}/activity -> create activity + link to project
