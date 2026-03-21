@@ -45,6 +45,8 @@ class CreateEmployeeArgs(BaseModel):
     dateOfBirth: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     phoneNumberMobile: Optional[str] = None
     nationalIdentityNumber: Optional[str] = Field(default=None, description="Norwegian national ID (personnummer), 11 digits")
+    departmentId: Optional[int] = Field(default=None, description="Department ID if already known")
+    departmentName: Optional[str] = Field(default=None, description="Department name to find before employee creation")
     address: Optional[dict] = Field(default=None, description='Employee address, e.g. {"addressLine1":"...", "postalCode":"...", "city":"..."}')
     startDate: Optional[str] = Field(default=None, description="Employment start date YYYY-MM-DD")
     endDate: Optional[str] = Field(default=None, description="Employment end date YYYY-MM-DD")
@@ -341,7 +343,7 @@ async def discover_sandbox(ctx: RunContext[AgentDeps], args: DiscoverSandboxArgs
 
 @agent.tool
 async def create_employee(ctx: RunContext[AgentDeps], args: CreateEmployeeArgs) -> str:
-    """Create an employee. Handles department lookup automatically."""
+    """Create an employee. Resolves department plus employment, salary, and standard work-time details when provided."""
     return await _safe_action("create_employee", ctx.deps.client, args.model_dump(exclude_none=True), 2000)
 
 
@@ -513,7 +515,7 @@ KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
 - ONLY call discover_sandbox if you need to find existing entities (invoices, customers, etc). Skip it for simple creation tasks.
 - For invoices: create_invoice handles bank account setup and customer creation automatically.
-- CRITICAL: For admin/administrator/Administratorrolle/tilgang/full access roles: ALWAYS set userType="EXTENDED" in create_employee. This is worth 50% of the employee task score!
+- CRITICAL: For admin/administrator/Administratorrolle/tilgang/full access roles: ALWAYS set userType="EXTENDED" in create_employee. For onboarding/prompts from contracts or PDFs, also pass departmentName, startDate, percentageOfFullTimeEquivalent, annualSalary, occupationCode, and hoursPerDay whenever the prompt provides them.
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport, 5=0%.
 - Dates must be YYYY-MM-DD format.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.

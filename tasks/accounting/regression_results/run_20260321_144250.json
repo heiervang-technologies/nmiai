@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260321_144250",
+  "server_url": "http://localhost:8000",
+  "tests": [
+    {
+      "name": "timesheet_basic",
+      "status": "PASS",
+      "elapsed": 7.9,
+      "api_calls": 11,
+      "api_errors": 7,
+      "family_detected": "timesheet",
+      "failures": []
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 1,
+    "fail": 0,
+    "error": 0
+  }
+}

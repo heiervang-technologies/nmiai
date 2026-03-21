@@ -7,7 +7,8 @@
     "POST /employee — body: {firstName, lastName, userType, department:{id}, email, dateOfBirth, phoneNumberMobile, nationalIdentityNumber}",
     "PUT /employee/{id} — GET first for id+version, then PUT full object",
     "POST /employee/employment — {employee:{id}, startDate, employmentType, percentageOfFullTimeEquivalent, occupationCode:{code:'NNNN'}}",
-    "POST /employee/employment/details — {employment:{id}, date, annualSalary, payrollPercentage}"
+    "POST /employee/employment/details — {employment:{id}, date, annualSalary, payrollPercentage}",
+    "POST /employee/standardTime — {employee:{id}, fromDate, hoursPerDay}"
   ],
   "required_fields": ["firstName", "lastName", "userType", "department"],
   "common_errors": [
@@ -16,5 +17,5 @@
     "admin/administrator role = userType EXTENDED",
     "PDF files may be empty (content_base64='') — extract data from prompt text instead"
   ],
-  "tips": "CRITICAL ONBOARDING CHECKLIST — set ALL of these fields when the prompt mentions them: 1) firstName + lastName, 2) email, 3) dateOfBirth (YYYY-MM-DD), 4) nationalIdentityNumber (11-digit personnummer), 5) userType (EXTENDED for admin), 6) startDate on employment, 7) percentageOfFullTimeEquivalent (e.g. 100.0), 8) annualSalary (årslønn), 9) occupationCode (STYRK code like '2511'). If PDF is empty, use whatever data is in the prompt text. ADMIN ROLE = 50% of employee score — if prompt says 'administrator/admin/tilgang', ALWAYS set userType=EXTENDED."
+  "tips": "CRITICAL ONBOARDING CHECKLIST — set ALL of these fields when the prompt mentions them: 1) firstName + lastName, 2) email, 3) departmentName or departmentId, 4) dateOfBirth (YYYY-MM-DD), 5) nationalIdentityNumber (11-digit personnummer), 6) userType (EXTENDED for admin), 7) startDate on employment, 8) percentageOfFullTimeEquivalent (e.g. 100.0), 9) annualSalary (årslønn), 10) occupationCode (STYRK code like '2511'), 11) hoursPerDay for standard work time (e.g. 7.5). If PDF is empty, use whatever data is in the prompt text. ADMIN ROLE = 50% of employee score — if prompt says 'administrator/admin/tilgang', ALWAYS set userType=EXTENDED."
 }

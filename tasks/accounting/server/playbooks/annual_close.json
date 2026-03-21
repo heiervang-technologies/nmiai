@@ -1,0 +1,24 @@
+{
+  "family": "annual_close",
+  "keywords": [
+    "årsavslutning", "årsoppgjør", "cierre anual", "clôture annuelle",
+    "annual close", "annual closing", "year-end", "yearend",
+    "Jahresabschluss", "encerramento anual",
+    "depreciación anual", "avskrivning", "depreciation",
+    "resultatdisponering", "profit distribution",
+    "avsetning til skatt", "tax provision"
+  ],
+  "description": "Year-end closing: depreciation, tax provisions, profit distribution via voucher postings",
+  "preflight": [
+    "GET /ledger/account to find asset, depreciation, and tax accounts"
+  ],
+  "endpoints": [
+    "Use create_voucher — all year-end entries are journal postings",
+    "Depreciation: debit 6000-series (depreciation cost), credit 1000-series (asset reduction)",
+    "Tax provision: debit 8300 (tax cost), credit 2500 (tax payable)",
+    "Profit distribution: debit 8800 (result), credit 2050 (equity)"
+  ],
+  "required_fields": [],
+  "common_errors": [],
+  "tips": "Year-end closing is done via create_voucher. Parse ALL items from the prompt (depreciation of each asset, tax provision, profit distribution). Create one voucher per entry or one combined voucher. Use correct account numbers from the prompt."
+}

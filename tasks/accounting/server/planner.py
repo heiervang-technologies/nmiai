@@ -28,6 +28,7 @@ log.info(f"Loaded {len(PLAYBOOKS)} playbooks: {list(PLAYBOOKS.keys())}")
 # Invoice must beat timesheet because "faktura med 10 timer" is an invoice, not timesheet.
 FAMILY_PRIORITY = {
     "bank_reconciliation": 99,
+    "annual_close": 97,
     "ledger_correction": 98,
     "invoice": 95,
     "travel_expense": 85,

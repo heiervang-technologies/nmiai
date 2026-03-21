@@ -406,9 +406,19 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         except Exception:
             pass
 
-    # Get department ID
-    deps = await client.get("/department", params={"count": 1})
-    dep_id = deps["values"][0]["id"] if deps.get("values") else None
+    dep_id = args.get("departmentId")
+    if not dep_id:
+        deps = await client.get("/department", params={"count": 100})
+        dep_values = deps.get("values", [])
+        wanted_department = (args.get("departmentName") or "").strip().lower()
+        if wanted_department:
+            for dep in dep_values:
+                dep_name = (dep.get("name") or "").strip().lower()
+                if dep_name == wanted_department or wanted_department in dep_name:
+                    dep_id = dep["id"]
+                    break
+        if not dep_id and dep_values:
+            dep_id = dep_values[0]["id"]
 
     body = {
         "firstName": args["firstName"],
@@ -956,7 +966,8 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
 
         # Add supplier ref for VENDOR/SUPPLIER ledger accounts
         posting_supplier_id = p.get("supplierId") or supplier_id
-        if posting_supplier_id and account_obj and account_obj.get("ledgerType") == "VENDOR":
+        ledger_type = (account_obj or {}).get("ledgerType")
+        if posting_supplier_id and ledger_type in {"VENDOR", "SUPPLIER"}:
             posting["supplier"] = {"id": int(posting_supplier_id)}
 
         postings.append(posting)

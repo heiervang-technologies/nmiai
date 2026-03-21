@@ -14,5 +14,5 @@
     "Use generic_api_call with GET /ledger/voucher or GET /ledger/posting to find errors",
     "Corrective vouchers should be dated on the last day of the error period"
   ],
-  "tips": "CRITICAL: The prompt tells you EXACTLY what the errors are (wrong account, duplicate, missing VAT, wrong amount). Parse all errors from the prompt. For EACH error, create ONE corrective voucher using create_voucher. Wrong account: debit correct account, credit wrong account. Duplicate: reverse the duplicate. Missing VAT: add the VAT posting. Wrong amount: post the difference. Use generic_api_call to GET /ledger/voucher?dateFrom=2026-01-01&dateTo=2026-02-28 to verify."
+  "tips": "CRITICAL: The prompt tells you EXACTLY what the errors are (wrong account, duplicate, missing VAT, wrong amount). Parse all errors from the prompt. For EACH error, create ONE corrective voucher using create_voucher. Wrong account: debit correct account, credit wrong account. Duplicate: reverse the duplicate. Missing VAT: add the VAT posting. Wrong amount: post the difference. If the original posting is on a supplier/customer control account, preserve the same supplierId/customerId on the corrective voucher posting. Use generic_api_call to GET /ledger/voucher?dateFrom=2026-01-01&dateTo=2026-02-28 to verify."
 }
