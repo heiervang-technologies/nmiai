@@ -829,15 +829,38 @@ class MarkusNet(nn.Module):
 
         cls_state = ckpt['cls_head_state']
 
+        has_embed_tokens = "model.language_model.embed_tokens.weight" in model_state
         # Load vision encoder weights
         self._load_vision(model_state)
         # Load language model weights
         self._load_language(model_state)
+        if not has_embed_tokens:
+            self._load_token_embeddings(ckpt, device)
         # Load classification head
         self.cls_head.head[0].weight.data = cls_state["head.0.weight"].to(device)
         self.cls_head.head[0].bias.data = cls_state["head.0.bias"].to(device)
         self.cls_head.head[3].weight.data = cls_state["head.3.weight"].to(device)
         self.cls_head.head[3].bias.data = cls_state["head.3.bias"].to(device)
+
+    def _load_token_embeddings(self, ckpt, device):
+        token_ids = ckpt.get("token_ids")
+        token_embeds = ckpt.get("token_embeds")
+        if token_ids is None or token_embeds is None:
+            raise RuntimeError(
+                "Checkpoint is missing embed_tokens and required token embeddings. "
+                "Re-export NF4 with token_ids/token_embeds metadata."
+            )
+
+        token_ids = torch.as_tensor(token_ids, dtype=torch.long, device=device)
+        token_embeds = token_embeds.to(device=device, dtype=self.language.embed_tokens.weight.dtype)
+
+        if token_embeds.ndim != 2 or token_embeds.shape[0] != token_ids.numel() or token_embeds.shape[1] != TXT_HIDDEN:
+            raise RuntimeError(
+                f"Invalid token embedding payload: ids={token_ids.shape}, embeds={token_embeds.shape}"
+            )
+
+        self.language.embed_tokens.weight.data.zero_()
+        self.language.embed_tokens.weight.data[token_ids] = token_embeds
 
     def _load_vision(self, state):
         prefix = "model.visual."
