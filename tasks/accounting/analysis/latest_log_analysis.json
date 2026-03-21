@@ -1,0 +1,478 @@
+{
+  "generated_at": "2026-03-21T13:41:50.176832+00:00",
+  "log_dir": "/tmp/accounting-logs",
+  "total_runs": 17,
+  "seen_families": [
+    "customer",
+    "department",
+    "employee",
+    "project",
+    "salary",
+    "supplier",
+    "timesheet",
+    "travel_expense",
+    "voucher"
+  ],
+  "new_families_since_last_run": [
+    "department",
+    "timesheet"
+  ],
+  "unseen_families": [
+    "invoice",
+    "product"
+  ],
+  "unknown_families": [],
+  "empty_attachment_runs": 0,
+  "alerts": [
+    "customer clean rate is 50.0%; likely missing fields: customer",
+    "employee clean rate is 50.0%; likely missing fields: employee",
+    "project clean rate is 0.0%; likely missing fields: project, activity, rate_type",
+    "supplier clean rate is 50.0%; likely missing fields: none",
+    "timesheet clean rate is 0.0%; likely missing fields: vat_type",
+    "travel_expense clean rate is 50.0%; likely missing fields: delivered_state, rate_type, travel_expense_type_or_travel_details, cost_lines_or_allowances",
+    "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries",
+    "voucher clean rate is 50.0%; likely missing fields: none",
+    "New families seen: department, timesheet",
+    "Still unseen families: invoice, product"
+  ],
+  "families": [
+    {
+      "family": "customer",
+      "runs": 2,
+      "proxy_clean_rate": 0.5,
+      "likely_full_runs": 1,
+      "likely_partial_runs": 1,
+      "mean_api_errors": 2.0,
+      "mean_api_calls": 10.5,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/ledger/voucher: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/ledger/voucher: postings.customer.id -> Kunde mangler.",
+          "count": 2
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "customer",
+          "count": 2
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_133107",
+          "prompt": "Uno de sus clientes tiene una factura vencida. Encuentre la factura vencida y registre un cargo por recordatorio de 60 NOK. Debito cuentas por cobrar (1500), credito ingresos por recordatorio (3400). También cree una fac",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_134114",
+          "prompt": "Opprett en kunde med navn Bedrift AS, org.nr 987654321, e-post kontakt@bedrift.no",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "department",
+      "runs": 1,
+      "proxy_clean_rate": 1.0,
+      "likely_full_runs": 1,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 0.0,
+      "mean_api_calls": 1.0,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [],
+      "likely_missing_fields": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_134055",
+          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "employee",
+      "runs": 4,
+      "proxy_clean_rate": 0.5,
+      "likely_full_runs": 2,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 0.5,
+      "mean_api_calls": 2.5,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/employee: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/employee: Det ser ut som at oppgitt e-postadresse inneholder en stavefeil. Vennligst sjekk at e-postadressen er riktig.",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "employee",
+          "count": 4
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_134106",
+          "prompt": "Opprett en ansatt med navn Kari Nordmann, e-post kari@example.com, avdeling IT",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_134110",
+          "prompt": "Create employee John Smith, email john@test.com, with administrator access",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_134137",
+          "prompt": "Create employee Ola Nordmann, email ola@test.no, with administrator access",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "project",
+      "runs": 1,
+      "proxy_clean_rate": 0.0,
+      "likely_full_runs": 0,
+      "likely_partial_runs": 1,
+      "mean_api_errors": 10.0,
+      "mean_api_calls": 24.0,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/timesheet/entry: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/timesheet/entry: activity -> Kan ikke være null.",
+          "count": 2
+        },
+        {
+          "pattern": "/project/402006430: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/project/402006430: Internt felt (projectratetypes) -> Timepriser for prosjektet kan bare endres via endepunktet \"project/hourlyRates\".",
+          "count": 1
+        },
+        {
+          "pattern": "/incomingInvoice: HTTP 403 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/incomingInvoice: {\"status\":403,\"code\":9000,\"message\":\"You do not have permission to access this feature.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":null,\"validationMessages\":null,\"requestId\":\"775627ca-c95c-4188-b858-2e6e650fbc99\"}",
+          "count": 1
+        },
+        {
+          "pattern": "/ledger/voucher: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/ledger/voucher: postings.supplier.id -> Leverandør mangler.",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "project",
+          "count": 2
+        },
+        {
+          "field": "activity",
+          "count": 2
+        },
+        {
+          "field": "rate_type",
+          "count": 1
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_133144",
+          "prompt": "Execute o ciclo de vida completo do projeto 'Implementação ERP Rio' (Rio Azul Lda, org. nº 957527353): 1) O projeto tem um orçamento de 386350 NOK. 2) Registe horas: Beatriz Sousa (gestor de projeto, beatriz.sousa@exampl",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "salary",
+      "runs": 2,
+      "proxy_clean_rate": 1.0,
+      "likely_full_runs": 0,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 2.0,
+      "mean_api_calls": 5.5,
+      "attachment_runs": 2,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/employee/employment: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/employee/employment: employmentType -> Feltet eksisterer ikke i objektet.",
+          "count": 2
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "employee",
+          "count": 4
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_133055",
+          "prompt": "Du har mottatt en arbeidskontrakt (se vedlagt PDF). Opprett den ansatte i Tripletex med alle detaljer fra kontrakten: personnummer, fodselsdato, avdeling, stillingskode, lonn, stillingsprosent og startdato.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_133130",
+          "prompt": "Du har mottatt en arbeidskontrakt (se vedlagt PDF). Opprett den ansatte i Tripletex med alle detaljer fra kontrakten: personnummer, fodselsdato, avdeling, stillingskode, lonn, stillingsprosent og startdato.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "supplier",
+      "runs": 2,
+      "proxy_clean_rate": 0.5,
+      "likely_full_runs": 1,
+      "likely_partial_runs": 1,
+      "mean_api_errors": 4.0,
+      "mean_api_calls": 10.0,
+      "attachment_runs": 1,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/incomingInvoice: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/incomingInvoice: account -> Feltet eksisterer ikke i objektet.",
+          "count": 2
+        },
+        {
+          "pattern": "/ledger/voucher: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/ledger/voucher: postings.supplier.id -> Leverandør mangler.",
+          "count": 2
+        }
+      ],
+      "likely_missing_fields": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_133113",
+          "prompt": "Du har mottatt en leverandorfaktura (se vedlagt PDF). Registrer fakturaen i Tripletex. Opprett leverandoren hvis den ikke finnes. Bruk riktig utgiftskonto og inngaende MVA.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_134122",
+          "prompt": "Registrer en leverandørfaktura fra Leverandør AS (org.nr 123456789) på 12500 NOK inkl. mva. Fakturanummer LF-2026-001. Utgiftskonto 6300.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
+    {
+      "family": "timesheet",
+      "runs": 1,
+      "proxy_clean_rate": 0.0,
+      "likely_full_runs": 0,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 4.0,
+      "mean_api_calls": 12.0,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/invoice: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/invoice: orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id -> Ugyldig mva-kode.",
+          "count": 1
+        },
+        {
+          "pattern": "/invoice: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":\"orders.orderGroups.orderLines.vatType.id,orders.orderLines.vatType.id,orderLines.vatType.id\",\"message\":\"Ugyldig mva-kode.\",\"path\":null,\"rootId\":0},{\"field\":null,\"message\":\"Finner ikke en gyldig regnskapskonto for mva-koden 4: Direktepostert utgående avgift, høy sats.\",\"path\":null,\"rootId\":null}],\"requestId\":\"71a0de2c-6224-4990-8d8c",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "vat_type",
+          "count": 2
+        }
+      ],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_134135",
+          "prompt": "Opprett en faktura til kunde Testfirma AS for konsulenttjenester, 10 timer à 1500 NOK ekskl. mva. Forfallsdato 2026-04-15.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": [
+        "Scorer likely checks the resolved employee, project, activity, date, and exact hours, not just whether `/timesheet/entry` was posted.",
+        "Combined prompts may also require downstream invoice linkage after the hours are logged."
+      ]
+    },
+    {
+      "family": "travel_expense",
+      "runs": 2,
+      "proxy_clean_rate": 0.5,
+      "likely_full_runs": 0,
+      "likely_partial_runs": 2,
+      "mean_api_errors": 3.0,
+      "mean_api_calls": 5.5,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/travelExpense/:deliver: HTTP 422 with no captured body",
+          "count": 2
+        },
+        {
+          "pattern": "/travelExpense/perDiemCompensation: HTTP 422 with no captured body",
+          "count": 1
+        },
+        {
+          "pattern": "/travelExpense/perDiemCompensation: travelExpense.id -> Kun reiseregning, ikke ansattutlegg, kan benyttes her.",
+          "count": 1
+        },
+        {
+          "pattern": "/travelExpense/:deliver: 11148042 -> Du kan ikke levere eller godkjenne et utlegg uten kostnader.",
+          "count": 1
+        },
+        {
+          "pattern": "/travelExpense/:deliver: {\"status\":422,\"code\":18000,\"message\":\"Validering feilet.\",\"link\":\"https://tripletex.no/v2-docs/\",\"developerMessage\":\"VALIDATION_ERROR\",\"validationMessages\":[{\"field\":\"project.invoicingPlan.orders.travelReports.perDiemCompensations.rateType.id,project.invoicingPlan.travelReports.perDiemCompensations.rateType.id,invoice.orders.travelReports.perDiemCompensations.rateType.id,invoice.travelReports.perDiemCompensations.rateType.id,perDiemCompensations.rateType.id\",\"message\":\"Sats eller satskategori må",
+          "count": 1
+        }
+      ],
+      "likely_missing_fields": [
+        {
+          "field": "delivered_state",
+          "count": 4
+        },
+        {
+          "field": "rate_type",
+          "count": 2
+        },
+        {
+          "field": "travel_expense_type_or_travel_details",
+          "count": 1
+        },
+        {
+          "field": "cost_lines_or_allowances",
+          "count": 1
+        },
+        {
+          "field": "per_diem_completion",
+          "count": 1
+        },
+        {
+          "field": "project",
+          "count": 1
+        }
+      ],
+      "prompt_required_fields": [
+        {
+          "field": "per_diem",
+          "count": 2
+        },
+        {
+          "field": "duration",
+          "count": 2
+        },
+        {
+          "field": "departure_or_destination",
+          "count": 2
+        }
+      ],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_132035",
+          "prompt": "Registre una nota de gastos de viaje para Ricardo Romero (ricardo.romero@example.org) por \"Conferencia Ålesund\". El viaje duró 5 días con indemnización diaria (tarifa diaria 800 NOK). Ciudad de salida: Bergen.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_132235",
+          "prompt": "Registre una nota de gastos de viaje para Ricardo Romero (ricardo.romero@example.org) por \"Conferencia Ålesund\". El viaje duró 5 días con indemnización diaria (tarifa diaria 800 NOK). Ciudad de salida: Bergen.",
+          "omissions": [
+            "explicit_missing_followup",
+            "left_open",
+            "not_delivered"
+          ]
+        }
+      ],
+      "scorer_hypotheses": [
+        "Scorer likely checks that the travel expense is not only created, but typed correctly as travel, populated with per diem or cost details, and delivered or otherwise finalized.",
+        "Repeated validation errors around `rateType.id` suggest the per diem object is structurally incomplete even when the travel expense itself is created."
+      ]
+    },
+    {
+      "family": "voucher",
+      "runs": 2,
+      "proxy_clean_rate": 0.5,
+      "likely_full_runs": 1,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 5.0,
+      "mean_api_calls": 9.0,
+      "attachment_runs": 0,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [
+        {
+          "pattern": "/ledger/posting: HTTP 422 with no captured body",
+          "count": 5
+        },
+        {
+          "pattern": "/ledger/posting: dateTo -> Kan ikke være null.",
+          "count": 5
+        },
+        {
+          "pattern": "/ledger/posting: dateFrom -> Kan ikke være null.",
+          "count": 5
+        }
+      ],
+      "likely_missing_fields": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_133204",
+          "prompt": "Vi har oppdaget feil i hovedboken for januar og februar 2026. Gå gjennom alle bilag og finn de 4 feilene: en postering på feil konto (konto 6860 brukt i stedet for 6590, beløp 6200 kr), et duplisert bilag (konto 7100, be",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_134144",
+          "prompt": "Opprett et bilag: debet konto 6300 (kontorrekvisita) 5000 NOK, kredit konto 1920 (bank) 5000 NOK. Beskrivelse: Innkjøp kontorrekvisita.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    }
+  ]
+}

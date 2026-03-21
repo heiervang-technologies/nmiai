@@ -1,0 +1,1 @@
+timestamp	experiment_id	model	cv_weighted_kl	cv_rounds	live_score	queries_used	compute_minutes	submissions_used	override_safe_best	status	description

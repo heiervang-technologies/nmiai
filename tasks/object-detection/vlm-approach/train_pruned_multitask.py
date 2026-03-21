@@ -34,7 +34,7 @@ DATA_ROOT = Path(__file__).parent.parent / "data-creation" / "data"
 COCO_ANNOTATIONS = DATA_ROOT / "coco_dataset" / "train" / "annotations.json"
 COCO_IMAGES = DATA_ROOT / "coco_dataset" / "train" / "images"
 CROP_CACHE = Path(__file__).parent / "cached_dataset" / "crops"
-VAL_DIR = DATA_ROOT / "stratified_split" / "val"
+VAL_DIR = DATA_ROOT / "clean_split" / "val"
 OUTPUT_DIR = Path(__file__).parent / "training_output_multitask"
 
 NUM_CLASSES = 356

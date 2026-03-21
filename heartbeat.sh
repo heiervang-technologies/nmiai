@@ -5,7 +5,7 @@
 TIMESTAMP=$(date -u +"%H:%M UTC")
 
 # Find all panes in sessions starting with "nmiai"
-PANES=$(tmux list-panes -a -F '#{session_name}:#{pane_id}' 2>/dev/null | grep '^nmiai' | awk -F: '{print $NF}')
+PANES=$(tmux list-panes -a -F '#{session_name}:#{pane_id}' 2>/dev/null | grep -E '^nmai|^nmiai' | awk -F: '{print $NF}')
 
 # Get our own pane to skip it
 MY_PANE=$(echo $TMUX_PANE)

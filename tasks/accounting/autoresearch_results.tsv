@@ -1,0 +1,17 @@
+timestamp	batch_id	family	model	proxy_clean_rate	api_errors	successful_writes	dashboard_score	submissions_used	attachment_present	status	description
+2026-03-21T13:33:13.997540+00:00	20260321_133204	customer	openai/gpt-5.4	0.0000	4	2		0	false	manual_review	customer: clean_rate=0.0%, likely_missing=customer
+2026-03-21T13:33:13.997560+00:00	20260321_133204	employee	openai/gpt-5.4	0.0000	0	0		0	false	manual_review	employee: clean_rate=0.0%, likely_missing=none
+2026-03-21T13:33:13.997566+00:00	20260321_133204	project	openai/gpt-5.4	0.0000	10	1		0	false	manual_review	project: clean_rate=0.0%, likely_missing=project,activity,rate_type
+2026-03-21T13:33:13.997571+00:00	20260321_133204	salary	openai/gpt-5.4	1.0000	4	3		0	true	keep	salary: clean_rate=100.0%, likely_missing=employee
+2026-03-21T13:33:13.997576+00:00	20260321_133204	supplier	openai/gpt-5.4	0.0000	8	2		0	true	manual_review	supplier: clean_rate=0.0%, likely_missing=none
+2026-03-21T13:33:13.997580+00:00	20260321_133204	travel_expense	openai/gpt-5.4	0.5000	6	3		0	false	watch	travel_expense: clean_rate=50.0%, likely_missing=delivered_state,rate_type,travel_expense_type_or_travel_details,cost_lines_or_allowances
+2026-03-21T13:33:13.997585+00:00	20260321_133204	voucher	openai/gpt-5.4	0.0000	10	0		0	false	manual_review	voucher: clean_rate=0.0%, likely_missing=none
+2026-03-21T13:41:50.176990+00:00	20260321_134144	customer	openai/gpt-5.4	0.5000	4	3		0	false	watch	customer: clean_rate=50.0%, likely_missing=customer
+2026-03-21T13:41:50.177020+00:00	20260321_134144	department	openai/gpt-5.4	1.0000	0	1		0	false	keep	department: clean_rate=100.0%, likely_missing=none
+2026-03-21T13:41:50.177028+00:00	20260321_134144	employee	openai/gpt-5.4	0.5000	2	2		0	false	watch	employee: clean_rate=50.0%, likely_missing=employee
+2026-03-21T13:41:50.177034+00:00	20260321_134144	project	openai/gpt-5.4	0.0000	10	1		0	false	manual_review	project: clean_rate=0.0%, likely_missing=project,activity,rate_type
+2026-03-21T13:41:50.177040+00:00	20260321_134144	salary	openai/gpt-5.4	1.0000	4	3		0	true	keep	salary: clean_rate=100.0%, likely_missing=employee
+2026-03-21T13:41:50.177045+00:00	20260321_134144	supplier	openai/gpt-5.4	0.5000	8	4		0	true	watch	supplier: clean_rate=50.0%, likely_missing=none
+2026-03-21T13:41:50.177050+00:00	20260321_134144	timesheet	openai/gpt-5.4	0.0000	4	0		0	false	manual_review	timesheet: clean_rate=0.0%, likely_missing=vat_type
+2026-03-21T13:41:50.177056+00:00	20260321_134144	travel_expense	openai/gpt-5.4	0.5000	6	3		0	false	watch	travel_expense: clean_rate=50.0%, likely_missing=delivered_state,rate_type,travel_expense_type_or_travel_details,cost_lines_or_allowances
+2026-03-21T13:41:50.177063+00:00	20260321_134144	voucher	openai/gpt-5.4	0.5000	10	1		0	false	watch	voucher: clean_rate=50.0%, likely_missing=none

@@ -111,19 +111,22 @@ def classify_round(round_data):
     return "moderate"
 
 
-def build_model_from_data(rounds):
-    """Build regime-specific lookup tables from provided data dict.
-
-    Args:
-        rounds: {round_num: {seed_num: {"initial_grid": ..., "ground_truth": ...}}}
-    """
-    # Ensure numpy arrays
-    for rn, seeds in rounds.items():
-        for sn, sd in seeds.items():
-            if not isinstance(sd["initial_grid"], np.ndarray):
-                sd["initial_grid"] = np.array(sd["initial_grid"], dtype=np.int32)
-            if not isinstance(sd["ground_truth"], np.ndarray):
-                sd["ground_truth"] = np.array(sd["ground_truth"], dtype=np.float64)
+def build_model():
+    """Build regime-specific lookup tables."""
+    rounds = {}
+    for f in sorted(GT_DIR.glob("round*_seed*.json")):
+        rn = int(f.stem.split("_")[0].replace("round", ""))
+        sn = int(f.stem.split("_")[1].replace("seed", ""))
+        with open(f) as fh:
+            data = json.load(fh)
+        if "ground_truth" not in data or "initial_grid" not in data:
+            continue
+        if rn not in rounds:
+            rounds[rn] = {}
+        rounds[rn][sn] = {
+            "initial_grid": np.array(data["initial_grid"], dtype=np.int32),
+            "ground_truth": np.array(data["ground_truth"], dtype=np.float64),
+        }
 
     round_regimes = {rn: classify_round(rd) for rn, rd in rounds.items()}
 
@@ -200,23 +203,6 @@ def build_model_from_data(rounds):
         "pooled_counts": [dict(c) for c in pooled_counts],
         "round_regimes": round_regimes,
     }
-
-
-def build_model():
-    """Build model from ground truth files on disk."""
-    rounds = {}
-    for f in sorted(GT_DIR.glob("round*_seed*.json")):
-        rn = int(f.stem.split("_")[0].replace("round", ""))
-        sn = int(f.stem.split("_")[1].replace("seed", ""))
-        with open(f) as fh:
-            data = json.load(fh)
-        if "ground_truth" not in data or "initial_grid" not in data:
-            continue
-        rounds.setdefault(rn, {})[sn] = {
-            "initial_grid": np.array(data["initial_grid"], dtype=np.int32),
-            "ground_truth": np.array(data["ground_truth"], dtype=np.float64),
-        }
-    return build_model_from_data(rounds)
 
 
 def get_model():
@@ -365,19 +351,9 @@ def detect_regime_from_observations(ig, observations):
     return weights
 
 
-def predict_with_model(initial_grid, model, observations=None):
-    """Predict using a specific model (for CV)."""
-    return _predict_impl(initial_grid, model, observations)
-
-
 def predict(initial_grid, observations=None):
-    """Predict using cached model."""
+    """Predict using regime-aware priors."""
     model = get_model()
-    return _predict_impl(initial_grid, model, observations)
-
-
-def _predict_impl(initial_grid, model, observations=None):
-    """Core prediction logic."""
     ig = np.array(initial_grid, dtype=np.int32)
     h, w = ig.shape
     dist_civ, n_ocean, n_civ, coast = compute_features(ig)
@@ -423,21 +399,7 @@ def _predict_impl(initial_grid, model, observations=None):
             else:
                 pred[y, x] = np.ones(N_CLASSES) / N_CLASSES
 
-    # Structural zeros: enforce hard constraints before floor
-    dist_civ_struct, n_ocean_struct, _, coast_struct = compute_features(ig)
-    for y in range(h):
-        for x in range(w):
-            code = int(ig[y, x])
-            if code in (OCEAN, MOUNTAIN):
-                continue
-            # Port is impossible if not ocean-adjacent
-            if not coast_struct[y, x]:
-                pred[y, x, 2] = 0.0  # Port = 0
-            # Mountain is impossible on non-mountain cells
-            pred[y, x, 5] = 0.0
-            # Ruin is negligible far from settlements
-            if dist_civ_struct[y, x] > 10:
-                pred[y, x, 3] = 0.0  # Ruin = 0
+    
 
     # Apply minimal floor only to prevent log(0), then renormalize
     pred = np.maximum(pred, FLOOR)

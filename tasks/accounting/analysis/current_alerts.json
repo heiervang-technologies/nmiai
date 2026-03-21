@@ -1,0 +1,14 @@
+{
+  "alerts": [
+    "customer clean rate is 50.0%; likely missing fields: customer",
+    "employee clean rate is 50.0%; likely missing fields: employee",
+    "project clean rate is 0.0%; likely missing fields: project, activity, rate_type",
+    "supplier clean rate is 50.0%; likely missing fields: none",
+    "timesheet clean rate is 0.0%; likely missing fields: vat_type",
+    "travel_expense clean rate is 50.0%; likely missing fields: delivered_state, rate_type, travel_expense_type_or_travel_details, cost_lines_or_allowances",
+    "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries",
+    "voucher clean rate is 50.0%; likely missing fields: none",
+    "New families seen: department, timesheet",
+    "Still unseen families: invoice, product"
+  ]
+}

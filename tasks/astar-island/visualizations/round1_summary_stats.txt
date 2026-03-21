@@ -1,0 +1,24 @@
+Transition probabilities by initial type
+Ocean (1016 cells): Empty=1.0000, Settlement=0.0000, Port=0.0000, Ruin=0.0000, Forest=0.0000, Mountain=0.0000
+Plains (4882 cells): Empty=0.7845, Settlement=0.1557, Port=0.0140, Ruin=0.0121, Forest=0.0336, Mountain=0.0000
+Settlement (201 cells): Empty=0.3705, Settlement=0.4100, Port=0.0078, Ruin=0.0311, Forest=0.1805, Mountain=0.0000
+Port (7 cells): Empty=0.3643, Settlement=0.1200, Port=0.3186, Ruin=0.0214, Forest=0.1757, Mountain=0.0000
+Forest (1723 cells): Empty=0.0697, Settlement=0.1588, Port=0.0142, Ruin=0.0124, Forest=0.7449, Mountain=0.0000
+Mountain (171 cells): Empty=0.0000, Settlement=0.0000, Port=0.0000, Ruin=0.0000, Forest=0.0000, Mountain=1.0000
+
+Contextual probabilities
+cells_with_2plus_initial_settlement_neighbors (75 cells): Empty=0.5623, Settlement=0.2524, Port=0.0000, Ruin=0.0161, Forest=0.1425, Mountain=0.0267
+forest (1723 cells): Empty=0.0697, Settlement=0.1588, Port=0.0142, Ruin=0.0124, Forest=0.7449, Mountain=0.0000
+forest_near_initial_settlement (390 cells): Empty=0.0939, Settlement=0.2295, Port=0.0153, Ruin=0.0166, Forest=0.6446, Mountain=0.0000
+initial_settlement (201 cells): Empty=0.3705, Settlement=0.4100, Port=0.0078, Ruin=0.0311, Forest=0.1805, Mountain=0.0000
+initial_settlement_coastal (4 cells): Empty=0.3037, Settlement=0.1338, Port=0.3938, Ruin=0.0238, Forest=0.1450, Mountain=0.0000
+plains (4882 cells): Empty=0.7845, Settlement=0.1557, Port=0.0140, Ruin=0.0121, Forest=0.0336, Mountain=0.0000
+plains_coastal (742 cells): Empty=0.8139, Settlement=0.0658, Port=0.0921, Ruin=0.0086, Forest=0.0196, Mountain=0.0000
+plains_near_initial_settlement (1092 cells): Empty=0.7016, Settlement=0.2263, Port=0.0118, Ruin=0.0158, Forest=0.0444, Mountain=0.0000
+
+Per-seed metrics
+Seed 0: mean_entropy=0.7023, max_entropy=2.0259, nonzero_entropy_cells=1293, argmax_settlements=28, argmax_ports=0, argmax_ruins=0
+Seed 1: mean_entropy=0.8687, max_entropy=2.0616, nonzero_entropy_cells=1326, argmax_settlements=28, argmax_ports=2, argmax_ruins=0
+Seed 2: mean_entropy=0.7797, max_entropy=2.0362, nonzero_entropy_cells=1331, argmax_settlements=33, argmax_ports=1, argmax_ruins=0
+Seed 3: mean_entropy=0.9218, max_entropy=1.8164, nonzero_entropy_cells=1366, argmax_settlements=35, argmax_ports=0, argmax_ruins=0
+Seed 4: mean_entropy=0.7227, max_entropy=1.9794, nonzero_entropy_cells=1274, argmax_settlements=43, argmax_ports=1, argmax_ruins=0
