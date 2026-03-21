@@ -2576,9 +2576,18 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         return await client.post(path, json=body)
     elif method == "PUT":
         # Auto-add invoiceDate for order-to-invoice conversion
-        if "/:invoice" in path and "invoiceDate" not in (params or {}):
+        if "/:invoice" in path and "/order/" in path:
             params = params or {}
-            params["invoiceDate"] = TODAY
+            if "invoiceDate" not in params:
+                params["invoiceDate"] = _today()
+            if "invoiceDueDate" not in params:
+                from datetime import timedelta
+                params["invoiceDueDate"] = (date.fromisoformat(_today()) + timedelta(days=30)).isoformat()
+            # Ensure bank account is set up before converting to invoice
+            try:
+                await action_setup_bank_account(client, {})
+            except Exception:
+                pass
         return await client.put(path, json=body, params=params or None)
     elif method == "DELETE":
         return await client.delete(path)
