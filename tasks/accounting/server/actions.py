@@ -1407,28 +1407,51 @@ async def action_create_accounting_dimension(client: TripletexClient, args: dict
         # Tripletex uses: freeAccountingDimension1, freeAccountingDimension2, freeAccountingDimension3
         dim_field = f"freeAccountingDimension{dim_index}" if dim_index else "freeAccountingDimension1"
 
+        # Find the target dimension value
+        target_dim_value_id = None
+        target_dim_value_name = args.get("dimensionValueName", "")
+        if target_dim_value_name and created_values:
+            for cv in created_values:
+                if cv.get("displayName", "").lower() == target_dim_value_name.lower():
+                    target_dim_value_id = cv["id"]
+                    break
+        if not target_dim_value_id and created_values:
+            target_dim_value_id = created_values[0]["id"]
+
+        # Build postings from args or auto-generate balanced pair
+        raw_postings = args.get("voucherPostings", [])
+        if not raw_postings and args.get("accountNumber") and args.get("amount"):
+            # Auto-generate: expense debit + bank credit
+            raw_postings = [
+                {"accountNumber": args["accountNumber"], "amount": float(args["amount"])},
+                {"accountNumber": "1920", "amount": -float(args["amount"])},
+            ]
+
         postings = []
-        for i, p in enumerate(args["voucherPostings"], start=1):
+        for i, p in enumerate(raw_postings, start=1):
             account_number = p.get("accountNumber")
             account_id = account_cache.get(int(account_number)) if account_number else p.get("accountId")
-
             amount = float(p.get("amountGross", p.get("amount", 0)))
+            is_expense = amount > 0  # Positive = expense/debit
+
             posting = {
                 "row": i,
                 "account": {"id": account_id},
                 "amountGross": _money(amount),
-                "amountGrossCurrency": _money(amount),  # Must match amountGross exactly
+                "amountGrossCurrency": _money(amount),
             }
+            # Auto-add vatType=3 (25% standard) on expense posting if not specified
             if p.get("vatTypeId"):
                 posting["vatType"] = {"id": int(p["vatTypeId"])}
-            # Link to dimension value using correct field name
-            if p.get("dimensionValueId"):
+            elif is_expense:
+                posting["vatType"] = {"id": 3}  # 25% standard MVA
+
+            # Only link dimension to the EXPENSE posting, not the balancing entry
+            if is_expense and target_dim_value_id:
+                posting[dim_field] = {"id": target_dim_value_id}
+            elif p.get("dimensionValueId"):
                 posting[dim_field] = {"id": p["dimensionValueId"]}
-            elif created_values and p.get("dimensionValueName"):
-                for cv in created_values:
-                    if cv.get("displayName") == p["dimensionValueName"]:
-                        posting[dim_field] = {"id": cv["id"]}
-                        break
+
             postings.append(posting)
 
         voucher_body = {
