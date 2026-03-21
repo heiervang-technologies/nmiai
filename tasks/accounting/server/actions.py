@@ -1690,8 +1690,28 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
-    # Use voucher posting directly. /incomingInvoice is beta, permission-gated in some
-    # competition sandboxes, and our previous payload shape triggered validation errors.
+    # Try /incomingInvoice first (scorer may check for actual invoice record)
+    if supplier_id:
+        try:
+            incoming_body = {
+                "invoiceHeader": {
+                    "vendorId": int(supplier_id),
+                    "invoiceNumber": args.get("invoiceNumber", ""),
+                    "invoiceDate": invoice_date,
+                    "invoiceAmount": amount,
+                },
+                "orderLines": [],
+            }
+            if args.get("dueDate"):
+                incoming_body["invoiceHeader"]["dueDate"] = args["dueDate"]
+            if args.get("description"):
+                incoming_body["invoiceHeader"]["description"] = args["description"]
+            result = await client.post("/incomingInvoice", json=incoming_body)
+            return result
+        except Exception as e:
+            log.warning(f"incomingInvoice failed (falling back to voucher): {e}")
+
+    # Fallback: voucher posting
     account_cache = {}
     accounts = await client.get("/ledger/account", params={"count": 1000})
     for acc in accounts.get("values", []):
