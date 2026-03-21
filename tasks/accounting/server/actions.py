@@ -2575,6 +2575,10 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 raise
         return await client.post(path, json=body)
     elif method == "PUT":
+        # Auto-add invoiceDate for order-to-invoice conversion
+        if "/:invoice" in path and "invoiceDate" not in (params or {}):
+            params = params or {}
+            params["invoiceDate"] = TODAY
         return await client.put(path, json=body, params=params or None)
     elif method == "DELETE":
         return await client.delete(path)
