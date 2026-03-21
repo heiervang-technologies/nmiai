@@ -145,6 +145,19 @@ for si in range(5):
     pred=rp.predict(details['initial_states'][si]['grid'],observations=obs if obs else None)
     if obs:
         init=np.array(details['initial_states'][si]['grid'])
+        # Conditional tau: estimate expected frontier growth from template weights
+        from scipy.ndimage import distance_transform_edt
+        civ_m=(init==1)|(init==2)
+        if civ_m.any():
+            d_civ=distance_transform_edt(~civ_m)
+            frontier=(d_civ>=1.5)&(d_civ<=6)&(init!=10)&(init!=5)
+            if frontier.any():
+                exp_growth=pred[frontier,1].mean()
+            else: exp_growth=0.1
+        else: exp_growth=0.1
+        if exp_growth>=0.16: tau=27.0
+        elif exp_growth>=0.08: tau=20.0
+        else: tau=14.0
         counts=np.zeros((40,40,6));oc=np.zeros((40,40),dtype=int)
         for o in obs:
             for dy,row in enumerate(o['grid']):
@@ -154,7 +167,7 @@ for si in range(5):
         for y in range(40):
             for x in range(40):
                 if oc[y,x]>=2 and init[y,x] not in (10,5):
-                    alpha=20.0*pred[y,x];post=counts[y,x]+alpha;pred[y,x]=post/post.sum()
+                    alpha=tau*pred[y,x];post=counts[y,x]+alpha;pred[y,x]=post/post.sum()
     # Sigma=0.3 spatial smoothing (+1.9% CV validated)
     from scipy.ndimage import gaussian_filter
     init=np.array(details['initial_states'][si]['grid'])
