@@ -8,7 +8,11 @@ from datetime import date
 from tripletex_client import TripletexClient
 
 log = logging.getLogger(__name__)
-TODAY = date.today().isoformat()
+
+
+def _today() -> str:
+    """Always return current date, never stale."""
+    return date.today().isoformat()
 
 
 def _error_text(exc: Exception) -> str:
@@ -175,18 +179,17 @@ async def _find_customer_id(
 
 async def _grant_employee_all_privileges(client: TripletexClient, employee_id: int) -> None:
     """Grant ALL_PRIVILEGES to employee so they can do travel/timesheet/salary."""
+    # Single GET instead of two — saves 1 API call per timesheet/travel task
     try:
         emp_data = await client.get(f"/employee/{employee_id}")
         emp = emp_data.get("value", emp_data)
         if emp.get("allowInformationRegistration"):
             return
     except Exception:
-        pass
+        return
 
     # Set allowInformationRegistration + userType via PUT on employee.
     try:
-        emp_data = await client.get(f"/employee/{employee_id}")
-        emp = emp_data.get("value", emp_data)
         emp["allowInformationRegistration"] = True
         if emp.get("userType") != "EXTENDED":
             emp["userType"] = "EXTENDED"
@@ -572,7 +575,12 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
     if not args.get("email") and user_type == "STANDARD":
         # Tripletex requires email for login users; plain onboarding without email
         # should fall back to a non-login employee instead of failing the whole task.
+        # BUT: never override an explicitly-set EXTENDED (admin) type — the task asked for it.
         user_type = "NO_ACCESS"
+    elif not args.get("email") and user_type == "EXTENDED":
+        # Admin without email: generate a placeholder email so Tripletex accepts the user
+        placeholder_email = f"{args.get('firstName','x').lower()}.{args.get('lastName','x').lower()}@placeholder.no"
+        args["email"] = placeholder_email
 
     body = {
         "firstName": args["firstName"],
@@ -616,7 +624,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
                 emp_record_id = emp_record["id"]
                 salary_body = {
                     "employment": {"id": emp_record_id},
-                    "date": args.get("startDate", TODAY),
+                    "date": args.get("startDate", _today()),
                 }
                 if args.get("annualSalary") is not None:
                     salary_body["annualSalary"] = float(args["annualSalary"])
@@ -633,7 +641,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         try:
             await client.post("/employee/standardTime", json={
                 "employee": {"id": employee_id},
-                "fromDate": args.get("startDate", TODAY),
+                "fromDate": args.get("startDate", _today()),
                 "hoursPerDay": float(args["hoursPerDay"]),
             })
         except Exception as e:
@@ -876,7 +884,7 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
             lines.append(ol)
         return lines
 
-    invoice_date = args.get("invoiceDate", TODAY)
+    invoice_date = args.get("invoiceDate", _today())
     due_date = args.get("invoiceDueDate", args.get("dueDate", invoice_date))
 
     # Resolve currency if specified (e.g. EUR, USD)
@@ -953,7 +961,7 @@ async def action_create_order(client: TripletexClient, args: dict) -> dict:
         }
         order_lines.append(ol)
 
-    order_date = args.get("orderDate", TODAY)
+    order_date = args.get("orderDate", _today())
     body = {
         "customer": {"id": customer_id},
         "orderDate": order_date,
@@ -999,7 +1007,7 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
         payment_type_id = payment_types[0]["id"]
 
     amount = float(args.get("amount", args.get("paidAmount", 0)))
-    payment_date = args.get("paymentDate", TODAY)
+    payment_date = args.get("paymentDate", _today())
 
     payment_params = {
         "paymentDate": payment_date,
@@ -1080,7 +1088,7 @@ async def action_create_credit_note(client: TripletexClient, args: dict) -> dict
     if not invoice_id:
         return {"error": "No invoice found for credit note"}
 
-    credit_date = args.get("date", TODAY)
+    credit_date = args.get("date", _today())
     params = {"date": credit_date}
     if args.get("comment"):
         params["comment"] = args["comment"]
@@ -1209,7 +1217,7 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
         postings.append(posting)
 
     body = {
-        "date": args.get("date", TODAY),
+        "date": args.get("date", _today()),
         "description": args.get("description", ""),
         "postings": postings,
     }
@@ -1262,7 +1270,7 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
         "name": args["name"],
         "projectManager": {"id": manager_id},
         "isInternal": args.get("isInternal", False),
-        "startDate": args.get("startDate", TODAY),
+        "startDate": args.get("startDate", _today()),
     }
     if args.get("number"):
         body["number"] = str(args["number"])
@@ -1283,7 +1291,7 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
                     client,
                     project_id,
                     args["fixedPrice"],
-                    start_date=args.get("startDate", TODAY),
+                    start_date=args.get("startDate", _today()),
                 )
             except Exception as e:
                 log.warning(f"Failed to set fixed price on project {project_id}: {e}")
@@ -1357,7 +1365,7 @@ async def action_create_accounting_dimension(client: TripletexClient, args: dict
             postings.append(posting)
 
         voucher_body = {
-            "date": args.get("voucherDate", TODAY),
+            "date": args.get("voucherDate", _today()),
             "description": args.get("voucherDescription", f"Voucher with dimension {args['dimensionName']}"),
             "postings": postings,
         }
@@ -1420,7 +1428,7 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         project_name=args.get("projectName"),
     )
 
-    entry_date = args.get("date", TODAY)
+    entry_date = args.get("date", _today())
     selected_project = None
     if not project_id:
         try:
@@ -1428,7 +1436,7 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
             project_values = projects.get("values", [])
             usable_project = None
             for project in project_values:
-                start_date = project.get("startDate") or TODAY
+                start_date = project.get("startDate") or _today()
                 if start_date <= entry_date:
                     usable_project = project
                     break
@@ -1694,7 +1702,7 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                 break
 
     amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
-    invoice_date = args.get("invoiceDate", TODAY)
+    invoice_date = args.get("invoiceDate", _today())
 
     # Check if modules are active before trying to activate (avoid write errors)
     try:
@@ -2068,7 +2076,7 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
     )
 
     voucher_body = {
-        "date": args.get("date", TODAY),
+        "date": args.get("date", _today()),
         "description": f"Lønn {args.get('employeeName', '')} - grunnlønn {base_salary}" + (f" + bonus {bonus}" if bonus else ""),
         "postings": postings,
     }
@@ -2097,7 +2105,7 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
                 "projectManagerId": args.get("projectManagerId"),
                 "projectManagerEmail": args.get("projectManagerEmail"),
                 "projectManagerName": args.get("projectManagerName"),
-                "startDate": args.get("startDate", args.get("invoiceDate", TODAY)),
+                "startDate": args.get("startDate", args.get("invoiceDate", _today())),
                 "fixedPrice": args["fixedPrice"],
             },
         )
@@ -2109,7 +2117,7 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
                 client,
                 project_id,
                 args["fixedPrice"],
-                start_date=args.get("startDate", TODAY),
+                start_date=args.get("startDate", _today()),
             )
         except Exception as e:
             log.warning(f"Could not update existing project {project_id} with fixed price: {e}")
@@ -2121,8 +2129,8 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
             "customerId": args.get("customerId"),
             "customerName": args.get("customerName"),
             "customerOrgNumber": args.get("customerOrgNumber"),
-            "invoiceDate": args.get("invoiceDate", TODAY),
-            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", TODAY)),
+            "invoiceDate": args.get("invoiceDate", _today()),
+            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", _today())),
             "orderLines": [
                 {
                     "description": args.get(
@@ -2164,7 +2172,7 @@ async def action_register_timesheet_and_invoice(client: TripletexClient, args: d
                 "projectManagerId": args.get("projectManagerId"),
                 "projectManagerEmail": args.get("projectManagerEmail") or args.get("employeeEmail"),
                 "projectManagerName": args.get("projectManagerName") or args.get("employeeName"),
-                "startDate": args.get("date", TODAY),
+                "startDate": args.get("date", _today()),
             },
         )
         project_value = project_result.get("value", project_result)
@@ -2181,7 +2189,7 @@ async def action_register_timesheet_and_invoice(client: TripletexClient, args: d
             "activityId": args.get("activityId"),
             "activityName": args.get("activityName"),
             "hours": args["hours"],
-            "date": args.get("date", TODAY),
+            "date": args.get("date", _today()),
             "comment": args.get("comment"),
         },
     )
@@ -2193,8 +2201,8 @@ async def action_register_timesheet_and_invoice(client: TripletexClient, args: d
             "customerId": args.get("customerId"),
             "customerName": args.get("customerName"),
             "customerOrgNumber": args.get("customerOrgNumber"),
-            "invoiceDate": args.get("invoiceDate", args.get("date", TODAY)),
-            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", args.get("date", TODAY))),
+            "invoiceDate": args.get("invoiceDate", args.get("date", _today())),
+            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", args.get("date", _today()))),
             "orderLines": [
                 {
                     "description": args.get(

@@ -325,9 +325,10 @@ agent = Agent(
 
 async def _safe_action(action_name: str, client, args_dict: dict, max_len: int = 3000) -> str:
     """Run an action with error handling. Never raises — returns error as string."""
-    # Circuit breaker: if too many errors already, warn the agent
-    if client.error_count >= 10:
-        return json.dumps({"error": f"Circuit breaker: {client.error_count} API errors so far. Check if auth is valid or adjust approach.", "hint": "Stop retrying failed patterns"})
+    # Circuit breaker: only trigger on auth failures (403s), not validation errors (422s)
+    auth_errors = sum(1 for c in client.calls_log if c.get("status") in (401, 403))
+    if auth_errors >= 5:
+        return json.dumps({"error": f"Circuit breaker: {auth_errors} auth errors (401/403). Session may be invalid.", "hint": "Stop retrying"})
 
     try:
         result = await ACTIONS[action_name](client, args_dict)
