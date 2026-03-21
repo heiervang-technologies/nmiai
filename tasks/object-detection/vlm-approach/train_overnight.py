@@ -64,8 +64,8 @@ STAGE_CONFIGS = {
     1: {
         "name": "pretrain_coco",
         "description": "Broad object understanding on COCO",
-        "lr": 4e-4,  # sqrt-scaled from 2e-4 for 4x batch
-        "batch_size": 64,  # Per GPU (was 16)
+        "lr": 1e-4,  # Reduced for stability (was 4e-4)
+        "batch_size": 16,  # Per GPU (reduced from 64 for stability)
         "epochs": 3,
         "warmup_ratio": 0.05,
         "num_classes": 80,
@@ -75,8 +75,8 @@ STAGE_CONFIGS = {
     2: {
         "name": "narrow_retail",
         "description": "Narrow to grocery/retail domain",
-        "lr": 1e-4,  # sqrt-scaled from 5e-5 for 4x batch
-        "batch_size": 32,  # Per GPU (was 8)
+        "lr": 7e-5,  # sqrt-scaled from 5e-5 for 2x batch
+        "batch_size": 16,  # Per GPU (was 8, 32 OOMs with 356 classes)
         "epochs": 5,
         "warmup_ratio": 0.03,
         "num_classes": 356,  # Use competition classes
@@ -87,7 +87,7 @@ STAGE_CONFIGS = {
         "name": "finetune_competition",
         "description": "Multi-task on competition data (cls + det)",
         "lr": 4e-5,  # sqrt-scaled from 2e-5 for 4x batch
-        "batch_size": 16,  # Per GPU (was 4)
+        "batch_size": 16,  # Per GPU (was 4, 32+ OOMs with interleaved det)
         "epochs": 10,
         "warmup_ratio": 0.02,
         "num_classes": 356,
@@ -407,6 +407,7 @@ def run_stage(stage_num, model, processor, cls_head, det_head, device, rank, wor
     # Optimizer for this stage
     m = model.module if isinstance(model, DDP) else model
     ch = cls_head_stage.module if isinstance(cls_head_stage, DDP) else cls_head_stage
+    dh = det_head.module if isinstance(det_head, DDP) else det_head
     params = list(m.parameters()) + list(ch.parameters())
     if det_head is not None and stage_num == 3:
         dh = det_head.module if isinstance(det_head, DDP) else det_head
@@ -489,7 +490,9 @@ def run_stage(stage_num, model, processor, cls_head, det_head, device, rank, wor
                         f"stage{stage_num}/loss": cls_loss.item(),
                         f"stage{stage_num}/accuracy": acc,
                         f"stage{stage_num}/lr": lr,
+                        f"stage{stage_num}/epoch": epoch + 1,
                         "train/hours": elapsed_hours,
+                        "train/epoch": epoch + 1,
                     }, step=global_step)
 
             if is_main and global_step % 500 == 0:
