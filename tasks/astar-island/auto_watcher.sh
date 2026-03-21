@@ -160,9 +160,9 @@ print('Blitz done')
         say "Astar round $ROUND_NUM: submitting SOTA predictions." 2>/dev/null
         cd /home/me/ht/nmiai
 
-        # Submit with regime_predictor + spatial_model adaptive ensemble
+        # Submit with per-round template mixture + spatial blend (CV wKL 0.059)
         uv run python3 -c "
-import json, sys, time, os, numpy as np, requests
+import json, sys, time, numpy as np, requests
 from pathlib import Path
 sys.path.insert(0, 'tasks/astar-island')
 import regime_predictor as rp
@@ -174,12 +174,11 @@ s.cookies.set('access_token', TOKEN)
 s.headers['Authorization'] = f'Bearer {TOKEN}'
 BASE = 'https://api.ainm.no'
 
-rounds = s.get(f'{BASE}/astar-island/rounds').json()
-active = next(r for r in rounds if r['status'] == 'active')
-rid = active['id']
-rn = active['round_number']
+rounds_api = s.get(f'{BASE}/astar-island/rounds').json()
+active = next(r for r in rounds_api if r['status'] == 'active')
+rid = active['id']; rn = active['round_number']
+time.sleep(0.5)
 details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
-
 rd = Path(f'tasks/astar-island/logs/round{rn}')
 
 def ccc(cell):
@@ -191,38 +190,77 @@ def ccc(cell):
     if cell==5: return 5
     return 0
 
-# POOL all observations across seeds for round-level regime detection
-all_obs = {}
-all_obs_combined = []
+# Load ground truth for building per-round templates
+gt_dir = Path('tasks/astar-island/ground_truth')
+gt_rounds = {}
+for f in sorted(gt_dir.glob('round*_seed*.json')):
+    r_num = int(f.stem.split('_')[0].replace('round',''))
+    s_num = int(f.stem.split('_')[1].replace('seed',''))
+    data = json.loads(f.read_text())
+    if 'ground_truth' in data and 'initial_grid' in data:
+        gt_rounds.setdefault(r_num, {})[s_num] = {
+            'initial_grid': data['initial_grid'],
+            'ground_truth': np.array(data['ground_truth']),
+        }
+print(f'Loaded GT: {len(gt_rounds)} rounds')
+
+# Build per-round models
+per_round_models = {}
+for r_num in gt_rounds:
+    per_round_models[r_num] = rp.build_model_from_data({r_num: gt_rounds[r_num]})
+
+# Pool observations
+all_obs = {}; all_obs_combined = []
 for si in range(details['seeds_count']):
     op = rd / f'observations_seed{si}.json'
     seed_obs = json.loads(op.read_text()) if op.exists() else []
-    all_obs[si] = seed_obs
-    all_obs_combined.extend(seed_obs)
+    all_obs[si] = seed_obs; all_obs_combined.extend(seed_obs)
+print(f'Total observations: {len(all_obs_combined)}')
 
-# Detect regime ONCE from ALL seeds' observations (round-level property)
+# Compute per-round likelihoods from observations (using first seed's grid)
 ig0 = np.array(details['initial_states'][0]['grid'], dtype=np.int32)
-regime_weights = rp.detect_regime_from_observations(ig0, all_obs_combined)
-print(f'Round regime weights (pooled): {regime_weights}')
+log_liks = {}
+for r_num, model in per_round_models.items():
+    pred_r = rp.predict_with_model(ig0, model)
+    ll = 0.0
+    for o in all_obs_combined:
+        vx, vy = o['viewport_x'], o['viewport_y']
+        for dy, row in enumerate(o['grid']):
+            for dx, cell in enumerate(row):
+                y, x = vy+dy, vx+dx
+                if 0<=y<40 and 0<=x<40 and ig0[y,x] not in (10,5):
+                    cls = ccc(cell)
+                    ll += max(np.log(max(float(pred_r[y,x,cls]), 1e-6)), -6.0)
+    log_liks[r_num] = ll
 
-# Compute regime confidence for adaptive blending
-max_w = max(regime_weights.values())
-confidence = (max_w - 1.0/3) / (1.0 - 1.0/3)  # 0-1 scale
-spatial_weight = 0.15 + 0.50 * (1 - confidence)
-print(f'Regime confidence: {confidence:.3f}, spatial blend weight: {spatial_weight:.3f}')
+# Posterior weights
+max_ll = max(log_liks.values())
+round_weights = {r: np.exp(log_liks[r] - max_ll) for r in log_liks}
+total_w = sum(round_weights.values())
+round_weights = {r: w/total_w for r, w in round_weights.items()}
+
+# Show top 3
+top3 = sorted(round_weights.items(), key=lambda x: -x[1])[:3]
+print(f'Top template rounds: {[(f\"R{r}\", f\"{w:.3f}\") for r,w in top3]}')
+max_w = max(round_weights.values())
+conf = min((max_w - 1/len(round_weights)) / (1 - 1/len(round_weights)), 1.0)
+sw = 0.15 + 0.50 * max(1 - conf, 0)
+print(f'Template confidence: {conf:.3f}, spatial weight: {sw:.3f}')
 
 for si in range(details['seeds_count']):
-    obs = all_obs[si] if all_obs[si] else None
+    obs = all_obs.get(si, [])
     init_grid = details['initial_states'][si]['grid']
-    # Regime prediction with pooled observations
-    pred_r = rp.predict(init_grid, observations=all_obs_combined)
-    # Spatial model prediction
-    pred_s = sm.predict(init_grid)
-    pred_s = np.maximum(pred_s, 0.005)
-    pred_s /= pred_s.sum(axis=2, keepdims=True)
-    # Adaptive ensemble blend
-    pred = (1 - spatial_weight) * pred_r + spatial_weight * pred_s
-    # Empirical overlay with tau=10 on THIS seed's observations only
+    # Per-round template mixture
+    pred_mix = np.zeros((40, 40, 6))
+    for r_num, w in round_weights.items():
+        if w < 0.01: continue
+        pred_mix += w * rp.predict_with_model(init_grid, per_round_models[r_num])
+    pred_mix = np.maximum(pred_mix, 0.005); pred_mix /= pred_mix.sum(axis=2, keepdims=True)
+    # Spatial
+    pred_s = sm.predict(init_grid); pred_s = np.maximum(pred_s, 0.005); pred_s /= pred_s.sum(axis=2, keepdims=True)
+    # Blend
+    pred = (1 - sw) * pred_mix + sw * pred_s
+    # Tau overlay on cells with >=3 observations
     if obs:
         init = np.array(init_grid)
         counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
@@ -233,15 +271,15 @@ for si in range(details['seeds_count']):
                     if 0<=y<40 and 0<=x<40: counts[y,x,ccc(cell)]+=1; oc[y,x]+=1
         for y in range(40):
             for x in range(40):
-                if oc[y,x]>=3 and init[y,x] not in (10,5):
-                    alpha=10.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
-    pred=np.maximum(pred,1e-6); pred/=pred.sum(axis=2,keepdims=True)
+                if oc[y,x]>=2 and init[y,x] not in (10,5):
+                    alpha=30.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
+    pred = np.maximum(pred, 1e-6); pred /= pred.sum(axis=2, keepdims=True)
     for attempt in range(3):
         r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
-        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs) if obs else 0} obs)'); break
+        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs)} obs)'); break
         time.sleep(2)
     time.sleep(0.3)
-print('SOTA ensemble submission done')
+print('Per-round template submission done')
 " >> "$LOG_FILE" 2>&1
 
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SOTA predictions submitted" >> "$LOG_FILE"
