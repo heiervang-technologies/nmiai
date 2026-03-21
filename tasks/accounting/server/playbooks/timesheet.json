@@ -26,15 +26,9 @@
     "heures",
     "stunden",
     "horas",
-    "prosjektsyklus",
-    "prosjektsyklusen",
-    "project lifecycle",
-    "full project cycle",
-    "ciclo de vida do projeto",
-    "ciclo de vida del proyecto",
-    "cycle de vie du projet",
-    "Projektlebenszyklus",
-    "cycle de vie complet du projet"
+    "registriere stunden",
+    "enregistrer heures",
+    "registrar horas"
   ],
   "description": "Register hours on projects and invoice from logged time",
   "preflight": [
