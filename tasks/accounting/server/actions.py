@@ -2261,27 +2261,50 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 return {"values": [], "count": 0, "warning": f"Endpoint {path} not found"}
             raise
     elif method == "POST":
-        # Sanitize /project/projectActivity body — Tripletex 500s on unexpected/empty fields
+        # Fix /project/projectActivity — create activity first, then link
         if "/project/projectActivity" in path:
             if not body or not isinstance(body, dict):
                 body = {}
             activity = body.get("activity", {})
-            if isinstance(activity, dict):
-                clean_activity = {
-                    "name": activity.get("name") or activity.get("displayName") or activity.get("description") or "General",
-                    "activityType": activity.get("activityType", "PROJECT_SPECIFIC_ACTIVITY"),
-                }
-            else:
-                clean_activity = {"name": "General", "activityType": "PROJECT_SPECIFIC_ACTIVITY"}
             project_ref = body.get("project", {})
-            if not project_ref or not project_ref.get("id"):
+            project_id = project_ref.get("id") if isinstance(project_ref, dict) else None
+            if not project_id:
                 return {"error": "POST /project/projectActivity requires project.id in body"}
-            # Rebuild body with only allowed fields
-            body = {"project": project_ref, "activity": clean_activity}
-            if args.get("body", {}).get("startDate"):
-                body["startDate"] = args["body"]["startDate"]
-            args["body"] = body
-            log.info(f"Sanitized projectActivity body: {body}")
+            activity_name = "General"
+            if isinstance(activity, dict):
+                activity_name = activity.get("name") or activity.get("displayName") or activity.get("description") or "General"
+            activity_id = activity.get("id") if isinstance(activity, dict) else None
+            # If no activity ID, create the activity first as GENERAL then link
+            if not activity_id:
+                try:
+                    act_result = await client.post("/activity", json={
+                        "name": activity_name,
+                        "activityType": "GENERAL_ACTIVITY",
+                    })
+                    activity_id = act_result.get("value", {}).get("id")
+                except Exception as e:
+                    # If duplicate, find existing
+                    if "duplicate" in str(e).lower() or "allerede" in str(e).lower():
+                        try:
+                            existing = await client.get("/activity", params={"name": activity_name, "count": 10})
+                            for a in existing.get("values", []):
+                                if activity_name.lower() in a.get("name", "").lower():
+                                    activity_id = a["id"]
+                                    break
+                        except Exception:
+                            pass
+                    if not activity_id:
+                        log.warning(f"Failed to create activity '{activity_name}': {e}")
+            if activity_id:
+                # Link activity to project
+                link_body = {"project": {"id": project_id}, "activity": {"id": activity_id}}
+                start_date = body.get("startDate") or args.get("body", {}).get("startDate")
+                if start_date:
+                    link_body["startDate"] = start_date
+                args["body"] = link_body
+                log.info(f"Linking activity {activity_id} to project {project_id}")
+            else:
+                return {"error": f"Could not create or find activity '{activity_name}'"}
         # Auto-fix missing fields for /activity endpoint (NOT /project/projectActivity)
         if path == "/activity" and body and isinstance(body, dict):
             if "activityType" not in body:
