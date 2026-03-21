@@ -293,7 +293,8 @@ agent = Agent(
     OpenRouterModel(MODEL),
     deps_type=AgentDeps,
     system_prompt="",  # Set dynamically per run
-    retries=2,
+    retries=1,
+    model_settings={"max_tokens": 4096},
 )
 
 
