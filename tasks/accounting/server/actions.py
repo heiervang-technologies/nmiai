@@ -180,18 +180,9 @@ async def _grant_employee_all_privileges(client: TripletexClient, employee_id: i
     except Exception:
         pass
 
-    # Try entitlement template first
-    try:
-        await client.put(
-            "/employee/entitlement/:grantEntitlementsByTemplate",
-            params={"employeeId": employee_id, "template": "ALL_PRIVILEGES"},
-        )
-        log.info(f"Granted ALL_PRIVILEGES to employee {employee_id}")
-        return
-    except Exception as e:
-        log.warning(f"Entitlement template failed: {e}")
-
-    # Fallback: set allowInformationRegistration + userType via PUT on employee
+    # Set allowInformationRegistration + userType via PUT on employee.
+    # NOTE: Do NOT call /employee/entitlement/:grantEntitlementsByTemplate —
+    # it returns 404/500 in competition sandboxes and wastes API calls.
     try:
         emp_data = await client.get(f"/employee/{employee_id}")
         emp = emp_data.get("value", emp_data)
@@ -1379,7 +1370,25 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                     act_val = act_result.get("value", {})
                     activity_id = act_val.get("activity", {}).get("id") or act_val.get("id")
                 except Exception as e:
-                    log.warning(f"Failed to create project activity: {e}")
+                    if _error_mentions(e, "duplicate entry", "already exist"):
+                        try:
+                            applicable = await client.get(
+                                "/activity/>forTimeSheet",
+                                params={
+                                    "projectId": project_id,
+                                    "employeeId": employee_id,
+                                    "date": entry_date,
+                                    "count": 100,
+                                },
+                            )
+                            for act in applicable.get("values", []):
+                                if args["activityName"].lower() in act.get("name", "").lower():
+                                    activity_id = act["id"]
+                                    break
+                        except Exception:
+                            pass
+                    if not activity_id:
+                        log.warning(f"Failed to create project activity: {e}")
 
             if not activity_id:
                 try:
@@ -1423,8 +1432,22 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 )
                 act_val = act_result.get("value", {})
                 activity_id = act_val.get("activity", {}).get("id") or act_val.get("id")
-            except Exception:
-                pass
+            except Exception as e:
+                if _error_mentions(e, "duplicate entry", "already exist"):
+                    try:
+                        applicable = await client.get(
+                            "/activity/>forTimeSheet",
+                            params={
+                                "projectId": project_id,
+                                "employeeId": employee_id,
+                                "date": entry_date,
+                                "count": 100,
+                            },
+                        )
+                        if applicable.get("values"):
+                            activity_id = applicable["values"][0]["id"]
+                    except Exception:
+                        pass
 
     if not activity_id:
         try:
@@ -1444,8 +1467,9 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 "activity": {"id": activity_id},
                 "startDate": entry_date,
             })
-        except Exception:
-            pass  # May already be linked
+        except Exception as e:
+            if not _error_mentions(e, "duplicate entry", "already exist"):
+                pass  # Non-fatal best-effort link step
 
     # Activity is REQUIRED for timesheet entry — abort if missing
     if not activity_id:
@@ -1463,7 +1487,33 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
     if args.get("comment"):
         entry_body["comment"] = args["comment"]
 
-    return await client.post("/timesheet/entry", json=entry_body)
+    try:
+        return await client.post("/timesheet/entry", json=entry_body)
+    except Exception as e:
+        error_text = str(e)
+        if hasattr(e, 'response'):
+            try:
+                error_text = e.response.text
+            except Exception:
+                pass
+        # If duplicate entry, try to find and update existing
+        if "allerede" in error_text.lower() or "already" in error_text.lower() or "duplicate" in error_text.lower():
+            try:
+                existing = await client.get("/timesheet/entry", params={
+                    "employeeId": employee_id,
+                    "dateFrom": entry_date,
+                    "dateTo": entry_date,
+                    "count": 10,
+                })
+                for entry in existing.get("values", []):
+                    if entry.get("activity", {}).get("id") == activity_id:
+                        entry["hours"] = float(args.get("hours", 0))
+                        if args.get("comment"):
+                            entry["comment"] = args["comment"]
+                        return await client.put(f"/timesheet/entry/{entry['id']}", json=entry)
+            except Exception as e2:
+                log.warning(f"Timesheet update fallback failed: {e2}")
+        raise
 
 
 async def action_register_supplier_invoice(client: TripletexClient, args: dict) -> dict:
