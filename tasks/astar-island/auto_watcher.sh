@@ -155,6 +155,13 @@ for si in range(5):
             for x in range(40):
                 if oc[y,x]>=2 and init[y,x] not in (10,5):
                     alpha=20.0*pred[y,x];post=counts[y,x]+alpha;pred[y,x]=post/post.sum()
+    # Sigma=0.3 spatial smoothing (+1.9% CV validated)
+    from scipy.ndimage import gaussian_filter
+    init=np.array(details['initial_states'][si]['grid'])
+    ocean=(init==10);mount=(init==5)
+    for c in range(6):
+        ch=pred[:,:,c].copy();ch[ocean|mount]=0;ch=gaussian_filter(ch,sigma=0.3);pred[:,:,c]=ch
+    pred[ocean]=np.array([1,0,0,0,0,0]);pred[mount]=np.array([0,0,0,0,0,1])
     pred=np.maximum(pred,1e-6);pred/=pred.sum(axis=2,keepdims=True)
     for attempt in range(3):
         r=s.post(f'{BASE}/astar-island/submit',json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
