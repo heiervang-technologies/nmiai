@@ -189,7 +189,19 @@ async def _grant_employee_all_privileges(client: TripletexClient, employee_id: i
         log.info(f"Granted ALL_PRIVILEGES to employee {employee_id}")
         return
     except Exception as e:
-        log.warning(f"Entitlement template failed (non-fatal): {e}")
+        log.warning(f"Entitlement template failed: {e}")
+
+    # Fallback: set allowInformationRegistration + userType via PUT on employee
+    try:
+        emp_data = await client.get(f"/employee/{employee_id}")
+        emp = emp_data.get("value", emp_data)
+        emp["allowInformationRegistration"] = True
+        emp["userType"] = "EXTENDED"
+        await client.put(f"/employee/{employee_id}", json=emp)
+        log.info(f"Set allowInformationRegistration+EXTENDED on employee {employee_id} via PUT")
+        return
+    except Exception as e2:
+        log.warning(f"PUT employee fallback also failed: {e2}")
 
 
 def _is_placeholder_employee(employee: dict | None) -> bool:
@@ -488,14 +500,11 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             employment_body = {
                 "employee": {"id": employee_id},
                 "startDate": args["startDate"],
-                "employmentType": args.get("employmentType", "ORDINARY"),
             }
             if args.get("endDate"):
                 employment_body["endDate"] = args["endDate"]
-            if args.get("percentageOfFullTimeEquivalent"):
-                employment_body["percentageOfFullTimeEquivalent"] = float(args["percentageOfFullTimeEquivalent"])
-            if args.get("occupationCode"):
-                employment_body["occupationCode"] = {"code": str(args["occupationCode"])}
+            # percentageOfFullTimeEquivalent and occupationCode belong on
+            # employment/details, NOT employment itself
             await client.post("/employee/employment", json=employment_body)
         except Exception as e:
             log.warning(f"Employment creation failed: {e}")

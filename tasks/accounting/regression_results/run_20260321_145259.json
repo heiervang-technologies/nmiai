@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260321_145259",
+  "server_url": "http://localhost:8000",
+  "tests": [
+    {
+      "name": "travel_expense_basic",
+      "status": "PASS",
+      "elapsed": 6.1,
+      "api_calls": 6,
+      "api_errors": 0,
+      "family_detected": "travel_expense",
+      "failures": []
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 1,
+    "fail": 0,
+    "error": 0
+  }
+}

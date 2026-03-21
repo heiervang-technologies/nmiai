@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-03-21T14:22:40.238398+00:00",
+  "generated_at": "2026-03-21T14:53:09.693863+00:00",
   "log_dir": "/tmp/accounting-logs",
-  "total_runs": 137,
+  "total_runs": 144,
   "seen_families": [
+    "bank_reconciliation",
     "customer",
     "department",
     "employee",
@@ -17,22 +18,45 @@
   ],
   "new_families_since_last_run": [],
   "unseen_families": [
-    "bank_reconciliation",
+    "annual_close",
     "ledger_correction"
   ],
   "unknown_families": [],
   "empty_attachment_runs": 0,
   "alerts": [
-    "department clean rate is 27.3%; blockers: duplicate_identifier; likely missing fields: none",
+    "department clean rate is 25.0%; blockers: duplicate_identifier; likely missing fields: none",
     "employee clean rate is 25.0%; blockers: email_validation; likely missing fields: employee, department",
-    "invoice clean rate is 12.5%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none",
-    "product clean rate is 6.7%; blockers: sandbox_valid_vat_type; likely missing fields: none",
-    "timesheet clean rate is 7.1%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
-    "travel_expense clean rate is 10.0%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project",
+    "invoice clean rate is 22.2%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none",
+    "product clean rate is 6.2%; blockers: sandbox_valid_vat_type; likely missing fields: none",
+    "timesheet clean rate is 6.7%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
+    "travel_expense clean rate is 16.7%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project",
     "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries",
-    "Still unseen families: bank_reconciliation, ledger_correction"
+    "Still unseen families: annual_close, ledger_correction"
   ],
   "families": [
+    {
+      "family": "bank_reconciliation",
+      "runs": 1,
+      "proxy_clean_rate": 1.0,
+      "likely_full_runs": 1,
+      "likely_partial_runs": 0,
+      "mean_api_errors": 0.0,
+      "mean_api_calls": 23.0,
+      "attachment_runs": 1,
+      "empty_attachment_runs": 0,
+      "top_error_patterns": [],
+      "likely_missing_fields": [],
+      "likely_blockers": [],
+      "prompt_required_fields": [],
+      "prompt_examples": [
+        {
+          "timestamp": "20260321_143933",
+          "prompt": "Avstem bankutskriften (vedlagt CSV) mot apne fakturaer i Tripletex. Match innbetalinger til kundefakturaer og utbetalinger til leverandorfakturaer. Handter delbetalinger korrekt.",
+          "omissions": []
+        }
+      ],
+      "scorer_hypotheses": []
+    },
     {
       "family": "customer",
       "runs": 12,
@@ -108,12 +132,12 @@
     },
     {
       "family": "department",
-      "runs": 11,
-      "proxy_clean_rate": 0.2727272727272727,
+      "runs": 12,
+      "proxy_clean_rate": 0.25,
       "likely_full_runs": 2,
       "likely_partial_runs": 1,
-      "mean_api_errors": 1.0909090909090908,
-      "mean_api_calls": 1.6363636363636365,
+      "mean_api_errors": 1.0,
+      "mean_api_calls": 1.5833333333333333,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -136,17 +160,17 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_135438",
-          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
-          "omissions": []
-        },
-        {
           "timestamp": "20260321_135855",
           "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
           "omissions": []
         },
         {
           "timestamp": "20260321_140136",
+          "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_144217",
           "prompt": "Opprett avdeling 'Salg' med avdelingsnummer 200.",
           "omissions": []
         }
@@ -215,12 +239,12 @@
     },
     {
       "family": "invoice",
-      "runs": 8,
-      "proxy_clean_rate": 0.125,
-      "likely_full_runs": 1,
+      "runs": 9,
+      "proxy_clean_rate": 0.2222222222222222,
+      "likely_full_runs": 2,
       "likely_partial_runs": 1,
-      "mean_api_errors": 3.75,
-      "mean_api_calls": 9.875,
+      "mean_api_errors": 3.3333333333333335,
+      "mean_api_calls": 9.88888888888889,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -267,11 +291,6 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140044",
-          "prompt": "Opprett en faktura til kunde Testfirma AS for konsulenttjenester, beløp 15000 NOK ekskl. mva. Forfallsdato 2026-04-15.",
-          "omissions": []
-        },
-        {
           "timestamp": "20260321_140116",
           "prompt": "Opprett en faktura til kunde Testfirma AS for konsulenttjenester, beløp 15000 NOK ekskl. mva. Forfallsdato 2026-04-15.",
           "omissions": []
@@ -280,18 +299,23 @@
           "timestamp": "20260321_140839",
           "prompt": "Vi sendte en faktura på 1381 EUR til Fjordkraft AS (org.nr 857800206) da kursen var 10.19 NOK/EUR. Kunden har nå betalt, men kursen er 11.15 NOK/EUR. Registrer betalingen og bokfør valutadifferansen (agio) på korrekt kon",
           "omissions": []
+        },
+        {
+          "timestamp": "20260321_144026",
+          "prompt": "Realice el cierre anual simplificado de 2025: 1) Calcule y contabilice la depreciación anual de tres activos: Kjøretøy (81750 NOK, 3 años lineales, cuenta 1230), IT-utstyr (360050 NOK, 4 años, cuenta 1210), Kontormaskine",
+          "omissions": []
         }
       ],
       "scorer_hypotheses": []
     },
     {
       "family": "product",
-      "runs": 15,
-      "proxy_clean_rate": 0.06666666666666667,
+      "runs": 16,
+      "proxy_clean_rate": 0.0625,
       "likely_full_runs": 1,
       "likely_partial_runs": 2,
-      "mean_api_errors": 23.466666666666665,
-      "mean_api_calls": 24.333333333333332,
+      "mean_api_errors": 22.0,
+      "mean_api_calls": 22.875,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
@@ -322,11 +346,6 @@
       "prompt_required_fields": [],
       "prompt_examples": [
         {
-          "timestamp": "20260321_140133",
-          "prompt": "Opprett et produkt 'Konsulenttjeneste' med pris 1500 NOK ekskl. mva (25% MVA).",
-          "omissions": []
-        },
-        {
           "timestamp": "20260321_140159",
           "prompt": "Opprett et produkt 'Konsulenttjeneste' med pris 1500 NOK ekskl. mva (25% MVA).",
           "omissions": []
@@ -334,6 +353,11 @@
         {
           "timestamp": "20260321_140842",
           "prompt": "Crea una factura para el cliente Dorada SL (org. nº 884244307) con tres líneas de producto: Desarrollo de sistemas (5012) a 17450 NOK con 25 % IVA, Mantenimiento (3548) a 3600 NOK con 15 % IVA (alimentos), y Almacenamien",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_144218",
+          "prompt": "Opprett et produkt 'Konsulenttjeneste' med pris 1500 NOK ekskl. mva (25% MVA).",
           "omissions": []
         }
       ],
@@ -526,18 +550,18 @@
     },
     {
       "family": "timesheet",
-      "runs": 14,
-      "proxy_clean_rate": 0.07142857142857142,
+      "runs": 15,
+      "proxy_clean_rate": 0.06666666666666667,
       "likely_full_runs": 1,
       "likely_partial_runs": 3,
-      "mean_api_errors": 3.142857142857143,
-      "mean_api_calls": 8.285714285714286,
+      "mean_api_errors": 3.4,
+      "mean_api_calls": 8.466666666666667,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
           "pattern": "/timesheet/entry: HTTP 422 with no captured body",
-          "count": 7
+          "count": 8
         },
         {
           "pattern": "/timesheet/entry: employee.id -> Brukertilgangen \"Det kan føres lønn, reiseregninger, utlegg m.m. på bruker\" er ikke aktivert på den valgte brukeren.",
@@ -571,18 +595,22 @@
       "likely_missing_fields": [
         {
           "field": "activity",
-          "count": 21
+          "count": 23
         },
         {
           "field": "project",
-          "count": 8
+          "count": 13
         },
         {
           "field": "employee",
-          "count": 3
+          "count": 8
         },
         {
           "field": "hours",
+          "count": 1
+        },
+        {
+          "field": "department",
           "count": 1
         }
       ],
@@ -611,19 +639,14 @@
       "prompt_required_fields": [
         {
           "field": "project",
-          "count": 11
+          "count": 12
         },
         {
           "field": "activity",
-          "count": 9
+          "count": 10
         }
       ],
       "prompt_examples": [
-        {
-          "timestamp": "20260321_140139",
-          "prompt": "Registrer 8 timer for ansatt nummer 1 på et prosjekt den 2026-03-20. Aktivitet: utvikling.",
-          "omissions": []
-        },
         {
           "timestamp": "20260321_141040",
           "prompt": "Log 29 hours for Ella Williams (ella.williams@example.org) on the activity \"Testing\" in the project \"Platform Integration\" for Windmill Ltd (org no. 839360274). Hourly rate: 1350 NOK/h. Generate a project invoice to the ",
@@ -632,6 +655,11 @@
         {
           "timestamp": "20260321_141056",
           "prompt": "Gjennomfør heile prosjektsyklusen for 'Dataplattform Sjøbris' (Sjøbris AS, org.nr 868541946): 1) Prosjektet har budsjett 361050 kr. 2) Registrer timar: Eirik Stølsvik (prosjektleiar, eirik.stlsvik@example.org) 41 timar o",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_144258",
+          "prompt": "Registrer 8 timer for ansatt nummer 1 på et prosjekt den 2026-03-20. Aktivitet: utvikling.",
           "omissions": []
         }
       ],
@@ -642,22 +670,22 @@
     },
     {
       "family": "travel_expense",
-      "runs": 10,
-      "proxy_clean_rate": 0.1,
-      "likely_full_runs": 0,
+      "runs": 12,
+      "proxy_clean_rate": 0.16666666666666666,
+      "likely_full_runs": 1,
       "likely_partial_runs": 3,
-      "mean_api_errors": 3.0,
-      "mean_api_calls": 3.8,
+      "mean_api_errors": 2.9166666666666665,
+      "mean_api_calls": 4.25,
       "attachment_runs": 0,
       "empty_attachment_runs": 0,
       "top_error_patterns": [
         {
           "pattern": "/travelExpense: HTTP 422 with no captured body",
-          "count": 6
+          "count": 7
         },
         {
           "pattern": "/travelExpense: employee.id -> Brukertilgangen \"Det kan føres lønn, reiseregninger, utlegg m.m. på bruker\" er ikke aktivert på den valgte brukeren.",
-          "count": 6
+          "count": 7
         },
         {
           "pattern": "/travelExpense/:deliver: HTTP 422 with no captured body",
@@ -687,7 +715,7 @@
       "likely_missing_fields": [
         {
           "field": "delivered_state",
-          "count": 6
+          "count": 7
         },
         {
           "field": "rate_type",
@@ -695,7 +723,7 @@
         },
         {
           "field": "employee",
-          "count": 2
+          "count": 3
         },
         {
           "field": "project",
@@ -721,7 +749,7 @@
       "likely_blockers": [
         {
           "field": "employee_time_access",
-          "count": 6
+          "count": 7
         },
         {
           "field": "travel_expense_kind",
@@ -743,30 +771,30 @@
       "prompt_required_fields": [
         {
           "field": "per_diem",
-          "count": 10
+          "count": 12
         },
         {
           "field": "duration",
-          "count": 10
+          "count": 12
         },
         {
           "field": "departure_or_destination",
-          "count": 10
+          "count": 12
         }
       ],
       "prompt_examples": [
         {
-          "timestamp": "20260321_135827",
-          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
-          "omissions": []
-        },
-        {
-          "timestamp": "20260321_140105",
-          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
-          "omissions": []
-        },
-        {
           "timestamp": "20260321_140134",
+          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_144257",
+          "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
+          "omissions": []
+        },
+        {
+          "timestamp": "20260321_145305",
           "prompt": "Registrer en reiseregning for ansatt nummer 1 for 'Kundebesøk Oslo'. Reisen varte 3 dager med diett. Avreise fra Bergen, destinasjon Oslo.",
           "omissions": []
         }

@@ -1,26 +1,37 @@
 # Accounting Log Analysis
 
-Analyzed `137` runs from `/tmp/accounting-logs`.
+Analyzed `144` runs from `/tmp/accounting-logs`.
 
 ## Global
 
-- Seen families: customer, department, employee, invoice, product, project, salary, supplier, timesheet, travel_expense, voucher
+- Seen families: bank_reconciliation, customer, department, employee, invoice, product, project, salary, supplier, timesheet, travel_expense, voucher
 - New families since last run: none
-- Unseen playbook families: bank_reconciliation, ledger_correction
+- Unseen playbook families: annual_close, ledger_correction
 - Empty attachment runs: 0
 
 ## Alerts
 
-- department clean rate is 27.3%; blockers: duplicate_identifier; likely missing fields: none
+- department clean rate is 25.0%; blockers: duplicate_identifier; likely missing fields: none
 - employee clean rate is 25.0%; blockers: email_validation; likely missing fields: employee, department
-- invoice clean rate is 12.5%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none
-- product clean rate is 6.7%; blockers: sandbox_valid_vat_type; likely missing fields: none
-- timesheet clean rate is 7.1%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
-- travel_expense clean rate is 10.0%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project
+- invoice clean rate is 22.2%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none
+- product clean rate is 6.2%; blockers: sandbox_valid_vat_type; likely missing fields: none
+- timesheet clean rate is 6.7%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
+- travel_expense clean rate is 16.7%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project
 - travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries
-- Still unseen families: bank_reconciliation, ledger_correction
+- Still unseen families: annual_close, ledger_correction
 
 ## Families
+
+### bank_reconciliation
+
+- Runs: 1
+- Proxy clean rate: 100.0%
+- Likely full runs: 1
+- Likely partial runs: 0
+- Mean API errors: 0.00
+- Prompt-required fields: none
+- Likely blockers: none
+- Missing-field hypotheses: none
 
 ### customer
 
@@ -36,11 +47,11 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 
 ### department
 
-- Runs: 11
-- Proxy clean rate: 27.3%
+- Runs: 12
+- Proxy clean rate: 25.0%
 - Likely full runs: 2
 - Likely partial runs: 1
-- Mean API errors: 1.09
+- Mean API errors: 1.00
 - Prompt-required fields: none
 - Likely blockers: duplicate_identifier
 - Missing-field hypotheses: none
@@ -60,11 +71,11 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 
 ### invoice
 
-- Runs: 8
-- Proxy clean rate: 12.5%
-- Likely full runs: 1
+- Runs: 9
+- Proxy clean rate: 22.2%
+- Likely full runs: 2
 - Likely partial runs: 1
-- Mean API errors: 3.75
+- Mean API errors: 3.33
 - Prompt-required fields: none
 - Likely blockers: sandbox_valid_vat_type, vat_account_mapping
 - Missing-field hypotheses: none
@@ -72,11 +83,11 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 
 ### product
 
-- Runs: 15
-- Proxy clean rate: 6.7%
+- Runs: 16
+- Proxy clean rate: 6.2%
 - Likely full runs: 1
 - Likely partial runs: 2
-- Mean API errors: 23.47
+- Mean API errors: 22.00
 - Prompt-required fields: none
 - Likely blockers: sandbox_valid_vat_type
 - Missing-field hypotheses: none
@@ -120,25 +131,25 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 
 ### timesheet
 
-- Runs: 14
-- Proxy clean rate: 7.1%
+- Runs: 15
+- Proxy clean rate: 6.7%
 - Likely full runs: 1
 - Likely partial runs: 3
-- Mean API errors: 3.14
+- Mean API errors: 3.40
 - Prompt-required fields: project, activity
 - Likely blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping, project_hourly_rates_endpoint
-- Missing-field hypotheses: activity, project, employee, hours
+- Missing-field hypotheses: activity, project, employee, hours, department
 - Top error: /timesheet/entry: HTTP 422 with no captured body
 - Hypothesis: Scorer likely checks the resolved employee, project, activity, date, and exact hours, not just whether `/timesheet/entry` was posted.
 - Hypothesis: Combined prompts may also require downstream invoice linkage after the hours are logged.
 
 ### travel_expense
 
-- Runs: 10
-- Proxy clean rate: 10.0%
-- Likely full runs: 0
+- Runs: 12
+- Proxy clean rate: 16.7%
+- Likely full runs: 1
 - Likely partial runs: 3
-- Mean API errors: 3.00
+- Mean API errors: 2.92
 - Prompt-required fields: per_diem, duration, departure_or_destination
 - Likely blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required, rate_category_date_mismatch
 - Missing-field hypotheses: delivered_state, rate_type, employee, project, travel_expense_type_or_travel_details, cost_lines_or_allowances

@@ -1,12 +1,12 @@
 {
   "alerts": [
-    "department clean rate is 27.3%; blockers: duplicate_identifier; likely missing fields: none",
+    "department clean rate is 25.0%; blockers: duplicate_identifier; likely missing fields: none",
     "employee clean rate is 25.0%; blockers: email_validation; likely missing fields: employee, department",
-    "invoice clean rate is 12.5%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none",
-    "product clean rate is 6.7%; blockers: sandbox_valid_vat_type; likely missing fields: none",
-    "timesheet clean rate is 7.1%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
-    "travel_expense clean rate is 10.0%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project",
+    "invoice clean rate is 22.2%; blockers: sandbox_valid_vat_type, vat_account_mapping; likely missing fields: none",
+    "product clean rate is 6.2%; blockers: sandbox_valid_vat_type; likely missing fields: none",
+    "timesheet clean rate is 6.7%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
+    "travel_expense clean rate is 16.7%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project",
     "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries",
-    "Still unseen families: bank_reconciliation, ledger_correction"
+    "Still unseen families: annual_close, ledger_correction"
   ]
 }
