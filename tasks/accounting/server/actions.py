@@ -2186,6 +2186,26 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     last["amountGross"] = corrected
                     last["amountGrossCurrency"] = corrected
                     log.warning(f"Auto-balanced voucher postings: adjusted last posting by {-total:.2f}")
+        # Handle 409 Duplicate on /project/projectActivity: fetch existing instead of failing
+        if "/project/projectActivity" in path:
+            try:
+                return await client.post(path, json=body)
+            except Exception as e:
+                if hasattr(e, 'response') and e.response.status_code == 409:
+                    # Duplicate — find existing activity for this project
+                    project_id = (body or {}).get("project", {}).get("id")
+                    if project_id:
+                        try:
+                            existing = await client.get("/project/projectActivity", params={
+                                "projectId": project_id, "count": 100
+                            })
+                            vals = existing.get("values", [])
+                            if vals:
+                                log.info(f"Duplicate projectActivity for project {project_id}, returning existing")
+                                return {"value": vals[0], "duplicate_resolved": True}
+                        except Exception:
+                            pass
+                raise
         return await client.post(path, json=body)
     elif method == "PUT":
         return await client.put(path, json=body, params=params or None)
