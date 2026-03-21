@@ -14,11 +14,12 @@ Primary API:
 from __future__ import annotations
 
 import json
+import math
 from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
-from scipy.ndimage import distance_transform_cdt
+from scipy.ndimage import convolve, distance_transform_edt
 
 import neighborhood_predictor as neighborhood
 
@@ -33,12 +34,22 @@ PORT = 2
 FOREST = 4
 PLAINS = 11
 EMPTY = 0
+NEIGHBOR_KERNEL = np.array([[1, 1, 1], [1, 0, 1], [1, 1, 1]], dtype=np.int32)
 
 OCEAN_DIST = np.array([1.0, 0.0, 0.0, 0.0, 0.0, 0.0], dtype=np.float64)
 MOUNTAIN_DIST = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 1.0], dtype=np.float64)
 UNIFORM = np.ones(N_CLASSES, dtype=np.float64) / N_CLASSES
 
-ROUND_IDS = tuple(range(1, 9))
+def _discover_rounds():
+    """Discover available rounds from ground truth files."""
+    gt_dir = Path(__file__).parent / "ground_truth"
+    rounds = set()
+    for f in gt_dir.glob("round*_seed*.json"):
+        rn = int(f.stem.split("_")[0].replace("round", ""))
+        rounds.add(rn)
+    return tuple(sorted(rounds)) if rounds else tuple(range(1, 9))
+
+ROUND_IDS = _discover_rounds()
 
 DIAGNOSTIC_BUCKET_WEIGHTS = {
     "init_settlement": 1.8,
@@ -106,16 +117,8 @@ def cell_code_to_class(cell: int) -> int:
     return 0
 
 
-def dist_band(distance: int) -> int:
-    if distance <= 0:
-        return 0
-    if distance <= 2:
-        return 1
-    if distance <= 5:
-        return 2
-    if distance <= 8:
-        return 3
-    return 4
+def quantized_distance(distance: float) -> int:
+    return int(min(max(math.floor(distance), 0), 12))
 
 
 def support_blend(count: float, shrink: float) -> float:
@@ -133,13 +136,19 @@ def compute_feature_maps(initial_grid: list[list[int]] | np.ndarray) -> dict[str
 
     civ = (ig == SETTLEMENT) | (ig == PORT)
     ocean = ig == OCEAN
+    mountain = ig == MOUNTAIN
 
     if civ.any():
-        dist_to_civ = distance_transform_cdt(~civ, metric="taxicab").astype(np.int32)
+        dist_to_civ = distance_transform_edt(~civ).astype(np.float64)
     else:
-        dist_to_civ = np.full((h, w), 99, dtype=np.int32)
+        dist_to_civ = np.full((h, w), 99.0, dtype=np.float64)
 
-    _, _, _, n_ocean, _ = neighborhood.extract_features(ig)
+    ocean_mask = ocean.astype(np.int32)
+    mountain_mask = mountain.astype(np.int32)
+    civ_mask = civ.astype(np.int32)
+    n_ocean = convolve(ocean_mask, NEIGHBOR_KERNEL, mode="constant", cval=0)
+    n_mountain = convolve(mountain_mask, NEIGHBOR_KERNEL, mode="constant", cval=0)
+    civ_neighbors = convolve(civ_mask, NEIGHBOR_KERNEL, mode="constant", cval=0)
     ocean_adj = (n_ocean > 0).astype(np.int32)
     edge_flag = np.zeros((h, w), dtype=np.int32)
     edge_flag[:2, :] = 1
@@ -147,31 +156,63 @@ def compute_feature_maps(initial_grid: list[list[int]] | np.ndarray) -> dict[str
     edge_flag[:, :2] = 1
     edge_flag[:, -2:] = 1
 
-    dist_bands = np.vectorize(dist_band, otypes=[np.int32])(dist_to_civ)
-
     return {
         "init": ig,
         "types": types,
         "dist_to_civ": dist_to_civ,
-        "dist_band": dist_bands,
         "n_ocean": np.clip(n_ocean, 0, 8).astype(np.int32),
+        "n_mountain": np.clip(n_mountain, 0, 8).astype(np.int32),
+        "civ_neighbors": np.clip(civ_neighbors, 0, 8).astype(np.int32),
         "ocean_adj": ocean_adj,
         "edge_flag": edge_flag,
     }
 
 
-def template_keys(maps: dict[str, np.ndarray], y: int, x: int) -> tuple[tuple, tuple, tuple, tuple]:
+def template_keys_for_distance(maps: dict[str, np.ndarray], y: int, x: int, dist_q: int) -> tuple[tuple, tuple, tuple, tuple]:
     t = maps["types"][y, x]
-    db = int(maps["dist_band"][y, x])
     ocean_adj = int(maps["ocean_adj"][y, x])
     n_ocean = min(int(maps["n_ocean"][y, x]), 4)
+    n_mountain = min(int(maps["n_mountain"][y, x]), 3)
+    civ_neighbors = min(int(maps["civ_neighbors"][y, x]), 3)
     edge = int(maps["edge_flag"][y, x])
     return (
-        (t, db, ocean_adj, n_ocean, edge),
-        (t, db, ocean_adj, edge),
-        (t, db, ocean_adj),
+        (t, dist_q, ocean_adj, n_ocean, n_mountain, civ_neighbors, edge),
+        (t, dist_q, ocean_adj, n_ocean, edge),
+        (t, dist_q, ocean_adj, edge),
         (t,),
     )
+
+
+def template_keys(maps: dict[str, np.ndarray], y: int, x: int):
+    """Compatibility shim for external evaluation code.
+
+    Older evaluators call ``template_keys(...)`` and then pass the result into
+    ``lookup_tables(...)``. Return an interpolation descriptor so lookup_tables
+    can apply smooth Euclidean interpolation even through that old interface.
+    """
+    return {"kind": "interp", "maps": maps, "y": y, "x": x}
+
+
+def interpolate_lookup(tables: list[dict], counts: list[dict], maps: dict[str, np.ndarray], y: int, x: int) -> tuple[np.ndarray | None, float, int]:
+    distance = float(maps["dist_to_civ"][y, x])
+    lo = quantized_distance(distance)
+    hi = min(lo + 1, 12)
+    frac = float(np.clip(distance - lo, 0.0, 1.0))
+
+    q_lo, support_lo, level_lo = lookup_tables(tables, counts, template_keys_for_distance(maps, y, x, lo))
+    if hi == lo:
+        return q_lo, support_lo, level_lo
+
+    q_hi, support_hi, level_hi = lookup_tables(tables, counts, template_keys_for_distance(maps, y, x, hi))
+    if q_lo is None:
+        return q_hi, support_hi, level_hi
+    if q_hi is None:
+        return q_lo, support_lo, level_lo
+
+    q = blend_probs(q_hi, q_lo, frac)
+    support = (1.0 - frac) * support_lo + frac * support_hi
+    level = max(level_lo, level_hi)
+    return q, float(support), int(level)
 
 
 def diagnostic_bucket(maps: dict[str, np.ndarray], y: int, x: int) -> str | None:
@@ -179,7 +220,7 @@ def diagnostic_bucket(maps: dict[str, np.ndarray], y: int, x: int) -> str | None
     if code == OCEAN or code == MOUNTAIN:
         return None
 
-    dist = int(maps["dist_to_civ"][y, x])
+    dist = float(maps["dist_to_civ"][y, x])
     n_ocean = int(maps["n_ocean"][y, x])
     ocean_adj = bool(maps["ocean_adj"][y, x])
     edge = bool(maps["edge_flag"][y, x])
@@ -188,15 +229,15 @@ def diagnostic_bucket(maps: dict[str, np.ndarray], y: int, x: int) -> str | None
         return "init_settlement"
     if code == PORT:
         return "init_port"
-    if n_ocean >= 2 and dist <= 3:
+    if n_ocean >= 2 and dist <= 3.5:
         return "coastal_frontier"
-    if code == FOREST and dist <= 2:
+    if code == FOREST and dist <= 2.5:
         return "forest_near"
-    if (not ocean_adj) and 1 <= dist <= 2:
+    if (not ocean_adj) and 0.75 <= dist <= 2.5:
         return "inland_near"
-    if (not ocean_adj) and 3 <= dist <= 5:
+    if (not ocean_adj) and 2.5 < dist <= 5.5:
         return "inland_mid"
-    if edge and dist <= 3:
+    if edge and dist <= 3.5:
         return "edge_frontier"
     return "other"
 
@@ -224,7 +265,10 @@ def finalize_tables(sums: list[defaultdict], counts: list[defaultdict]) -> list[
     return tables
 
 
-def lookup_tables(tables: list[dict], counts: list[dict], keys: tuple[tuple, tuple, tuple, tuple]) -> tuple[np.ndarray | None, float, int]:
+def lookup_tables(tables: list[dict], counts: list[dict], keys) -> tuple[np.ndarray | None, float, int]:
+    if isinstance(keys, dict) and keys.get("kind") == "interp":
+        return interpolate_lookup(tables, counts, keys["maps"], int(keys["y"]), int(keys["x"]))
+
     thresholds = (3.0, 5.0, 8.0, 1.0)
     for level, key in enumerate(keys):
         count = counts[level].get(key, 0.0)
@@ -285,7 +329,8 @@ def build_round_templates() -> dict:
                     continue
 
                 prob = gt[y, x]
-                keys = template_keys(maps, y, x)
+                dist_q = quantized_distance(float(maps["dist_to_civ"][y, x]))
+                keys = template_keys_for_distance(maps, y, x, dist_q)
                 for level, key in enumerate(keys):
                     pooled_sums[level][key] += prob
                     pooled_counts[level][key] += 1.0
@@ -348,14 +393,13 @@ def template_cell_prediction(
     if code == MOUNTAIN:
         return MOUNTAIN_DIST
 
-    keys = template_keys(maps, y, x)
     round_tables = model["round_tables"][round_num]
     round_counts = model["round_counts"][round_num]
     pooled_tables = model["pooled_tables"]
     pooled_counts = model["pooled_counts"]
 
-    round_q, round_support, level = lookup_tables(round_tables, round_counts, keys)
-    pooled_q, _, _ = lookup_tables(pooled_tables, pooled_counts, keys)
+    round_q, round_support, level = interpolate_lookup(round_tables, round_counts, maps, y, x)
+    pooled_q, _, _ = interpolate_lookup(pooled_tables, pooled_counts, maps, y, x)
 
     if pooled_q is None:
         pooled_q = pooled_nb_pred[y, x]
@@ -484,7 +528,7 @@ def template_strength_from_weights(weights: np.ndarray, has_observations: bool) 
     safe = np.clip(weights, 1e-12, 1.0)
     concentration = 1.0 + float(np.sum(safe * np.log(safe)) / np.log(len(weights)))
     concentration = float(np.clip(concentration, 0.0, 1.0))
-    return 0.35 + 0.85 * concentration
+    return 0.90 + 1.10 * concentration
 
 
 def predict(initial_grid: list[list[int]] | np.ndarray, observations: list[dict] | None = None) -> np.ndarray:
