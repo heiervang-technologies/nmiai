@@ -94,6 +94,13 @@ class LayerDropoutWrapper(nn.Module):
         self.times_skipped = 0
         self.times_used = 0
 
+    def __getattr__(self, name):
+        """Proxy attribute access to wrapped layer (e.g. layer_type)."""
+        try:
+            return super().__getattr__(name)
+        except AttributeError:
+            return getattr(self.layer, name)
+
     def forward(self, *args, **kwargs):
         if self.training and torch.rand(1).item() < self.dropout_prob:
             # Skip this layer: return input unchanged
