@@ -25,7 +25,14 @@
     "registrer betaling",
     "enregistrer le paiement",
     "Zahlung registrieren",
-    "registrar pagamento"
+    "registrar pagamento",
+    "pedido",
+    "order",
+    "Bestellung",
+    "commande",
+    "converta em fatura",
+    "convert to invoice",
+    "konverter til faktura"
   ],
   "description": "Create invoices, register payments, create credit notes",
   "preflight": [
