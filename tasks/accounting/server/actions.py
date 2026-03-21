@@ -46,6 +46,9 @@ def _build_project_update_payload(project_obj: dict) -> dict:
         "isInternal",
         "isOffer",
         "isFixedPrice",
+        "fixedprice",
+        "isPriceCeiling",
+        "priceCeilingAmount",
         "projectCategory",
     ]
     return {field: project_obj[field] for field in allowed_fields if project_obj.get(field) is not None}
@@ -316,7 +319,11 @@ async def _set_project_fixed_price(
     proj_data = await client.get(f"/project/{project_id}")
     proj_obj = _build_project_update_payload(proj_data.get("value", proj_data))
     proj_obj["isFixedPrice"] = True
-    await client.put(f"/project/{project_id}", json=proj_obj)
+    proj_obj["fixedprice"] = _money(fixed_price)
+    try:
+        await client.put(f"/project/{project_id}", json=proj_obj)
+    except Exception as e:
+        log.warning(f"Project fixedprice PUT failed (trying hourlyRates): {e}")
 
     hourly_rates = await client.get("/project/hourlyRates", params={"projectId": project_id})
     hourly_rate_values = hourly_rates.get("values", [])
