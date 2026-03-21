@@ -1700,8 +1700,33 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
-    # Try /incomingInvoice first (scorer may check for actual invoice record)
+    # Activate modules that may unlock /incomingInvoice
+    for module in ["ELECTRONIC_VOUCHERS", "OCR"]:
+        try:
+            await client.post("/company/salesmodules", json={"name": module})
+        except Exception:
+            pass
+
+    # Look up expense account for orderLines
+    if not account_id and args.get("accountNumber"):
+        accs = await client.get("/ledger/account", params={"count": 1000})
+        for acc in accs.get("values", []):
+            if acc.get("number") == int(args["accountNumber"]):
+                account_id = acc["id"]
+                break
+
+    # Try /incomingInvoice with proper orderLines (not empty)
     if supplier_id:
+        order_lines = []
+        if account_id:
+            order_lines.append({
+                "accountId": int(account_id),
+                "amountInclVat": amount,
+                "vatTypeId": 1,
+                "row": 1,
+                "description": args.get("description", "Supplier invoice"),
+                "vendorId": int(supplier_id),
+            })
         try:
             incoming_body = {
                 "invoiceHeader": {
@@ -1710,13 +1735,13 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                     "invoiceDate": invoice_date,
                     "invoiceAmount": amount,
                 },
-                "orderLines": [],
+                "orderLines": order_lines,
             }
             if args.get("dueDate"):
                 incoming_body["invoiceHeader"]["dueDate"] = args["dueDate"]
             if args.get("description"):
                 incoming_body["invoiceHeader"]["description"] = args["description"]
-            result = await client.post("/incomingInvoice", json=incoming_body)
+            result = await client.post("/incomingInvoice?sendTo=ledger", json=incoming_body)
             return result
         except Exception as e:
             log.warning(f"incomingInvoice failed (falling back to voucher): {e}")
@@ -1774,10 +1799,17 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
         voucher_body["voucherType"] = {"id": voucher_type_id}
 
     voucher_result = await client.post("/ledger/voucher", json=voucher_body)
+    voucher_id = voucher_result.get("value", {}).get("id")
 
-    # Note: /supplierInvoice endpoint returns 500 on both sandbox and competition proxies.
-    # Do NOT attempt it as it wastes an API call and counts as an error.
-    # The enriched voucher with voucherType=Leverandørfaktura is the best we can do.
+    # PATH C: Try converting voucher to supplier invoice via PUT postings
+    if voucher_id:
+        try:
+            await client.put(
+                f"/supplierInvoice/voucher/{voucher_id}/postings",
+                params={"sendToLedger": "true", "voucherDate": invoice_date},
+            )
+        except Exception as e:
+            log.warning(f"supplierInvoice/voucher conversion failed (non-fatal): {e}")
 
     return voucher_result
 
