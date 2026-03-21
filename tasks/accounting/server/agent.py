@@ -44,6 +44,8 @@ class CreateEmployeeArgs(BaseModel):
     userType: str = Field(default="STANDARD", description="STANDARD, EXTENDED (admin), or NO_ACCESS")
     dateOfBirth: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     phoneNumberMobile: Optional[str] = None
+    startDate: Optional[str] = Field(default=None, description="Employment start date YYYY-MM-DD")
+    endDate: Optional[str] = Field(default=None, description="Employment end date YYYY-MM-DD")
 
 
 class CreateCustomerArgs(BaseModel):
@@ -51,6 +53,9 @@ class CreateCustomerArgs(BaseModel):
     email: Optional[str] = None
     phoneNumber: Optional[str] = None
     organizationNumber: Optional[str] = None
+    addressLine1: Optional[str] = Field(default=None, description="Street address")
+    postalCode: Optional[str] = Field(default=None, description="Postal/ZIP code")
+    city: Optional[str] = Field(default=None, description="City name")
     isPrivateIndividual: Optional[bool] = None
     postalAddress: Optional[dict] = Field(default=None, description='{"addressLine1":"...", "postalCode":"...", "city":"..."}')
 

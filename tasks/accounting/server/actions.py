@@ -167,7 +167,27 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
     if args.get("address"):
         body["address"] = args["address"]
 
-    return await client.post("/employee", json=body)
+    result = await client.post("/employee", json=body)
+    employee = result.get("value", result)
+    employee_id = employee.get("id")
+
+    # Create employment record if start date provided
+    if employee_id and args.get("startDate"):
+        try:
+            employment_body = {
+                "employee": {"id": employee_id},
+                "startDate": args["startDate"],
+                "employmentType": args.get("employmentType", "ORDINARY"),
+            }
+            if args.get("endDate"):
+                employment_body["endDate"] = args["endDate"]
+            if args.get("percentageOfFullTimeEquivalent"):
+                employment_body["percentageOfFullTimeEquivalent"] = float(args["percentageOfFullTimeEquivalent"])
+            await client.post("/employee/employment", json=employment_body)
+        except Exception as e:
+            log.warning(f"Employment creation failed: {e}")
+
+    return result
 
 
 async def action_create_customer(client: TripletexClient, args: dict) -> dict:
