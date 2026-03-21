@@ -2210,6 +2210,19 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
             params["dateTo"] = "2030-12-31"
         return await client.get(path, params=params or None)
     elif method == "POST":
+        # Sanitize /project/projectActivity body — Tripletex 500s on unexpected fields
+        if "/project/projectActivity" in path and body and isinstance(body, dict):
+            activity = body.get("activity", {})
+            if isinstance(activity, dict):
+                # Only keep name and activityType — extra fields cause 500
+                clean_activity = {
+                    "name": activity.get("name") or activity.get("displayName") or activity.get("description") or "General",
+                    "activityType": activity.get("activityType", "PROJECT_SPECIFIC_ACTIVITY"),
+                }
+                body["activity"] = clean_activity
+            if not body.get("activity", {}).get("name"):
+                body.setdefault("activity", {})["name"] = "General"
+            body.setdefault("activity", {}).setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY")
         # Auto-fix missing fields for /activity endpoint
         if "/activity" in path and body and isinstance(body, dict):
             if "activityType" not in body:
