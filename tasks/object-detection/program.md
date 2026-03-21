@@ -196,6 +196,8 @@ This updates:
 
 - `tasks/object-detection/analysis/progress.png`
 - `tasks/object-detection/analysis/detection_frontier.json`
+- `tasks/object-detection/analysis/projection.png`
+- `tasks/object-detection/analysis/projection_report.json`
 
 ## Bottom Line
 

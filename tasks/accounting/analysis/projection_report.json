@@ -1,0 +1,263 @@
+{
+  "projection_status": "noisy_calibration",
+  "paired_points": [
+    {
+      "family": "invoice",
+      "batch_id": "20260321_183158",
+      "proxy_clean_rate": 0.6897,
+      "dashboard_score": 0.0,
+      "api_errors": 44.0,
+      "successful_writes": 44.0,
+      "attachment_present": false,
+      "description": "invoice: clean_rate=69.0%, blockers=sandbox_valid_vat_type,vat_account_mapping,module_permission_blocked, likely_missing=none"
+    },
+    {
+      "family": "employee",
+      "batch_id": "20260321_182557",
+      "proxy_clean_rate": 0.4828,
+      "dashboard_score": 0.0,
+      "api_errors": 18.0,
+      "successful_writes": 34.0,
+      "attachment_present": true,
+      "description": "employee: clean_rate=48.3%, blockers=email_validation, likely_missing=employee,department"
+    },
+    {
+      "family": "invoice",
+      "batch_id": "20260321_182230",
+      "proxy_clean_rate": 0.6667,
+      "dashboard_score": 86.0,
+      "api_errors": 44.0,
+      "successful_writes": 39.0,
+      "attachment_present": false,
+      "description": "invoice: clean_rate=66.7%, blockers=sandbox_valid_vat_type,vat_account_mapping,module_permission_blocked, likely_missing=none"
+    },
+    {
+      "family": "salary",
+      "batch_id": "20260321_185929",
+      "proxy_clean_rate": 0.9,
+      "dashboard_score": 70.0,
+      "api_errors": 4.0,
+      "successful_writes": 22.0,
+      "attachment_present": true,
+      "description": "salary: clean_rate=90.0%, blockers=none, likely_missing=employee"
+    },
+    {
+      "family": "project",
+      "batch_id": "20260321_181427",
+      "proxy_clean_rate": 0.75,
+      "dashboard_score": 79.0,
+      "api_errors": 54.0,
+      "successful_writes": 30.0,
+      "attachment_present": false,
+      "description": "project: clean_rate=75.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type"
+    },
+    {
+      "family": "supplier",
+      "batch_id": "20260321_180618",
+      "proxy_clean_rate": 0.8846,
+      "dashboard_score": 100.0,
+      "api_errors": 22.0,
+      "successful_writes": 37.0,
+      "attachment_present": true,
+      "description": "supplier: clean_rate=88.5%, blockers=none, likely_missing=project,activity"
+    },
+    {
+      "family": "customer",
+      "batch_id": "20260321_181615",
+      "proxy_clean_rate": 0.9,
+      "dashboard_score": 100.0,
+      "api_errors": 20.0,
+      "successful_writes": 69.0,
+      "attachment_present": true,
+      "description": "customer: clean_rate=90.0%, blockers=none, likely_missing=customer,vat_type"
+    },
+    {
+      "family": "ledger_correction",
+      "batch_id": "20260321_183012",
+      "proxy_clean_rate": 0.875,
+      "dashboard_score": 70.0,
+      "api_errors": 8.0,
+      "successful_writes": 24.0,
+      "attachment_present": true,
+      "description": "ledger_correction: clean_rate=87.5%, blockers=none, likely_missing=none"
+    },
+    {
+      "family": "invoice",
+      "batch_id": "20260321_183404",
+      "proxy_clean_rate": 0.7,
+      "dashboard_score": 100.0,
+      "api_errors": 44.0,
+      "successful_writes": 45.0,
+      "attachment_present": false,
+      "description": "invoice: clean_rate=70.0%, blockers=sandbox_valid_vat_type,vat_account_mapping,module_permission_blocked, likely_missing=none"
+    }
+  ],
+  "family_projections": [
+    {
+      "family": "bank_reconciliation",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 1.0,
+      "projected_dashboard_score": 100.0,
+      "best_observed_dashboard_score": null,
+      "api_errors": 0.0,
+      "successful_writes": 35.0,
+      "status": "keep"
+    },
+    {
+      "family": "customer",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.9118,
+      "projected_dashboard_score": 94.11117791992791,
+      "best_observed_dashboard_score": 100.0,
+      "api_errors": 20.0,
+      "successful_writes": 76.0,
+      "status": "keep"
+    },
+    {
+      "family": "salary",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.9048,
+      "projected_dashboard_score": 92.86320075110851,
+      "best_observed_dashboard_score": 70.0,
+      "api_errors": 4.0,
+      "successful_writes": 23.0,
+      "status": "keep"
+    },
+    {
+      "family": "ledger_correction",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.8889,
+      "projected_dashboard_score": 90.02850975336159,
+      "best_observed_dashboard_score": 70.0,
+      "api_errors": 8.0,
+      "successful_writes": 28.0,
+      "status": "keep"
+    },
+    {
+      "family": "voucher",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.8636,
+      "projected_dashboard_score": 85.51796370034288,
+      "best_observed_dashboard_score": null,
+      "api_errors": 20.0,
+      "successful_writes": 31.0,
+      "status": "keep"
+    },
+    {
+      "family": "supplier",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.8621,
+      "projected_dashboard_score": 85.25054002131014,
+      "best_observed_dashboard_score": 100.0,
+      "api_errors": 26.0,
+      "successful_writes": 41.0,
+      "status": "keep"
+    },
+    {
+      "family": "invoice",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.7353,
+      "projected_dashboard_score": 62.64432502041009,
+      "best_observed_dashboard_score": 100.0,
+      "api_errors": 44.0,
+      "successful_writes": 52.0,
+      "status": "keep"
+    },
+    {
+      "family": "project",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.7059,
+      "projected_dashboard_score": 57.40282091136862,
+      "best_observed_dashboard_score": 79.0,
+      "api_errors": 59.0,
+      "successful_writes": 37.0,
+      "status": "keep"
+    },
+    {
+      "family": "department",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.6,
+      "projected_dashboard_score": 38.52270917165794,
+      "best_observed_dashboard_score": null,
+      "api_errors": 17.0,
+      "successful_writes": 38.0,
+      "status": "watch"
+    },
+    {
+      "family": "employee",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.5,
+      "projected_dashboard_score": 20.694463902809332,
+      "best_observed_dashboard_score": 0.0,
+      "api_errors": 18.0,
+      "successful_writes": 37.0,
+      "status": "watch"
+    },
+    {
+      "family": "travel_expense",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.4444,
+      "projected_dashboard_score": 10.781959533329513,
+      "best_observed_dashboard_score": null,
+      "api_errors": 37.0,
+      "successful_writes": 22.0,
+      "status": "watch"
+    },
+    {
+      "family": "annual_close",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.4,
+      "projected_dashboard_score": 2.8662186339607274,
+      "best_observed_dashboard_score": null,
+      "api_errors": 7.0,
+      "successful_writes": 8.0,
+      "status": "watch"
+    },
+    {
+      "family": "cost_analysis",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.2,
+      "projected_dashboard_score": 0.0,
+      "best_observed_dashboard_score": null,
+      "api_errors": 30.0,
+      "successful_writes": 16.0,
+      "status": "manual_review"
+    },
+    {
+      "family": "product",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.36,
+      "projected_dashboard_score": 0.0,
+      "best_observed_dashboard_score": null,
+      "api_errors": 352.0,
+      "successful_writes": 22.0,
+      "status": "manual_review"
+    },
+    {
+      "family": "timesheet",
+      "batch_id": "20260321_194357",
+      "proxy_clean_rate": 0.2857,
+      "projected_dashboard_score": 0.0,
+      "best_observed_dashboard_score": null,
+      "api_errors": 56.0,
+      "successful_writes": 38.0,
+      "status": "manual_review"
+    }
+  ],
+  "best_observed_dashboard_by_family": {
+    "invoice": 100.0,
+    "employee": 0.0,
+    "salary": 70.0,
+    "project": 79.0,
+    "supplier": 100.0,
+    "customer": 100.0,
+    "ledger_correction": 70.0
+  },
+  "calibration": {
+    "slope": 178.2824526884861,
+    "intercept": -68.44676244143372,
+    "rmse_dashboard_score": 29.08677563183688,
+    "points": 9
+  },
+  "reason": "Dashboard-backed calibration exists but remains noisy."
+}

@@ -30,10 +30,12 @@ python tools/refresh_autoresearch_artifacts.py
 
 - Current tracked score: `65.7/100` with accounting as the main leaderboard gap.
 - The live failure queue is now explicit: `product`, `timesheet`, `employee`, `invoice`, `travel_expense`, `department`, `project`.
+- Dashboard-backed projection is now versioned too; current calibration exists but is still noisy, so it is directional rather than decision-grade.
 - Main artifacts:
   - [Priority queue](tasks/accounting/analysis/priority_queue.md)
   - [Latest log analysis](tasks/accounting/analysis/latest_log_analysis.md)
   - [Progress plot](tasks/accounting/analysis/progress.png)
+  - [Projection plot](tasks/accounting/analysis/projection.png)
 
 ### Object Detection
 
@@ -43,6 +45,7 @@ python tools/refresh_autoresearch_artifacts.py
 - Main artifacts:
   - [Progress plot](tasks/object-detection/analysis/progress.png)
   - [Detection frontier](tasks/object-detection/analysis/detection_frontier.json)
+  - [Projection plot](tasks/object-detection/analysis/projection.png)
 
 ### Astar Island
 
@@ -51,6 +54,7 @@ python tools/refresh_autoresearch_artifacts.py
 - Main artifacts:
   - [Progress plot](tasks/astar-island/analysis/progress.png)
   - [CV vs live frontier](tasks/astar-island/analysis/cv_vs_live_frontier.json)
+  - [Projection plot](tasks/astar-island/analysis/projection.png)
 
 ## Repository Structure
 

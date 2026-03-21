@@ -175,6 +175,8 @@ This updates:
 
 - `tasks/astar-island/analysis/progress.png`
 - `tasks/astar-island/analysis/cv_vs_live_frontier.json`
+- `tasks/astar-island/analysis/projection.png`
+- `tasks/astar-island/analysis/projection_report.json`
 
 ## Bottom Line
 

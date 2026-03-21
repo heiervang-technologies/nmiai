@@ -192,6 +192,8 @@ python tools/refresh_autoresearch_artifacts.py
 This updates:
 
 - `tasks/accounting/analysis/progress.png`
+- `tasks/accounting/analysis/projection.png`
+- `tasks/accounting/analysis/projection_report.json`
 - `tasks/accounting/analysis/pareto_clean_vs_errors.json`
 - `tasks/accounting/analysis/pareto_clean_vs_submissions.json`
 - `tasks/accounting/analysis/pareto_dashboard_vs_errors.json`
