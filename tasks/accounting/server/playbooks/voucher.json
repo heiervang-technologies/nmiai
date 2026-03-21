@@ -11,7 +11,17 @@
     "accounting dimension",
     "custom dimension",
     "regnskapsdimensjon",
-    "dimension value"
+    "dimension value",
+    "dimensión contable",
+    "Buchhaltungsdimension",
+    "dimension comptable",
+    "dimensão contábil",
+    "benutzerdefinierte Dimension",
+    "dimensión personalizada",
+    "dimension personnalisée",
+    "Dimensionswert",
+    "valor de dimensión",
+    "valeur de dimension"
   ],
   "description": "Create journal entries / vouchers, manual salary postings",
   "preflight": [

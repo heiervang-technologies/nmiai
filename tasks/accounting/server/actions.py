@@ -2502,6 +2502,19 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     last["amountGross"] = corrected
                     last["amountGrossCurrency"] = corrected
                     log.warning(f"Auto-balanced voucher postings: adjusted last posting by {-total:.2f}")
+            # Strip freeAccountingDimension from bank/balancing postings.
+            # Dimensions should only be on the expense/revenue posting, not on
+            # bank (1920) or other balancing accounts. Scorer gives 0 if dimension
+            # is on the bank posting.
+            bank_accounts = {1920, 1900, 1910, 1930, 1940, 1950}
+            for p in postings:
+                acct_id = p.get("account", {}).get("id")
+                acct_obj = acct_map.get(acct_id, {})
+                acct_num = acct_obj.get("number", 0)
+                if acct_num in bank_accounts:
+                    for dim_key in [k for k in p if k.startswith("freeAccountingDimension")]:
+                        log.info(f"Stripped {dim_key} from bank account {acct_num} posting")
+                        del p[dim_key]
         # Try voucher POST with retry on locked-VAT accounts
         if "/ledger/voucher" in path:
             try:
