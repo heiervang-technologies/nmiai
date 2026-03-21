@@ -1036,6 +1036,21 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     amount = float(args.get("amount", args.get("paidAmount", 0)))
     payment_date = args.get("paymentDate", _today())
 
+    # If we found the invoice, prefer its actual remaining amount over what the LLM computed
+    # This fixes excl-VAT vs incl-VAT mismatches (prompt says "12700 excl VAT" but payment must be 15875 incl)
+    if invoice_id and amount > 0:
+        try:
+            inv_detail = await client.get(f"/invoice/{invoice_id}")
+            inv_data = inv_detail.get("value", inv_detail)
+            remaining = inv_data.get("amountOutstanding", inv_data.get("amountRemainder"))
+            if remaining is not None and abs(remaining) > 0:
+                # Use the actual outstanding amount from the invoice
+                if abs(remaining - amount) > 0.01:
+                    log.info(f"Payment amount adjusted: {amount} -> {remaining} (invoice outstanding)")
+                    amount = float(remaining)
+        except Exception:
+            pass
+
     payment_params = {
         "paymentDate": payment_date,
         "paymentTypeId": int(payment_type_id),
