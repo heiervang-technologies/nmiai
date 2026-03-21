@@ -722,37 +722,45 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
     if args.get("priceIncludingVat") is not None:
         body["priceIncludingVatCurrency"] = float(args["priceIncludingVat"])
 
-    # Resolve VAT once, then optionally fall back to Tripletex's default VAT handling.
+    # Build a cascade of VAT IDs to try: resolved → all outgoing types → no VAT
     vat_types = await _get_outgoing_vat_types(client)
     default_vat_id = _resolve_default_vat_id(vat_types, 3)
-    body["vatType"] = {"id": int(_resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id))}
-    try:
-        return await client.post("/product", json=body)
-    except Exception as exc:
-        if _error_mentions(exc, "already exists", "eksisterer allerede", "duplicate"):
-            existing = await _find_existing_product(
-                client,
-                product_name=args.get("name"),
-                product_number=args.get("number"),
-            )
-            if existing:
-                return {"value": existing, "note": "Product already exists"}
-        if not _error_mentions(exc, "vat", "mva"):
-            raise
+    resolved_vat = int(_resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id))
 
-    body.pop("vatType", None)
-    try:
-        return await client.post("/product", json=body)
-    except Exception as exc:
-        if _error_mentions(exc, "already exists", "eksisterer allerede", "duplicate"):
-            existing = await _find_existing_product(
-                client,
-                product_name=args.get("name"),
-                product_number=args.get("number"),
-            )
-            if existing:
-                return {"value": existing, "note": "Product already exists"}
-        raise
+    # Collect unique outgoing VAT IDs from sandbox, prioritizing resolved + 25% types
+    vat_candidates = [resolved_vat]
+    for vt in vat_types.get("values", []):
+        vt_id = vt.get("id")
+        if vt_id is None or int(vt_id) in vat_candidates:
+            continue
+        name = (vt.get("name") or "").lower()
+        # Skip incoming/deductible types
+        if "inngående" in name or "fradrag" in name:
+            continue
+        vat_candidates.append(int(vt_id))
+    # Add None as final fallback (let Tripletex pick)
+    vat_candidates.append(None)
+
+    last_error = None
+    for vat_id in vat_candidates:
+        if vat_id is not None:
+            body["vatType"] = {"id": vat_id}
+        else:
+            body.pop("vatType", None)
+        try:
+            return await client.post("/product", json=body)
+        except Exception as exc:
+            if _error_mentions(exc, "already exists", "eksisterer allerede", "duplicate"):
+                existing = await _find_existing_product(
+                    client, product_name=args.get("name"), product_number=args.get("number"),
+                )
+                if existing:
+                    return {"value": existing, "note": "Product already exists"}
+            last_error = exc
+            if not _error_mentions(exc, "vat", "mva"):
+                raise
+    if last_error:
+        raise last_error
 
 
 async def action_create_department(client: TripletexClient, args: dict) -> dict:

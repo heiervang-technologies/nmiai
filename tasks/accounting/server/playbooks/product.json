@@ -8,5 +8,5 @@
   ],
   "required_fields": ["name"],
   "common_errors": ["vatType must be set explicitly"],
-  "tips": "vatType id=3 for 25% standard MVA"
+  "tips": "ALWAYS use create_product tool. Set priceExcludingVat from the prompt (not priceIncludingVat unless explicitly stated). The tool handles VAT type resolution automatically — do NOT pass vatTypeId unless the prompt specifies a non-standard rate (15% food, 12% transport, 0% exempt). If the prompt gives a price 'including VAT', calculate price excluding = price / 1.25 and pass that as priceExcludingVat. If the prompt mentions a product number/code, pass it as 'number'."
 }
