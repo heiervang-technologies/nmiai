@@ -16,7 +16,22 @@
     "invoice 25%",
     "on account",
     "progress invoice",
-    "prosjektfaktura"
+    "prosjektfaktura",
+    "project lifecycle",
+    "complete project lifecycle",
+    "cycle de vie complet du projet",
+    "cycle de vie du projet",
+    "ciclo de vida completo del proyecto",
+    "ciclo de vida del proyecto",
+    "ciclo de vida completo do projeto",
+    "prosjektsyklusen",
+    "heile prosjektsyklusen",
+    "Projektzyklus",
+    "vollständigen Projektzyklus",
+    "budget",
+    "timesheet and invoice",
+    "timer og faktura",
+    "heures et facture"
   ],
   "description": "Create projects, register hours, project invoicing",
   "preflight": [
