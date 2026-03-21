@@ -460,7 +460,7 @@ async def register_supplier_invoice(ctx: RunContext[AgentDeps], args: RegisterSu
 
 @agent.tool
 async def create_fixed_price_project_invoice(ctx: RunContext[AgentDeps], args: CreateFixedPriceProjectInvoiceArgs) -> str:
-    """Create or find a project, set fixed price, then invoice a percentage of that fixed price."""
+    """MANDATORY for 'fastpris/fixed price + faktura/invoice/delbetaling/%'. Finds or creates the project, sets fixed price correctly, then invoices the specified percentage. Do NOT manually set prices via hourlyRates or create invoices separately."""
     return await _safe_action("create_fixed_price_project_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3500)
 
 
@@ -565,8 +565,8 @@ MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_cal
 - Time tracking/hours only → register_timesheet
 - Time tracking/hours + invoice → register_timesheet_and_invoice
 - Travel expenses → create_travel_expense
-- Plain projects → create_project
-- Fixed-price project + invoice percentage → create_fixed_price_project_invoice
+- Plain projects (no invoice) → create_project
+- Fixed-price project + invoice percentage / "fastpris" + "delbetaling" / "fakturere X%" → create_fixed_price_project_invoice (NEVER use create_project + create_invoice separately for this)
 - Invoices → create_invoice
 - Credit notes → create_credit_note
 - Payments/reversals → register_payment

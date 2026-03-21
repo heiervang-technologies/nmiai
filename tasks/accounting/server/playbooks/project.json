@@ -53,5 +53,5 @@
     "Project creation may require startDate",
     "Use /project/projectActivity, not /project/{id}/activity"
   ],
-  "tips": "For time registration + invoicing: create project, create activity, register hours, then create order from project and invoice it"
+  "tips": "TOOL ROUTING — choose the RIGHT tool based on task type:\n- Fixed price + invoice percentage (fastpris + delbetaling/fakturere X%): ALWAYS use create_fixed_price_project_invoice. Pass fixedPrice, invoicePercent, projectName, customerName/customerOrgNumber, projectManagerEmail. This tool handles project creation, fixed price setup, AND invoice generation in one call. Do NOT use create_project + create_invoice separately.\n- Time registration + invoicing (timer + faktura): use register_timesheet_and_invoice.\n- Simple project creation (no invoice): use create_project.\n- Full project lifecycle: use create_project, then register_timesheet for hours, then create_invoice."
 }
