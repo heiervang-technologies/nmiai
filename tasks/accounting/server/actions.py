@@ -1111,6 +1111,19 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
         except Exception as e:
             log.warning(f"Supplier resolution failed: {e}")
 
+    # Resolve department if provided
+    department_id = args.get("departmentId")
+    if not department_id and args.get("departmentName"):
+        try:
+            deps = await client.get("/department", params={"count": 50})
+            wanted = args["departmentName"].strip().lower()
+            for dep in deps.get("values", []):
+                if wanted in (dep.get("name") or "").lower():
+                    department_id = dep["id"]
+                    break
+        except Exception as e:
+            log.warning(f"Department resolution failed: {e}")
+
     postings = []
     for i, p in enumerate(args.get("postings", []), start=1):
         account_number = p.get("accountNumber")
@@ -1175,6 +1188,10 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
                     pass
             if posting_supplier_id:
                 posting["supplier"] = {"id": int(posting_supplier_id)}
+
+        # Add department to posting if resolved
+        if department_id:
+            posting["department"] = {"id": int(department_id)}
 
         postings.append(posting)
 

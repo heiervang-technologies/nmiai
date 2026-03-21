@@ -151,6 +151,8 @@ class CreateVoucherArgs(BaseModel):
     supplierId: Optional[int] = Field(default=None, description="Supplier ID to attach to supplier-related voucher postings")
     supplierName: Optional[str] = Field(default=None, description="Supplier name to find or create")
     supplierOrgNumber: Optional[str] = Field(default=None, description="Supplier organization number")
+    departmentId: Optional[int] = Field(default=None, description="Department ID to attach to all postings")
+    departmentName: Optional[str] = Field(default=None, description="Department name to find (e.g. 'Lager', 'Salg', 'Drift')")
     postings: list[VoucherPosting]
 
 
@@ -572,7 +574,11 @@ KEY FACTS:
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
 - If you see "403 Forbidden" or auth errors on multiple calls, STOP — the session may be invalid.
 
-Complete the task efficiently with ONE tool call when possible, then stop."""
+CRITICAL RULES:
+- NEVER ask questions or request clarification. Always make your best effort with the information given.
+- If data seems missing, use reasonable accounting defaults (e.g., 22% tax rate for Norway, standard depreciation schedules, round to nearest krone).
+- For annual closing / depreciation / accrual tasks: calculate the amounts yourself and book them via create_voucher. Do NOT ask for amounts — compute them from the provided numbers.
+- Complete the task efficiently with ONE tool call when possible, then stop."""
 
 
 def build_system_prompt(playbook: dict | None = None) -> str:
