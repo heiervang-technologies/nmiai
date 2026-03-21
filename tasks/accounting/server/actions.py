@@ -781,6 +781,9 @@ async def action_create_department(client: TripletexClient, args: dict) -> dict:
 
 async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict:
     """Register a bank account on the company. Required before invoice creation."""
+    # Skip if already set in this session
+    if getattr(client, '_bank_account_set', False):
+        return {"status": "already_set_cached"}
     bank_num = args.get("bankAccountNumber", "12345678903")
 
     # Approach 1: Find company via >withLoginAccess
@@ -792,16 +795,19 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
             company_obj = company_data.get("value", company_data)
             if company_obj.get("bankAccountNumber") == bank_num:
                 log.info(f"Company {company_id} already has bank account number set")
+                client._bank_account_set = True
                 return {"status": "already_set", "companyId": company_id}
             company_obj["bankAccountNumber"] = bank_num
             try:
                 result = await client.put("/company", json=company_obj)
                 log.info(f"Bank account set via PUT /company for company {company_id}")
+                client._bank_account_set = True
                 return result
             except Exception as put_company_error:
                 log.warning(f"PUT /company failed, trying PUT /company/{{id}} fallback: {put_company_error}")
                 result = await client.put(f"/company/{company_id}", json=company_obj)
                 log.info(f"Bank account set via PUT /company/{company_id}")
+                client._bank_account_set = True
                 return result
     except Exception as e1:
         log.warning(f"Bank account via company lookup failed: {e1}")
