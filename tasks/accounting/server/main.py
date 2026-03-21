@@ -56,7 +56,7 @@ def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float, pl
     entry = {
         "timestamp": ts,
         "prompt": req.prompt,
-        "files": [{"filename": f.filename, "mime_type": f.mime_type, "content_len": len(f.content_base64)} for f in req.files],
+        "files": [{"filename": f.filename, "mime_type": f.mime_type, "content_len": len(f.content_base64 or "")} for f in req.files],
         "base_url": req.tripletex_credentials.base_url,
         "plan": plan,
         "result": result,
