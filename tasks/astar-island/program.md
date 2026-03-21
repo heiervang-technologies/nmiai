@@ -65,6 +65,22 @@ Use this ranking of trust:
 - GT ingestion / rebuild automation between rounds.
 - Logging, diagnostics, and frontier tracking.
 
+## Parallel Sidecars
+
+The task lead owns the critical path.
+
+Spawn regular ephemeral sub-agents only for bounded sidecar work that does not block the next decision, for example:
+
+- GT-ingestion checks
+- CV/frontier refreshes
+- plots, diagnostics, and round postmortems
+
+Do not delegate:
+
+- live submission choice
+- watcher override decisions
+- strategic regime pivots without held-out evidence
+
 ## What You Must Not Do
 
 - Do not ship a change based only on in-sample gains.

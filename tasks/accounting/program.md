@@ -70,6 +70,22 @@ Proxy signal for a likely-good run:
 - Action-layer API call sequences.
 - Log analysis and reporting scripts.
 
+## Parallel Sidecars
+
+The task lead owns the critical path.
+
+Spawn regular ephemeral sub-agents only for bounded sidecar work that does not block the next decision, for example:
+
+- family-specific log audits
+- dashboard/log correlation updates
+- plot, tracker, or report refreshes
+
+Do not delegate:
+
+- submission strategy
+- final judgment on whether a family is ready for broad rollout
+- strategic priority changes across families
+
 ## What You Must Not Do
 
 - Do not assume file attachments contain usable bytes.

@@ -69,6 +69,22 @@ Use this ranking of trust:
 - V5 YOLO `best.pt -> ONNX -> ZIP` automation and continuous checkpoint scoring.
 - Training configs and post-processing if they can be evaluated on clean val or justified for server testing.
 
+## Parallel Sidecars
+
+The task lead owns the critical path.
+
+Spawn regular ephemeral sub-agents only for bounded sidecar work that does not block the next decision, for example:
+
+- clean-val sweeps, leaderboard refreshes, plots, or provenance/report generation
+- checkpoint export/package verification
+- tracker maintenance and frontier updates
+
+Do not delegate:
+
+- submission decisions
+- strategic pivots
+- final keep/discard judgment on borderline candidates
+
 ## What You Must Not Do
 
 - Do not auto-submit to the competition.
