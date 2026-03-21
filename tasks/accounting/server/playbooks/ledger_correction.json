@@ -12,7 +12,11 @@
     "reversal",
     "reclassif",
     "analyser hovedboken",
-    "analysiere das Hauptbuch"
+    "analysiere das Hauptbuch",
+    "feil i hovudboka",
+    "korriger alle feil",
+    "feil i hovedboka",
+    "korrigere feil"
   ],
   "description": "Find and correct errors in ledger postings",
   "preflight": [
