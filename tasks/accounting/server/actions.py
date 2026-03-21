@@ -465,6 +465,17 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         except Exception as e:
             log.warning(f"Salary setup failed: {e}")
 
+    # Set standard work time if provided (e.g. 7.5 hours/day)
+    if employee_id and args.get("hoursPerDay"):
+        try:
+            await client.post("/employee/standardTime", json={
+                "employee": {"id": employee_id},
+                "fromDate": args.get("startDate", TODAY),
+                "hoursPerDay": float(args["hoursPerDay"]),
+            })
+        except Exception as e:
+            log.warning(f"Standard work time setup failed: {e}")
+
     return result
 
 
@@ -886,6 +897,24 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
         customer_org_number=args.get("customerOrgNumber"),
     )
 
+    # Resolve supplier if provided
+    supplier_id = args.get("supplierId")
+    if not supplier_id and args.get("supplierName"):
+        try:
+            suppliers = await client.get("/supplier", params={"count": 100})
+            for s in suppliers.get("values", []):
+                if args["supplierName"].lower() in s.get("name", "").lower():
+                    supplier_id = s["id"]
+                    break
+            if not supplier_id:
+                sup_body = {"name": args["supplierName"]}
+                if args.get("supplierOrgNumber"):
+                    sup_body["organizationNumber"] = args["supplierOrgNumber"]
+                sup_result = await client.post("/supplier", json=sup_body)
+                supplier_id = sup_result.get("value", {}).get("id")
+        except Exception as e:
+            log.warning(f"Supplier resolution failed: {e}")
+
     postings = []
     for i, p in enumerate(args.get("postings", []), start=1):
         account_number = p.get("accountNumber")
@@ -913,16 +942,22 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
             "row": i,
             "account": {"id": account_id},
             "amountGross": _money(amount),
-            "amountGrossCurrency": _money(amount),  # Must match amountGross exactly
+            "amountGrossCurrency": _money(amount),
         }
         if p.get("vatTypeId"):
             posting["vatType"] = {"id": int(p["vatTypeId"])}
         if p.get("description"):
             posting["description"] = p["description"]
 
+        # Add customer ref for CUSTOMER ledger accounts
         posting_customer_id = p.get("customerId") or customer_id
         if posting_customer_id and account_obj and account_obj.get("ledgerType") == "CUSTOMER":
             posting["customer"] = {"id": int(posting_customer_id)}
+
+        # Add supplier ref for VENDOR/SUPPLIER ledger accounts
+        posting_supplier_id = p.get("supplierId") or supplier_id
+        if posting_supplier_id and account_obj and account_obj.get("ledgerType") == "VENDOR":
+            posting["supplier"] = {"id": int(posting_supplier_id)}
 
         postings.append(posting)
 

@@ -52,6 +52,7 @@ class CreateEmployeeArgs(BaseModel):
     percentageOfFullTimeEquivalent: Optional[float] = Field(default=None, description="Employment percentage, e.g. 100.0 for full-time, 50.0 for half")
     annualSalary: Optional[float] = Field(default=None, description="Annual salary (årslønn) in NOK")
     occupationCode: Optional[str] = Field(default=None, description="STYRK occupation code, e.g. '2511' for system developer")
+    hoursPerDay: Optional[float] = Field(default=None, description="Standard work hours per day, e.g. 7.5")
 
 
 class CreateCustomerArgs(BaseModel):
@@ -135,14 +136,18 @@ class VoucherPosting(BaseModel):
     vatTypeId: Optional[int] = None
     description: Optional[str] = None
     customerId: Optional[int] = Field(default=None, description="Customer ID if this posting must be linked to a customer")
+    supplierId: Optional[int] = Field(default=None, description="Supplier ID if this posting must be linked to a supplier")
 
 
 class CreateVoucherArgs(BaseModel):
     date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     description: str
     customerId: Optional[int] = Field(default=None, description="Customer ID to attach to customer-related voucher postings")
-    customerName: Optional[str] = Field(default=None, description="Customer name to find or create when voucher postings require a customer")
+    customerName: Optional[str] = Field(default=None, description="Customer name to find or create")
     customerOrgNumber: Optional[str] = Field(default=None, description="Customer organization number")
+    supplierId: Optional[int] = Field(default=None, description="Supplier ID to attach to supplier-related voucher postings")
+    supplierName: Optional[str] = Field(default=None, description="Supplier name to find or create")
+    supplierOrgNumber: Optional[str] = Field(default=None, description="Supplier organization number")
     postings: list[VoucherPosting]
 
 
