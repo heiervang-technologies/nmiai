@@ -489,6 +489,7 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/employee/employment": "Use create_employee tool with startDate, annualSalary, percentageOfFullTimeEquivalent instead. It handles employment creation automatically.",
         "/expense/:deliver": "Travel expense already delivered via create_travel_expense tool. Do not call this again.",
         "/expense/:approve": "Travel expense approval not needed in competition sandboxes.",
+        "/project/hourlyrates": "Do NOT set fixed price via hourlyRates. Use create_fixed_price_project_invoice tool instead — it handles fixed price + invoicing correctly.",
     }
     # Intercept empty POST /project/projectActivity — LLM sometimes sends {}
     if method == "POST" and path == "/project/projectActivity":
