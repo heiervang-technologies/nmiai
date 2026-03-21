@@ -18,6 +18,7 @@ def run(*args: str) -> None:
 def main() -> None:
     run('python', 'tasks/accounting/analyze_logs.py')
     run('python', 'tasks/accounting/sync_dashboard_scores.py')
+    run('python', 'tasks/accounting/build_dashboard_snapshot.py')
     run('python', 'tools/refresh_autoresearch_artifacts.py')
 
 

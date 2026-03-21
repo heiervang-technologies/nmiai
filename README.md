@@ -34,6 +34,7 @@ python tools/refresh_autoresearch_artifacts.py
 - Main artifacts:
   - [Priority queue](tasks/accounting/analysis/priority_queue.md)
   - [Latest log analysis](tasks/accounting/analysis/latest_log_analysis.md)
+  - [Dashboard snapshot](tasks/accounting/analysis/dashboard_snapshot.md)
   - [Progress plot](tasks/accounting/analysis/progress.png)
   - [Projection plot](tasks/accounting/analysis/projection.png)
   - [Family scoreboard](tasks/accounting/analysis/family_scoreboard.md)

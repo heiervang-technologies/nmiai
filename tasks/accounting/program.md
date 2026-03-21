@@ -183,6 +183,11 @@ python tasks/accounting/refresh_live_artifacts.py
 
 This runs log analysis, dashboard sync, and artifact refresh in one step.
 
+It also writes a browser-derived dashboard snapshot to:
+
+- `tasks/accounting/analysis/dashboard_snapshot.md`
+- `tasks/accounting/analysis/dashboard_snapshot.json`
+
 If you only want to redraw plots/frontiers without pulling fresh dashboard rows, use:
 
 ```bash
