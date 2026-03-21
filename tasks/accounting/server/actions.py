@@ -1749,23 +1749,9 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
 
     voucher_result = await client.post("/ledger/voucher", json=voucher_body)
 
-    # Try to also create a proper supplierInvoice record for scoring
-    if supplier_id and voucher_result.get("value", {}).get("id"):
-        voucher_id = voucher_result["value"]["id"]
-        try:
-            si_body = {
-                "invoiceNumber": invoice_number or f"INV-{voucher_id}",
-                "invoiceDate": invoice_date,
-                "supplier": {"id": supplier_id},
-                "voucher": {"id": voucher_id},
-                "amountExcludingVat": abs(float(args.get("amountExcludingVat", amount / 1.25))),
-                "amountExcludingVatCurrency": abs(float(args.get("amountExcludingVat", amount / 1.25))),
-            }
-            si_result = await client.post("/supplierInvoice", json=si_body)
-            log.info(f"Created supplierInvoice record: {si_result.get('value', {}).get('id')}")
-            return {"value": voucher_result.get("value"), "supplierInvoice": si_result.get("value")}
-        except Exception as e:
-            log.warning(f"supplierInvoice creation failed (non-fatal): {e}")
+    # Note: /supplierInvoice endpoint returns 500 on both sandbox and competition proxies.
+    # Do NOT attempt it as it wastes an API call and counts as an error.
+    # The enriched voucher with voucherType=Leverandørfaktura is the best we can do.
 
     return voucher_result
 
