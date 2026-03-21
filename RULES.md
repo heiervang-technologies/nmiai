@@ -27,6 +27,47 @@ Pane IDs change after reboots. If you receive a message intended for another age
 ### 1.4 Voice Output (say command)
 Only MASTERS may use the `say` command. Sub-agents report to their master and let them decide what to voice.
 
+### 1.5 Never Be Blocked
+Agents must NEVER sit idle waiting for a response. If you send a message and need a reply, continue working on other tasks while waiting. If you are blocked on a decision, escalate immediately to your master or ask an advisor. If your master is unresponsive, use `director send` or `tmux-tool send` to reach them again (with double-enter). If truly stuck with no response after reasonable attempts, make your best judgment and proceed - it is better to act and be corrected than to sit idle.
+
+### 1.6 Agent-to-Agent Communication Reference
+Every agent must know how to communicate. Tools available:
+
+**Send a message to another pane:**
+```bash
+director send %TARGET 'your message'
+sleep 0.5
+tmux send-keys -t %TARGET Enter
+sleep 0.3
+tmux send-keys -t %TARGET Enter
+```
+
+**Find your own pane:**
+```bash
+echo $TMUX_PANE
+```
+
+**List all agents:**
+```bash
+director list        # shows all running agents with panes
+tmux-tool list       # shows all panes with commands
+```
+
+**Check if a pane is busy:**
+```bash
+tmux-tool busy %TARGET   # exit 0 = busy, exit 1 = idle
+```
+
+**Capture output from another pane:**
+```bash
+tmux-tool capture %TARGET -c --tail 10
+```
+
+**Show registered agents:**
+```bash
+bash /home/me/ht/nmiai/show-registry.sh
+```
+
 ## 2. Session Boundaries
 
 ### 2.1 Agents Stay in Their Session
