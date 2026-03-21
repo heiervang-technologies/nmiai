@@ -126,17 +126,17 @@ for si in range(5):
             frontier = dynamic & (patch >= 1) & (patch <= 6)
             sc = 3*(ipatch==1).sum() + frontier.sum()
             scores[(vx, vy)] = sc
-    # Pick top 5 viewports with minimum spacing
+    # Pick top 2 viewports (5 queries each = better tau=10 overlay) with minimum spacing
     chosen = []
     for pos, sc in sorted(scores.items(), key=lambda x: -x[1]):
-        if len(chosen) >= 5: break
+        if len(chosen) >= 2: break
         vx, vy = pos
         too_close = any(abs(vx-cx)<10 and abs(vy-cy)<10 for cx,cy in chosen)
         if not too_close:
             chosen.append(pos)
     obs = []
     for vx, vy in chosen:
-        for _ in range(2):
+        for _ in range(5):
             r = s.post(f'{BASE}/astar-island/simulate', json={'round_id':rid,'seed_index':si,'viewport_x':vx,'viewport_y':vy,'viewport_w':15,'viewport_h':15})
             if r.status_code == 200: obs.append({'grid':r.json()['grid'],'viewport_x':vx,'viewport_y':vy})
             elif r.status_code == 429: break
