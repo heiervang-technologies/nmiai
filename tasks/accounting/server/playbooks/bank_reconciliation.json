@@ -14,5 +14,5 @@
     "Invoice numbers in bank statement may not match Tripletex invoice IDs — match by amount",
     "Partial payments: register the partial amount, not the full invoice amount"
   ],
-  "tips": "IMPORTANT: If CSV file is empty, tell the user you cannot reconcile without bank statement data. Do NOT make up transactions. For matching: GET open invoices first, then for each bank transaction match by amount or reference. Use register_payment for each matched invoice. Incoming payments (positive) = customer invoices. Outgoing (negative) = supplier invoices."
+  "tips": "IMPORTANT: If CSV file is empty, use discover_sandbox to find open invoices and register payments based on prompt context. CRITICAL: Invoice IDs in the bank statement (like 1001, 1002) are INVOICE NUMBERS, not Tripletex internal IDs. You MUST first GET /invoice to find the real Tripletex ID for each invoice number, then use that ID in register_payment. Never pass raw invoice numbers as IDs to PUT /invoice/{id}/:payment. For matching: GET open invoices, match by invoiceNumber or amount, then register_payment with the Tripletex internal ID."
 }
