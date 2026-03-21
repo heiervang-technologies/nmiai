@@ -175,8 +175,8 @@ print('Blitz done')
         say "Astar round $ROUND_NUM: running optimizer and submitting." 2>/dev/null
         cd /home/me/ht/nmiai
 
-        # UNet predictor (CV wKL ~0.019, 3-6x better than regime)
-        # Falls back to regime_predictor if UNet fails
+        # Per-round template mixture + spatial blend (CV wKL 0.059)
+        # UNet honest CV was 0.091 (in-sample 0.026 was data leakage)
         uv run python3 -c "
 import json, sys, time, numpy as np, requests
 from pathlib import Path
@@ -210,23 +210,44 @@ for si in range(5):
     seed_obs = json.loads(op.read_text()) if op.exists() else []
     all_obs[si] = seed_obs; all_combined.extend(seed_obs)
 
-# Try UNet first, fall back to regime
-try:
-    import unet_predictor as up
-    predictor_name = 'unet'
-    print(f'Using UNet predictor')
-except Exception as e:
-    print(f'UNet failed ({e}), falling back to regime')
-    import regime_predictor as rp
-    predictor_name = 'regime'
+# Per-round template mixture (proven best at CV 0.059)
+import regime_predictor as rp
+import spatial_model as sm
+gt_dir = Path('tasks/astar-island/ground_truth')
+gt_rounds = {}
+for f in sorted(gt_dir.glob('round*_seed*.json')):
+    r_num = int(f.stem.split('_')[0].replace('round',''))
+    s_num = int(f.stem.split('_')[1].replace('seed',''))
+    data = json.loads(f.read_text())
+    if 'ground_truth' in data and 'initial_grid' in data:
+        gt_rounds.setdefault(r_num, {})[s_num] = {'initial_grid': data['initial_grid'], 'ground_truth': np.array(data['ground_truth'])}
+prm = {r: rp.build_model_from_data({r: gt_rounds[r]}) for r in gt_rounds}
+ig0 = np.array(details['initial_states'][0]['grid'], dtype=np.int32)
+ll = {}
+for r_num, model in prm.items():
+    p = rp.predict_with_model(ig0, model); l = 0.0
+    for o in all_combined:
+        for dy,row in enumerate(o['grid']):
+            for dx,cell in enumerate(row):
+                y,x = o['viewport_y']+dy, o['viewport_x']+dx
+                if 0<=y<40 and 0<=x<40 and ig0[y,x] not in (10,5):
+                    l += max(np.log(max(float(p[y,x,ccc(cell)]),1e-6)),-6.0)
+    ll[r_num] = l
+mx = max(ll.values()); rw = {r: np.exp(ll[r]-mx) for r in ll}
+tw = sum(rw.values()); rw = {r: w/tw for r,w in rw.items()}
+top = sorted(rw.items(), key=lambda x:-x[1])[:3]
+print(f'Templates: {[(f"R{r}",f"{w:.3f}") for r,w in top]}')
+mw = max(rw.values()); conf = min((mw-1/len(rw))/(1-1/len(rw)),1.0)
+sw = 0.15+0.50*max(1-conf,0)
+predictor_name = 'per-round-template'
 
 for si in range(5):
     obs = all_obs[si]
     ig = details['initial_states'][si]['grid']
-    if predictor_name == 'unet':
-        pred = up.predict(ig)
-    else:
-        pred = rp.predict(ig, observations=all_combined if all_combined else None)
+    pred = sum(w*rp.predict_with_model(ig,prm[r]) for r,w in rw.items() if w>=0.005)
+    pred = np.maximum(pred,0.005); pred /= pred.sum(axis=2,keepdims=True)
+    ps = sm.predict(ig); ps = np.maximum(ps,0.005); ps /= ps.sum(axis=2,keepdims=True)
+    pred = (1-sw)*pred + sw*ps
     # Observation overlay (tau=20, cells with 2+ obs)
     if obs:
         init = np.array(ig)
