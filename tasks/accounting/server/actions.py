@@ -1706,14 +1706,16 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 "overnightAccommodation": accommodation,
                 "location": args.get("destination", args.get("title", "Norway")),
                 "address": args.get("destination", ""),
-                "countryCode": country_code,
+                # Omit countryCode for domestic trips — causes validation errors
             }
             if rate_type:
                 per_diem_body["rateType"] = {"id": rate_type["id"]}
             if rate_category:
                 per_diem_body["rateCategory"] = {"id": rate_category["id"]}
             if not rate_type and not rate_category:
-                log.warning("No per diem rateType ID found, perDiemCompensation may fail.")
+                # Fallback: use known working category 740 for domestic overnight
+                per_diem_body["rateType"] = {"id": 740}
+                per_diem_body["rateCategory"] = {"id": 740}
 
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
             per_diem_added = True
