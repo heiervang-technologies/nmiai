@@ -1148,13 +1148,19 @@ def main():
         # Combine detection and classification scores
         final_scores = np.clip(det_scores * (0.70 + 0.30 * cls_conf), 0.0, 1.0)
 
+        # Category aliases: merge umlaut spelling variants to canonical IDs
+        # Maps rare spelling -> common spelling (more training data = better prior)
+        ALIASES = {59: 61, 170: 260, 36: 201}
+
         for idx, box in enumerate(boxes):
             x1, y1, x2, y2 = box
+            cat_id = int(cat_ids[idx])
+            cat_id = ALIASES.get(cat_id, cat_id)
             results.append({
                 "image_id": int(img_path.stem.replace("img_", "")),
                 "bbox": [round(float(x1), 2), round(float(y1), 2),
                          round(float(x2 - x1), 2), round(float(y2 - y1), 2)],
-                "category_id": int(cat_ids[idx]),
+                "category_id": cat_id,
                 "score": round(float(final_scores[idx]), 4),
             })
 
