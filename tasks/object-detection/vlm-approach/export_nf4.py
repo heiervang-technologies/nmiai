@@ -35,6 +35,22 @@ NF4_TABLE = torch.tensor([
 
 GROUP_SIZE = 64  # Elements per quantization group
 
+SPECIAL_TOKEN_IDS = [248045, 846, 198, 248053, 248054, 91037, 248046]
+
+
+def extract_token_payload(model_state: dict[str, torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+    """Preserve only chat-template token embeddings when full embed table is stripped."""
+    embed_key = "model.language_model.embed_tokens.weight"
+    if embed_key not in model_state:
+        raise KeyError(
+            f"Missing {embed_key} in checkpoint; cannot export stripped NF4 safely."
+        )
+
+    embed_weight = model_state[embed_key]
+    token_ids = torch.tensor(SPECIAL_TOKEN_IDS, dtype=torch.long)
+    token_embeds = embed_weight[token_ids].to(torch.float16).cpu()
+    return token_ids, token_embeds
+
 
 def quantize_tensor_nf4(tensor: torch.Tensor) -> dict:
     """Quantize a 2D+ tensor to NF4 format.
@@ -126,6 +142,9 @@ def export():
     accuracy = ckpt.get("accuracy", 0)
     print(f"Accuracy: {accuracy:.4f}")
 
+    token_ids, token_embeds = extract_token_payload(model_state)
+    print(f"Preserving {token_ids.numel()} special token embeddings for template tokens")
+
     # Strip embed_tokens and lm_head
     nf4_state = {}
     kept_fp16 = {}  # Small tensors stay FP16
@@ -188,6 +207,8 @@ def export():
         'global_step': ckpt.get('global_step', 0),
         'quantization': 'nf4',
         'group_size': GROUP_SIZE,
+        'token_ids': token_ids,
+        'token_embeds': token_embeds,
         'architecture': {
             'base': 'Qwen3.5-0.8B',
             'text_layers_kept': 12,
@@ -197,6 +218,7 @@ def export():
             'vision_hidden': 768,
             'num_classes': 356,
             'stripped': ['embed_tokens', 'lm_head'],
+            'preserved_token_ids': SPECIAL_TOKEN_IDS,
         },
     }, output_path)
 
