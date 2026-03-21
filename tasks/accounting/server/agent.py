@@ -465,6 +465,8 @@ async def register_timesheet_and_invoice(ctx: RunContext[AgentDeps], args: Regis
 @agent.tool
 async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
     """Fallback: make any Tripletex API call. Use only when no typed tool fits. Will reject calls that should use typed tools."""
+    args_dict = args.model_dump(exclude_none=True)
+    method = args_dict.get("method", "GET").upper()
     path = args.path.lower()
     # Redirect to typed tools
     redirects = {
@@ -478,12 +480,16 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
         "/employee/employment": "Use create_employee tool with startDate, annualSalary, percentageOfFullTimeEquivalent instead. It handles employment creation automatically.",
     }
+    if method == "POST" and path == "/activity":
+        body = args_dict.get("body") or {}
+        body.setdefault("activityType", "GENERAL_ACTIVITY")
+        args_dict["body"] = body
+        return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
     # Fix wrong activity endpoint: /project/{id}/activity -> create activity + link to project
     import re
     project_activity_match = re.match(r"/project/(\d+)/activity", path)
     if project_activity_match:
         project_id = int(project_activity_match.group(1))
-        args_dict = args.model_dump(exclude_none=True)
         body = args_dict.get("body", {})
         body.setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY")
         # Step 1: Create the activity
@@ -505,7 +511,7 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
     for pattern, msg in redirects.items():
         if pattern in path:
             return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
-    return await _safe_action("generic_api_call", ctx.deps.client, args.model_dump(exclude_none=True), 4000)
+    return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
 
 
 # --- Core prompt ---
