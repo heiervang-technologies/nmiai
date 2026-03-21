@@ -935,20 +935,11 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
         project_id = result.get("value", {}).get("id")
         if project_id:
             try:
-                proj_data = await client.get(f"/project/{project_id}")
-                proj_obj = _build_project_update_payload(proj_data.get("value", proj_data))
-                proj_obj["isFixedPrice"] = True
-                await client.put(f"/project/{project_id}", json=proj_obj)
-
-                hourly_rate_body = {
-                    "startDate": args.get("startDate", TODAY),
-                    "hourlyRateModel": "FIXED_RATE",
-                    "fixedRate": _money(args["fixedPrice"]),
-                }
-                await client.put(
-                    "/project/hourlyRates/updateOrAddHourRates",
-                    json=hourly_rate_body,
-                    params={"ids": project_id},
+                await _set_project_fixed_price(
+                    client,
+                    project_id,
+                    args["fixedPrice"],
+                    start_date=args.get("startDate", TODAY),
                 )
             except Exception as e:
                 log.warning(f"Failed to set fixed price on project {project_id}: {e}")
@@ -1403,45 +1394,38 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
         except Exception as e:
             log.warning(f"Travel cost creation failed: {e}")
 
+    per_diem_added = False
+
     # Add per diem if specified
     if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
         try:
-            # Lookup a valid per diem rate type. Deliver fails if rateType.id is missing or if we
-            # accidentally pass a rateCategory id where a rate id is required.
-            rate_type_id = None
-            try:
-                rates = await client.get(
-                    "/travelExpense/rate",
-                    params={"isValidDomestic": True, "count": 50},
-                )
-                for rate in rates.get("values", []):
-                    rate_type_id = rate.get("id")
-                    if rate_type_id:
-                        break
-                if not rate_type_id:
-                    rates = await client.get("/travelExpense/rate", params={"count": 50})
-                    for rate in rates.get("values", []):
-                        rate_type_id = rate.get("id")
-                        if rate_type_id:
-                            break
-            except Exception as lookup_error:
-                log.warning(f"Per diem rate lookup failed: {lookup_error}")
+            accommodation = args.get("accommodation", "HOTEL")
+            country_code = args.get("countryCode", "NO")
+            rate_category, rate_type = await _resolve_travel_per_diem_rate(
+                client,
+                country_code=country_code,
+                is_day_trip=days <= 1,
+                accommodation=accommodation,
+            )
 
             per_diem_body = {
                 "travelExpense": {"id": expense_id},
                 "count": int(args["perDiemDays"]),
                 "rate": float(args["perDiemRate"]),
-                "overnightAccommodation": args.get("accommodation", "HOTEL"),
+                "overnightAccommodation": accommodation,
                 "location": args.get("destination", args.get("title", "Norway")),
                 "address": args.get("destination", ""),
-                "countryCode": args.get("countryCode", "NO"),
+                "countryCode": country_code,
             }
-            if rate_type_id:
-                per_diem_body["rateType"] = {"id": rate_type_id}
-            else:
+            if rate_type:
+                per_diem_body["rateType"] = {"id": rate_type["id"]}
+            if rate_category:
+                per_diem_body["rateCategory"] = {"id": rate_category["id"]}
+            if not rate_type and not rate_category:
                 log.warning("No per diem rateType ID found, perDiemCompensation may fail.")
 
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
+            per_diem_added = True
         except Exception as e:
             log.warning(f"Per diem creation failed, trying cost fallback: {e}")
             # Fallback: add as a regular cost instead of per diem
@@ -1459,6 +1443,7 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 if travel_cost_category_id:
                     cost_body["costCategory"] = {"id": travel_cost_category_id}
                 await client.post("/travelExpense/cost", json=cost_body)
+                per_diem_added = True
             except Exception as e2:
                 log.warning(f"Cost fallback also failed: {e2}")
 
@@ -1481,8 +1466,8 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             except Exception as e:
                 log.warning(f"Failed to add expense item '{item.get('description')}': {e}")
 
-    # Deliver the expense
-    if expense_id:
+    # Deliver only when we have at least one actual line item.
+    if expense_id and (per_diem_added or args.get("costs") or args.get("expenses")):
         try:
             await client.put(f"/travelExpense/:deliver", params={"id": expense_id})
         except Exception as e:
@@ -1581,14 +1566,11 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
         project_id = project_value.get("id")
     else:
         try:
-            await client.put(
-                "/project/hourlyRates/updateOrAddHourRates",
-                json={
-                    "startDate": args.get("startDate", TODAY),
-                    "hourlyRateModel": "FIXED_RATE",
-                    "fixedRate": _money(args["fixedPrice"]),
-                },
-                params={"ids": project_id},
+            await _set_project_fixed_price(
+                client,
+                project_id,
+                args["fixedPrice"],
+                start_date=args.get("startDate", TODAY),
             )
         except Exception as e:
             log.warning(f"Could not update existing project {project_id} with fixed price: {e}")

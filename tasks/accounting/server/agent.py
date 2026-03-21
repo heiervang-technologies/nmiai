@@ -108,6 +108,7 @@ class CreateOrderArgs(BaseModel):
 
 class RegisterPaymentArgs(BaseModel):
     invoiceId: Optional[int] = Field(default=None, description="Invoice ID. If not provided, searches by customer name.")
+    invoiceNumber: Optional[str] = Field(default=None, description="Invoice number/reference from the prompt or bank statement. Prefer this when an external invoice number is provided.")
     customerName: Optional[str] = Field(default=None, description="Customer name to match the correct invoice")
     amount: float = Field(description="Payment amount. Use negative for reversal.")
     paymentDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
@@ -116,6 +117,7 @@ class RegisterPaymentArgs(BaseModel):
 
 class CreateCreditNoteArgs(BaseModel):
     invoiceId: Optional[int] = Field(default=None, description="Invoice ID. Searches if not provided.")
+    invoiceNumber: Optional[str] = Field(default=None, description="Invoice number/reference from the prompt when available.")
     customerName: Optional[str] = Field(default=None, description="Customer name to match the correct invoice")
     date: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
     comment: Optional[str] = None
@@ -489,6 +491,7 @@ MULTI-STEP TASK PATTERNS:
 - "Log hours + generate project invoice": call register_timesheet_and_invoice
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
+- "Bank statement / reconciliation / CSV payment matching": use register_payment with invoiceNumber when the statement includes an invoice reference; do not guess Tripletex invoice IDs from raw numbers
 
 KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.

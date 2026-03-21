@@ -6,7 +6,7 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 
 - Seen families: customer, department, employee, invoice, product, project, salary, supplier, timesheet, travel_expense, voucher
 - New families since last run: none
-- Unseen playbook families: none
+- Unseen playbook families: bank_reconciliation, ledger_correction
 - Empty attachment runs: 0
 
 ## Alerts
@@ -18,6 +18,7 @@ Analyzed `137` runs from `/tmp/accounting-logs`.
 - timesheet clean rate is 7.1%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours
 - travel_expense clean rate is 10.0%; blockers: employee_time_access, travel_expense_kind, travel_expense_contents_required, per_diem_rate_required; likely missing fields: delivered_state, rate_type, employee, project
 - travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries
+- Still unseen families: bank_reconciliation, ledger_correction
 
 ## Families
 
