@@ -2107,14 +2107,31 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         if "/ledger/posting" in path and "dateFrom" not in params:
             params["dateFrom"] = "2020-01-01"
             params["dateTo"] = "2030-12-31"
+        if "/timesheet/entry" in path and "dateFrom" not in params:
+            params["dateFrom"] = "2020-01-01"
+            params["dateTo"] = "2030-12-31"
         return await client.get(path, params=params or None)
     elif method == "POST":
         # Auto-fix missing fields for /activity endpoint
         if "/activity" in path and body and isinstance(body, dict):
             if "activityType" not in body:
-                body["activityType"] = "PROJECT_SPECIFIC_ACTIVITY" if "project" in str(body).lower() else "GENERAL_ACTIVITY"
+                # POST /activity only supports GENERAL_ACTIVITY; project-specific must use /project/projectActivity
+                body["activityType"] = "GENERAL_ACTIVITY"
             if "name" not in body or not body["name"]:
                 body["name"] = body.get("description", "Activity")[:100] or "Activity"
+        # Auto-fix unbalanced voucher postings
+        if "/ledger/voucher" in path and body and isinstance(body, dict):
+            postings = body.get("postings", [])
+            if len(postings) >= 2:
+                total = sum(float(p.get("amountGross", p.get("amount", 0))) for p in postings)
+                if abs(total) > 0.01:
+                    # Adjust the last posting to balance
+                    last = postings[-1]
+                    last_amount = float(last.get("amountGross", last.get("amount", 0)))
+                    corrected = last_amount - total
+                    last["amountGross"] = corrected
+                    last["amountGrossCurrency"] = corrected
+                    log.warning(f"Auto-balanced voucher postings: adjusted last posting by {-total:.2f}")
         return await client.post(path, json=body)
     elif method == "PUT":
         return await client.put(path, json=body, params=params or None)
