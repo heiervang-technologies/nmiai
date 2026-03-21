@@ -2109,9 +2109,12 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
             params["dateTo"] = "2030-12-31"
         return await client.get(path, params=params or None)
     elif method == "POST":
-        # Auto-fix missing activityType for /activity endpoint
-        if "/activity" in path and body and isinstance(body, dict) and "activityType" not in body:
-            body["activityType"] = "PROJECT_SPECIFIC_ACTIVITY" if "project" in str(body).lower() else "GENERAL_ACTIVITY"
+        # Auto-fix missing fields for /activity endpoint
+        if "/activity" in path and body and isinstance(body, dict):
+            if "activityType" not in body:
+                body["activityType"] = "PROJECT_SPECIFIC_ACTIVITY" if "project" in str(body).lower() else "GENERAL_ACTIVITY"
+            if "name" not in body or not body["name"]:
+                body["name"] = body.get("description", "Activity")[:100] or "Activity"
         return await client.post(path, json=body)
     elif method == "PUT":
         return await client.put(path, json=body, params=params or None)
