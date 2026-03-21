@@ -75,9 +75,9 @@ fetch_ground_truth_for_completed()
         GT_COUNT=$(ls tasks/astar-island/ground_truth/round*_seed*.json 2>/dev/null | wc -l)
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. GT files: $GT_COUNT. Closes $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min." >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM opened. $GT_COUNT ground truth files available. $MINS_UNTIL_CLOSE minutes remaining." 2>/dev/null
-        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. $GT_COUNT GT files ingested. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
+        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM opened. $GT_COUNT GT files ingested. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). SOTA pipeline active.</agent>" 2>/dev/null
         sleep 0.5
-        tmux send-keys -t %1 Enter 2>/dev/null
+        tmux send-keys -t %5 Enter 2>/dev/null
     fi
 
     # === 60 MIN AFTER OPEN: Blitz 50 queries (R13 formula) ===
@@ -233,9 +233,9 @@ print('SOTA ensemble submission done')
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SOTA predictions submitted" >> "$LOG_FILE"
         say "Astar round $ROUND_NUM SOTA predictions submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
-        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: SOTA submitted (regime_predictor + blitz obs).</agent>" 2>/dev/null
+        tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: SOTA submitted (regime_predictor + blitz obs).</agent>" 2>/dev/null
         sleep 0.5
-        tmux send-keys -t %1 Enter 2>/dev/null
+        tmux send-keys -t %5 Enter 2>/dev/null
     fi
 
     sleep 120
