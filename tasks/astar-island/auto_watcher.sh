@@ -167,19 +167,12 @@ print('Blitz done')
         say "Astar round $ROUND_NUM: running optimizer and submitting." 2>/dev/null
         cd /home/me/ht/nmiai
 
-        # Direct regime_predictor + tau=20 overlay (proven safe-best)
-        # CHECK HOLD LOCK
-        if [ -f "$SCRIPT_DIR/.hold_submissions" ]; then
-            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SUBMISSIONS HELD (lock file exists)" >> "$LOG_FILE"
-            say "Astar round $ROUND_NUM: submissions held pending new best." 2>/dev/null
-            SUBMITTED_ROUND="$ACTIVE"
-            continue
-        fi
+        # UNet predictor (CV wKL ~0.019, 3-6x better than regime)
+        # Falls back to regime_predictor if UNet fails
         uv run python3 -c "
 import json, sys, time, numpy as np, requests
 from pathlib import Path
 sys.path.insert(0, 'tasks/astar-island')
-import regime_predictor as rp
 
 def ccc(cell):
     if cell in (0,10,11): return 0
@@ -198,23 +191,37 @@ BASE = 'https://api.ainm.no'
 rounds = s.get(f'{BASE}/astar-island/rounds').json()
 active = next(r for r in rounds if r['status'] == 'active')
 rid = active['id']; rn = active['round_number']
+time.sleep(0.5)
 details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
 rd = Path(f'tasks/astar-island/logs/round{rn}')
 
+# Load observations
 all_obs = {}; all_combined = []
 for si in range(5):
     op = rd / f'observations_seed{si}.json'
     seed_obs = json.loads(op.read_text()) if op.exists() else []
     all_obs[si] = seed_obs; all_combined.extend(seed_obs)
 
-weights = rp.detect_regime_from_observations(np.array(details['initial_states'][0]['grid'],dtype=np.int32), all_combined)
-print(f'Regime (pooled {len(all_combined)} obs): {weights}')
+# Try UNet first, fall back to regime
+try:
+    import unet_predictor as up
+    predictor_name = 'unet'
+    print(f'Using UNet predictor')
+except Exception as e:
+    print(f'UNet failed ({e}), falling back to regime')
+    import regime_predictor as rp
+    predictor_name = 'regime'
 
 for si in range(5):
-    pred = rp.predict(details['initial_states'][si]['grid'], observations=all_obs[si] if all_obs[si] else None)
     obs = all_obs[si]
+    ig = details['initial_states'][si]['grid']
+    if predictor_name == 'unet':
+        pred = up.predict(ig)
+    else:
+        pred = rp.predict(ig, observations=all_combined if all_combined else None)
+    # Observation overlay (tau=20, cells with 2+ obs)
     if obs:
-        init = np.array(details['initial_states'][si]['grid'])
+        init = np.array(ig)
         counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
         for o in obs:
             for dy,row in enumerate(o['grid']):
@@ -228,10 +235,10 @@ for si in range(5):
     pred=np.maximum(pred,1e-6); pred/=pred.sum(axis=2,keepdims=True)
     for attempt in range(3):
         r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
-        if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs)} obs)'); break
+        if r.status_code == 200: print(f'Seed {si}: accepted [{predictor_name}] ({len(obs)} obs)'); break
         time.sleep(2)
     time.sleep(0.3)
-print('Safe-best submission done')
+print(f'{predictor_name} submission done')
 " >> "$LOG_FILE" 2>&1
 
         echo "\$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: safe-best submitted" >> "$LOG_FILE"
