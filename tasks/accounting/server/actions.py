@@ -155,6 +155,18 @@ async def _find_customer_id(
     return None
 
 
+async def _grant_employee_all_privileges(client: TripletexClient, employee_id: int) -> None:
+    """Grant ALL_PRIVILEGES to employee so they can do travel/timesheet/salary. Free GET+PUT."""
+    try:
+        await client.put(
+            "/employee/entitlement/:grantEntitlementsByTemplate",
+            params={"employeeId": employee_id, "template": "ALL_PRIVILEGES"},
+        )
+        log.info(f"Granted ALL_PRIVILEGES to employee {employee_id}")
+    except Exception as e:
+        log.warning(f"Entitlement grant failed (non-fatal): {e}")
+
+
 async def _find_employee_id(
     client: TripletexClient,
     employee_id: int | None = None,
@@ -891,9 +903,6 @@ async def action_update_employee(client: TripletexClient, args: dict) -> dict:
 
 async def action_register_timesheet(client: TripletexClient, args: dict) -> dict:
     """Register hours on a timesheet for an employee on a project activity."""
-    # Skip module activation — modules are usually pre-activated in competition sandboxes.
-    # Trying to activate burns 2-6 API calls with 403 errors every time.
-
     # Find or use provided IDs
     employee_id = await _find_employee_id(
         client,
@@ -901,6 +910,10 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         employee_email=args.get("employeeEmail"),
         employee_name=args.get("employeeName"),
     )
+
+    # Grant permissions so employee can register time
+    if employee_id:
+        await _grant_employee_all_privileges(client, employee_id)
 
     project_id = await _find_project_id(
         client,
@@ -1146,6 +1159,9 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     )
     if not employee_id:
         return {"error": "Could not resolve employee for travel expense"}
+
+    # Grant permissions so employee can file travel expenses
+    await _grant_employee_all_privileges(client, employee_id)
 
     from datetime import date, timedelta
     today = date.today().isoformat()
