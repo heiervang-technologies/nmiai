@@ -1,16 +1,35 @@
 {
   "family": "employee",
-  "keywords": ["ansatt", "employee", "Mitarbeiter", "employé", "empleado", "empregado", "tilsett", "onboarding", "tilbudsbrev", "contract", "contrato"],
+  "keywords": [
+    "ansatt",
+    "employee",
+    "Mitarbeiter",
+    "employé",
+    "empleado",
+    "empregado",
+    "tilsett",
+    "onboarding",
+    "tilbudsbrev",
+    "contract",
+    "contrato"
+  ],
   "description": "Create, update, or manage employees. Includes onboarding from contracts.",
-  "preflight": ["GET /department to find department ID"],
+  "preflight": [
+    "GET /department to find department ID"
+  ],
   "endpoints": [
     "POST /employee — body: {firstName, lastName, userType, department:{id}, email, dateOfBirth, phoneNumberMobile, nationalIdentityNumber}",
     "PUT /employee/{id} — GET first for id+version, then PUT full object",
     "POST /employee/employment — {employee:{id}, startDate, employmentType, percentageOfFullTimeEquivalent, occupationCode:{code:'NNNN'}}",
-    "POST /employee/employment/details — {employment:{id}, date, annualSalary, payrollPercentage}",
+    "POST /employee/employment/details — {employment:{id}, date, annualSalary, percentageOfFullTimeEquivalent}",
     "POST /employee/standardTime — {employee:{id}, fromDate, hoursPerDay}"
   ],
-  "required_fields": ["firstName", "lastName", "userType", "department"],
+  "required_fields": [
+    "firstName",
+    "lastName",
+    "userType",
+    "department"
+  ],
   "common_errors": [
     "userType cannot be 0 or empty — always set to STANDARD, EXTENDED, or NO_ACCESS",
     "department.id is required — GET /department first",
