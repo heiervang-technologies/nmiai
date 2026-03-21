@@ -6,7 +6,11 @@
     "Jahresabschluss", "encerramento anual",
     "depreciación anual", "avskrivning", "depreciation",
     "resultatdisponering", "profit distribution",
-    "avsetning til skatt", "tax provision"
+    "avsetning til skatt", "tax provision",
+    "månedsavslutning", "monthly closing", "periodiser", "periodisering",
+    "accrual", "accrue", "prepaid", "forskuddsbetalt",
+    "cierre mensual", "clôture mensuelle", "Monatsabschluss",
+    "encerramento mensal", "MVA-oppgjør", "mva oppgjør", "VAT settlement"
   ],
   "description": "Year-end closing: depreciation, tax provisions, profit distribution via voucher postings",
   "preflight": [
@@ -20,5 +24,5 @@
   ],
   "required_fields": [],
   "common_errors": [],
-  "tips": "Year-end closing is done via create_voucher. Parse ALL items from the prompt (depreciation of each asset, tax provision, profit distribution). Create one voucher per entry or one combined voucher. Use correct account numbers from the prompt."
+  "tips": "Both year-end and monthly closing are done via create_voucher. Parse ALL items from the prompt (depreciation, accruals/periodisering, tax provision, profit distribution, VAT settlement). Create one voucher per entry or one combined voucher. Use correct account numbers from the prompt. For periodisering/accruals: debit cost account, credit prepaid account (e.g. 1720). For depreciation: debit 6000-series, credit 1000-series asset. For VAT settlement: debit 2710 (output VAT), credit 2711 (input VAT), net to 2740 (VAT settlement). IMPORTANT: Always execute the bookings - never say you need more info if the amounts and accounts are given in the prompt."
 }
