@@ -1,1 +1,56 @@
-timestamp	experiment_id	model	train_data	eval_data	leakage_status	combined_score	detection_map50	classification_map50	server_score	runtime_sec	compute_hours	submissions_used	submission_ready	status	description
+timestamp	model	dataset	eval_set	metric	value	metric2	value2	compute	leakage	notes
+2026-03-20T20:00:00Z	dinov2_vits14_probe	22.7K crops	stratified_val (LEAKED)	cls_mAP	0.920	top1_acc	0.805	centurion	HIGH	Production classifier
+2026-03-20T22:00:00Z	yolov8x_original+dinov2	nmiai_single_model_v1.zip	server_private	combined	0.9079	server_mAP	0.9079	sandbox_L4	NONE	Proven server score, 98.1% normalized
+2026-03-20T22:30:00Z	yolov8x_original+dinov2+tta	nmiai_single_model_v2_tta.zip	server_private	combined	~0.91	server_mAP	~0.91	sandbox_L4	NONE	TTA variant, 240s runtime
+2026-03-20T22:45:00Z	markusnet_nf4+yolo	nmiai_markusnet_nf4_v1.zip	server_private	combined	TIMEOUT	server_mAP	TIMEOUT	sandbox_L4	NONE	Timed out at 300s
+2026-03-21T00:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.761	val_loss	0.877	centurion_3090	HIGH (100%)	Step 500
+2026-03-21T01:00:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.781	val_loss	0.837	centurion_3090	HIGH (100%)	Step 1000
+2026-03-21T01:00:00Z	markusnet_transformers	HF transformers	stratified_val	top1_acc	0.908	N/A	N/A	centurion	HIGH	Gold standard but not sandbox-compatible
+2026-03-21T01:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.751	val_loss	0.853	centurion_3090	HIGH (100%)	Step 1500
+2026-03-21T02:00:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.777	val_loss	0.792	centurion_3090	HIGH (100%)	Step 2000
+2026-03-21T02:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.780	val_loss	0.736	centurion_3090	HIGH (100%)	Step 2500
+2026-03-21T03:00:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.781	val_loss	0.762	centurion_3090	HIGH (100%)	Step 3000
+2026-03-21T03:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.781	val_loss	0.736	centurion_3090	HIGH (100%)	Step 3500
+2026-03-21T04:00:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.795	val_loss	0.702	centurion_3090	HIGH (100%)	Step 5220
+2026-03-21T04:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.800	val_loss	0.693	centurion_3090	HIGH (100%)	Step 6560
+2026-03-21T04:30:00Z	markusnet_nf4_run_fast	run_fast.py	stratified_val	cls_mAP	0.446	det_mAP	0.573	centurion	HIGH	Pure PyTorch buggy (Gated DeltaNet)
+2026-03-21T05:00:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.800	val_loss	0.693	centurion_3090	HIGH (100%)	Step 7320
+2026-03-21T05:30:00Z	markusnet_multitask_12layer	50K expanded crops	stratified_val (LEAKED)	val_acc	0.800	val_loss	0.692	centurion_3090	HIGH (100%)	Step 8581
+2026-03-21T08:30:00Z	markusnet_onnx_fixed	ONNX sq256	stratified_val	cls_mAP	0.569	det_mAP	0.748	centurion	HIGH	Fixed input size distorts crops
+2026-03-21T10:30:00Z	markusnet_onnx_sq448	ONNX sq448 letterbox	stratified_val	cls_mAP	0.373	det_mAP	0.554	centurion	HIGH	Letterbox preprocessing
+2026-03-21T12:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.81354	mAP50-95	0.59383	centurion_3090	HIGH (60% overlap)	V5 epoch 1
+2026-03-21T12:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.82022	mAP50-95	0.60305	centurion_3090	HIGH (60% overlap)	V5 epoch 2
+2026-03-21T12:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.80609	mAP50-95	0.59895	centurion_3090	HIGH (60% overlap)	V5 epoch 3
+2026-03-21T13:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.81294	mAP50-95	0.60606	centurion_3090	HIGH (60% overlap)	V5 epoch 4
+2026-03-21T13:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.82888	mAP50-95	0.61875	centurion_3090	HIGH (60% overlap)	V5 epoch 5
+2026-03-21T13:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.81711	mAP50-95	0.61121	centurion_3090	HIGH (60% overlap)	V5 epoch 6
+2026-03-21T13:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.83348	mAP50-95	0.63015	centurion_3090	HIGH (60% overlap)	V5 epoch 7
+2026-03-21T14:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.83045	mAP50-95	0.63014	centurion_3090	HIGH (60% overlap)	V5 epoch 8
+2026-03-21T14:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.85448	mAP50-95	0.65576	centurion_3090	HIGH (60% overlap)	V5 epoch 9
+2026-03-21T14:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.86220	mAP50-95	0.65992	centurion_3090	HIGH (60% overlap)	V5 epoch 10
+2026-03-21T14:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.85989	mAP50-95	0.66052	centurion_3090	HIGH (60% overlap)	V5 epoch 11
+2026-03-21T15:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.85419	mAP50-95	0.66682	centurion_3090	HIGH (60% overlap)	V5 epoch 12
+2026-03-21T15:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.87417	mAP50-95	0.68150	centurion_3090	HIGH (60% overlap)	V5 epoch 13
+2026-03-21T15:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.87975	mAP50-95	0.69058	centurion_3090	HIGH (60% overlap)	V5 epoch 14
+2026-03-21T15:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.88064	mAP50-95	0.69622	centurion_3090	HIGH (60% overlap)	V5 epoch 15
+2026-03-21T16:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.88423	mAP50-95	0.70239	centurion_3090	HIGH (60% overlap)	V5 epoch 16
+2026-03-21T16:00:00Z	yolov8x_v6_clean	yolo_clean_with_val (3220)	clean_split_50 (ZERO leakage)	mAP50	0.966	mAP50-95	0.878	titan_3090_gpu0	NONE	BEST CLEAN METRIC. Verified zero overlap.
+2026-03-21T16:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.89547	mAP50-95	0.71342	centurion_3090	HIGH (60% overlap)	V5 epoch 17
+2026-03-21T16:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.89600	mAP50-95	0.71799	centurion_3090	HIGH (60% overlap)	V5 epoch 18
+2026-03-21T16:30:00Z	markusnet_8layer_pruned	50K crops	stratified_val (LEAKED)	val_acc	0.812	val_loss	0.731	centurion	HIGH	Surgical prune L3,6,7,11. Better than 12-layer (0.801)
+2026-03-21T16:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.89402	mAP50-95	0.71810	centurion_3090	HIGH (60% overlap)	V5 epoch 19
+2026-03-21T17:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.90314	mAP50-95	0.73287	centurion_3090	HIGH (60% overlap)	V5 epoch 20
+2026-03-21T17:00:00Z	yolov8x_v7_trainonval	yolo_clean_no_val (all data)	includes_val (not for eval)	mAP50	0.991	N/A	N/A	titan_3090_gpu0	N/A (trained on val)	Train-on-everything model. Cannot eval honestly.
+2026-03-21T17:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.90641	mAP50-95	0.73716	centurion_3090	HIGH (60% overlap)	V5 epoch 21
+2026-03-21T17:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.90350	mAP50-95	0.73764	centurion_3090	HIGH (60% overlap)	V5 epoch 22
+2026-03-21T17:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.90803	mAP50-95	0.74234	centurion_3090	HIGH (60% overlap)	V5 epoch 23
+2026-03-21T18:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.91962	mAP50-95	0.75034	centurion_3090	HIGH (60% overlap)	V5 epoch 24
+2026-03-21T18:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.91334	mAP50-95	0.75457	centurion_3090	HIGH (60% overlap)	V5 epoch 25
+2026-03-21T18:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.92496	mAP50-95	0.76598	centurion_3090	HIGH (60% overlap)	V5 epoch 26
+2026-03-21T18:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.92117	mAP50-95	0.76368	centurion_3090	HIGH (60% overlap)	V5 epoch 27
+2026-03-21T19:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.92727	mAP50-95	0.77273	centurion_3090	HIGH (60% overlap)	V5 epoch 28
+2026-03-21T19:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.92034	mAP50-95	0.76947	centurion_3090	HIGH (60% overlap)	V5 epoch 29
+2026-03-21T19:30:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.92712	mAP50-95	0.78097	centurion_3090	HIGH (60% overlap)	V5 epoch 30
+2026-03-21T19:45:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.93269	mAP50-95	0.78272	centurion_3090	HIGH (60% overlap)	V5 epoch 31
+2026-03-21T20:00:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.93310	mAP50-95	0.78596	centurion_3090	HIGH (60% overlap)	V5 epoch 32
+2026-03-21T20:15:00Z	yolov8x_v5	yolo_augmented_v5 (3255 imgs)	v5_val_50 (LEAKED 60%)	mAP50	0.93372	mAP50-95	0.79177	centurion_3090	HIGH (60% overlap)	V5 epoch 33
