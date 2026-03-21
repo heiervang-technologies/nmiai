@@ -1134,6 +1134,23 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
                 }
                 await client.put(f"/invoice/{invoice_id}/:payment", params=pay_params)
                 log.info(f"Reversal: registered positive payment {pos_amount} on invoice {invoice_id}")
+
+                # Now do the reversal immediately and return
+                rev_params = {
+                    "paymentDate": payment_date,
+                    "paymentTypeId": int(pt_id),
+                    "paidAmount": float(amount),  # negative
+                }
+                reversal_result = await client.put(f"/invoice/{invoice_id}/:payment", params=rev_params)
+                log.info(f"Reversal: reversed payment on invoice {invoice_id}")
+                return {
+                    "COMPLETE": True,
+                    "message": "ALREADY DONE — invoice created, payment registered, reversal complete. Do NOT create another invoice or payment.",
+                    "invoiceId": invoice_id,
+                    "positivePayment": pos_amount,
+                    "reversal": float(amount),
+                    "result": reversal_result,
+                }
             except Exception as e:
                 log.warning(f"Reversal flow failed: {e}")
                 # Fall through to try reversal on whatever invoice_id we have
