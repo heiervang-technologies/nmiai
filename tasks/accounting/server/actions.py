@@ -914,24 +914,38 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
         if not employee_id and emps.get("values"):
             employee_id = emps["values"][0]["id"]
 
+    from datetime import date, timedelta
+    today = date.today().isoformat()
+
+    # Always include travelDetails to ensure it's classified as travel (not employee expense)
+    departure_date = args.get("departureDate", today)
+    days = int(args.get("perDiemDays", 1))
+    return_date = args.get("returnDate")
+    if not return_date and departure_date:
+        try:
+            dep = date.fromisoformat(departure_date)
+            return_date = (dep + timedelta(days=max(days - 1, 0))).isoformat()
+        except Exception:
+            return_date = today
+
     body = {
         "employee": {"id": employee_id},
         "title": args.get("title", "Travel expense"),
         "isChargeable": args.get("isChargeable", False),
         "isFixedInvoicedAmount": args.get("isFixedInvoicedAmount", False),
         "isIncludeAttachedReceiptsWhenReinvoicing": False,
+        "travelDetails": {
+            "departureDate": departure_date,
+            "returnDate": return_date,
+            "purpose": args.get("title", "Travel"),
+            "isForeignTravel": False,
+            "isDayTrip": days <= 1,
+        },
     }
-
-    if args.get("departureDate") or args.get("returnDate"):
-        body["travelDetails"] = {
-            "departureDate": args.get("departureDate"),
-            "returnDate": args.get("returnDate"),
-            "purpose": args.get("title", ""),
-        }
-        if args.get("departure"):
-            body["travelDetails"]["departureFrom"] = args["departure"]
-        if args.get("destination"):
-            body["travelDetails"]["destination"] = args["destination"]
+    if args.get("departure"):
+        body["travelDetails"]["departureFrom"] = args["departure"]
+    if args.get("destination"):
+        body["travelDetails"]["destination"] = args["destination"]
 
     result = await client.post("/travelExpense", json=body)
     expense = result.get("value", result)
@@ -950,7 +964,20 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
             }
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
         except Exception as e:
-            log.warning(f"Per diem creation failed: {e}")
+            log.warning(f"Per diem creation failed, trying cost fallback: {e}")
+            # Fallback: add as a regular cost instead of per diem
+            try:
+                total = float(args["perDiemDays"]) * float(args["perDiemRate"])
+                cost_body = {
+                    "travelExpense": {"id": expense_id},
+                    "date": departure_date,
+                    "amountCurrencyIncVat": total,
+                    "isPaidByEmployee": True,
+                    "comments": f"Per diem {args['perDiemDays']} days x {args['perDiemRate']} NOK",
+                }
+                await client.post("/travelExpense/cost", json=cost_body)
+            except Exception as e2:
+                log.warning(f"Cost fallback also failed: {e2}")
 
     # Deliver the expense
     if expense_id:
