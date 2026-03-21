@@ -533,22 +533,24 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         except Exception as e:
             log.warning(f"Employment creation failed: {e}")
 
-    # Set annual salary via employment details if provided
-    if employee_id and args.get("annualSalary"):
+    # Set employment details (salary/FTE/occupation code) on employment/details.
+    if employee_id and any(args.get(field) is not None for field in ["annualSalary", "percentageOfFullTimeEquivalent", "occupationCode"]):
         try:
             # Get the employment record we just created
             employments = await client.get("/employee/employment", params={"employeeId": employee_id, "count": 1})
             if employments.get("values"):
                 emp_record = employments["values"][0]
                 emp_record_id = emp_record["id"]
-                # Set salary via employment/details
                 salary_body = {
                     "employment": {"id": emp_record_id},
                     "date": args.get("startDate", TODAY),
-                    "annualSalary": float(args["annualSalary"]),
                 }
-                if args.get("percentageOfFullTimeEquivalent"):
-                    salary_body["payrollPercentage"] = float(args["percentageOfFullTimeEquivalent"])
+                if args.get("annualSalary") is not None:
+                    salary_body["annualSalary"] = float(args["annualSalary"])
+                if args.get("percentageOfFullTimeEquivalent") is not None:
+                    salary_body["percentageOfFullTimeEquivalent"] = float(args["percentageOfFullTimeEquivalent"])
+                if args.get("occupationCode"):
+                    salary_body["occupationCode"] = {"code": str(args["occupationCode"])}
                 await client.post("/employee/employment/details", json=salary_body)
         except Exception as e:
             log.warning(f"Salary setup failed: {e}")
