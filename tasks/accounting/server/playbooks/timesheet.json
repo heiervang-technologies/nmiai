@@ -33,7 +33,8 @@
     "ciclo de vida do projeto",
     "ciclo de vida del proyecto",
     "cycle de vie du projet",
-    "Projektlebenszyklus"
+    "Projektlebenszyklus",
+    "cycle de vie complet du projet"
   ],
   "description": "Register hours on projects and invoice from logged time",
   "preflight": [

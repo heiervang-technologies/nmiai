@@ -487,35 +487,46 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
     }
     if method == "POST" and path == "/activity":
         body = args_dict.get("body") or {}
-        body.setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY" if "project" in str(body).lower() else "GENERAL_ACTIVITY")
+        activity_type = body.get("activityType", "")
         # Ensure name is non-blank (Tripletex requires it)
         name = body.get("name") or body.get("displayName") or body.get("description") or "General"
         body["name"] = name
-        args_dict["body"] = body
-        return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
-    # Fix wrong activity endpoint: /project/{id}/activity -> create activity + link to project
+        # PROJECT_SPECIFIC activities MUST go through /project/projectActivity
+        if activity_type == "PROJECT_SPECIFIC_ACTIVITY" or "project" in str(body).lower():
+            body["activityType"] = "PROJECT_SPECIFIC_ACTIVITY"
+            project_ref = body.pop("project", None)
+            project_id = None
+            if project_ref and isinstance(project_ref, dict):
+                project_id = project_ref.get("id")
+            if project_id:
+                link_body = {"project": {"id": project_id}, "activity": body}
+                link_args = {"method": "POST", "path": "/project/projectActivity", "body": link_body}
+                return await _safe_action("generic_api_call", ctx.deps.client, link_args, 4000)
+            else:
+                # No project ID - MUST use GENERAL_ACTIVITY via /activity
+                # PROJECT_SPECIFIC_ACTIVITY is rejected on POST /activity
+                body["activityType"] = "GENERAL_ACTIVITY"
+        else:
+            # Force GENERAL_ACTIVITY on direct POST /activity (PROJECT_SPECIFIC always rejected here)
+            body["activityType"] = "GENERAL_ACTIVITY"
+                args_dict["body"] = body
+                return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
+        else:
+            body.setdefault("activityType", "GENERAL_ACTIVITY")
+            args_dict["body"] = body
+            return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
+    # Fix wrong activity endpoint: /project/{id}/activity -> create via /project/projectActivity
     import re
     project_activity_match = re.match(r"/project/(\d+)/activity", path)
     if project_activity_match:
         project_id = int(project_activity_match.group(1))
-        body = args_dict.get("body", {})
+        body = args_dict.get("body") or {}
         body.setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY")
-        # Step 1: Create the activity
-        create_args = {"method": "POST", "path": "/activity", "body": body}
-        result_str = await _safe_action("generic_api_call", ctx.deps.client, create_args, 4000)
-        try:
-            result = json.loads(result_str)
-            activity_id = result.get("value", {}).get("id")
-            if activity_id:
-                # Step 2: Link activity to project
-                link_args = {"method": "POST", "path": "/project/projectActivity", "body": {
-                    "project": {"id": project_id},
-                    "activity": {"id": activity_id},
-                }}
-                await _safe_action("generic_api_call", ctx.deps.client, link_args, 2000)
-        except Exception:
-            pass
-        return result_str
+        name = body.get("name") or body.get("displayName") or body.get("description") or "General"
+        body["name"] = name
+        link_body = {"project": {"id": project_id}, "activity": body}
+        link_args = {"method": "POST", "path": "/project/projectActivity", "body": link_body}
+        return await _safe_action("generic_api_call", ctx.deps.client, link_args, 4000)
     for pattern, msg in redirects.items():
         if pattern in path:
             return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
