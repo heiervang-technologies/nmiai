@@ -167,11 +167,34 @@ details = s.get(f'{BASE}/astar-island/rounds/{rid}').json()
 
 rd = Path(f'tasks/astar-island/logs/round{rn}')
 
+def ccc(cell):
+    if cell in (0,10,11): return 0
+    if cell==1: return 1
+    if cell==2: return 2
+    if cell==3: return 3
+    if cell==4: return 4
+    if cell==5: return 5
+    return 0
+
 for si in range(details['seeds_count']):
     op = rd / f'observations_seed{si}.json'
     obs = json.loads(op.read_text()) if op.exists() else []
     obs = obs if len(obs) > 0 else None
     pred = rp.predict(details['initial_states'][si]['grid'], observations=obs)
+    # Empirical overlay with tau=10 (CV-optimized: 13% better than tau=2)
+    if obs:
+        init = np.array(details['initial_states'][si]['grid'])
+        counts = np.zeros((40,40,6)); oc = np.zeros((40,40),dtype=int)
+        for o in obs:
+            for dy,row in enumerate(o['grid']):
+                for dx,cell in enumerate(row):
+                    y,x = o['viewport_y']+dy, o['viewport_x']+dx
+                    if 0<=y<40 and 0<=x<40: counts[y,x,ccc(cell)]+=1; oc[y,x]+=1
+        for y in range(40):
+            for x in range(40):
+                if oc[y,x]>=3 and init[y,x] not in (10,5):
+                    alpha=10.0*pred[y,x]; post=counts[y,x]+alpha; pred[y,x]=post/post.sum()
+        pred=np.maximum(pred,0.005); pred/=pred.sum(axis=2,keepdims=True)
     for attempt in range(3):
         r = s.post(f'{BASE}/astar-island/submit', json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
         if r.status_code == 200: print(f'Seed {si}: accepted ({len(obs) if obs else 0} obs)'); break
