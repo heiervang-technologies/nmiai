@@ -81,6 +81,13 @@ _GRID_FINGERPRINTS: dict[bytes, int] = {}  # fingerprint -> round_num
 # but disable direct local posterior nudging unless re-enabled after clean CV.
 ENABLE_LOCAL_OBS_UPDATE = False
 
+# Observation-driven regime/template shifts should only activate when the
+# posterior over templates is clearly concentrated. Moderate rounds often have
+# weak evidence; forcing a large shift there hurts weighted KL.
+TEMPLATE_SHIFT_CONFIDENCE_FLOOR = 0.32
+TEMPLATE_SHIFT_CONFIDENCE_POWER = 1.6
+TEMPLATE_SHIFT_MAX = 1.55
+
 
 def _grid_fingerprint(initial_grid) -> bytes:
     """Create a hashable fingerprint of the initial grid."""
@@ -528,7 +535,13 @@ def template_strength_from_weights(weights: np.ndarray, has_observations: bool) 
     safe = np.clip(weights, 1e-12, 1.0)
     concentration = 1.0 + float(np.sum(safe * np.log(safe)) / np.log(len(weights)))
     concentration = float(np.clip(concentration, 0.0, 1.0))
-    return 0.90 + 1.10 * concentration
+
+    # Confidence-gate the template shift. A diffuse posterior should leave the
+    # strong pooled/neighborhood prior mostly untouched; only sharp posteriors
+    # should move the map materially toward a specific regime/template family.
+    gated = (concentration - TEMPLATE_SHIFT_CONFIDENCE_FLOOR) / max(1e-6, 1.0 - TEMPLATE_SHIFT_CONFIDENCE_FLOOR)
+    gated = float(np.clip(gated, 0.0, 1.0))
+    return TEMPLATE_SHIFT_MAX * (gated ** TEMPLATE_SHIFT_CONFIDENCE_POWER)
 
 
 def predict(initial_grid: list[list[int]] | np.ndarray, observations: list[dict] | None = None) -> np.ndarray:

@@ -605,7 +605,7 @@ def make_template_predictor_factory():
             pred_final = np.clip(pred_final, 1e-12, None)
             pred_final /= pred_final.sum(axis=2, keepdims=True)
 
-            if observations:
+            if observations and getattr(tmpl_mod, "ENABLE_LOCAL_OBS_UPDATE", True):
                 pred_final = tmpl_mod.apply_local_observation_update(pred_final, initial_grid, observations)
 
             pred_final = np.maximum(pred_final, 0.01)

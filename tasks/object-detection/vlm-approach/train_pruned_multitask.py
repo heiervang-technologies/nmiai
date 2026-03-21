@@ -41,9 +41,9 @@ NUM_CLASSES = 356
 CLS_BATCH_SIZE = 6
 DET_BATCH_SIZE = 1  # shelf images are large
 LR = 3e-5  # Lower LR since we resume from 91% checkpoint
-EPOCHS = 1
+EPOCHS = 3
 WARMUP_STEPS = 200
-RESUME_CHECKPOINT = Path(__file__).parent / "training_output" / "best" / "best.pt"
+RESUME_CHECKPOINT = Path(__file__).parent / "training_output_multitask" / "best" / "best.pt"
 CLS_ONLY = True  # Focus on classification - det handled by YOLO
 LOG_EVERY = 10
 SAVE_EVERY = 250
@@ -411,7 +411,9 @@ def train():
         ckpt = torch.load(str(RESUME_CHECKPOINT), map_location=device, weights_only=False)
         model.load_state_dict(ckpt["model_state"])
         cls_head.load_state_dict(ckpt["cls_head_state"])
-        print(f"Resumed from epoch {ckpt.get('epoch', '?')}, step {ckpt.get('global_step', '?')}, acc={ckpt.get('accuracy', '?'):.3f}")
+        acc = ckpt.get('accuracy', ckpt.get('val_acc', '?'))
+        acc_str = f"{acc:.3f}" if isinstance(acc, float) else str(acc)
+        print(f"Resumed from epoch {ckpt.get('epoch', '?')}, step {ckpt.get('global_step', '?')}, acc={acc_str}")
         del ckpt
         torch.cuda.empty_cache()
     else:

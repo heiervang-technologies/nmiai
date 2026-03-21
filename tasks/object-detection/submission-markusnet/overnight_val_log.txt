@@ -1,0 +1,137 @@
+=== Overnight Val Tracking (expanded 50K dataset) ===
+Step  500: val_acc=76.1%, val_loss=0.877
+Step 1000: val_acc=78.1%, val_loss=0.837 (best)
+
+=== NF4 Val Results (original best.pt checkpoint) ===
+MarkusNet NF4 top-1 accuracy: 90.8% (10736/11819 crops)
+DINOv2 linear probe per-class mean: 69.6%
+DINOv2 classification mAP@0.5: 92.0% (includes ref matching)
+Overfitting gap: 0.3%
+NEXT: full pipeline YOLO+MarkusNet combined mAP needed
+
+=== CRITICAL: run_fast.py BUG ===
+Full pipeline with run_fast.py: 43.0 combined (BROKEN)
+Pure PyTorch reimplementation forward pass doesn't match transformers library
+Categories 171, 304 dominate predictions - biased classifications
+The 90.8% accuracy was via transformers, not the reimplemented model
+
+=== Extended Val Tracking ===
+Step  500: val_acc=76.1%, val_loss=0.877
+Step 1000: val_acc=78.1%, val_loss=0.837 (best acc)
+Step 1500: val_acc=75.1%, val_loss=0.853
+Step 2000: val_acc=77.7%, val_loss=0.792
+Step 2500: val_acc=78.0%, val_loss=0.736
+Step 3000: val_acc=78.1%, val_loss=0.762
+Step 3500: val_acc=78.1%, val_loss=0.736
+
+Train acc at step 3820: 81.7%, loss 1.30
+Accuracy plateauing at ~78% val. Loss still dropping slowly.
+
+=== run_fast.py Debug Status (01:20) ===
+Normalization fix: did NOT solve it (13.9% cls)
+Bug is deeper in the pure PyTorch forward pass
+Layer-by-layer debug underway, estimated hours
+DINOv2 pipeline remains safe morning submission
+
+=== 01:50 Update ===
+Step 5220/8581 (61%), train acc 82.6%
+Val acc: 79.5% (NEW BEST), val_loss: 0.702 (NEW BEST)
+Accuracy was plateauing at 78.1% but just broke through
+
+=== 02:20 Update ===
+Step 5950/8581 (69%), train acc 83.0%
+Val acc: 79.5% (held), val_loss: 0.695 (NEW BEST loss)
+~30 min to epoch completion
+
+=== 02:50 Update ===
+Step 6560/8581 (76%), train acc 83.3%
+Val acc: 80.0% (NEW BEST!), val_loss: 0.693
+Model still improving at cosine decay tail
+~20 min to epoch completion
+
+=== BREAKTHROUGH: run_fast.py BUGS FIXED (02:50) ===
+Root cause 1: Fixed 192px crop instead of dynamic sizing (256x288+)
+Root cause 2: Row-major patch ordering instead of 2x2 spatial merge groups
+After fix: pixel_values cosine_sim = 1.0 with transformers
+Both implementations now predict same class with same confidence
+Full pipeline eval running (~60 min), expecting ~90% cls mAP
+
+=== 03:20 Update ===
+Step 7320/8581 (85%), train acc 83.5%
+Val acc: 80.0% (best), val_loss: 0.693
+~15 min to epoch end. LR nearly zero (1.16e-6)
+Fixed run_fast.py full pipeline eval still running
+
+=== 04:21 - TRAINING COMPLETE ===
+Epoch 1/1 finished: train_acc=83.9%, val_acc=80.0%, val_loss=0.692
+Final model saved to training_output_multitask/final/
+GPU dropped to 6GB (training done, eval done)
+markusnet_final_preds.json: 13519 preds, 260 unique categories (healthy!)
+Awaiting mAP eval from VLM agent
+
+=== PIPELINE EVAL RESULT (04:21) ===
+Fixed run_fast.py: det=57.3%, cls=44.6%, combined=53.5
+Still far below DINOv2 baseline (80.0 combined, 0.9051 server)
+Patch fix helped (13.9→44.6%) but language model forward pass still broken
+Remaining bugs likely in: rotary embeddings, attention mask, or Gated DeltaNet
+Morning submission: DINOv2 pipeline (proven)
+
+=== BREAKTHROUGH: Vision-Only Probe (05:51) ===
+MarkusNet vision encoder (768-dim) + linear probe
+Train acc: 99.3%, Val acc: 83.0%, Full acc: 96.0%
+DINOv2 baseline: 69.6% val acc
+Improvement: +13.4% over DINOv2
+Bypasses broken language model entirely
+Total size: ~229MB (YOLO 132MB + vision encoder + probe)
+Building submission ZIP now
+
+=== 06:21 Update ===
+Vision-only submission dir created: submission-markusnet-vision/
+  best.onnx (132MB) + markusnet_vision_nf4.pt (53MB) + run.py = 185MB
+Eval crashed on state_dict key mismatch (head.0.weight vs 0.weight) - easy fix
+%4 working on it. Close to having a testable submission.
+
+=== 06:51 Update ===
+Vision-only submission predictions generated: 22043 preds, 240 cats, format valid
+Probe training crashed on sklearn API (multi_class arg removed)
+Still awaiting full pipeline mAP eval
+Submission dir at 185MB ready, needs mAP validation before morning
+
+=== FINAL OVERNIGHT STATUS (06:51) ===
+Vision-only pipeline: det=74.8%, cls=25.5%, combined=60.0
+Pure PyTorch reimplementation produces different features than transformers
+Both vision encoder AND language model have subtle bugs
+transformers gives 83-90.8% accuracy, our code gives 25-44%
+ROOT CAUSE: attention/rotary/layernorm implementation mismatches
+
+CONCLUSION: DINOv2 pipeline (0.9051 server) remains best submission
+MarkusNet weights are excellent but we cannot run them correctly without transformers
+
+=== ONNX EXPORT COMPLETE (08:21) ===
+markusnet_vision.onnx: 336MB (FP32)
+markusnet_vision_fp16.onnx: 169MB
+markusnet_vision_int8.onnx: 85MB ← using this
+markusnet_probe.onnx: 1.1MB
+Submission: best.onnx (132MB) + vision_int8 (85MB) + probe (1.1MB) = 218MB
+ZIP: submission_markusnet_onnx.zip (179MB)
+Awaiting eval results
+
+=== ONNX Pipeline Result (08:21) ===
+Det 74.8%, Cls 56.9%, Combined 69.4
+ONNX model correct (cosine 0.9999) but fixed input size (320x224) distorts crops
+transformers uses dynamic per-crop sizing → 83% accuracy
+Fix: dynamic ONNX axes or letterbox padding to square
+DINOv2 at 80.0 combined still best
+
+=== 08:51 Update ===
+New: markusnet_vision_sq256_int8.onnx (85MB) - square 256x256 input
+Predictions: 22043 preds, 274 unique categories (up from 260)
+mAP eval running, result expected shortly
+
+=== RMS NORM DEBATE SETTLED (10:30) ===
+Transformers source confirms: (1.0 + weight) IS CORRECT
+Weight initialized to zeros, 1+0=1 gives identity
+Our debug agent was WRONG - "fix" was introducing the bug
+VLM agent was RIGHT to revert
+Bug remains in language model: Gated DeltaNet or position embeddings
+DINOv2 pipeline (0.9051) stays as morning submission

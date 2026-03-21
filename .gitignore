@@ -44,3 +44,11 @@ tasks/object-detection/yolo-approach/dataset_augmented/
 tasks/object-detection/data-creation/data/
 tasks/object-detection/data-creation/outputs/
 tasks/astar-island/.token
+
+# Model checkpoints and adapters
+*.safetensors
+lora_soup_output/
+lora_adapter/
+checkpoint-*/
+merged_ties_adapter/
+merged_adapter/

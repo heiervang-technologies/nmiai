@@ -31,7 +31,7 @@ NUM_CLASSES = 356
 CONF_THRESH = 0.001
 NMS_IOU_THRESH = 0.45
 MAX_DET = 100  # Reduced from 300 - most images have <100 real products
-CROP_BATCH_SIZE = 128  # Increased for GPU batching
+CROP_BATCH_SIZE = 1  # One crop at a time to minimize VRAM
 
 # Vision config
 VIS_HIDDEN = 768
@@ -81,10 +81,15 @@ CLASSIFY_TOKEN_ID = 91037
 CHAT_PREFIX_IDS = [IM_START_TOKEN_ID, USER_TOKEN_ID, NEWLINE_TOKEN_ID, VISION_START_TOKEN_ID]
 CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWLINE_TOKEN_ID]
 
-# Image preprocessing - REDUCED to 192 for speed (must be divisible by 16 and 32)
-QWEN_IMAGE_SIZE = 192  # Was 448 - yields 12x12=144 patches -> 36 merged tokens
-QWEN_MEAN = [0.48145466, 0.4578275, 0.40821073]
-QWEN_STD = [0.26862954, 0.26130258, 0.27577711]
+# Image preprocessing - DYNAMIC sizing to match transformers Qwen2VL processor
+# factor = patch_size * merge_size = 16 * 2 = 32
+# min_pixels = 65536 (from processor config size.shortest_edge)
+# max_pixels = 16777216 (from processor config size.longest_edge)
+QWEN_IMAGE_FACTOR = 32
+QWEN_MIN_PIXELS = 65536  # Match transformers processor exactly (size.shortest_edge)
+QWEN_MAX_PIXELS = 65536  # Cap to prevent huge images on L4 GPU
+QWEN_MEAN = [0.5, 0.5, 0.5]
+QWEN_STD = [0.5, 0.5, 0.5]
 
 # ROPE config
 ROPE_THETA = 10000000
@@ -405,6 +410,8 @@ class VisionEncoder(nn.Module):
         grid_thw: list with single (t, h, w) tuple (all crops same size)
         Returns: (B, num_merged_tokens, VIS_OUT_HIDDEN)
         """
+        # Cast input to match model dtype (half on CUDA, float on CPU)
+        pixel_values = pixel_values.to(self.patch_embed_proj.weight.dtype)
         t, h, w = grid_thw[0]
         num_patches_per_image = (t * h * w) // (VIS_TEMPORAL_PATCH)  # patches per crop
         # Actually: num_patches = t_patches * h_patches * w_patches where t_patches = t/temporal
@@ -862,9 +869,56 @@ class MarkusNet(nn.Module):
                 layer.out_proj.weight.data = state[lp + "linear_attn.out_proj.weight"]
 
     @torch.inference_mode()
+    def smart_resize(self, height, width, factor=QWEN_IMAGE_FACTOR, min_pixels=QWEN_MIN_PIXELS, max_pixels=QWEN_MAX_PIXELS):
+        """Match transformers Qwen2VL smart_resize: maintain aspect ratio, divisible by factor."""
+        if max(height, width) / max(1, min(height, width)) > 200:
+            return factor, factor
+        h_bar = max(factor, round(height / factor) * factor)
+        w_bar = max(factor, round(width / factor) * factor)
+        if h_bar * w_bar > max_pixels:
+            beta = math.sqrt((height * width) / max_pixels)
+            h_bar = max(factor, math.floor(height / beta / factor) * factor)
+            w_bar = max(factor, math.floor(width / beta / factor) * factor)
+        elif h_bar * w_bar < min_pixels:
+            beta = math.sqrt(min_pixels / (height * width))
+            h_bar = math.ceil(height * beta / factor) * factor
+            w_bar = math.ceil(width * beta / factor) * factor
+        return h_bar, w_bar
+
+    def _preprocess_single_crop(self, crop_pil, device, mean_t, std_t):
+        """Preprocess a single crop with dynamic sizing (matches transformers processor)."""
+        img = np.array(crop_pil.convert("RGB"))
+        h, w = img.shape[:2]
+
+        # Dynamic resize matching transformers
+        target_h, target_w = self.smart_resize(h, w)
+        resized = cv2.resize(img, (target_w, target_h), interpolation=cv2.INTER_LINEAR)
+
+        # To tensor and normalize
+        tensor = torch.from_numpy(resized).to(device).float() / 255.0  # (H, W, 3)
+        tensor = tensor.permute(2, 0, 1)  # (3, H, W)
+        tensor = (tensor - mean_t) / std_t
+
+        # Stack 2 frames for temporal patch
+        frames = torch.stack([tensor, tensor], dim=0)  # (2, 3, H, W)
+
+        # Reshape to patches
+        pH, pW, pT = VIS_PATCH_SIZE, VIS_PATCH_SIZE, VIS_TEMPORAL_PATCH
+        h_patches = target_h // pH
+        w_patches = target_w // pW
+        num_patches = h_patches * w_patches
+
+        x = frames.reshape(1, pT, 3, h_patches, pH, w_patches, pW)
+        x = x.permute(0, 3, 5, 2, 1, 4, 6)  # (1, h_patches, w_patches, 3, pT, pH, pW)
+        x = x.reshape(num_patches, 3 * pT * pH * pW)
+
+        grid_thw = (1, h_patches, w_patches)
+        return x, grid_thw
+
     def classify_crops(self, crops_pil, device):
         """
-        Classify a batch of PIL image crops with BATCHED forward passes.
+        Classify crops with DYNAMIC sizing per crop (matches training).
+        Processes individually to handle variable grid sizes.
         Returns: (category_ids, confidences) as numpy arrays
         """
         if not crops_pil:
@@ -873,73 +927,100 @@ class MarkusNet(nn.Module):
         all_cat_ids = []
         all_confs = []
 
-        # Precompute grid_thw for 224x224 (same for all crops)
-        target_size = QWEN_IMAGE_SIZE
-        h_patches = target_size // VIS_PATCH_SIZE  # 14 for 224
-        w_patches = target_size // VIS_PATCH_SIZE  # 14
-        t_patches = 1
-        grid_thw = (t_patches, h_patches, w_patches)
-        num_patches = h_patches * w_patches  # 196 for 224
-
-        # Merged tokens after spatial merge
-        num_merged = num_patches // (VIS_SPATIAL_MERGE ** 2)  # 49 for 224
-        llm_grid_h = h_patches // VIS_SPATIAL_MERGE
-        llm_grid_w = w_patches // VIS_SPATIAL_MERGE
-
-        # Precompute position IDs (same for all crops in batch)
-        prefix_len = len(CHAT_PREFIX_IDS)
-        suffix_len = len(CHAT_SUFFIX_IDS)
-        # Build once, expand for batch
-        position_ids_single = self._build_position_ids(
-            prefix_len, num_merged, suffix_len,
-            t_patches, llm_grid_h, llm_grid_w, device,
-        )  # (3, 1, seq_len)
-
-        # Precompute normalization tensors
         mean_t = torch.tensor(QWEN_MEAN, device=device).view(3, 1, 1)
         std_t = torch.tensor(QWEN_STD, device=device).view(3, 1, 1)
+        prefix_len = len(CHAT_PREFIX_IDS)
+        suffix_len = len(CHAT_SUFFIX_IDS)
 
-        for start in range(0, len(crops_pil), CROP_BATCH_SIZE):
-            batch_crops = crops_pil[start:start + CROP_BATCH_SIZE]
-            B = len(batch_crops)
+        # Group crops by grid size for batched processing
+        from collections import defaultdict
+        size_groups = defaultdict(list)
+        for idx, crop in enumerate(crops_pil):
+            img = np.array(crop.convert("RGB"))
+            h, w = img.shape[:2]
+            target_h, target_w = self.smart_resize(h, w)
+            size_groups[(target_h, target_w)].append((idx, crop))
 
-            # === Batch preprocess all crops at once ===
-            all_patches = self._preprocess_batch_fast(batch_crops, device, mean_t, std_t, target_size)
+        results = [None] * len(crops_pil)
 
-            # === Batched vision encoder ===
-            vis_embeds = self.vision(all_patches, [grid_thw])  # (B, num_merged, 1024)
+        for (target_h, target_w), group in size_groups.items():
+            h_patches = target_h // VIS_PATCH_SIZE
+            w_patches = target_w // VIS_PATCH_SIZE
+            num_patches = h_patches * w_patches
+            grid_thw = (1, h_patches, w_patches)
+            num_merged = num_patches // (VIS_SPATIAL_MERGE ** 2)
+            llm_grid_h = h_patches // VIS_SPATIAL_MERGE
+            llm_grid_w = w_patches // VIS_SPATIAL_MERGE
 
-            # === Batched language model ===
-            # Build input_ids for the whole batch
-            prefix_ids = CHAT_PREFIX_IDS
-            suffix_ids = CHAT_SUFFIX_IDS
-            image_ids = [IMAGE_TOKEN_ID] * num_merged
-            single_ids = prefix_ids + image_ids + suffix_ids
-            input_ids = torch.tensor(single_ids, dtype=torch.long, device=device).unsqueeze(0).expand(B, -1)
-
-            # Get text embeddings
-            inputs_embeds = self.language.embed_tokens(input_ids)  # (B, seq_len, hidden)
-
-            # Scatter vision embeddings into image token positions
-            image_mask = (input_ids == IMAGE_TOKEN_ID)  # (B, seq_len)
-            image_mask_3d = image_mask.unsqueeze(-1).expand_as(inputs_embeds)
-            inputs_embeds = inputs_embeds.masked_scatter(
-                image_mask_3d,
-                vis_embeds.to(inputs_embeds.dtype).reshape(-1),
+            position_ids_single = self._build_position_ids(
+                prefix_len, num_merged, suffix_len,
+                1, llm_grid_h, llm_grid_w, device,
             )
 
-            # Expand position_ids for batch
-            position_ids = position_ids_single.expand(3, B, -1)  # (3, B, seq_len)
+            # Process in batches of same size
+            for batch_start in range(0, len(group), CROP_BATCH_SIZE):
+                batch_items = group[batch_start:batch_start + CROP_BATCH_SIZE]
+                B = len(batch_items)
+                indices = [item[0] for item in batch_items]
+                batch_crops = [item[1] for item in batch_items]
 
-            # Forward through language model (BATCHED)
-            hidden = self.language(inputs_embeds, position_ids=position_ids)
-            logits = self.cls_head(hidden)  # (B, NUM_CLASSES)
+                # Preprocess batch (all same target size)
+                all_patches_list = []
+                merge = VIS_SPATIAL_MERGE  # 2
+                for crop in batch_crops:
+                    img = np.array(crop.convert("RGB"))
+                    resized = cv2.resize(img, (target_w, target_h), interpolation=cv2.INTER_LINEAR)
+                    tensor = torch.from_numpy(resized).to(device).float() / 255.0
+                    tensor = tensor.permute(2, 0, 1)
+                    tensor = (tensor - mean_t) / std_t
+                    frames = torch.stack([tensor, tensor], dim=0)
+                    pH, pW, pT = VIS_PATCH_SIZE, VIS_PATCH_SIZE, VIS_TEMPORAL_PATCH
+                    x = frames.reshape(1, pT, 3, h_patches, pH, w_patches, pW)
+                    x = x.permute(0, 3, 5, 2, 1, 4, 6)  # [1, h_p, w_p, C, T, pH, pW]
+                    x = x.reshape(num_patches, 3 * pT * pH * pW)  # [h_p*w_p, 1536]
+                    # Reorder: row-major -> 2x2 spatial merge groups
+                    # Transformers packs patches in 2x2 blocks: (0,0),(0,1),(1,0),(1,1),(0,2),(0,3),(1,2),(1,3),...
+                    x = x.reshape(h_patches, w_patches, -1)
+                    x = x.reshape(h_patches // merge, merge, w_patches // merge, merge, -1)
+                    x = x.permute(0, 2, 1, 3, 4)  # [h_p/2, w_p/2, 2, 2, 1536]
+                    x = x.reshape(num_patches, -1)
+                    all_patches_list.append(x)
+                all_patches = torch.cat(all_patches_list, dim=0)  # (B*num_patches, C*T*pH*pW)
 
-            probs = F.softmax(logits, dim=-1)
-            conf, cat_ids = probs.max(dim=-1)
+                # Batched vision encoder
+                vis_embeds = self.vision(all_patches, [grid_thw])  # (B, num_merged, 1024)
 
-            all_cat_ids.extend(cat_ids.cpu().tolist())
-            all_confs.extend(conf.cpu().tolist())
+                # === Batched language model ===
+                prefix_ids = CHAT_PREFIX_IDS
+                suffix_ids = CHAT_SUFFIX_IDS
+                image_ids = [IMAGE_TOKEN_ID] * num_merged
+                single_ids = prefix_ids + image_ids + suffix_ids
+                input_ids = torch.tensor(single_ids, dtype=torch.long, device=device).unsqueeze(0).expand(B, -1)
+
+                inputs_embeds = self.language.embed_tokens(input_ids)
+
+                image_mask = (input_ids == IMAGE_TOKEN_ID)
+                image_mask_3d = image_mask.unsqueeze(-1).expand_as(inputs_embeds)
+                inputs_embeds = inputs_embeds.masked_scatter(
+                    image_mask_3d,
+                    vis_embeds.to(inputs_embeds.dtype).reshape(-1),
+                )
+
+                position_ids = position_ids_single.expand(3, B, -1)
+
+                hidden = self.language(inputs_embeds, position_ids=position_ids)
+                logits = self.cls_head(hidden)
+
+                probs = F.softmax(logits, dim=-1)
+                conf, cat_ids = probs.max(dim=-1)
+
+                for i, idx in enumerate(indices):
+                    results[idx] = (cat_ids[i].item(), conf[i].item())
+
+        # Unpack results
+        for cat_id, conf in results:
+            all_cat_ids.append(cat_id)
+            all_confs.append(conf)
 
         return np.asarray(all_cat_ids, dtype=np.int64), np.asarray(all_confs, dtype=np.float32)
 

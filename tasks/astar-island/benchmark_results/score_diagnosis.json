@@ -1,0 +1,513 @@
+{
+  "1": {
+    "oos_wkl": 0.19913236951735142,
+    "insample_wkl": 0.1961938239003134,
+    "ceiling_wkl": 0.05302934643586406,
+    "gap": 0.14610302308148737,
+    "breakdown": {
+      "mid_range": {
+        "pct": 58.2850837782014,
+        "total_wkl": 762.2699850874143,
+        "dynamic_count": 2829
+      },
+      "coastal_frontier": {
+        "pct": 20.10277579987585,
+        "total_wkl": 262.9101927261546,
+        "dynamic_count": 557
+      },
+      "far_range": {
+        "pct": 7.790774932624582,
+        "total_wkl": 101.89011504744896,
+        "dynamic_count": 656
+      },
+      "near_civ": {
+        "pct": 5.602007699051851,
+        "total_wkl": 73.26475400577365,
+        "dynamic_count": 1445
+      },
+      "forest_near_civ": {
+        "pct": 5.593689032219389,
+        "total_wkl": 73.15595996051745,
+        "dynamic_count": 895
+      },
+      "init_settlement": {
+        "pct": 2.499205443722117,
+        "total_wkl": 32.68536601175717,
+        "dynamic_count": 201
+      },
+      "init_port": {
+        "pct": 0.12646331430481092,
+        "total_wkl": 1.653925540813694,
+        "dynamic_count": 7
+      }
+    }
+  },
+  "2": {
+    "oos_wkl": 0.21807893697833314,
+    "insample_wkl": 0.21028829221028,
+    "ceiling_wkl": 0.047565624310062074,
+    "gap": 0.17051331266827108,
+    "breakdown": {
+      "mid_range": {
+        "pct": 59.04279940666146,
+        "total_wkl": 874.1047486001373,
+        "dynamic_count": 2804
+      },
+      "coastal_frontier": {
+        "pct": 16.38261025906663,
+        "total_wkl": 242.5379142896773,
+        "dynamic_count": 626
+      },
+      "far_range": {
+        "pct": 12.649643698235714,
+        "total_wkl": 187.2728552142487,
+        "dynamic_count": 458
+      },
+      "forest_near_civ": {
+        "pct": 4.816171341039632,
+        "total_wkl": 71.30146743685161,
+        "dynamic_count": 962
+      },
+      "near_civ": {
+        "pct": 4.532542521826029,
+        "total_wkl": 67.10245756255881,
+        "dynamic_count": 1672
+      },
+      "init_settlement": {
+        "pct": 2.2648644466437875,
+        "total_wkl": 33.53040146540876,
+        "dynamic_count": 229
+      },
+      "init_port": {
+        "pct": 0.19841909298012736,
+        "total_wkl": 2.937514364660924,
+        "dynamic_count": 11
+      },
+      "remote": {
+        "pct": 0.11294923354661787,
+        "total_wkl": 1.672167688287245,
+        "dynamic_count": 17
+      }
+    }
+  },
+  "3": {
+    "oos_wkl": 0.11164219413500338,
+    "insample_wkl": 0.10274914159448441,
+    "ceiling_wkl": 0.022077517247961465,
+    "gap": 0.08956467688704192,
+    "breakdown": {
+      "near_civ": {
+        "pct": 34.81719738606254,
+        "total_wkl": 81.42054306062572,
+        "dynamic_count": 1205
+      },
+      "init_settlement": {
+        "pct": 33.973249771774974,
+        "total_wkl": 79.44695879110265,
+        "dynamic_count": 207
+      },
+      "forest_near_civ": {
+        "pct": 20.73677491620887,
+        "total_wkl": 48.49326200159811,
+        "dynamic_count": 504
+      },
+      "coastal_frontier": {
+        "pct": 9.254438090831684,
+        "total_wkl": 21.64164354532699,
+        "dynamic_count": 147
+      },
+      "init_port": {
+        "pct": 1.0560534451877968,
+        "total_wkl": 2.469596965396619,
+        "dynamic_count": 8
+      },
+      "mid_range": {
+        "pct": 0.16228638993414035,
+        "total_wkl": 0.3795091791355833,
+        "dynamic_count": 27
+      }
+    }
+  },
+  "4": {
+    "oos_wkl": 0.1386892983017715,
+    "insample_wkl": 0.13714353569744242,
+    "ceiling_wkl": 0.02831684727177569,
+    "gap": 0.11037245102999582,
+    "breakdown": {
+      "mid_range": {
+        "pct": 56.68879910766697,
+        "total_wkl": 526.6596610968189,
+        "dynamic_count": 2793
+      },
+      "coastal_frontier": {
+        "pct": 24.194510474467613,
+        "total_wkl": 224.77584439009922,
+        "dynamic_count": 682
+      },
+      "near_civ": {
+        "pct": 7.211469144616292,
+        "total_wkl": 66.99718384403238,
+        "dynamic_count": 1601
+      },
+      "far_range": {
+        "pct": 5.149779798626346,
+        "total_wkl": 47.843336358504416,
+        "dynamic_count": 391
+      },
+      "forest_near_civ": {
+        "pct": 4.552325086504532,
+        "total_wkl": 42.29276373816792,
+        "dynamic_count": 1000
+      },
+      "init_settlement": {
+        "pct": 2.065228501981761,
+        "total_wkl": 19.18672753810551,
+        "dynamic_count": 225
+      },
+      "init_port": {
+        "pct": 0.13788788613648334,
+        "total_wkl": 1.2810288544668686,
+        "dynamic_count": 14
+      }
+    }
+  },
+  "5": {
+    "oos_wkl": 0.13861257629708304,
+    "insample_wkl": 0.137690971928837,
+    "ceiling_wkl": 0.060153929379667626,
+    "gap": 0.07845864691741541,
+    "breakdown": {
+      "mid_range": {
+        "pct": 41.356789932030324,
+        "total_wkl": 360.2963331397837,
+        "dynamic_count": 2597
+      },
+      "coastal_frontier": {
+        "pct": 26.52585025968437,
+        "total_wkl": 231.0906285929448,
+        "dynamic_count": 670
+      },
+      "near_civ": {
+        "pct": 15.322683467897994,
+        "total_wkl": 133.4897286858696,
+        "dynamic_count": 1640
+      },
+      "forest_near_civ": {
+        "pct": 13.643794911028898,
+        "total_wkl": 118.86341480163381,
+        "dynamic_count": 1085
+      },
+      "init_settlement": {
+        "pct": 2.6642262941079276,
+        "total_wkl": 23.21048045555011,
+        "dynamic_count": 232
+      },
+      "far_range": {
+        "pct": 0.41995316413960604,
+        "total_wkl": 3.658591137721835,
+        "dynamic_count": 67
+      },
+      "init_port": {
+        "pct": 0.06670197111087584,
+        "total_wkl": 0.5811010874862774,
+        "dynamic_count": 8
+      }
+    }
+  },
+  "6": {
+    "oos_wkl": 0.3418662042912199,
+    "insample_wkl": 0.3109058208896223,
+    "ceiling_wkl": 0.07279457045709119,
+    "gap": 0.2690716338341287,
+    "breakdown": {
+      "mid_range": {
+        "pct": 52.928644974126286,
+        "total_wkl": 1237.2503705698973,
+        "dynamic_count": 2875
+      },
+      "coastal_frontier": {
+        "pct": 13.681928563527723,
+        "total_wkl": 319.82627164573427,
+        "dynamic_count": 539
+      },
+      "forest_near_civ": {
+        "pct": 12.80267333071056,
+        "total_wkl": 299.27296136997813,
+        "dynamic_count": 1058
+      },
+      "near_civ": {
+        "pct": 9.743736865007453,
+        "total_wkl": 227.76781935111399,
+        "dynamic_count": 1668
+      },
+      "far_range": {
+        "pct": 9.435262009990723,
+        "total_wkl": 220.55696729042893,
+        "dynamic_count": 447
+      },
+      "init_settlement": {
+        "pct": 1.2875170436267902,
+        "total_wkl": 30.096764051318907,
+        "dynamic_count": 234
+      },
+      "init_port": {
+        "pct": 0.09313586729263293,
+        "total_wkl": 2.1771270807610748,
+        "dynamic_count": 5
+      },
+      "remote": {
+        "pct": 0.027101345717845143,
+        "total_wkl": 0.6335161243734507,
+        "dynamic_count": 7
+      }
+    }
+  },
+  "7": {
+    "oos_wkl": 0.22245840050921406,
+    "insample_wkl": 0.21628085613034975,
+    "ceiling_wkl": 0.12945368074263924,
+    "gap": 0.09300471976657482,
+    "breakdown": {
+      "near_civ": {
+        "pct": 32.478430000024375,
+        "total_wkl": 331.74369503480057,
+        "dynamic_count": 1782
+      },
+      "forest_near_civ": {
+        "pct": 26.744164663668553,
+        "total_wkl": 273.1723179395645,
+        "dynamic_count": 996
+      },
+      "coastal_frontier": {
+        "pct": 23.483309929087046,
+        "total_wkl": 239.8650429690385,
+        "dynamic_count": 462
+      },
+      "mid_range": {
+        "pct": 11.280120112523612,
+        "total_wkl": 115.21827645493161,
+        "dynamic_count": 1098
+      },
+      "init_settlement": {
+        "pct": 5.771799337225179,
+        "total_wkl": 58.95475979377873,
+        "dynamic_count": 256
+      },
+      "init_port": {
+        "pct": 0.24217595747123888,
+        "total_wkl": 2.473652420392217,
+        "dynamic_count": 15
+      }
+    }
+  },
+  "8": {
+    "oos_wkl": 0.12877525929788178,
+    "insample_wkl": 0.12278444558217658,
+    "ceiling_wkl": 0.01632494155612109,
+    "gap": 0.11245031774176069,
+    "breakdown": {
+      "mid_range": {
+        "pct": 47.59846932732834,
+        "total_wkl": 407.46999954892044,
+        "dynamic_count": 2848
+      },
+      "coastal_frontier": {
+        "pct": 15.804185795363829,
+        "total_wkl": 135.29282915849197,
+        "dynamic_count": 612
+      },
+      "near_civ": {
+        "pct": 14.63829614517227,
+        "total_wkl": 125.31214990658817,
+        "dynamic_count": 1551
+      },
+      "forest_near_civ": {
+        "pct": 9.89497054349592,
+        "total_wkl": 84.70658195262537,
+        "dynamic_count": 944
+      },
+      "init_settlement": {
+        "pct": 7.633829492949371,
+        "total_wkl": 65.34992708815345,
+        "dynamic_count": 218
+      },
+      "far_range": {
+        "pct": 4.081481991118938,
+        "total_wkl": 34.93980980025577,
+        "dynamic_count": 463
+      },
+      "init_port": {
+        "pct": 0.3487667045713277,
+        "total_wkl": 2.985641575511016,
+        "dynamic_count": 10
+      }
+    }
+  },
+  "9": {
+    "oos_wkl": 0.17658666427627068,
+    "insample_wkl": 0.1749275272634726,
+    "ceiling_wkl": 0.036341863807681674,
+    "gap": 0.140244800468589,
+    "breakdown": {
+      "mid_range": {
+        "pct": 63.07555177602987,
+        "total_wkl": 754.1246376163047,
+        "dynamic_count": 2928
+      },
+      "coastal_frontier": {
+        "pct": 15.982176020618205,
+        "total_wkl": 191.08120912941325,
+        "dynamic_count": 602
+      },
+      "far_range": {
+        "pct": 11.532955066826005,
+        "total_wkl": 137.88679314764948,
+        "dynamic_count": 577
+      },
+      "forest_near_civ": {
+        "pct": 4.134937392041193,
+        "total_wkl": 49.43687489903467,
+        "dynamic_count": 963
+      },
+      "near_civ": {
+        "pct": 3.9974173028818045,
+        "total_wkl": 47.79269923220052,
+        "dynamic_count": 1486
+      },
+      "init_settlement": {
+        "pct": 1.2047971824267723,
+        "total_wkl": 14.40442791249605,
+        "dynamic_count": 210
+      },
+      "init_port": {
+        "pct": 0.07216525917614663,
+        "total_wkl": 0.8628002196150382,
+        "dynamic_count": 9
+      }
+    }
+  },
+  "10": {
+    "oos_wkl": 0.09507800723840666,
+    "insample_wkl": 0.08612317431557959,
+    "ceiling_wkl": 0.020203875752636595,
+    "gap": 0.07487413148577007,
+    "breakdown": {
+      "near_civ": {
+        "pct": 38.97771073972838,
+        "total_wkl": 111.61645069510175,
+        "dynamic_count": 1571
+      },
+      "init_settlement": {
+        "pct": 25.943494014928575,
+        "total_wkl": 74.2917084051438,
+        "dynamic_count": 229
+      },
+      "forest_near_civ": {
+        "pct": 19.84376562619399,
+        "total_wkl": 56.82454524872054,
+        "dynamic_count": 700
+      },
+      "coastal_frontier": {
+        "pct": 12.585147023093802,
+        "total_wkl": 36.03878769519404,
+        "dynamic_count": 226
+      },
+      "mid_range": {
+        "pct": 1.7356736797866046,
+        "total_wkl": 4.970269726621646,
+        "dynamic_count": 273
+      },
+      "init_port": {
+        "pct": 0.914208916268644,
+        "total_wkl": 2.6179257963376372,
+        "dynamic_count": 9
+      }
+    }
+  },
+  "11": {
+    "oos_wkl": 0.38636983423339727,
+    "insample_wkl": 0.35202916732643535,
+    "ceiling_wkl": 0.051145212035957746,
+    "gap": 0.33522462219743954,
+    "breakdown": {
+      "mid_range": {
+        "pct": 57.177079437272546,
+        "total_wkl": 1463.3162275497252,
+        "dynamic_count": 2911
+      },
+      "coastal_frontier": {
+        "pct": 11.307817715740978,
+        "total_wkl": 289.3976629179043,
+        "dynamic_count": 559
+      },
+      "near_civ": {
+        "pct": 11.303053646502887,
+        "total_wkl": 289.2757374908997,
+        "dynamic_count": 1337
+      },
+      "forest_near_civ": {
+        "pct": 10.371876707305962,
+        "total_wkl": 265.4443991424304,
+        "dynamic_count": 859
+      },
+      "far_range": {
+        "pct": 8.191798990114151,
+        "total_wkl": 209.65030940781645,
+        "dynamic_count": 758
+      },
+      "init_settlement": {
+        "pct": 1.6061491582656204,
+        "total_wkl": 41.105704423638336,
+        "dynamic_count": 186
+      },
+      "init_port": {
+        "pct": 0.04006242230112993,
+        "total_wkl": 1.0253058261310504,
+        "dynamic_count": 4
+      },
+      "remote": {
+        "pct": 0.002161922496729726,
+        "total_wkl": 0.05532944850112712,
+        "dynamic_count": 1
+      }
+    }
+  },
+  "12": {
+    "oos_wkl": 0.30638452955799844,
+    "insample_wkl": 0.2907393027260584,
+    "ceiling_wkl": 0.1692015644688959,
+    "gap": 0.13718296508910255,
+    "breakdown": {
+      "near_civ": {
+        "pct": 42.25102180668204,
+        "total_wkl": 441.74253331826003,
+        "dynamic_count": 1516
+      },
+      "forest_near_civ": {
+        "pct": 25.39696655426738,
+        "total_wkl": 265.5301544093523,
+        "dynamic_count": 759
+      },
+      "coastal_frontier": {
+        "pct": 19.50545591340741,
+        "total_wkl": 203.93328114383104,
+        "dynamic_count": 296
+      },
+      "init_settlement": {
+        "pct": 9.262588006227041,
+        "total_wkl": 96.84213342047413,
+        "dynamic_count": 220
+      },
+      "mid_range": {
+        "pct": 3.179989762381711,
+        "total_wkl": 33.24740263059078,
+        "dynamic_count": 608
+      },
+      "init_port": {
+        "pct": 0.403977957034429,
+        "total_wkl": 4.223666991099874,
+        "dynamic_count": 10
+      }
+    }
+  }
+}
