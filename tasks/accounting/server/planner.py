@@ -25,12 +25,13 @@ for f in PLAYBOOK_DIR.glob("*.json"):
 log.info(f"Loaded {len(PLAYBOOKS)} playbooks: {list(PLAYBOOKS.keys())}")
 
 # Prefer more specific families over broad ones like customer when scores tie.
+# Invoice must beat timesheet because "faktura med 10 timer" is an invoice, not timesheet.
 FAMILY_PRIORITY = {
-    "timesheet": 90,
+    "invoice": 95,
     "travel_expense": 85,
     "salary": 80,
     "project": 75,
-    "invoice": 70,
+    "timesheet": 70,
     "supplier": 60,
     "employee": 50,
     "department": 40,
