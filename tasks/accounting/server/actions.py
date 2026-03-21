@@ -214,6 +214,57 @@ def _is_placeholder_employee(employee: dict | None) -> bool:
     )
 
 
+def _next_date_iso(date_str: str) -> str:
+    from datetime import date as _date, timedelta as _timedelta
+
+    return (_date.fromisoformat(date_str) + _timedelta(days=1)).isoformat()
+
+
+def _pick_travel_payment_type(payment_types: list[dict]) -> int | None:
+    best: tuple[int, int] | None = None
+    for item in payment_types:
+        item_id = item.get("id")
+        if item_id is None:
+            continue
+        name = (item.get("name") or item.get("displayName") or "").lower()
+        score = 0
+        if "privat utlegg" in name:
+            score += 100
+        if "ansatt" in name or "employee" in name:
+            score += 20
+        if "firma" in name or "company" in name:
+            score -= 10
+        candidate = (score, int(item_id))
+        if best is None or candidate > best:
+            best = candidate
+    return best[1] if best else None
+
+
+def _pick_travel_cost_category(cost_categories: list[dict]) -> int | None:
+    best: tuple[int, int] | None = None
+    for item in cost_categories:
+        item_id = item.get("id")
+        if item_id is None:
+            continue
+        name = (item.get("description") or item.get("displayName") or "").lower()
+        vat_type = item.get("vatType") or {}
+        vat_id = vat_type.get("id")
+        vat_name = (vat_type.get("name") or "").lower()
+        score = 0
+        if item.get("showOnTravelExpenses"):
+            score += 100
+        if vat_id == 0 or "0" in vat_name or "ingen" in vat_name or "unntatt" in vat_name:
+            score += 40
+        if any(token in name for token in ["bom", "park", "reise", "drivstoff"]):
+            score += 10
+        if item.get("isInactive"):
+            score -= 1000
+        candidate = (score, int(item_id))
+        if best is None or candidate > best:
+            best = candidate
+    return best[1] if best else None
+
+
 async def _find_employee_id(
     client: TripletexClient,
     employee_id: int | None = None,
@@ -380,6 +431,8 @@ async def _resolve_travel_per_diem_rate(
     country_code: str,
     is_day_trip: bool,
     accommodation: str,
+    departure_date: str,
+    return_date: str,
 ) -> tuple[dict | None, dict | None]:
     is_domestic = country_code.upper() == "NO"
     has_accommodation = accommodation.upper() not in {"", "NONE", "NO_ACCOMMODATION"}
@@ -387,32 +440,47 @@ async def _resolve_travel_per_diem_rate(
     try:
         category_resp = await client.get(
             "/travelExpense/rateCategory",
-            params={"type": "PER_DIEM", "count": 50},
+            params={"type": "PER_DIEM", "count": 200},
         )
     except Exception as exc:
         log.warning(f"Per diem rate category lookup failed: {_error_text(exc)[:200]}")
         return None, None
 
-    # Pick the best category based on trip type.
-    # Domestic overnight with >12h is the most common per diem scenario.
+    def _category_priority(category: dict) -> tuple[int, int]:
+        name = (category.get("name") or "").lower()
+        score = 0
+        if is_domestic and "innland" in name:
+            score += 50
+        if not is_domestic and any(token in name for token in ["utland", "utenland", "abroad", "foreign"]):
+            score += 50
+        if is_day_trip:
+            if "dagsreise" in name:
+                score += 40
+            if "overnatting" in name:
+                score -= 20
+        else:
+            if "overnatting" in name:
+                score += 60
+            if "over 12" in name or ">12" in name:
+                score += 20
+            if "8-12" in name:
+                score -= 5
+            if "dagsreise" in name:
+                score -= 20
+        if has_accommodation and any(token in name for token in ["overnatting", "hotell", "hotel"]):
+            score += 10
+        return score, int(category.get("id") or 0)
+
     best_category = None
-    categories = category_resp.get("values", [])
+    categories = sorted(category_resp.get("values", []), key=_category_priority, reverse=True)
     for category in categories:
-        cat_name = (category.get("name") or "").lower()
-        # Prefer overnight > 12h for multi-day, dagsreise for day trips
-        if is_day_trip and "dagsreise" in cat_name:
-            best_category = category
-        elif not is_day_trip and "overnatting" in cat_name and "12" in cat_name:
-            best_category = category
-        elif best_category is None:
+        if best_category is None:
             best_category = category
 
         params = {
             "rateCategoryId": category["id"],
-            "type": "PER_DIEM",
-            "isValidDomestic": is_domestic,
-            "isValidDayTrip": is_day_trip,
-            "isValidAccommodation": has_accommodation,
+            "dateFrom": departure_date,
+            "dateTo": return_date,
         }
         try:
             rate_resp = await client.get("/travelExpense/rate", params=params)
@@ -424,8 +492,6 @@ async def _resolve_travel_per_diem_rate(
         if values:
             return category, values[0]
 
-    # Rates are empty but categories exist — return best category without rate.
-    # The per diem body will include rateCategory which may be enough.
     if best_category:
         return best_category, None
     return None, None
@@ -931,6 +997,9 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
         "paymentTypeId": int(payment_type_id),
         "paidAmount": amount,
     }
+    # For foreign currency invoices, also provide paidAmountCurrency
+    if args.get("paidAmountCurrency"):
+        payment_params["paidAmountCurrency"] = float(args["paidAmountCurrency"])
     try:
         return await client.put(f"/invoice/{invoice_id}/:payment", params=payment_params)
     except Exception as e:
@@ -1515,7 +1584,7 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                 existing = await client.get("/timesheet/entry", params={
                     "employeeId": employee_id,
                     "dateFrom": entry_date,
-                    "dateTo": entry_date,
+                    "dateTo": _next_date_iso(entry_date),
                     "count": 10,
                 })
                 for entry in existing.get("values", []):
@@ -1658,13 +1727,13 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
         try:
             payment_types = await client.get("/travelExpense/paymentType", params={"count": 50})
             if payment_types.get("values"):
-                travel_payment_type_id = payment_types["values"][0].get("id")
+                travel_payment_type_id = _pick_travel_payment_type(payment_types["values"])
         except Exception as e:
             log.warning(f"Travel payment type lookup failed: {e}")
         try:
-            cost_categories = await client.get("/travelExpense/costCategory", params={"count": 50})
+            cost_categories = await client.get("/travelExpense/costCategory", params={"count": 200})
             if cost_categories.get("values"):
-                travel_cost_category_id = cost_categories["values"][0].get("id")
+                travel_cost_category_id = _pick_travel_cost_category(cost_categories["values"])
         except Exception as e:
             log.warning(f"Travel cost category lookup failed: {e}")
 
@@ -1693,8 +1762,8 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
 
     per_diem_added = False
 
-    # Add per diem if specified
-    if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
+    # Add per diem if requested, even when the model omitted the explicit rate.
+    if expense_id and args.get("perDiemDays"):
         try:
             accommodation = args.get("accommodation", "HOTEL")
             country_code = args.get("countryCode", "NO")
@@ -1703,46 +1772,55 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 country_code=country_code,
                 is_day_trip=days <= 1,
                 accommodation=accommodation,
+                departure_date=departure_date,
+                return_date=return_date,
             )
+
+            resolved_rate = args.get("perDiemRate")
+            if resolved_rate is None and rate_type:
+                resolved_rate = rate_type.get("rate")
+            if resolved_rate is None and country_code.upper() == "NO" and days > 1:
+                resolved_rate = 1012.0
 
             per_diem_body = {
                 "travelExpense": {"id": expense_id},
                 "count": int(args["perDiemDays"]),
-                "rate": float(args["perDiemRate"]),
+                "rate": float(resolved_rate),
                 "overnightAccommodation": accommodation,
                 "location": args.get("destination", args.get("title", "Norway")),
                 "address": args.get("destination", ""),
-                # Omit countryCode for domestic trips — causes validation errors
             }
+            if country_code.upper() != "NO":
+                per_diem_body["countryCode"] = country_code
             if rate_type:
                 per_diem_body["rateType"] = {"id": rate_type["id"]}
             if rate_category:
                 per_diem_body["rateCategory"] = {"id": rate_category["id"]}
-            if not rate_type and not rate_category:
-                # Fallback: use known working category 740 for domestic overnight
-                per_diem_body["rateType"] = {"id": 740}
+            elif country_code.upper() == "NO" and days > 1:
                 per_diem_body["rateCategory"] = {"id": 740}
 
-            await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
-            per_diem_added = True
+            if resolved_rate is not None:
+                await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
+                per_diem_added = True
         except Exception as e:
             log.warning(f"Per diem creation failed, trying cost fallback: {e}")
-            # Fallback: add as a regular cost instead of per diem
             try:
-                total = float(args["perDiemDays"]) * float(args["perDiemRate"])
-                cost_body = {
-                    "travelExpense": {"id": expense_id},
-                    "date": departure_date,
-                    "amountCurrencyIncVat": total,
-                    "isPaidByEmployee": True,
-                    "comments": f"Per diem {args['perDiemDays']} days x {args['perDiemRate']} NOK",
-                }
-                if travel_payment_type_id:
-                    cost_body["paymentType"] = {"id": travel_payment_type_id}
-                if travel_cost_category_id:
-                    cost_body["costCategory"] = {"id": travel_cost_category_id}
-                await client.post("/travelExpense/cost", json=cost_body)
-                per_diem_added = True
+                if resolved_rate is not None:
+                    total = float(args["perDiemDays"]) * float(resolved_rate)
+                    cost_body = {
+                        "travelExpense": {"id": expense_id},
+                        "date": departure_date,
+                        "amountCurrencyIncVat": total,
+                        "amountNOKInclVAT": total,
+                        "isPaidByEmployee": True,
+                        "comments": f"Per diem {args['perDiemDays']} days x {resolved_rate} NOK",
+                    }
+                    if travel_payment_type_id:
+                        cost_body["paymentType"] = {"id": travel_payment_type_id}
+                    if travel_cost_category_id:
+                        cost_body["costCategory"] = {"id": travel_cost_category_id}
+                    await client.post("/travelExpense/cost", json=cost_body)
+                    per_diem_added = True
             except Exception as e2:
                 log.warning(f"Cost fallback also failed: {e2}")
 
