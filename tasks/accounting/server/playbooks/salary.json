@@ -1,41 +1,27 @@
 {
   "family": "salary",
   "keywords": [
-    "salary transaction",
-    "salary run",
-    "payroll run",
-    "payroll",
-    "salary",
-    "bonus",
-    "gross salary",
-    "grunnlønn",
-    "grunnlonn",
-    "lønn",
-    "lonn",
-    "køyr løn",
-    "kjor lon",
-    "pay slip",
-    "payslip",
-    "lønnskjøring",
-    "lonnskjoring",
-    "gehalt",
-    "salaire",
-    "nomina"
+    "salary", "payroll", "lønn", "lonn", "løn", "lon",
+    "grunnlønn", "grunnlonn", "grunnløn",
+    "kjør lønn", "køyr løn", "kjor lonn",
+    "pay slip", "payslip", "lønnskjøring",
+    "gehalt", "Gehaltsabrechnung",
+    "salaire", "paie", "exécutez la paie",
+    "nomina", "nómina",
+    "salário", "salario",
+    "process salary", "run payroll"
   ],
-  "description": "Create salary transactions and payroll-related postings",
+  "description": "Process salary/payroll via manual voucher postings",
   "preflight": [
-    "GET /employee to find employee ID",
-    "GET /salary/type to find salary type IDs",
-    "POST /salary/transaction to create the payroll transaction"
+    "GET /employee to find employee ID"
   ],
   "endpoints": [
-    "POST /salary/transaction — body: {date, payslips:[{employee:{id}, date, specifications:[{salaryType:{id}, amount, rate, count, description}]}]}",
-    "GET /salary/type — lookup salary types by name or number"
+    "Use process_salary typed tool — creates voucher with salary cost (5000), tax (2780), bank (1920)"
   ],
-  "required_fields": ["employee", "salary type", "amount"],
+  "required_fields": ["employee", "baseSalary"],
   "common_errors": [
-    "Salary tasks should use /salary/transaction, not generic vouchers, when the prompt is about payroll",
-    "Resolve employee and salary type IDs before posting the transaction"
+    "Do NOT try /salary/transaction, /payroll, or /payslip endpoints — they don't work in competition sandboxes",
+    "ALWAYS use the process_salary typed tool"
   ],
-  "tips": "If the prompt mentions base salary plus bonus, create one payslip with multiple specifications."
+  "tips": "ALWAYS use process_salary tool. Extract baseSalary and bonus from the prompt. The tool handles account lookup and voucher creation automatically."
 }
