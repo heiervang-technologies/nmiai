@@ -220,6 +220,47 @@ class RegisterSupplierInvoiceArgs(BaseModel):
     dueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
 
 
+class CreateFixedPriceProjectInvoiceArgs(BaseModel):
+    projectName: str
+    fixedPrice: float = Field(description="Total fixed price in NOK")
+    invoicePercent: float = Field(description="Percent of the fixed price to invoice, e.g. 25, 50, 75")
+    customerId: Optional[int] = None
+    customerName: Optional[str] = None
+    customerOrgNumber: Optional[str] = None
+    projectId: Optional[int] = None
+    projectNumber: Optional[str] = None
+    projectManagerId: Optional[int] = None
+    projectManagerEmail: Optional[str] = None
+    projectManagerName: Optional[str] = None
+    startDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    invoiceDueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    description: Optional[str] = None
+
+
+class RegisterTimesheetAndInvoiceArgs(BaseModel):
+    hours: float
+    hourlyRate: float = Field(description="Hourly billing rate in NOK")
+    employeeId: Optional[int] = None
+    employeeName: Optional[str] = None
+    employeeEmail: Optional[str] = None
+    customerId: Optional[int] = None
+    customerName: Optional[str] = None
+    customerOrgNumber: Optional[str] = None
+    projectId: Optional[int] = None
+    projectName: Optional[str] = None
+    projectManagerId: Optional[int] = None
+    projectManagerEmail: Optional[str] = None
+    projectManagerName: Optional[str] = None
+    activityId: Optional[int] = None
+    activityName: Optional[str] = None
+    date: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    comment: Optional[str] = None
+    invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    invoiceDueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    description: Optional[str] = None
+
+
 class GenericApiCallArgs(BaseModel):
     """Fallback for any API call not covered by typed tools."""
     method: str = Field(description="HTTP method: GET, POST, PUT, DELETE")
@@ -375,6 +416,18 @@ async def register_supplier_invoice(ctx: RunContext[AgentDeps], args: RegisterSu
 
 
 @agent.tool
+async def create_fixed_price_project_invoice(ctx: RunContext[AgentDeps], args: CreateFixedPriceProjectInvoiceArgs) -> str:
+    """Create or find a project, set fixed price, then invoice a percentage of that fixed price."""
+    return await _safe_action("create_fixed_price_project_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3500)
+
+
+@agent.tool
+async def register_timesheet_and_invoice(ctx: RunContext[AgentDeps], args: RegisterTimesheetAndInvoiceArgs) -> str:
+    """Register project hours and then create an invoice for the logged hours times the hourly rate."""
+    return await _safe_action("register_timesheet_and_invoice", ctx.deps.client, args.model_dump(exclude_none=True), 3500)
+
+
+@agent.tool
 async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
     """Fallback: make any Tripletex API call. Use only when no typed tool fits. Will reject calls that should use typed tools."""
     path = args.path.lower()
@@ -400,9 +453,11 @@ CORE_PROMPT = """You are an expert Tripletex accounting agent. Complete the task
 MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_call for these tasks:
 - Supplier/incoming invoices → register_supplier_invoice
 - Salary/payroll → process_salary
-- Time tracking/hours → register_timesheet
+- Time tracking/hours only → register_timesheet
+- Time tracking/hours + invoice → register_timesheet_and_invoice
 - Travel expenses → create_travel_expense
-- Projects (including fixed-price) → create_project
+- Plain projects → create_project
+- Fixed-price project + invoice percentage → create_fixed_price_project_invoice
 - Invoices → create_invoice
 - Credit notes → create_credit_note
 - Payments/reversals → register_payment
@@ -411,8 +466,8 @@ MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_cal
 generic_api_call is ONLY for tasks with no matching typed tool above. If you use generic_api_call for any of the above, it will fail.
 
 MULTI-STEP TASK PATTERNS:
-- "Set fixed price on project + invoice X%": call create_project (with fixedPrice), THEN create_invoice with amount = fixedPrice * X/100
-- "Log hours + generate project invoice": call register_timesheet, THEN create_invoice for the total (hours * rate)
+- "Set fixed price on project + invoice X%": call create_fixed_price_project_invoice
+- "Log hours + generate project invoice": call register_timesheet_and_invoice
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
 

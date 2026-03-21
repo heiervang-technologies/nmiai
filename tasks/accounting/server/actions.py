@@ -16,6 +16,86 @@ def _money(value: float | int) -> float:
     return round(float(value), 2)
 
 
+async def _find_customer_id(
+    client: TripletexClient,
+    customer_id: int | None = None,
+    customer_name: str | None = None,
+    customer_org_number: str | None = None,
+) -> int | None:
+    """Find an existing customer by ID/name/org number, or create one if enough data is provided."""
+    if customer_id:
+        return customer_id
+
+    if customer_name or customer_org_number:
+        customers = await client.get("/customer", params={"count": 100})
+        for customer in customers.get("values", []):
+            if customer_org_number and customer.get("organizationNumber") == customer_org_number:
+                return customer["id"]
+            if customer_name and customer_name.lower() in customer.get("name", "").lower():
+                return customer["id"]
+
+    if customer_name:
+        body = {"name": customer_name}
+        if customer_org_number:
+            body["organizationNumber"] = customer_org_number
+        created = await client.post("/customer", json=body)
+        return created.get("value", {}).get("id")
+
+    return None
+
+
+async def _find_employee_id(
+    client: TripletexClient,
+    employee_id: int | None = None,
+    employee_email: str | None = None,
+    employee_name: str | None = None,
+    create_if_missing: bool = False,
+) -> int | None:
+    """Find an employee by ID/email/name. Optionally create them if missing and enough data exists."""
+    if employee_id:
+        return employee_id
+
+    employees = await client.get("/employee", params={"count": 25})
+    for employee in employees.get("values", []):
+        if employee_email and employee.get("email") == employee_email:
+            return employee["id"]
+        if employee_name and employee_name.lower() in employee.get("displayName", "").lower():
+            return employee["id"]
+
+    if create_if_missing and employee_email:
+        name_parts = (employee_name or "Project Manager").split(" ", 1)
+        first_name = name_parts[0]
+        last_name = name_parts[1] if len(name_parts) > 1 else "Manager"
+        created = await action_create_employee(
+            client,
+            {
+                "firstName": first_name,
+                "lastName": last_name,
+                "email": employee_email,
+            },
+        )
+        employee_value = created.get("value", created)
+        if employee_value.get("id"):
+            return employee_value["id"]
+
+    values = employees.get("values", [])
+    return values[0]["id"] if values else None
+
+
+async def _find_project_id(client: TripletexClient, project_id: int | None = None, project_name: str | None = None) -> int | None:
+    """Find a project by ID or fuzzy name match."""
+    if project_id:
+        return project_id
+    if not project_name:
+        return None
+
+    projects = await client.get("/project", params={"count": 100})
+    for project in projects.get("values", []):
+        if project_name.lower() in project.get("name", "").lower():
+            return project["id"]
+    return None
+
+
 async def action_discover_sandbox(client: TripletexClient, args: dict) -> dict:
     """Discover sandbox state: departments, employees, customers, invoices, payment types."""
     result = {}
@@ -210,6 +290,7 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
 
     # Look up default VAT type (25% utgående) — ID may differ per sandbox
     default_vat_id = 3
+    vat_types = {"values": []}
     try:
         vat_types = await client.get("/ledger/vatType", params={"count": 50})
         for vt in vat_types.get("values", []):
@@ -424,46 +505,21 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
     # Skip module activation — burns API calls with 403 in competition sandboxes
 
     # Find or create customer if needed
-    customer_id = args.get("customerId")
-    if not customer_id and args.get("customerName"):
-        custs = await client.get("/customer", params={"count": 100})
-        for c in custs.get("values", []):
-            if args["customerName"].lower() in c.get("name", "").lower():
-                customer_id = c["id"]
-                break
-        if not customer_id:
-            cust_body = {"name": args["customerName"]}
-            if args.get("customerOrgNumber"):
-                cust_body["organizationNumber"] = args["customerOrgNumber"]
-            cust_result = await client.post("/customer", json=cust_body)
-            customer_id = cust_result.get("value", {}).get("id")
+    customer_id = await _find_customer_id(
+        client,
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
 
     # Find project manager — search by email first, then name, then fallback to first employee
-    manager_id = args.get("projectManagerId")
-    if not manager_id:
-        emps = await client.get("/employee", params={"count": 10})
-        for emp in emps.get("values", []):
-            if args.get("projectManagerEmail") and emp.get("email") == args["projectManagerEmail"]:
-                manager_id = emp["id"]
-                break
-            elif args.get("projectManagerName") and args["projectManagerName"].lower() in emp.get("displayName", "").lower():
-                manager_id = emp["id"]
-                break
-        # If manager not found by email/name, create them
-        if not manager_id and args.get("projectManagerEmail"):
-            name_parts = args.get("projectManagerName", "Project Manager").split(" ", 1)
-            first_name = name_parts[0]
-            last_name = name_parts[1] if len(name_parts) > 1 else "Manager"
-            try:
-                emp_result = await action_create_employee(client, {
-                    "firstName": first_name, "lastName": last_name,
-                    "email": args["projectManagerEmail"],
-                })
-                manager_id = emp_result.get("value", {}).get("id")
-            except Exception:
-                pass
-        if not manager_id and emps.get("values"):
-            manager_id = emps["values"][0]["id"]
+    manager_id = await _find_employee_id(
+        client,
+        employee_id=args.get("projectManagerId"),
+        employee_email=args.get("projectManagerEmail"),
+        employee_name=args.get("projectManagerName"),
+        create_if_missing=True,
+    )
 
     body = {
         "name": args["name"],
@@ -611,24 +667,18 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
     # Trying to activate burns 2-6 API calls with 403 errors every time.
 
     # Find or use provided IDs
-    employee_id = args.get("employeeId")
-    if not employee_id:
-        emps = await client.get("/employee", params={"count": 10})
-        for emp in emps.get("values", []):
-            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
-                employee_id = emp["id"]
-                break
-            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
-                employee_id = emp["id"]
-                break
+    employee_id = await _find_employee_id(
+        client,
+        employee_id=args.get("employeeId"),
+        employee_email=args.get("employeeEmail"),
+        employee_name=args.get("employeeName"),
+    )
 
-    project_id = args.get("projectId")
-    if not project_id and args.get("projectName"):
-        projects = await client.get("/project", params={"count": 100})
-        for proj in projects.get("values", []):
-            if args["projectName"].lower() in proj.get("name", "").lower():
-                project_id = proj["id"]
-                break
+    project_id = await _find_project_id(
+        client,
+        project_id=args.get("projectId"),
+        project_name=args.get("projectName"),
+    )
 
     # Find or create activity
     # Use /activity for listing, /project/projectActivity for creating
@@ -851,16 +901,12 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
     """Process salary by creating a manual voucher. Salary API requires special setup,
     so we use voucher postings on salary accounts (5000-series)."""
     # Find employee
-    employee_id = args.get("employeeId")
-    if not employee_id:
-        emps = await client.get("/employee", params={"count": 10})
-        for emp in emps.get("values", []):
-            if args.get("employeeEmail") and emp.get("email") == args["employeeEmail"]:
-                employee_id = emp["id"]
-                break
-            elif args.get("employeeName") and args["employeeName"].lower() in emp.get("displayName", "").lower():
-                employee_id = emp["id"]
-                break
+    employee_id = await _find_employee_id(
+        client,
+        employee_id=args.get("employeeId"),
+        employee_email=args.get("employeeEmail"),
+        employee_name=args.get("employeeName"),
+    )
 
     # Look up accounts
     account_cache = {}
@@ -912,6 +958,147 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
     return await client.post("/ledger/voucher", json=voucher_body)
 
 
+async def action_create_fixed_price_project_invoice(client: TripletexClient, args: dict) -> dict:
+    """Create/find a fixed-price project, set the fixed price, then invoice a percentage of it."""
+    project_id = await _find_project_id(
+        client,
+        project_id=args.get("projectId"),
+        project_name=args.get("projectName"),
+    )
+
+    project_result: dict | None = None
+    if not project_id:
+        project_result = await action_create_project(
+            client,
+            {
+                "name": args["projectName"],
+                "number": args.get("projectNumber"),
+                "customerId": args.get("customerId"),
+                "customerName": args.get("customerName"),
+                "customerOrgNumber": args.get("customerOrgNumber"),
+                "projectManagerId": args.get("projectManagerId"),
+                "projectManagerEmail": args.get("projectManagerEmail"),
+                "projectManagerName": args.get("projectManagerName"),
+                "startDate": args.get("startDate", args.get("invoiceDate", TODAY)),
+                "fixedPrice": args["fixedPrice"],
+            },
+        )
+        project_value = project_result.get("value", project_result)
+        project_id = project_value.get("id")
+    else:
+        try:
+            project_data = await client.get(f"/project/{project_id}")
+            project_obj = project_data.get("value", project_data)
+            project_obj["startDate"] = project_obj.get("startDate") or args.get("startDate", TODAY)
+            project_obj["isFixedPrice"] = True
+            project_obj["fixedprice"] = _money(args["fixedPrice"])
+            project_result = await client.put(f"/project/{project_id}", json=project_obj)
+        except Exception as e:
+            log.warning(f"Could not update existing project {project_id} with fixed price: {e}")
+
+    invoice_amount = _money(args["fixedPrice"] * (float(args["invoicePercent"]) / 100.0))
+    invoice_result = await action_create_invoice(
+        client,
+        {
+            "customerId": args.get("customerId"),
+            "customerName": args.get("customerName"),
+            "customerOrgNumber": args.get("customerOrgNumber"),
+            "invoiceDate": args.get("invoiceDate", TODAY),
+            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", TODAY)),
+            "orderLines": [
+                {
+                    "description": args.get(
+                        "description",
+                        f"{_money(args['invoicePercent'])}% delbetaling for prosjekt {args['projectName']}",
+                    ),
+                    "count": 1,
+                    "unitPrice": invoice_amount,
+                }
+            ],
+        },
+    )
+
+    return {
+        "projectId": project_id,
+        "project": project_result,
+        "invoice": invoice_result,
+        "invoiceAmount": invoice_amount,
+    }
+
+
+async def action_register_timesheet_and_invoice(client: TripletexClient, args: dict) -> dict:
+    """Register time on a project and immediately create an invoice for the logged hours."""
+    project_id = await _find_project_id(
+        client,
+        project_id=args.get("projectId"),
+        project_name=args.get("projectName"),
+    )
+
+    project_result: dict | None = None
+    if not project_id and args.get("projectName"):
+        project_result = await action_create_project(
+            client,
+            {
+                "name": args["projectName"],
+                "customerId": args.get("customerId"),
+                "customerName": args.get("customerName"),
+                "customerOrgNumber": args.get("customerOrgNumber"),
+                "projectManagerId": args.get("projectManagerId"),
+                "projectManagerEmail": args.get("projectManagerEmail") or args.get("employeeEmail"),
+                "projectManagerName": args.get("projectManagerName") or args.get("employeeName"),
+                "startDate": args.get("date", TODAY),
+            },
+        )
+        project_value = project_result.get("value", project_result)
+        project_id = project_value.get("id")
+
+    timesheet_result = await action_register_timesheet(
+        client,
+        {
+            "employeeId": args.get("employeeId"),
+            "employeeEmail": args.get("employeeEmail"),
+            "employeeName": args.get("employeeName"),
+            "projectId": project_id,
+            "projectName": args.get("projectName"),
+            "activityId": args.get("activityId"),
+            "activityName": args.get("activityName"),
+            "hours": args["hours"],
+            "date": args.get("date", TODAY),
+            "comment": args.get("comment"),
+        },
+    )
+
+    invoice_amount = _money(float(args["hours"]) * float(args["hourlyRate"]))
+    invoice_result = await action_create_invoice(
+        client,
+        {
+            "customerId": args.get("customerId"),
+            "customerName": args.get("customerName"),
+            "customerOrgNumber": args.get("customerOrgNumber"),
+            "invoiceDate": args.get("invoiceDate", args.get("date", TODAY)),
+            "invoiceDueDate": args.get("invoiceDueDate", args.get("invoiceDate", args.get("date", TODAY))),
+            "orderLines": [
+                {
+                    "description": args.get(
+                        "description",
+                        f"{args.get('activityName', 'Project work')} {args['hours']}h on {args.get('projectName', 'project')}",
+                    ),
+                    "count": 1,
+                    "unitPrice": invoice_amount,
+                }
+            ],
+        },
+    )
+
+    return {
+        "projectId": project_id,
+        "project": project_result,
+        "timesheet": timesheet_result,
+        "invoice": invoice_result,
+        "invoiceAmount": invoice_amount,
+    }
+
+
 # Generic fallback for unknown actions
 async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
     """Make a generic API call. Auto-adds required params for known endpoints."""
@@ -955,6 +1142,8 @@ ACTIONS = {
     "register_supplier_invoice": action_register_supplier_invoice,
     "create_travel_expense": action_create_travel_expense,
     "process_salary": action_process_salary,
+    "create_fixed_price_project_invoice": action_create_fixed_price_project_invoice,
+    "register_timesheet_and_invoice": action_register_timesheet_and_invoice,
     "create_invoice": action_create_invoice,
     "create_order": action_create_order,
     "register_payment": action_register_payment,
