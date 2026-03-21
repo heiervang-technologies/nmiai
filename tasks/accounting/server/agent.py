@@ -533,6 +533,19 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         return await _safe_action("generic_api_call", ctx.deps.client, link_args, 4000)
     for pattern, msg in redirects.items():
         if pattern in path.lower():
+            # For supplier invoice paths, auto-execute instead of just warning
+            if "incominginvoice" in path.lower() or "supplierinvoice" in path.lower():
+                body = args_dict.get("body") or {}
+                si_args = {
+                    "supplierName": body.get("supplier", {}).get("name", body.get("supplierName", "Unknown")),
+                    "supplierId": body.get("supplier", {}).get("id"),
+                    "invoiceNumber": body.get("invoiceNumber", ""),
+                    "amountIncludingVat": float(body.get("amount", body.get("amountExcludingVat", 0)) or 0),
+                    "invoiceDate": body.get("invoiceDate", body.get("date", "")),
+                    "description": body.get("description", ""),
+                }
+                if si_args["amountIncludingVat"] > 0 and (si_args.get("supplierId") or si_args["supplierName"] != "Unknown"):
+                    return await _safe_action("register_supplier_invoice", ctx.deps.client, si_args, 3000)
             return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
     return await _safe_action("generic_api_call", ctx.deps.client, args_dict, 4000)
 
