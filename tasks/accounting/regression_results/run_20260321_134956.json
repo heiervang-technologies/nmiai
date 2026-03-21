@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260321_134956",
+  "server_url": "http://localhost:8000",
+  "tests": [
+    {
+      "name": "create_product_basic",
+      "status": "PASS",
+      "elapsed": 6.6,
+      "api_calls": 4,
+      "api_errors": 4,
+      "family_detected": "product",
+      "failures": []
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 1,
+    "fail": 0,
+    "error": 0
+  }
+}

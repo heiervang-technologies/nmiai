@@ -586,15 +586,20 @@ async def action_create_order(client: TripletexClient, args: dict) -> dict:
 async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     """Register payment on an invoice. Finds invoice and payment type automatically."""
     invoice_id = args.get("invoiceId")
+    invoice_number = str(args.get("invoiceNumber") or "")
 
     if not invoice_id:
         # Search for the invoice — try to match by customer name if provided
         invoices = await client.get("/invoice", params={
             "invoiceDateFrom": "2020-01-01",
             "invoiceDateTo": "2030-12-31",
-            "count": 50,
+            "count": 200,
         })
         for inv in invoices.get("values", []):
+            inv_number = str(inv.get("invoiceNumber") or inv.get("number") or "")
+            if invoice_number and invoice_number == inv_number:
+                invoice_id = inv["id"]
+                break
             if _invoice_matches(inv, args):
                 invoice_id = inv["id"]
                 break
@@ -629,16 +634,21 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
 async def action_create_credit_note(client: TripletexClient, args: dict) -> dict:
     """Create a credit note for an invoice."""
     invoice_id = args.get("invoiceId")
+    invoice_number = str(args.get("invoiceNumber") or "")
 
     if not invoice_id:
         invoices = await client.get("/invoice", params={
             "invoiceDateFrom": "2020-01-01",
             "invoiceDateTo": "2030-12-31",
-            "count": 50,
+            "count": 200,
         })
         for inv in invoices.get("values", []):
             if inv.get("isCredited"):
                 continue
+            inv_number = str(inv.get("invoiceNumber") or inv.get("number") or "")
+            if invoice_number and invoice_number == inv_number:
+                invoice_id = inv["id"]
+                break
             if _invoice_matches(inv, args):
                 invoice_id = inv["id"]
                 break

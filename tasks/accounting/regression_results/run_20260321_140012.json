@@ -1,0 +1,129 @@
+{
+  "timestamp": "20260321_140012",
+  "server_url": "http://localhost:8000",
+  "tests": [
+    {
+      "name": "create_employee_basic",
+      "status": "PASS",
+      "elapsed": 3.9,
+      "api_calls": 1,
+      "api_errors": 0,
+      "family_detected": "employee",
+      "failures": []
+    },
+    {
+      "name": "create_employee_admin",
+      "status": "PASS",
+      "elapsed": 5.9,
+      "api_calls": 4,
+      "api_errors": 2,
+      "family_detected": "employee",
+      "failures": []
+    },
+    {
+      "name": "create_customer_basic",
+      "status": "PASS",
+      "elapsed": 3.4,
+      "api_calls": 1,
+      "api_errors": 0,
+      "family_detected": "customer",
+      "failures": []
+    },
+    {
+      "name": "register_supplier_invoice",
+      "status": "PASS",
+      "elapsed": 7.8,
+      "api_calls": 4,
+      "api_errors": 0,
+      "family_detected": "supplier",
+      "failures": []
+    },
+    {
+      "name": "create_invoice_basic",
+      "status": "PASS",
+      "elapsed": 10.8,
+      "api_calls": 12,
+      "api_errors": 4,
+      "family_detected": "invoice",
+      "failures": []
+    },
+    {
+      "name": "create_voucher_basic",
+      "status": "PASS",
+      "elapsed": 6.0,
+      "api_calls": 2,
+      "api_errors": 0,
+      "family_detected": "voucher",
+      "failures": []
+    },
+    {
+      "name": "voucher_with_customer",
+      "status": "PASS",
+      "elapsed": 9.3,
+      "api_calls": 3,
+      "api_errors": 0,
+      "family_detected": "voucher",
+      "failures": []
+    },
+    {
+      "name": "travel_expense_basic",
+      "status": "PASS",
+      "elapsed": 5.3,
+      "api_calls": 2,
+      "api_errors": 2,
+      "family_detected": "travel_expense",
+      "failures": []
+    },
+    {
+      "name": "timesheet_basic",
+      "status": "PASS",
+      "elapsed": 5.6,
+      "api_calls": 3,
+      "api_errors": 2,
+      "family_detected": "timesheet",
+      "failures": []
+    },
+    {
+      "name": "salary_basic",
+      "status": "PASS",
+      "elapsed": 5.4,
+      "api_calls": 2,
+      "api_errors": 0,
+      "family_detected": "salary",
+      "failures": []
+    },
+    {
+      "name": "create_project_basic",
+      "status": "PASS",
+      "elapsed": 7.0,
+      "api_calls": 7,
+      "api_errors": 2,
+      "family_detected": "project",
+      "failures": []
+    },
+    {
+      "name": "create_product_basic",
+      "status": "PASS",
+      "elapsed": 10.2,
+      "api_calls": 103,
+      "api_errors": 102,
+      "family_detected": "product",
+      "failures": []
+    },
+    {
+      "name": "create_department_basic",
+      "status": "PASS",
+      "elapsed": 2.9,
+      "api_calls": 1,
+      "api_errors": 0,
+      "family_detected": "department",
+      "failures": []
+    }
+  ],
+  "summary": {
+    "total": 13,
+    "pass": 13,
+    "fail": 0,
+    "error": 0
+  }
+}

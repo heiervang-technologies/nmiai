@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260321_134811",
+  "server_url": "http://localhost:8000",
+  "tests": [
+    {
+      "name": "create_invoice_basic",
+      "status": "PASS",
+      "elapsed": 15.9,
+      "api_calls": 12,
+      "api_errors": 4,
+      "family_detected": "invoice",
+      "failures": []
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 1,
+    "fail": 0,
+    "error": 0
+  }
+}
