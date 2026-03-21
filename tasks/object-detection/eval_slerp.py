@@ -16,8 +16,8 @@ INPUT_SIZE = 1280
 NUM_CLASSES = 356
 
 MODEL_PATH = Path(__file__).parent / "slerp_yolov8x.onnx"
-VAL_IMAGES = Path(__file__).parent / "data-creation/data/stratified_split/val/images"
-VAL_LABELS = Path(__file__).parent / "data-creation/data/stratified_split/val/labels"
+VAL_IMAGES = Path(__file__).parent / "data-creation/data/clean_split/val/images"
+VAL_LABELS = Path(__file__).parent / "data-creation/data/clean_split/val/labels"
 
 
 def letterbox(img, new_shape=INPUT_SIZE):

@@ -10,9 +10,9 @@ from eval_stratified_map import append_csv, append_jsonl, evaluate_submission
 
 
 ROOT = Path(__file__).resolve().parent.parent
-VAL_IMAGES = ROOT / "data-creation" / "data" / "stratified_split" / "val" / "images"
-VAL_LABELS = ROOT / "data-creation" / "data" / "stratified_split" / "val" / "labels"
-DATASET_YAML = ROOT / "data-creation" / "data" / "stratified_split" / "dataset.yaml"
+VAL_IMAGES = ROOT / "data-creation" / "data" / "clean_split" / "val" / "images"
+VAL_LABELS = ROOT / "data-creation" / "data" / "clean_split" / "val" / "labels"
+DATASET_YAML = ROOT / "data-creation" / "data" / "clean_split" / "dataset.yaml"
 OUT_DIR = Path(__file__).resolve().parent / "val_eval"
 
 

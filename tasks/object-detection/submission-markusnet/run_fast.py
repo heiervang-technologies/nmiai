@@ -81,15 +81,17 @@ CLASSIFY_TOKEN_ID = 91037
 CHAT_PREFIX_IDS = [IM_START_TOKEN_ID, USER_TOKEN_ID, NEWLINE_TOKEN_ID, VISION_START_TOKEN_ID]
 CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWLINE_TOKEN_ID]
 
-# Image preprocessing - DYNAMIC sizing to match transformers Qwen2VL processor
+# Image preprocessing for the Qwen vision tower.
+# Keep the dynamic sizing path here, but use the same normalization constants as
+# the working `run.py`/HF processor instead of generic 0.5/0.5 normalization.
 # factor = patch_size * merge_size = 16 * 2 = 32
-# min_pixels = 65536 (from processor config size.shortest_edge)
-# max_pixels = 16777216 (from processor config size.longest_edge)
+# min_pixels = 65536 (kept capped for the fast path)
+# max_pixels = 65536 (kept capped for the fast path)
 QWEN_IMAGE_FACTOR = 32
 QWEN_MIN_PIXELS = 65536  # Match transformers processor exactly (size.shortest_edge)
 QWEN_MAX_PIXELS = 65536  # Cap to prevent huge images on L4 GPU
-QWEN_MEAN = [0.5, 0.5, 0.5]
-QWEN_STD = [0.5, 0.5, 0.5]
+QWEN_MEAN = [0.48145466, 0.4578275, 0.40821073]
+QWEN_STD = [0.26862954, 0.26130258, 0.27577711]
 
 # ROPE config
 ROPE_THETA = 10000000

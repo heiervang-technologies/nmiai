@@ -18,9 +18,9 @@ from export_nf4 import GROUP_SIZE, quantize_tensor_nf4
 
 ROOT = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
-VAL_IMAGES = ROOT / "data-creation" / "data" / "stratified_split" / "val" / "images"
-VAL_LABELS = ROOT / "data-creation" / "data" / "stratified_split" / "val" / "labels"
-DATASET_YAML = ROOT / "data-creation" / "data" / "stratified_split" / "dataset.yaml"
+VAL_IMAGES = ROOT / "data-creation" / "data" / "clean_split" / "val" / "images"
+VAL_LABELS = ROOT / "data-creation" / "data" / "clean_split" / "val" / "labels"
+DATASET_YAML = ROOT / "data-creation" / "data" / "clean_split" / "dataset.yaml"
 WATCH_DIRS = [HERE / "training_output", HERE / "training_output_multitask"]
 OUT_DIR = HERE / "val_watch"
 MARKUSNET_TEMPLATE = ROOT / "submission-markusnet"

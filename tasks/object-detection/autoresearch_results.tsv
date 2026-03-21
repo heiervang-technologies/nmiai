@@ -1,0 +1,1 @@
+timestamp	experiment_id	model	train_data	eval_data	leakage_status	combined_score	detection_map50	classification_map50	server_score	runtime_sec	compute_hours	submissions_used	submission_ready	status	description

@@ -37,21 +37,21 @@ print = functools.partial(print, flush=True)
 # === CONFIG ===
 PRUNED_DIR = Path(__file__).parent / "pruned"
 COMP_SAMPLES = Path(__file__).parent / "cached_dataset" / "samples.json"
-VAL_DIR = Path(__file__).parent.parent / "data-creation" / "data" / "stratified_split" / "val"
+VAL_DIR = Path(__file__).parent.parent / "data-creation" / "data" / "clean_split" / "val"
 OUTPUT_DIR = Path(__file__).parent / "lightning_output"
-CHECKPOINT = Path(__file__).parent / "training_output" / "best" / "best.pt"
+CHECKPOINT = Path(__file__).parent / "training_output_multitask" / "best" / "best.pt"
 
 NUM_CLASSES = 356
-BATCH_SIZE = 8
+BATCH_SIZE = 2
 LR = 5e-5
-EPOCHS = 8
-WARMUP_STEPS = 200
+EPOCHS = 3
+WARMUP_STEPS = 100
 LOG_EVERY = 10
 SAVE_EVERY = 500
-MAX_HOURS = 4.0
+MAX_HOURS = 2.0
 
 # LayerSkip dropout schedule: p(l) = p_max * (l / L)^exponent
-P_MAX = 0.5       # Max dropout probability (for deepest layer)
+P_MAX = 0.2       # Conservative dropout (0.5 was too aggressive/unstable)
 EXPONENT = 2.0    # Controls curve shape (2 = quadratic, more aggressive on deep layers)
 NUM_TEXT_LAYERS = 12  # In our pruned model
 
@@ -300,9 +300,11 @@ def train():
         ckpt = torch.load(CHECKPOINT, map_location=device, weights_only=False)
         model.load_state_dict(ckpt["model_state"])
         cls_head.load_state_dict(ckpt["cls_head_state"])
-        print(f"Loaded (acc={ckpt.get('accuracy', 0):.3f})")
+        acc = ckpt.get('accuracy', ckpt.get('val_acc', 0))
+        print(f"Loaded (acc={acc:.3f})")
 
     model = model.to(device)
+    model.gradient_checkpointing_enable()
 
     # Wrap layers with progressive dropout
     print("\nApplying progressive layer dropout:")

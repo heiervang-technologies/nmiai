@@ -995,13 +995,22 @@ class MarkusNet(nn.Module):
     def _preprocess_image(self, pil_img, device):
         """
         Preprocess a PIL image into pixel_values patches for the vision encoder.
-        Mimics the Qwen3.5 processor behavior.
+        Uses letterbox padding to preserve aspect ratio.
 
         Returns: (pixel_values tensor, (t, h_patches, w_patches) tuple)
         """
-        # Resize to standard size (448x448 produces 28x28 patches with patch_size=16)
         target_size = QWEN_IMAGE_SIZE
-        img = pil_img.convert("RGB").resize((target_size, target_size), Image.BICUBIC)
+        img = pil_img.convert("RGB")
+        orig_w, orig_h = img.size
+        scale = min(target_size / orig_h, target_size / orig_w)
+        new_w = int(round(orig_w * scale))
+        new_h = int(round(orig_h * scale))
+        img = img.resize((new_w, new_h), Image.BICUBIC)
+        padded = Image.new("RGB", (target_size, target_size), (128, 128, 128))
+        paste_x = (target_size - new_w) // 2
+        paste_y = (target_size - new_h) // 2
+        padded.paste(img, (paste_x, paste_y))
+        img = padded
 
         # Convert to tensor and normalize
         img_np = np.array(img, dtype=np.float32) / 255.0
@@ -1012,7 +1021,7 @@ class MarkusNet(nn.Module):
 
         # Create patches: temporal_patch=2 means we need 2 frames
         # For a single image, Qwen duplicates it to make 2 temporal frames
-        # Each frame is 448x448, giving 28x28 = 784 spatial patches
+        # Each frame is 448x448 after padding, giving 28x28 = 784 spatial patches
         h_patches = target_size // VIS_PATCH_SIZE  # 28
         w_patches = target_size // VIS_PATCH_SIZE  # 28
 

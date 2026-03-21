@@ -1,5 +1,5 @@
 """
-Validate models against the stratified held-out validation set.
+Validate models against the clean held-out validation set.
 
 Evaluates:
 1. DINOv2 + linear probe classification accuracy (using GT boxes)
@@ -29,7 +29,7 @@ from timm.data import create_transform, resolve_data_config
 
 # Paths
 SCRIPT_DIR = Path(__file__).parent
-VAL_ROOT = SCRIPT_DIR.parent / "data-creation" / "data" / "stratified_split" / "val"
+VAL_ROOT = SCRIPT_DIR.parent / "data-creation" / "data" / "clean_split" / "val"
 VAL_IMAGES = VAL_ROOT / "images"
 VAL_LABELS = VAL_ROOT / "labels"
 YOLO_DIR = SCRIPT_DIR.parent / "titan-models"

@@ -56,7 +56,7 @@ COMP_DATA = Path(__file__).parent / "cached_dataset"
 COMP_SAMPLES = COMP_DATA / "samples.json"
 COCO_DIR = Path(__file__).parent / "external_datasets" / "coco_minitrain"
 COCO_TRAIN2017 = Path("/data/coco/train2017")  # Override via --coco-dir
-VAL_DIR = Path(__file__).parent.parent / "data-creation" / "data" / "stratified_split" / "val"
+VAL_DIR = Path(__file__).parent.parent / "data-creation" / "data" / "clean_split" / "val"
 CHECKPOINT_DIR = Path(__file__).parent / "checkpoints_overnight"
 
 # === STAGE CONFIGS ===
