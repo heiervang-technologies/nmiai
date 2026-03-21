@@ -31,7 +31,7 @@ LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 class FileAttachment(BaseModel):
     filename: str
-    content_base64: str
+    content_base64: str = ""
     mime_type: str
 
 
@@ -56,7 +56,7 @@ def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float, pl
     entry = {
         "timestamp": ts,
         "prompt": req.prompt,
-        "files": [{"filename": f.filename, "mime_type": f.mime_type} for f in req.files],
+        "files": [{"filename": f.filename, "mime_type": f.mime_type, "content_len": len(f.content_base64)} for f in req.files],
         "base_url": req.tripletex_credentials.base_url,
         "plan": plan,
         "result": result,

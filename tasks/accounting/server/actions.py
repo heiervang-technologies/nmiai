@@ -171,14 +171,48 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_customer(client: TripletexClient, args: dict) -> dict:
-    """Create a customer."""
+    """Create a customer with address."""
     body = {"name": args["name"]}
     for field in ["email", "phoneNumber", "organizationNumber", "isPrivateIndividual"]:
         if args.get(field) is not None:
             body[field] = args[field]
-    if args.get("postalAddress"):
-        body["postalAddress"] = args["postalAddress"]
-    return await client.post("/customer", json=body)
+
+    # Build postal address from either dict or individual fields
+    address = args.get("postalAddress", {})
+    if not address:
+        address = {}
+        if args.get("addressLine1"):
+            address["addressLine1"] = args["addressLine1"]
+        if args.get("postalCode"):
+            address["postalCode"] = args["postalCode"]
+        if args.get("city"):
+            address["city"] = args["city"]
+    if address:
+        body["postalAddress"] = address
+
+    result = await client.post("/customer", json=body)
+    customer = result.get("value", result)
+    customer_id = customer.get("id")
+
+    # If address was provided, verify it was set by doing a PUT
+    if customer_id and address:
+        try:
+            cust_data = await client.get(f"/customer/{customer_id}")
+            cust_obj = cust_data.get("value", cust_data)
+            if cust_obj.get("postalAddress"):
+                addr = cust_obj["postalAddress"]
+                needs_update = False
+                for k, v in address.items():
+                    if addr.get(k) != v:
+                        addr[k] = v
+                        needs_update = True
+                if needs_update:
+                    cust_obj["postalAddress"] = addr
+                    result = await client.put(f"/customer/{customer_id}", json=cust_obj)
+        except Exception as e:
+            log.warning(f"Customer address update failed: {e}")
+
+    return result
 
 
 async def action_create_supplier(client: TripletexClient, args: dict) -> dict:
