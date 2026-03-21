@@ -694,25 +694,36 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
         except Exception:
             pass
 
-        # If not found, create via /project/projectActivity
-        if not activity_id and project_id:
+        # If not found, create activity
+        if not activity_id:
+            # Try /activity directly first (simpler, works without project)
             try:
-                act_body = {
-                    "project": {"id": project_id},
-                    "activity": {"name": args["activityName"]},
-                    "startDate": args.get("date", TODAY),
-                }
-                act_result = await client.post("/project/projectActivity", json=act_body)
-                act_val = act_result.get("value", {})
-                activity_id = act_val.get("activity", {}).get("id") or act_val.get("id")
-            except Exception as e:
-                log.warning(f"Failed to create project activity: {e}")
-                # Fallback: try /activity directly
-                try:
-                    act_result = await client.post("/activity", json={"name": args["activityName"]})
-                    activity_id = act_result.get("value", {}).get("id")
-                except Exception:
-                    pass
+                act_result = await client.post("/activity", json={"name": args["activityName"]})
+                activity_id = act_result.get("value", {}).get("id")
+            except Exception as e1:
+                log.warning(f"Failed to create activity directly: {e1}")
+                # Fallback: try /project/projectActivity
+                if project_id:
+                    try:
+                        act_body = {
+                            "project": {"id": project_id},
+                            "activity": {"name": args["activityName"]},
+                            "startDate": args.get("date", TODAY),
+                        }
+                        act_result = await client.post("/project/projectActivity", json=act_body)
+                        act_val = act_result.get("value", {})
+                        activity_id = act_val.get("activity", {}).get("id") or act_val.get("id")
+                    except Exception as e2:
+                        log.warning(f"Failed to create project activity: {e2}")
+
+        # If still no activity, use first available
+        if not activity_id:
+            try:
+                activities = await client.get("/activity", params={"count": 1})
+                if activities.get("values"):
+                    activity_id = activities["values"][0]["id"]
+            except Exception:
+                pass
 
     # Register hours via /timesheet/entry
     entry_body = {
