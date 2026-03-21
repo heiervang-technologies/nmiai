@@ -1,0 +1,14 @@
+{
+  "input": "tasks/accounting/dashboard_scores.tsv",
+  "x": {
+    "column": "api_errors",
+    "direction": "min"
+  },
+  "y": {
+    "column": "dashboard_score",
+    "direction": "max"
+  },
+  "frontier": [],
+  "progress": [],
+  "points_considered": 0
+}

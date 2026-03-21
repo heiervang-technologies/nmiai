@@ -1,0 +1,97 @@
+{
+  "points": [
+    {
+      "label": "R1",
+      "cv_wkl": 0.149,
+      "weighted_score": 62.3,
+      "regime": "moderate",
+      "pipeline_change": "Hand-tuned Dirichlet priors, 50q full coverage"
+    },
+    {
+      "label": "R5",
+      "cv_wkl": 0.119,
+      "weighted_score": 91.3,
+      "regime": "moderate",
+      "pipeline_change": "Empirical bucket priors, minimal obs"
+    },
+    {
+      "label": "R6",
+      "cv_wkl": 0.104,
+      "weighted_score": 78.0,
+      "regime": "prosperous",
+      "pipeline_change": "HistGBT hybrid (regressed)"
+    },
+    {
+      "label": "R7",
+      "cv_wkl": 0.104,
+      "weighted_score": 84.9,
+      "regime": "moderate",
+      "pipeline_change": "Recursive conv model"
+    },
+    {
+      "label": "R8",
+      "cv_wkl": 0.08,
+      "weighted_score": 90.7,
+      "regime": "harsh",
+      "pipeline_change": "55/45 blend regime+neighborhood"
+    },
+    {
+      "label": "R9",
+      "cv_wkl": 0.1,
+      "weighted_score": 129.6,
+      "regime": "moderate",
+      "pipeline_change": "Temp-scaled bucket priors, NO obs"
+    },
+    {
+      "label": "R10",
+      "cv_wkl": 0.096,
+      "weighted_score": 91.1,
+      "regime": "harsh",
+      "pipeline_change": "Smooth predictor, wasted 50q"
+    },
+    {
+      "label": "R11",
+      "cv_wkl": 0.089,
+      "weighted_score": 127.5,
+      "regime": "prosperous",
+      "pipeline_change": "Template predictor + 5 regime obs"
+    },
+    {
+      "label": "R12",
+      "cv_wkl": 0.085,
+      "weighted_score": 75.0,
+      "regime": "prosperous",
+      "pipeline_change": "Template predictor no obs (prosperous round)"
+    },
+    {
+      "label": "R13",
+      "cv_wkl": 0.08,
+      "weighted_score": 165.8,
+      "regime": "moderate",
+      "pipeline_change": "Blitz 50q (10/seed hottest vp) + bucket priors + tau=2"
+    },
+    {
+      "label": "R14",
+      "cv_wkl": 0.07,
+      "weighted_score": 156.4,
+      "regime": "prosperous",
+      "pipeline_change": "Regime predictor + blitz + tau=10"
+    },
+    {
+      "label": "R15",
+      "cv_wkl": 0.058,
+      "weighted_score": 184.2,
+      "regime": "prosperous",
+      "pipeline_change": "Bayesian regime detection + structural zeros + tau=10 + floor 1e-6"
+    }
+  ],
+  "frontier": [
+    {
+      "label": "R15",
+      "cv_wkl": 0.058,
+      "weighted_score": 184.2,
+      "regime": "prosperous",
+      "pipeline_change": "Bayesian regime detection + structural zeros + tau=10 + floor 1e-6"
+    }
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "points": [
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T12:15:00+00:00",
+      "mAP50": 0.81354,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 1",
+      "mAP50_95": 0.59383
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T12:30:00+00:00",
+      "mAP50": 0.82022,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 2",
+      "mAP50_95": 0.60305
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T12:45:00+00:00",
+      "mAP50": 0.80609,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 3",
+      "mAP50_95": 0.59895
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T13:00:00+00:00",
+      "mAP50": 0.81294,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 4",
+      "mAP50_95": 0.60606
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T13:15:00+00:00",
+      "mAP50": 0.82888,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 5",
+      "mAP50_95": 0.61875
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T13:30:00+00:00",
+      "mAP50": 0.81711,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 6",
+      "mAP50_95": 0.61121
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T13:45:00+00:00",
+      "mAP50": 0.83348,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 7",
+      "mAP50_95": 0.63015
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T14:00:00+00:00",
+      "mAP50": 0.83045,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 8",
+      "mAP50_95": 0.63014
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T14:15:00+00:00",
+      "mAP50": 0.85448,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 9",
+      "mAP50_95": 0.65576
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T14:30:00+00:00",
+      "mAP50": 0.8622,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 10",
+      "mAP50_95": 0.65992
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T14:45:00+00:00",
+      "mAP50": 0.85989,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 11",
+      "mAP50_95": 0.66052
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T15:00:00+00:00",
+      "mAP50": 0.85419,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 12",
+      "mAP50_95": 0.66682
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T15:15:00+00:00",
+      "mAP50": 0.87417,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 13",
+      "mAP50_95": 0.6815
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T15:30:00+00:00",
+      "mAP50": 0.87975,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 14",
+      "mAP50_95": 0.69058
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T15:45:00+00:00",
+      "mAP50": 0.88064,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 15",
+      "mAP50_95": 0.69622
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T16:00:00+00:00",
+      "mAP50": 0.88423,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 16",
+      "mAP50_95": 0.70239
+    },
+    {
+      "label": "yolov8x_v6_clean",
+      "time": "2026-03-21T16:00:00+00:00",
+      "mAP50": 0.966,
+      "eval_set": "clean_split_50 (ZERO leakage)",
+      "trust": "trusted",
+      "notes": "BEST CLEAN METRIC. Verified zero overlap.",
+      "mAP50_95": 0.878
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T16:15:00+00:00",
+      "mAP50": 0.89547,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 17",
+      "mAP50_95": 0.71342
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T16:30:00+00:00",
+      "mAP50": 0.896,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 18",
+      "mAP50_95": 0.71799
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T16:45:00+00:00",
+      "mAP50": 0.89402,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 19",
+      "mAP50_95": 0.7181
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T17:00:00+00:00",
+      "mAP50": 0.90314,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 20",
+      "mAP50_95": 0.73287
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T17:15:00+00:00",
+      "mAP50": 0.90641,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 21",
+      "mAP50_95": 0.73716
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T17:30:00+00:00",
+      "mAP50": 0.9035,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 22",
+      "mAP50_95": 0.73764
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T17:45:00+00:00",
+      "mAP50": 0.90803,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 23",
+      "mAP50_95": 0.74234
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T18:00:00+00:00",
+      "mAP50": 0.91962,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 24",
+      "mAP50_95": 0.75034
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T18:15:00+00:00",
+      "mAP50": 0.91334,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 25",
+      "mAP50_95": 0.75457
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T18:30:00+00:00",
+      "mAP50": 0.92496,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 26",
+      "mAP50_95": 0.76598
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T18:45:00+00:00",
+      "mAP50": 0.92117,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 27",
+      "mAP50_95": 0.76368
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T19:00:00+00:00",
+      "mAP50": 0.92727,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 28",
+      "mAP50_95": 0.77273
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T19:15:00+00:00",
+      "mAP50": 0.92034,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 29",
+      "mAP50_95": 0.76947
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T19:30:00+00:00",
+      "mAP50": 0.92712,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 30",
+      "mAP50_95": 0.78097
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T19:45:00+00:00",
+      "mAP50": 0.93269,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 31",
+      "mAP50_95": 0.78272
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T20:00:00+00:00",
+      "mAP50": 0.9331,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 32",
+      "mAP50_95": 0.78596
+    },
+    {
+      "label": "yolov8x_v5",
+      "time": "2026-03-21T20:15:00+00:00",
+      "mAP50": 0.93372,
+      "eval_set": "v5_val_50 (LEAKED 60%)",
+      "trust": "leaked",
+      "notes": "V5 epoch 33",
+      "mAP50_95": 0.79177
+    }
+  ],
+  "frontier": [
+    {
+      "label": "yolov8x_v6_clean",
+      "time": "2026-03-21T16:00:00+00:00",
+      "mAP50": 0.966,
+      "eval_set": "clean_split_50 (ZERO leakage)",
+      "trust": "trusted",
+      "notes": "BEST CLEAN METRIC. Verified zero overlap.",
+      "mAP50_95": 0.878
+    }
+  ]
+}

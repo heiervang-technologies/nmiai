@@ -173,6 +173,19 @@ python tools/pareto_frontier.py \
   --time timestamp
 ```
 
+Refresh the full accounting artifact set with:
+
+```bash
+python tools/refresh_autoresearch_artifacts.py
+```
+
+This updates:
+
+- `tasks/accounting/analysis/progress.png`
+- `tasks/accounting/analysis/pareto_clean_vs_errors.json`
+- `tasks/accounting/analysis/pareto_clean_vs_submissions.json`
+- `tasks/accounting/analysis/pareto_dashboard_vs_errors.json`
+
 ## Bottom Line
 
 The correct accounting autoresearch loop is:

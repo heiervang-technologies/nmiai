@@ -186,6 +186,17 @@ python tools/pareto_frontier.py \
   --time timestamp
 ```
 
+Refresh the shared OD artifact set with:
+
+```bash
+python tools/refresh_autoresearch_artifacts.py
+```
+
+This updates:
+
+- `tasks/object-detection/analysis/progress.png`
+- `tasks/object-detection/analysis/detection_frontier.json`
+
 ## Bottom Line
 
 The correct object-detection autoresearch loop is:

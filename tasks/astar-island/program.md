@@ -165,6 +165,17 @@ python tools/pareto_frontier.py \
   --time timestamp
 ```
 
+Refresh the shared Astar artifact set with:
+
+```bash
+python tools/refresh_autoresearch_artifacts.py
+```
+
+This updates:
+
+- `tasks/astar-island/analysis/progress.png`
+- `tasks/astar-island/analysis/cv_vs_live_frontier.json`
+
 ## Bottom Line
 
 The correct astar autoresearch loop is:
