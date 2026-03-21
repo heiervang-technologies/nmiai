@@ -477,6 +477,30 @@ async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs)
         "/department": "Use create_department tool instead",
         "/company/salesmodules": "Module activation is handled automatically by typed tools (create_project, register_timesheet)",
     }
+    # Fix wrong activity endpoint: /project/{id}/activity -> create activity + link to project
+    import re
+    project_activity_match = re.match(r"/project/(\d+)/activity", path)
+    if project_activity_match:
+        project_id = int(project_activity_match.group(1))
+        args_dict = args.model_dump(exclude_none=True)
+        body = args_dict.get("body", {})
+        body.setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY")
+        # Step 1: Create the activity
+        create_args = {"method": "POST", "path": "/activity", "body": body}
+        result_str = await _safe_action("generic_api_call", ctx.deps.client, create_args, 4000)
+        try:
+            result = json.loads(result_str)
+            activity_id = result.get("value", {}).get("id")
+            if activity_id:
+                # Step 2: Link activity to project
+                link_args = {"method": "POST", "path": "/project/projectActivity", "body": {
+                    "project": {"id": project_id},
+                    "activity": {"id": activity_id},
+                }}
+                await _safe_action("generic_api_call", ctx.deps.client, link_args, 2000)
+        except Exception:
+            pass
+        return result_str
     for pattern, msg in redirects.items():
         if pattern in path:
             return json.dumps({"error": msg, "hint": "Do NOT use generic_api_call for this. Call the typed tool directly."})
