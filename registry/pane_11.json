@@ -1,0 +1,9 @@
+{
+  "pane": "%11",
+  "name": "compute-clerk",
+  "role": "compute-provisioner",
+  "description": "Managing GPU resources: cloud 2xPRO6000 MarkusNet DDP training, local YOLO V5, titan dispatch",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T12:59:11Z",
+  "pid": 1527262
+}

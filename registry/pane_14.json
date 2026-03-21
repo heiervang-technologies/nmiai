@@ -1,0 +1,9 @@
+{
+  "pane": "%14",
+  "name": "codex-accounting-fixer",
+  "role": "accounting-sub-agent",
+  "description": "Patching high-impact Tripletex field correctness issues in accounting server from failing logs",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T13:34:17Z",
+  "pid": 2357711
+}

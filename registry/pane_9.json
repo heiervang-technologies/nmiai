@@ -1,0 +1,9 @@
+{
+  "pane": "%9",
+  "name": "master-astar-island",
+  "role": "astar-island-master",
+  "description": "R15 active, SOTA pipeline deployed with Bayesian regime detection + structural zeros + pooled observations. Best 87.9 R13, rank 51. Blitz queries in 10min.",
+  "session": "nmai-astar-island",
+  "registered_at": "2026-03-21T12:58:54Z",
+  "pid": 1519954
+}

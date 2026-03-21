@@ -1,0 +1,9 @@
+{
+  "pane": "%12",
+  "name": "retired-master",
+  "role": "retired",
+  "description": "Retired OD master agent, awaiting compaction and re-briefing",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T12:59:09Z",
+  "pid": 1526436
+}

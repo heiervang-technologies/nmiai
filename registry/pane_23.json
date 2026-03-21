@@ -1,0 +1,9 @@
+{
+  "pane": "%23",
+  "name": "nmai-master",
+  "role": "master-orchestrator",
+  "description": "Resumed after compaction - coordinating competition tasks",
+  "session": "nmai-master",
+  "registered_at": "2026-03-21T12:58:58Z",
+  "pid": 1521553
+}

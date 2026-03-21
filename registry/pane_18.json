@@ -1,0 +1,9 @@
+{
+  "pane": "%18",
+  "name": "vlm-markusnet-lead",
+  "role": "od-sub-agent",
+  "description": "Running MarkusNet full pipeline eval on val set (dtype fix applied, 50/145 images done)",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T13:01:32Z",
+  "pid": 1580948
+}

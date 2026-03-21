@@ -1,0 +1,9 @@
+{
+  "pane": "%15",
+  "name": "auto-research-agent",
+  "role": "od-sub-agent",
+  "description": "Auditing object-detection dataset provenance and building experiment tracker with leakage checks",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T13:05:01Z",
+  "pid": 1661363
+}

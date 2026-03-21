@@ -1,0 +1,9 @@
+{
+  "pane": "%6",
+  "name": "od-orchestrator",
+  "role": "object-detection-lead",
+  "description": "Orchestrating 8 OD agents: V5 YOLO training, MarkusNet ONNX eval, detection sweeps, cloud training, pruning",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T12:59:01Z",
+  "pid": 1523062
+}

@@ -1,0 +1,9 @@
+{
+  "pane": "%8",
+  "name": "master-accounting",
+  "role": "accounting-lead",
+  "description": "Accounting task agent - server live, cloudflared tunnel up, fixing failures, 20 typed tools",
+  "session": "nmai-accounting",
+  "registered_at": "2026-03-21T13:18:03Z",
+  "pid": 1961478
+}

@@ -11,6 +11,31 @@ log = logging.getLogger(__name__)
 TODAY = date.today().isoformat()
 
 
+def _build_project_update_payload(project_obj: dict) -> dict:
+    """Keep only fields that are safe to send back to PUT /project/{id}."""
+    allowed_fields = [
+        "id",
+        "version",
+        "name",
+        "number",
+        "displayName",
+        "description",
+        "projectManager",
+        "department",
+        "mainProject",
+        "startDate",
+        "endDate",
+        "customer",
+        "isClosed",
+        "isReadyForInvoicing",
+        "isInternal",
+        "isOffer",
+        "isFixedPrice",
+        "projectCategory",
+    ]
+    return {field: project_obj[field] for field in allowed_fields if project_obj.get(field) is not None}
+
+
 def _money(value: float | int) -> float:
     """Normalize monetary values to 2 decimals to avoid Tripletex validation drift."""
     return round(float(value), 2)
@@ -647,17 +672,27 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
 
     result = await client.post("/project", json=body)
 
-    # Set fixed price via PUT after creation (fixedPrice is not valid on POST)
+    # Set fixed price via project hourly-rates API. Updating /project directly pulls internal
+    # fields like projectratetypes into the payload and causes validation failures.
     if args.get("fixedPrice") is not None:
         project_id = result.get("value", {}).get("id")
         if project_id:
             try:
                 proj_data = await client.get(f"/project/{project_id}")
-                proj_obj = proj_data.get("value", proj_data)
+                proj_obj = _build_project_update_payload(proj_data.get("value", proj_data))
                 proj_obj["isFixedPrice"] = True
-                proj_obj["fixedPrice"] = float(args["fixedPrice"])
-                proj_obj["fixedprice"] = float(args["fixedPrice"])
-                result = await client.put(f"/project/{project_id}", json=proj_obj)
+                await client.put(f"/project/{project_id}", json=proj_obj)
+
+                hourly_rate_body = {
+                    "startDate": args.get("startDate", TODAY),
+                    "hourlyRateModel": "FIXED_RATE",
+                    "fixedRate": _money(args["fixedPrice"]),
+                }
+                await client.put(
+                    "/project/hourlyRates/updateOrAddHourRates",
+                    json=hourly_rate_body,
+                    params={"ids": project_id},
+                )
             except Exception as e:
                 log.warning(f"Failed to set fixed price on project {project_id}: {e}")
 
@@ -1019,16 +1054,41 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
     # Add per diem if specified
     if expense_id and args.get("perDiemDays") and args.get("perDiemRate"):
         try:
-            # Lookup rate categories to find a valid rateType
+            # Lookup a valid per diem rate type. Deliver fails if rateType.id is missing or if we
+            # accidentally pass a rateCategory id where a rate id is required.
             rate_type_id = None
+            rate_category_id = None
             try:
                 rate_cats = await client.get("/travelExpense/rateCategory", params={"count": 50})
                 for rc in rate_cats.get("values", []):
-                    # Pick first available rate category (usually "Domestic" or similar)
-                    rate_type_id = rc.get("id")
-                    break
-            except Exception:
-                pass
+                    name = (rc.get("name") or "").lower()
+                    if not name or any(token in name for token in ["diet", "per diem", "reise", "travel"]):
+                        rate_category_id = rc.get("id")
+                        break
+                if not rate_category_id and rate_cats.get("values"):
+                    rate_category_id = rate_cats["values"][0].get("id")
+
+                if rate_category_id:
+                    rates = await client.get(
+                        "/travelExpense/rate",
+                        params={
+                            "rateCategoryId": rate_category_id,
+                            "isValidDomestic": True,
+                            "count": 50,
+                        },
+                    )
+                    for rate in rates.get("values", []):
+                        rate_type_id = rate.get("id")
+                        if rate_type_id:
+                            break
+                if not rate_type_id:
+                    rates = await client.get("/travelExpense/rate", params={"count": 50})
+                    for rate in rates.get("values", []):
+                        rate_type_id = rate.get("id")
+                        if rate_type_id:
+                            break
+            except Exception as lookup_error:
+                log.warning(f"Per diem rate lookup failed: {lookup_error}")
 
             per_diem_body = {
                 "travelExpense": {"id": expense_id},
@@ -1037,12 +1097,15 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 "overnightAccommodation": args.get("accommodation", "HOTEL"),
                 "location": args.get("destination", args.get("title", "Norway")),
                 "address": args.get("destination", ""),
+                "countryCode": args.get("countryCode", "NO"),
             }
             if rate_type_id:
                 per_diem_body["rateType"] = {"id": rate_type_id}
+            if rate_category_id:
+                per_diem_body["rateCategory"] = {"id": rate_category_id}
             else:
-                log.warning("No rateType ID found, perDiemCompensation may fail.")
-                
+                log.warning("No per diem rateType ID found, perDiemCompensation may fail.")
+
             await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
         except Exception as e:
             log.warning(f"Per diem creation failed, trying cost fallback: {e}")
@@ -1176,11 +1239,19 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
     else:
         try:
             project_data = await client.get(f"/project/{project_id}")
-            project_obj = project_data.get("value", project_data)
+            project_obj = _build_project_update_payload(project_data.get("value", project_data))
             project_obj["startDate"] = project_obj.get("startDate") or args.get("startDate", TODAY)
             project_obj["isFixedPrice"] = True
-            project_obj["fixedPrice"] = _money(args["fixedPrice"])
             project_result = await client.put(f"/project/{project_id}", json=project_obj)
+            await client.put(
+                "/project/hourlyRates/updateOrAddHourRates",
+                json={
+                    "startDate": args.get("startDate", project_obj.get("startDate") or TODAY),
+                    "hourlyRateModel": "FIXED_RATE",
+                    "fixedRate": _money(args["fixedPrice"]),
+                },
+                params={"ids": project_id},
+            )
         except Exception as e:
             log.warning(f"Could not update existing project {project_id} with fixed price: {e}")
 

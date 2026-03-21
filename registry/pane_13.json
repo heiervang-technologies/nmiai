@@ -1,0 +1,9 @@
+{
+  "pane": "%13",
+  "name": "turbo-pruning-expert",
+  "role": "od-sub-agent",
+  "description": "Lightning LoRA training with P_MAX=0.2 for layer importance scoring, preparing surgical pruning of MarkusNet",
+  "session": "nmai-object-detection",
+  "registered_at": "2026-03-21T12:59:12Z",
+  "pid": 1527819
+}
