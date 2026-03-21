@@ -2253,19 +2253,22 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         if "/project/projectActivity" in path and body and isinstance(body, dict):
             activity = body.get("activity", {})
             if isinstance(activity, dict):
-                # Only keep name and activityType — extra fields cause 500
                 clean_activity = {
                     "name": activity.get("name") or activity.get("displayName") or activity.get("description") or "General",
                     "activityType": activity.get("activityType", "PROJECT_SPECIFIC_ACTIVITY"),
                 }
-                body["activity"] = clean_activity
-            if not body.get("activity", {}).get("name"):
-                body.setdefault("activity", {})["name"] = "General"
-            body.setdefault("activity", {}).setdefault("activityType", "PROJECT_SPECIFIC_ACTIVITY")
-        # Auto-fix missing fields for /activity endpoint
-        if "/activity" in path and body and isinstance(body, dict):
+            else:
+                clean_activity = {"name": "General", "activityType": "PROJECT_SPECIFIC_ACTIVITY"}
+            project_ref = body.get("project", {})
+            # Rebuild body with only allowed fields
+            body = {"project": project_ref, "activity": clean_activity}
+            if args.get("body", {}).get("startDate"):
+                body["startDate"] = args["body"]["startDate"]
+            args["body"] = body
+            log.info(f"Sanitized projectActivity body: {body}")
+        # Auto-fix missing fields for /activity endpoint (NOT /project/projectActivity)
+        if path == "/activity" and body and isinstance(body, dict):
             if "activityType" not in body:
-                # POST /activity only supports GENERAL_ACTIVITY; project-specific must use /project/projectActivity
                 body["activityType"] = "GENERAL_ACTIVITY"
             if "name" not in body or not body["name"]:
                 body["name"] = body.get("description", "Activity")[:100] or "Activity"
