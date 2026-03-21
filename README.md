@@ -18,6 +18,40 @@ We are competing in 3 tasks, each ~33% of the overall score:
 
 Master tracker: [#6](https://github.com/heiervang-technologies/nmiai/issues/6)
 
+## Current Progress
+
+This repo now keeps task-level progress artifacts in version control. Refresh them with:
+
+```bash
+python tools/refresh_autoresearch_artifacts.py
+```
+
+### AI Accounting Agent
+
+- Current tracked score: `65.7/100` with accounting as the main leaderboard gap.
+- The live failure queue is now explicit: `product`, `timesheet`, `employee`, `invoice`, `travel_expense`, `department`, `project`.
+- Main artifacts:
+  - [Priority queue](tasks/accounting/analysis/priority_queue.md)
+  - [Latest log analysis](tasks/accounting/analysis/latest_log_analysis.md)
+  - [Progress plot](tasks/accounting/analysis/progress.png)
+
+### Object Detection
+
+- Trusted end-to-end anchor: private server score `0.9079` (`98.1%` normalized).
+- Best trusted local point in the tracked frontier: `yolov8x_v6_clean` with clean-split `mAP50=0.966` and `mAP50-95=0.878`.
+- Leaked validation curves are still kept visible in the progress plot, but marked as leaked and not decision-grade.
+- Main artifacts:
+  - [Progress plot](tasks/object-detection/analysis/progress.png)
+  - [Detection frontier](tasks/object-detection/analysis/detection_frontier.json)
+
+### Astar Island
+
+- Best tracked Pareto point in the versioned frontier is currently `R15` with `cv_wkl=0.058` and weighted score `184.2`.
+- The live Astar loop is tracked separately by the task lead, but the repo now keeps the offline frontier and score progression in one place.
+- Main artifacts:
+  - [Progress plot](tasks/astar-island/analysis/progress.png)
+  - [CV vs live frontier](tasks/astar-island/analysis/cv_vs_live_frontier.json)
+
 ## Repository Structure
 
 ```
