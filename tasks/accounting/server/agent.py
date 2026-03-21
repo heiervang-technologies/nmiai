@@ -502,11 +502,28 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
 
     user_content = prompt
     if files:
-        file_descriptions = "\n".join(
-            f"- Attached file: {f['filename']} ({f['mime_type']})"
-            for f in files
-        )
-        user_content += f"\n\nAttached files:\n{file_descriptions}"
+        user_content += "\n\n## ATTACHED FILES\n"
+        for f in files:
+            user_content += f"\n### {f['filename']} ({f['mime_type']})\n"
+            # Extract text content from PDFs and CSVs
+            try:
+                import base64
+                raw = base64.b64decode(f.get('content_base64', ''))
+                if f['mime_type'] == 'application/pdf' or f['filename'].endswith('.pdf'):
+                    import fitz
+                    doc = fitz.open(stream=raw, filetype="pdf")
+                    text = "\n".join(page.get_text() for page in doc)
+                    user_content += f"PDF TEXT CONTENT:\n{text[:3000]}\n"
+                elif f['mime_type'] == 'text/csv' or f['filename'].endswith('.csv'):
+                    csv_text = raw.decode('utf-8', errors='replace')
+                    user_content += f"CSV CONTENT:\n{csv_text[:3000]}\n"
+                elif f['mime_type'].startswith('image/'):
+                    user_content += f"(Image file - {len(raw)} bytes)\n"
+                else:
+                    text = raw.decode('utf-8', errors='replace')
+                    user_content += f"TEXT CONTENT:\n{text[:2000]}\n"
+            except Exception as e:
+                user_content += f"(Could not extract content: {e})\n"
 
     deps = AgentDeps(client=api_client)
 
