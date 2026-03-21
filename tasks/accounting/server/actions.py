@@ -2444,6 +2444,7 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 start_date = body.get("startDate") or args.get("body", {}).get("startDate")
                 if start_date:
                     link_body["startDate"] = start_date
+                body = link_body
                 args["body"] = link_body
                 log.info(f"Linking activity {activity_id} to project {project_id}")
             else:
@@ -2544,6 +2545,12 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     for dim_key in [k for k in p if k.startswith("freeAccountingDimension")]:
                         log.info(f"Stripped {dim_key} from bank account {acct_num} posting")
                         del p[dim_key]
+            # Strip invalid fields that LLM adds to voucher body
+            valid_voucher_fields = {"date", "description", "postings", "voucherType", "tempNumber"}
+            invalid = [k for k in body if k not in valid_voucher_fields]
+            for k in invalid:
+                log.warning(f"Stripped invalid voucher field: {k}")
+                del body[k]
         # Try voucher POST with retry on locked-VAT accounts
         if "/ledger/voucher" in path:
             try:
