@@ -1153,7 +1153,10 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
             "amountGross": _money(amount),
             "amountGrossCurrency": _money(amount),
         }
-        if p.get("vatTypeId"):
+        # Some accounts are locked to VAT code 0 — strip/override vatType for them
+        no_vat_accounts = {1500, 1501, 1510, 8060, 8160, 8000, 8001, 3400}
+        acct_num_check = int(account_number) if account_number else (account_obj or {}).get("number", 0)
+        if p.get("vatTypeId") and acct_num_check not in no_vat_accounts:
             posting["vatType"] = {"id": int(p["vatTypeId"])}
         if p.get("description"):
             posting["description"] = p["description"]
