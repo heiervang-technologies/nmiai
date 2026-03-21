@@ -27,6 +27,8 @@ log.info(f"Loaded {len(PLAYBOOKS)} playbooks: {list(PLAYBOOKS.keys())}")
 # Prefer more specific families over broad ones like customer when scores tie.
 # Invoice must beat timesheet because "faktura med 10 timer" is an invoice, not timesheet.
 FAMILY_PRIORITY = {
+    "bank_reconciliation": 99,
+    "ledger_correction": 98,
     "invoice": 95,
     "travel_expense": 85,
     "salary": 80,

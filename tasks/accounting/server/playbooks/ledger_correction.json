@@ -1,0 +1,18 @@
+{
+  "family": "ledger_correction",
+  "keywords": ["erros no livro", "errors in the ledger", "Fehler im Hauptbuch", "erreurs dans le grand livre", "errores en el libro mayor", "feil i hovedboken", "korrigere", "correct", "reversal", "reclassif"],
+  "description": "Find and correct errors in ledger postings",
+  "preflight": ["GET /ledger/voucher to find existing vouchers", "GET /ledger/posting to find postings"],
+  "endpoints": [
+    "GET /ledger/voucher — list vouchers (params: dateFrom, dateTo)",
+    "GET /ledger/posting — list postings (params: dateFrom, dateTo, accountNumberFrom, accountNumberTo)",
+    "POST /ledger/voucher — create corrective voucher"
+  ],
+  "required_fields": [],
+  "common_errors": [
+    "Postings must sum to zero (balanced)",
+    "Use generic_api_call with GET /ledger/voucher or GET /ledger/posting to find errors",
+    "Corrective vouchers should be dated on the last day of the error period"
+  ],
+  "tips": "CRITICAL: The prompt tells you EXACTLY what the errors are (wrong account, duplicate, missing VAT, wrong amount). Parse all errors from the prompt. For EACH error, create ONE corrective voucher using create_voucher. Wrong account: debit correct account, credit wrong account. Duplicate: reverse the duplicate. Missing VAT: add the VAT posting. Wrong amount: post the difference. Use generic_api_call to GET /ledger/voucher?dateFrom=2026-01-01&dateTo=2026-02-28 to verify."
+}

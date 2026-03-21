@@ -1,0 +1,18 @@
+{
+  "family": "bank_reconciliation",
+  "keywords": ["concilia", "reconcil", "bankutskrift", "extracto bancario", "bank statement", "Kontoauszug", "relevé bancaire", "extrato bancário", "avstem"],
+  "description": "Reconcile bank statement CSV with open invoices in Tripletex",
+  "preflight": ["GET /invoice to find open invoices", "Parse CSV for transactions"],
+  "endpoints": [
+    "GET /invoice — find open (unpaid) customer invoices",
+    "PUT /invoice/{id}/:payment — register payment on matched invoice",
+    "GET /invoice/paymentType — get available payment types"
+  ],
+  "required_fields": [],
+  "common_errors": [
+    "CSV file may be empty (content_base64='' from platform) — handle gracefully",
+    "Invoice numbers in bank statement may not match Tripletex invoice IDs — match by amount",
+    "Partial payments: register the partial amount, not the full invoice amount"
+  ],
+  "tips": "IMPORTANT: If CSV file is empty, tell the user you cannot reconcile without bank statement data. Do NOT make up transactions. For matching: GET open invoices first, then for each bank transaction match by amount or reference. Use register_payment for each matched invoice. Incoming payments (positive) = customer invoices. Outgoing (negative) = supplier invoices."
+}

@@ -11,6 +11,21 @@ log = logging.getLogger(__name__)
 TODAY = date.today().isoformat()
 
 
+def _error_text(exc: Exception) -> str:
+    text = str(exc)
+    if hasattr(exc, "response"):
+        try:
+            text = exc.response.text
+        except Exception:
+            pass
+    return text
+
+
+def _error_mentions(exc: Exception, *needles: str) -> bool:
+    text = _error_text(exc).lower()
+    return any(needle.lower() in text for needle in needles)
+
+
 def _build_project_update_payload(project_obj: dict) -> dict:
     """Keep only fields that are safe to send back to PUT /project/{id}."""
     allowed_fields = [
@@ -219,6 +234,110 @@ async def _find_project_id(client: TripletexClient, project_id: int | None = Non
     return None
 
 
+async def _find_existing_product(
+    client: TripletexClient,
+    *,
+    product_name: str | None = None,
+    product_number: str | None = None,
+) -> dict | None:
+    if not product_name and not product_number:
+        return None
+
+    products = await client.get("/product", params={"count": 100})
+    values = products.get("values", [])
+
+    if product_number:
+        wanted_number = str(product_number).strip()
+        for product in values:
+            if str(product.get("number", "")).strip() == wanted_number:
+                return product
+
+    if product_name:
+        wanted_name = product_name.strip().lower()
+        for product in values:
+            if (product.get("name") or "").strip().lower() == wanted_name:
+                return product
+
+    return None
+
+
+async def _set_project_fixed_price(
+    client: TripletexClient,
+    project_id: int,
+    fixed_price: float,
+    *,
+    start_date: str,
+) -> dict | None:
+    proj_data = await client.get(f"/project/{project_id}")
+    proj_obj = _build_project_update_payload(proj_data.get("value", proj_data))
+    proj_obj["isFixedPrice"] = True
+    await client.put(f"/project/{project_id}", json=proj_obj)
+
+    hourly_rates = await client.get("/project/hourlyRates", params={"projectId": project_id})
+    hourly_rate_values = hourly_rates.get("values", [])
+
+    if hourly_rate_values:
+        hourly_rate_id = hourly_rate_values[0].get("id")
+        if hourly_rate_id:
+            hourly_rate_data = await client.get(f"/project/hourlyRates/{hourly_rate_id}")
+            hourly_rate_obj = hourly_rate_data.get("value", hourly_rate_data)
+            hourly_rate_obj["fixedRate"] = _money(fixed_price)
+            hourly_rate_obj.setdefault("startDate", start_date)
+            hourly_rate_obj.setdefault("hourlyRateModel", "TYPE_FIXED_HOURLY_RATE")
+            return await client.put(f"/project/hourlyRates/{hourly_rate_id}", json=hourly_rate_obj)
+
+    return await client.post(
+        "/project/hourlyRates",
+        json={
+            "project": {"id": project_id},
+            "startDate": start_date,
+            "showInProjectOrder": True,
+            "hourlyRateModel": "TYPE_FIXED_HOURLY_RATE",
+            "fixedRate": _money(fixed_price),
+        },
+    )
+
+
+async def _resolve_travel_per_diem_rate(
+    client: TripletexClient,
+    *,
+    country_code: str,
+    is_day_trip: bool,
+    accommodation: str,
+) -> tuple[dict | None, dict | None]:
+    is_domestic = country_code.upper() == "NO"
+    has_accommodation = accommodation.upper() not in {"", "NONE", "NO_ACCOMMODATION"}
+
+    try:
+        category_resp = await client.get(
+            "/travelExpense/rateCategory",
+            params={"type": "PER_DIEM", "count": 50},
+        )
+    except Exception as exc:
+        log.warning(f"Per diem rate category lookup failed: {_error_text(exc)[:200]}")
+        return None, None
+
+    for category in category_resp.get("values", []):
+        params = {
+            "rateCategoryId": category["id"],
+            "type": "PER_DIEM",
+            "isValidDomestic": is_domestic,
+            "isValidDayTrip": is_day_trip,
+            "isValidAccommodation": has_accommodation,
+        }
+        try:
+            rate_resp = await client.get("/travelExpense/rate", params=params)
+        except Exception as exc:
+            log.warning(f"Per diem rate lookup failed for category {category.get('id')}: {_error_text(exc)[:200]}")
+            continue
+
+        values = rate_resp.get("values", [])
+        if values:
+            return category, values[0]
+
+    return None, None
+
+
 async def action_discover_sandbox(client: TripletexClient, args: dict) -> dict:
     """Discover sandbox state: departments, employees, customers, invoices, payment types."""
     result = {}
@@ -367,17 +486,14 @@ async def action_create_supplier(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_product(client: TripletexClient, args: dict) -> dict:
-    """Create a product. Check for duplicates first. Resolve VAT dynamically."""
-    # Check if product already exists by name
-    try:
-        products = await client.get("/product", params={"count": 100})
-        for p in products.get("values", []):
-            if args["name"].lower() == p.get("name", "").lower():
-                return {"value": p, "note": "Product already exists"}
-            if args.get("number") and str(args["number"]) == str(p.get("number", "")):
-                return {"value": p, "note": "Product with this number already exists"}
-    except Exception:
-        pass
+    """Create a product without brute-force VAT retries or duplicate-name loops."""
+    existing = await _find_existing_product(
+        client,
+        product_name=args.get("name"),
+        product_number=args.get("number"),
+    )
+    if existing:
+        return {"value": existing, "note": "Product already exists"}
 
     body = {"name": args["name"]}
     if args.get("number"):
@@ -387,19 +503,37 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
     if args.get("priceIncludingVat") is not None:
         body["priceIncludingVatCurrency"] = float(args["priceIncludingVat"])
 
-    # Resolve VAT type dynamically — smart shortlist, not brute force
+    # Resolve VAT once, then optionally fall back to Tripletex's default VAT handling.
     vat_types = await _get_outgoing_vat_types(client)
     default_vat_id = _resolve_default_vat_id(vat_types, 3)
-    vat_id = _resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id)
-
-    # Try resolved VAT once, then fall back to no vatType (sandbox picks default).
-    # Avoids burning API calls with retry loops — the LLM also retries on failure.
-    body["vatType"] = {"id": int(vat_id)}
+    body["vatType"] = {"id": int(_resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id))}
     try:
         return await client.post("/product", json=body)
-    except Exception:
-        body.pop("vatType", None)
+    except Exception as exc:
+        if _error_mentions(exc, "already exists", "eksisterer allerede", "duplicate"):
+            existing = await _find_existing_product(
+                client,
+                product_name=args.get("name"),
+                product_number=args.get("number"),
+            )
+            if existing:
+                return {"value": existing, "note": "Product already exists"}
+        if not _error_mentions(exc, "vat", "mva"):
+            raise
+
+    body.pop("vatType", None)
+    try:
         return await client.post("/product", json=body)
+    except Exception as exc:
+        if _error_mentions(exc, "already exists", "eksisterer allerede", "duplicate"):
+            existing = await _find_existing_product(
+                client,
+                product_name=args.get("name"),
+                product_number=args.get("number"),
+            )
+            if existing:
+                return {"value": existing, "note": "Product already exists"}
+        raise
 
 
 async def action_create_department(client: TripletexClient, args: dict) -> dict:
@@ -503,52 +637,66 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
     if not customer_id:
         return {"error": "Could not find or create customer"}
 
-    # Look up default VAT type (25% utgående) — ID may differ per sandbox
+    # Look up VAT types — build candidate list for retry
     vat_types = await _get_outgoing_vat_types(client)
-    default_vat_id = _resolve_default_vat_id(vat_types, 3)
+    all_vat = vat_types.get("values", [])
+    outgoing_ids = [v["id"] for v in all_vat if "utgående" in v.get("name", "").lower() or "utg" in v.get("name", "").lower()]
+    zero_ids = [v["id"] for v in all_vat if v.get("percentage") == 0]
+    resolved_id = _resolve_default_vat_id(vat_types, 3)
+    vat_candidates = list(dict.fromkeys([resolved_id] + outgoing_ids + zero_ids))[:5]
 
-    # Build order lines
-    order_lines = []
-    for line in args.get("orderLines", []):
-        vat_id = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)
-        ol = {
-            "description": line.get("description", ""),
-            "count": float(line.get("count", 1)),
-            "unitPriceExcludingVatCurrency": float(line.get("unitPrice", line.get("unitPriceExcludingVat", 0))),
-            "vatType": {"id": vat_id},
-        }
-        if line.get("productNumber"):
-            ol["product"] = {"number": str(line["productNumber"])}
-        order_lines.append(ol)
+    def _build_order_lines(vat_id):
+        lines = []
+        for line in args.get("orderLines", []):
+            line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
+            ol = {
+                "description": line.get("description", ""),
+                "count": float(line.get("count", 1)),
+                "unitPriceExcludingVatCurrency": float(line.get("unitPrice", line.get("unitPriceExcludingVat", 0))),
+                "vatType": {"id": line_vat},
+            }
+            if line.get("productNumber"):
+                ol["product"] = {"number": str(line["productNumber"])}
+            lines.append(ol)
+        return lines
 
     invoice_date = args.get("invoiceDate", TODAY)
     due_date = args.get("invoiceDueDate", args.get("dueDate", invoice_date))
 
-    body = {
-        "invoiceDate": invoice_date,
-        "invoiceDueDate": due_date,
-        "orders": [{
-            "customer": {"id": customer_id},
-            "orderDate": invoice_date,
-            "deliveryDate": invoice_date,
-            "orderLines": order_lines,
-        }],
-    }
-
-    try:
-        return await client.post("/invoice", json=body)
-    except Exception as e:
-        error_text = str(e)
-        if hasattr(e, "response"):
-            try:
-                error_text = e.response.text
-            except Exception:
-                pass
-        if "bankkontonummer" in error_text.lower() or "bank account" in error_text.lower():
-            log.warning("Invoice creation failed due to missing bank account, retrying once after company update")
-            await action_setup_bank_account(client, {})
+    # Try with each VAT candidate (max 5 attempts)
+    last_error = None
+    for vat_id in vat_candidates:
+        order_lines = _build_order_lines(vat_id)
+        body = {
+            "invoiceDate": invoice_date,
+            "invoiceDueDate": due_date,
+            "orders": [{
+                "customer": {"id": customer_id},
+                "orderDate": invoice_date,
+                "deliveryDate": invoice_date,
+                "orderLines": order_lines,
+            }],
+        }
+        try:
             return await client.post("/invoice", json=body)
-        raise
+        except Exception as e:
+            last_error = e
+            error_text = str(e)
+            if hasattr(e, "response"):
+                try:
+                    error_text = e.response.text
+                except Exception:
+                    pass
+            if "bankkontonummer" in error_text.lower() or "bank account" in error_text.lower():
+                await action_setup_bank_account(client, {})
+                try:
+                    return await client.post("/invoice", json=body)
+                except Exception:
+                    continue
+            if "mva" not in error_text.lower() and "vat" not in error_text.lower():
+                raise  # Not a VAT error, don't retry with different VAT
+    if last_error:
+        raise last_error
 
 
 async def action_create_order(client: TripletexClient, args: dict) -> dict:

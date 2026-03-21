@@ -15,3 +15,69 @@ timestamp	batch_id	family	model	proxy_clean_rate	api_errors	successful_writes	da
 2026-03-21T13:41:50.177050+00:00	20260321_134144	timesheet	openai/gpt-5.4	0.0000	4	0		0	false	manual_review	timesheet: clean_rate=0.0%, likely_missing=vat_type
 2026-03-21T13:41:50.177056+00:00	20260321_134144	travel_expense	openai/gpt-5.4	0.5000	6	3		0	false	watch	travel_expense: clean_rate=50.0%, likely_missing=delivered_state,rate_type,travel_expense_type_or_travel_details,cost_lines_or_allowances
 2026-03-21T13:41:50.177063+00:00	20260321_134144	voucher	openai/gpt-5.4	0.5000	10	1		0	false	watch	voucher: clean_rate=50.0%, likely_missing=none
+2026-03-21T13:45:23.594850+00:00	20260321_134452	customer	openai/gpt-5.4	0.8000	4	7		0	false	keep	customer: clean_rate=80.0%, likely_missing=customer
+2026-03-21T13:45:23.594866+00:00	20260321_134452	department	openai/gpt-5.4	0.2500	6	1		0	false	manual_review	department: clean_rate=25.0%, likely_missing=department
+2026-03-21T13:45:23.594872+00:00	20260321_134452	employee	openai/gpt-5.4	0.2857	4	2		0	false	manual_review	employee: clean_rate=28.6%, likely_missing=employee
+2026-03-21T13:45:23.594877+00:00	20260321_134452	invoice	openai/gpt-5.4	0.0000	4	0		0	false	manual_review	invoice: clean_rate=0.0%, likely_missing=vat_type
+2026-03-21T13:45:23.594881+00:00	20260321_134452	product	openai/gpt-5.4	0.0000	10	0		0	false	manual_review	product: clean_rate=0.0%, likely_missing=vat_type
+2026-03-21T13:45:23.594885+00:00	20260321_134452	project	openai/gpt-5.4	0.5000	16	3		0	false	watch	project: clean_rate=50.0%, likely_missing=project,activity,rate_type,customer
+2026-03-21T13:45:23.594889+00:00	20260321_134452	salary	openai/gpt-5.4	1.0000	4	5		0	true	keep	salary: clean_rate=100.0%, likely_missing=employee
+2026-03-21T13:45:23.594893+00:00	20260321_134452	supplier	openai/gpt-5.4	0.6667	8	5		0	true	watch	supplier: clean_rate=66.7%, likely_missing=none
+2026-03-21T13:45:23.594897+00:00	20260321_134452	timesheet	openai/gpt-5.4	0.0000	18	1		0	false	manual_review	timesheet: clean_rate=0.0%, likely_missing=activity,vat_type,employee
+2026-03-21T13:45:23.594902+00:00	20260321_134452	travel_expense	openai/gpt-5.4	0.2000	16	4		0	false	manual_review	travel_expense: clean_rate=20.0%, likely_missing=delivered_state,rate_type,project,employee
+2026-03-21T13:45:23.594906+00:00	20260321_134452	voucher	openai/gpt-5.4	0.7500	10	3		0	false	keep	voucher: clean_rate=75.0%, likely_missing=none
+2026-03-21T13:47:58.866332+00:00	20260321_134758	customer	openai/gpt-5.4	0.8333	4	8		0	false	keep	customer: clean_rate=83.3%, blockers=none, likely_missing=customer
+2026-03-21T13:47:58.866351+00:00	20260321_134758	department	openai/gpt-5.4	0.2500	6	1		0	false	manual_review	department: clean_rate=25.0%, blockers=duplicate_identifier, likely_missing=none
+2026-03-21T13:47:58.866359+00:00	20260321_134758	employee	openai/gpt-5.4	0.2222	6	2		0	false	manual_review	employee: clean_rate=22.2%, blockers=email_validation, likely_missing=employee
+2026-03-21T13:47:58.866365+00:00	20260321_134758	invoice	openai/gpt-5.4	0.0000	8	0		0	false	manual_review	invoice: clean_rate=0.0%, blockers=sandbox_valid_vat_type,vat_account_mapping, likely_missing=none
+2026-03-21T13:47:58.866371+00:00	20260321_134758	product	openai/gpt-5.4	0.0000	10	0		0	false	manual_review	product: clean_rate=0.0%, blockers=sandbox_valid_vat_type, likely_missing=none
+2026-03-21T13:47:58.866376+00:00	20260321_134758	project	openai/gpt-5.4	0.5000	16	3		0	false	watch	project: clean_rate=50.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type
+2026-03-21T13:47:58.866383+00:00	20260321_134758	salary	openai/gpt-5.4	1.0000	4	5		0	true	keep	salary: clean_rate=100.0%, blockers=none, likely_missing=employee
+2026-03-21T13:47:58.866389+00:00	20260321_134758	supplier	openai/gpt-5.4	0.7500	8	6		0	true	keep	supplier: clean_rate=75.0%, blockers=none, likely_missing=none
+2026-03-21T13:47:58.866394+00:00	20260321_134758	timesheet	openai/gpt-5.4	0.0000	18	1		0	false	manual_review	timesheet: clean_rate=0.0%, blockers=sandbox_valid_vat_type,vat_account_mapping,activity_type_required, likely_missing=activity,project
+2026-03-21T13:47:58.866400+00:00	20260321_134758	travel_expense	openai/gpt-5.4	0.1667	18	4		0	false	manual_review	travel_expense: clean_rate=16.7%, blockers=employee_time_access,travel_expense_kind,travel_expense_contents_required, likely_missing=delivered_state,rate_type,project,travel_expense_type_or_travel_details
+2026-03-21T13:47:58.866409+00:00	20260321_134758	voucher	openai/gpt-5.4	0.8333	10	5		0	false	keep	voucher: clean_rate=83.3%, blockers=none, likely_missing=none
+2026-03-21T13:48:16.445297+00:00	20260321_134816	customer	openai/gpt-5.4	0.8333	4	8		0	false	keep	customer: clean_rate=83.3%, blockers=none, likely_missing=customer
+2026-03-21T13:48:16.445311+00:00	20260321_134816	department	openai/gpt-5.4	0.2500	6	1		0	false	manual_review	department: clean_rate=25.0%, blockers=duplicate_identifier, likely_missing=none
+2026-03-21T13:48:16.445317+00:00	20260321_134816	employee	openai/gpt-5.4	0.2222	6	2		0	false	manual_review	employee: clean_rate=22.2%, blockers=email_validation, likely_missing=employee
+2026-03-21T13:48:16.445321+00:00	20260321_134816	invoice	openai/gpt-5.4	0.0000	8	0		0	false	manual_review	invoice: clean_rate=0.0%, blockers=sandbox_valid_vat_type,vat_account_mapping, likely_missing=none
+2026-03-21T13:48:16.445326+00:00	20260321_134816	product	openai/gpt-5.4	0.0000	10	0		0	false	manual_review	product: clean_rate=0.0%, blockers=sandbox_valid_vat_type, likely_missing=none
+2026-03-21T13:48:16.445330+00:00	20260321_134816	project	openai/gpt-5.4	0.5000	16	3		0	false	watch	project: clean_rate=50.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type
+2026-03-21T13:48:16.445334+00:00	20260321_134816	salary	openai/gpt-5.4	1.0000	4	6		0	true	keep	salary: clean_rate=100.0%, blockers=none, likely_missing=employee
+2026-03-21T13:48:16.445338+00:00	20260321_134816	supplier	openai/gpt-5.4	0.7500	8	6		0	true	keep	supplier: clean_rate=75.0%, blockers=none, likely_missing=none
+2026-03-21T13:48:16.445342+00:00	20260321_134816	timesheet	openai/gpt-5.4	0.0000	22	1		0	false	manual_review	timesheet: clean_rate=0.0%, blockers=sandbox_valid_vat_type,activity_type_required,vat_account_mapping, likely_missing=activity,project
+2026-03-21T13:48:16.445346+00:00	20260321_134816	travel_expense	openai/gpt-5.4	0.1429	20	4		0	false	manual_review	travel_expense: clean_rate=14.3%, blockers=employee_time_access,travel_expense_kind,travel_expense_contents_required, likely_missing=delivered_state,rate_type,project,travel_expense_type_or_travel_details
+2026-03-21T13:48:16.445351+00:00	20260321_134816	voucher	openai/gpt-5.4	0.8333	10	5		0	false	keep	voucher: clean_rate=83.3%, blockers=none, likely_missing=none
+2026-03-21T14:01:51.168771+00:00	20260321_140149	customer	openai/gpt-5.4	0.9091	4	14		0	false	keep	customer: clean_rate=90.9%, blockers=none, likely_missing=customer
+2026-03-21T14:01:51.168785+00:00	20260321_140149	department	openai/gpt-5.4	0.2727	12	4		0	false	manual_review	department: clean_rate=27.3%, blockers=duplicate_identifier, likely_missing=none
+2026-03-21T14:01:51.168793+00:00	20260321_140149	employee	openai/gpt-5.4	0.1667	14	3		0	false	manual_review	employee: clean_rate=16.7%, blockers=email_validation, likely_missing=employee
+2026-03-21T14:01:51.168800+00:00	20260321_140149	invoice	openai/gpt-5.4	0.0000	30	1		0	false	manual_review	invoice: clean_rate=0.0%, blockers=sandbox_valid_vat_type,vat_account_mapping, likely_missing=none
+2026-03-21T14:01:51.168806+00:00	20260321_140149	product	openai/gpt-5.4	0.0000	250	2		0	false	manual_review	product: clean_rate=0.0%, blockers=sandbox_valid_vat_type, likely_missing=none
+2026-03-21T14:01:51.168812+00:00	20260321_140149	project	openai/gpt-5.4	0.7500	24	10		0	false	keep	project: clean_rate=75.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type
+2026-03-21T14:01:51.168819+00:00	20260321_140149	salary	openai/gpt-5.4	1.0000	4	11		0	true	keep	salary: clean_rate=100.0%, blockers=none, likely_missing=employee
+2026-03-21T14:01:51.168824+00:00	20260321_140149	supplier	openai/gpt-5.4	0.8889	8	11		0	true	keep	supplier: clean_rate=88.9%, blockers=none, likely_missing=none
+2026-03-21T14:01:51.168829+00:00	20260321_140149	timesheet	openai/gpt-5.4	0.0000	40	2		0	false	manual_review	timesheet: clean_rate=0.0%, blockers=sandbox_valid_vat_type,employee_time_access,activity_type_required, likely_missing=activity,project,employee
+2026-03-21T14:01:51.168836+00:00	20260321_140149	travel_expense	openai/gpt-5.4	0.1000	30	4		0	false	manual_review	travel_expense: clean_rate=10.0%, blockers=employee_time_access,travel_expense_kind,travel_expense_contents_required, likely_missing=delivered_state,rate_type,employee,project
+2026-03-21T14:01:51.168844+00:00	20260321_140149	voucher	openai/gpt-5.4	0.9286	10	13		0	false	keep	voucher: clean_rate=92.9%, blockers=none, likely_missing=none
+2026-03-21T14:11:22.908052+00:00	20260321_141106	customer	openai/gpt-5.4	0.8333	14	14		0	true	keep	customer: clean_rate=83.3%, blockers=none, likely_missing=customer
+2026-03-21T14:11:22.908063+00:00	20260321_141106	department	openai/gpt-5.4	0.2727	12	4		0	false	manual_review	department: clean_rate=27.3%, blockers=duplicate_identifier, likely_missing=none
+2026-03-21T14:11:22.908069+00:00	20260321_141106	employee	openai/gpt-5.4	0.2105	14	5		0	true	manual_review	employee: clean_rate=21.1%, blockers=email_validation, likely_missing=employee,department
+2026-03-21T14:11:22.908073+00:00	20260321_141106	invoice	openai/gpt-5.4	0.1250	30	2		0	false	manual_review	invoice: clean_rate=12.5%, blockers=sandbox_valid_vat_type,vat_account_mapping, likely_missing=none
+2026-03-21T14:11:22.908078+00:00	20260321_141106	product	openai/gpt-5.4	0.0667	352	4		0	false	manual_review	product: clean_rate=6.7%, blockers=sandbox_valid_vat_type, likely_missing=none
+2026-03-21T14:11:22.908082+00:00	20260321_141106	project	openai/gpt-5.4	0.7500	24	10		0	false	keep	project: clean_rate=75.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type
+2026-03-21T14:11:22.908087+00:00	20260321_141106	salary	openai/gpt-5.4	1.0000	4	13		0	true	keep	salary: clean_rate=100.0%, blockers=none, likely_missing=employee
+2026-03-21T14:11:22.908091+00:00	20260321_141106	supplier	openai/gpt-5.4	0.8889	8	11		0	true	keep	supplier: clean_rate=88.9%, blockers=none, likely_missing=none
+2026-03-21T14:11:22.908094+00:00	20260321_141106	timesheet	openai/gpt-5.4	0.0714	44	14		0	false	manual_review	timesheet: clean_rate=7.1%, blockers=sandbox_valid_vat_type,employee_time_access,activity_type_required, likely_missing=activity,project,employee,hours
+2026-03-21T14:11:22.908099+00:00	20260321_141106	travel_expense	openai/gpt-5.4	0.1000	30	4		0	false	manual_review	travel_expense: clean_rate=10.0%, blockers=employee_time_access,travel_expense_kind,travel_expense_contents_required, likely_missing=delivered_state,rate_type,employee,project
+2026-03-21T14:11:22.908104+00:00	20260321_141106	voucher	openai/gpt-5.4	0.8824	16	23		0	false	keep	voucher: clean_rate=88.2%, blockers=none, likely_missing=none
+2026-03-21T14:14:53.159393+00:00	20260321_141307	customer	openai/gpt-5.4	0.8333	14	14		0	true	keep	customer: clean_rate=83.3%, blockers=none, likely_missing=customer
+2026-03-21T14:14:53.159403+00:00	20260321_141307	department	openai/gpt-5.4	0.2727	12	4		0	false	manual_review	department: clean_rate=27.3%, blockers=duplicate_identifier, likely_missing=none
+2026-03-21T14:14:53.159410+00:00	20260321_141307	employee	openai/gpt-5.4	0.2500	16	7		0	true	manual_review	employee: clean_rate=25.0%, blockers=email_validation, likely_missing=employee,department
+2026-03-21T14:14:53.159415+00:00	20260321_141307	invoice	openai/gpt-5.4	0.1250	30	2		0	false	manual_review	invoice: clean_rate=12.5%, blockers=sandbox_valid_vat_type,vat_account_mapping, likely_missing=none
+2026-03-21T14:14:53.159421+00:00	20260321_141307	product	openai/gpt-5.4	0.0667	352	4		0	false	manual_review	product: clean_rate=6.7%, blockers=sandbox_valid_vat_type, likely_missing=none
+2026-03-21T14:14:53.159425+00:00	20260321_141307	project	openai/gpt-5.4	0.7500	24	10		0	false	keep	project: clean_rate=75.0%, blockers=project_hourly_rates_endpoint,module_permission_blocked, likely_missing=project,activity,rate_type
+2026-03-21T14:14:53.159431+00:00	20260321_141307	salary	openai/gpt-5.4	1.0000	4	14		0	true	keep	salary: clean_rate=100.0%, blockers=none, likely_missing=employee
+2026-03-21T14:14:53.159435+00:00	20260321_141307	supplier	openai/gpt-5.4	0.8889	8	11		0	true	keep	supplier: clean_rate=88.9%, blockers=none, likely_missing=none
+2026-03-21T14:14:53.159440+00:00	20260321_141307	timesheet	openai/gpt-5.4	0.0714	44	14		0	false	manual_review	timesheet: clean_rate=7.1%, blockers=sandbox_valid_vat_type,employee_time_access,activity_type_required, likely_missing=activity,project,employee,hours
+2026-03-21T14:14:53.159445+00:00	20260321_141307	travel_expense	openai/gpt-5.4	0.1000	30	4		0	false	manual_review	travel_expense: clean_rate=10.0%, blockers=employee_time_access,travel_expense_kind,travel_expense_contents_required, likely_missing=delivered_state,rate_type,employee,project
+2026-03-21T14:14:53.159451+00:00	20260321_141307	voucher	openai/gpt-5.4	0.8889	16	27		0	false	keep	voucher: clean_rate=88.9%, blockers=none, likely_missing=none
