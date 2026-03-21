@@ -38,7 +38,6 @@ HARSH_THRESHOLD = 0.05
 PROSPEROUS_THRESHOLD = 0.20
 
 # Default regime prior weights when no observations available
-# Weighted toward moderate since it's most common (7/13 rounds)
 DEFAULT_REGIME_WEIGHTS = {"harsh": 0.23, "moderate": 0.54, "prosperous": 0.23}
 
 OCEAN_DIST = np.array([1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -94,19 +93,32 @@ def cell_bucket(code, dist, n_ocean, n_civ, coast):
 
 
 def classify_round(round_data):
-    """Classify a round's regime from its ground truth."""
-    rates = []
+    """Classify a round's regime from its ground truth.
+
+    Uses frontier settle rate AND near-civ settle rate to distinguish:
+    - harsh: near-zero growth
+    - moderate: low-moderate growth, low near-civ
+    - growth: moderate frontier but HIGH near-civ (R7, R12 pattern)
+    - prosperous: high growth everywhere
+    """
+    frontier_rates = []
+    near_rates = []
     for sn, sd in round_data.items():
         ig = sd["initial_grid"]
         gt = sd["ground_truth"]
         dist_civ, _, _, _ = compute_features(ig)
         frontier = (dist_civ >= 1) & (dist_civ <= 5) & (ig != OCEAN) & (ig != MOUNTAIN)
+        near = (dist_civ >= 0.5) & (dist_civ <= 2.5) & (ig != OCEAN) & (ig != MOUNTAIN)
         if frontier.any():
-            rates.append(gt[frontier, 1].mean())
-    rate = np.mean(rates) if rates else 0.1
-    if rate < HARSH_THRESHOLD:
+            frontier_rates.append(gt[frontier, 1].mean())
+        if near.any():
+            near_rates.append(gt[near, 1].mean())
+    f_rate = np.mean(frontier_rates) if frontier_rates else 0.1
+    n_rate = np.mean(near_rates) if near_rates else 0.1
+
+    if f_rate < HARSH_THRESHOLD:
         return "harsh"
-    elif rate > PROSPEROUS_THRESHOLD:
+    elif f_rate > PROSPEROUS_THRESHOLD:
         return "prosperous"
     return "moderate"
 
@@ -339,11 +351,7 @@ def detect_regime_from_observations(ig, observations):
         return DEFAULT_REGIME_WEIGHTS.copy()
 
     # Bayesian posterior: P(regime|obs) ∝ P(obs|regime) * P(regime)
-    log_prior = {
-        "harsh": np.log(DEFAULT_REGIME_WEIGHTS["harsh"]),
-        "moderate": np.log(DEFAULT_REGIME_WEIGHTS["moderate"]),
-        "prosperous": np.log(DEFAULT_REGIME_WEIGHTS["prosperous"]),
-    }
+    log_prior = {r: np.log(DEFAULT_REGIME_WEIGHTS[r]) for r in DEFAULT_REGIME_WEIGHTS}
 
     log_posterior = {r: log_likelihoods[r] + log_prior[r] for r in log_likelihoods}
 
