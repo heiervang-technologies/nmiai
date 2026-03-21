@@ -1,13 +1,70 @@
-"""Evaluate dense retrieval predictions on the stratified validation split."""
+"""Evaluate a submission against the stratified validation split.
+
+Supports both zipped submissions and unpacked submission directories. The
+output includes detection/classification mAP@0.5, runtime, and optional JSONL/
+CSV append modes so the same evaluator can back leaderboards and checkpoint
+watchers.
+"""
 
 import argparse
+import csv
 import json
+import subprocess
 import tempfile
+import time
 import zipfile
 from collections import defaultdict
 from pathlib import Path
-
 import yaml
+
+
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png"}
+
+
+def discover_images(images_dir: Path) -> list[Path]:
+    return sorted(
+        [path for path in images_dir.iterdir() if path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES],
+        key=lambda path: path.name,
+    )
+
+
+def build_image_lookup(image_paths: list[Path]) -> dict[object, str]:
+    lookup = {}
+    for path in image_paths:
+        lookup[path.name] = path.name
+        lookup[path.stem] = path.name
+        stem = path.stem
+        if stem.startswith("img_"):
+            suffix = stem.removeprefix("img_")
+            if suffix.isdigit():
+                lookup[int(suffix)] = path.name
+                lookup[suffix] = path.name
+    return lookup
+
+
+def normalize_image_id(raw_image_id, image_lookup: dict[object, str]) -> str:
+    if raw_image_id in image_lookup:
+        return image_lookup[raw_image_id]
+    if isinstance(raw_image_id, str):
+        stripped = raw_image_id.strip()
+        if stripped in image_lookup:
+            return image_lookup[stripped]
+        if stripped.isdigit():
+            numeric = int(stripped)
+            if numeric in image_lookup:
+                return image_lookup[numeric]
+            padded = f"img_{numeric:05d}"
+            if padded in image_lookup:
+                return image_lookup[padded]
+        return stripped
+    if isinstance(raw_image_id, (int, float)):
+        numeric = int(raw_image_id)
+        if numeric in image_lookup:
+            return image_lookup[numeric]
+        padded = f"img_{numeric:05d}"
+        if padded in image_lookup:
+            return image_lookup[padded]
+    return str(raw_image_id)
 
 
 def load_names(dataset_yaml: Path) -> dict[int, str]:
@@ -138,42 +195,98 @@ def evaluate(predictions_by_image, ground_truth_by_image, category_ids, class_aw
     return mean_ap, ap_by_class, matched_tp, matched_fp, positives
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--zip", type=Path, required=True)
-    parser.add_argument("--images", type=Path, required=True)
-    parser.add_argument("--labels", type=Path, required=True)
-    parser.add_argument("--dataset-yaml", type=Path, required=True)
-    parser.add_argument("--output-json", type=Path, default=Path("/tmp/stratified_eval_predictions.json"))
-    args = parser.parse_args()
+def run_submission(submission_dir: Path, images_dir: Path, output_json: Path, timeout: int | None):
+    output_json.parent.mkdir(parents=True, exist_ok=True)
+    command = [
+        "python",
+        str(submission_dir / "run.py"),
+        "--input",
+        str(images_dir),
+        "--output",
+        str(output_json),
+    ]
+    started = time.perf_counter()
+    subprocess.run(command, check=True, timeout=timeout)
+    return time.perf_counter() - started
 
-    names = load_names(args.dataset_yaml)
-    image_paths = sorted(args.images.glob("*.jpg"))
-    label_paths = {path.stem: path for path in args.labels.glob("*.txt")}
+
+def append_jsonl(path: Path, record: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+def append_csv(path: Path, record: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "timestamp_utc",
+        "model_name",
+        "submission_type",
+        "submission_path",
+        "image_dir",
+        "label_dir",
+        "dataset_yaml",
+        "usable_images",
+        "image_files",
+        "label_files",
+        "missing_images_for_labels",
+        "detection_map50",
+        "classification_map50",
+        "combined_score",
+        "detection_tp",
+        "detection_fp",
+        "classification_tp",
+        "classification_fp",
+        "gt_boxes",
+        "num_categories",
+        "inference_seconds",
+        "output_json",
+    ]
+    row = {key: record.get(key, "") for key in fieldnames}
+    row["missing_images_for_labels"] = json.dumps(record.get("missing_images_for_labels", []), ensure_ascii=False)
+    write_header = not path.exists()
+    with path.open("a", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        if write_header:
+            writer.writeheader()
+        writer.writerow(row)
+
+
+def evaluate_submission(
+    submission_path: Path,
+    submission_type: str,
+    images_dir: Path,
+    labels_dir: Path,
+    dataset_yaml: Path,
+    output_json: Path,
+    model_name: str | None = None,
+    timeout: int | None = None,
+    metadata: dict | None = None,
+):
+    names = load_names(dataset_yaml)
+    image_paths = discover_images(images_dir)
+    image_lookup = build_image_lookup(image_paths)
+    label_paths = {path.stem: path for path in labels_dir.glob("*.txt")}
     usable_images = [path for path in image_paths if path.stem in label_paths]
 
-    with tempfile.TemporaryDirectory(prefix="dense_eval_") as tmpdir:
-        extract_dir = Path(tmpdir) / "submission"
-        extract_dir.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(args.zip) as zf:
-            zf.extractall(extract_dir)
+    if submission_type == "zip":
+        with tempfile.TemporaryDirectory(prefix="dense_eval_") as tmpdir:
+            extract_dir = Path(tmpdir) / "submission"
+            extract_dir.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(submission_path) as zf:
+                zf.extractall(extract_dir)
+            inference_seconds = run_submission(extract_dir, images_dir, output_json, timeout=timeout)
+    elif submission_type == "dir":
+        inference_seconds = run_submission(submission_path, images_dir, output_json, timeout=timeout)
+    else:
+        raise ValueError(f"Unsupported submission_type: {submission_type}")
 
-        import subprocess
-        command = [
-            "python",
-            str(extract_dir / "run.py"),
-            "--input",
-            str(args.images),
-            "--output",
-            str(args.output_json),
-        ]
-        subprocess.run(command, check=True)
-
-    predictions_raw = json.loads(args.output_json.read_text())
+    predictions_raw = json.loads(output_json.read_text())
     predictions_by_image = defaultdict(list)
     for pred in predictions_raw:
         x, y, w, h = pred["bbox"]
-        predictions_by_image[pred["image_id"]].append(
+        image_id = normalize_image_id(pred["image_id"], image_lookup)
+        predictions_by_image[image_id].append(
             {
                 "category_id": int(pred["category_id"]),
                 "score": float(pred["score"]),
@@ -207,6 +320,14 @@ def main():
     combined_score = 0.7 * detection_map + 0.3 * classification_map
 
     result = {
+        "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "model_name": model_name or submission_path.stem,
+        "submission_type": submission_type,
+        "submission_path": str(submission_path.resolve()),
+        "image_dir": str(images_dir.resolve()),
+        "label_dir": str(labels_dir.resolve()),
+        "dataset_yaml": str(dataset_yaml.resolve()),
+        "output_json": str(output_json.resolve()),
         "usable_images": len(usable_images),
         "label_files": len(label_paths),
         "image_files": len(image_paths),
@@ -221,7 +342,47 @@ def main():
         "gt_boxes": int(sum(positives.values())),
         "num_categories": len(category_ids),
         "category_names": {int(key): names[int(key)] for key in sorted(category_ids)},
+        "inference_seconds": inference_seconds,
     }
+    if metadata:
+        result["metadata"] = metadata
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    source_group = parser.add_mutually_exclusive_group(required=True)
+    source_group.add_argument("--zip", type=Path)
+    source_group.add_argument("--submission-dir", type=Path)
+    parser.add_argument("--images", type=Path, required=True)
+    parser.add_argument("--labels", type=Path, required=True)
+    parser.add_argument("--dataset-yaml", type=Path, required=True)
+    parser.add_argument("--output-json", type=Path, default=Path("/tmp/stratified_eval_predictions.json"))
+    parser.add_argument("--model-name", type=str)
+    parser.add_argument("--append-jsonl", type=Path)
+    parser.add_argument("--append-csv", type=Path)
+    parser.add_argument("--timeout", type=int)
+    parser.add_argument("--metadata-json", type=str, help="Optional JSON object to attach to the result")
+    args = parser.parse_args()
+
+    submission_path = args.zip or args.submission_dir
+    submission_type = "zip" if args.zip else "dir"
+    metadata = json.loads(args.metadata_json) if args.metadata_json else None
+    result = evaluate_submission(
+        submission_path=submission_path,
+        submission_type=submission_type,
+        images_dir=args.images,
+        labels_dir=args.labels,
+        dataset_yaml=args.dataset_yaml,
+        output_json=args.output_json,
+        model_name=args.model_name,
+        timeout=args.timeout,
+        metadata=metadata,
+    )
+    if args.append_jsonl:
+        append_jsonl(args.append_jsonl, result)
+    if args.append_csv:
+        append_csv(args.append_csv, result)
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
