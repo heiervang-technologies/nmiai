@@ -359,7 +359,7 @@ def classify_boxes(image_bgr, boxes, detector_labels, detector_scores,
         with torch.inference_mode():
             with torch.autocast(device_type=device.type, dtype=torch.float16, enabled=autocast_on):
                 embeddings = dino_model(tensors)
-            embeddings = F.normalize(embeddings.float(), dim=-1)
+            embeddings = embeddings.float()
 
             probe_logits = linear_probe(embeddings)
             probe_prob = F.softmax(probe_logits, dim=-1)
