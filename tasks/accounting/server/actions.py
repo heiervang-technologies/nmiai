@@ -171,15 +171,29 @@ async def _find_customer_id(
 
 
 async def _grant_employee_all_privileges(client: TripletexClient, employee_id: int) -> None:
-    """Grant ALL_PRIVILEGES to employee so they can do travel/timesheet/salary. Free GET+PUT."""
+    """Grant ALL_PRIVILEGES to employee so they can do travel/timesheet/salary."""
+    # Try entitlement template first
     try:
         await client.put(
             "/employee/entitlement/:grantEntitlementsByTemplate",
             params={"employeeId": employee_id, "template": "ALL_PRIVILEGES"},
         )
         log.info(f"Granted ALL_PRIVILEGES to employee {employee_id}")
+        return
     except Exception as e:
-        log.warning(f"Entitlement grant failed (non-fatal): {e}")
+        log.warning(f"Entitlement template failed, trying userType upgrade: {e}")
+
+    # Fallback: upgrade employee to EXTENDED userType (enables travel/timesheet access)
+    try:
+        emp_data = await client.get(f"/employee/{employee_id}")
+        emp = emp_data.get("value", emp_data)
+        if emp.get("userType") != "EXTENDED":
+            emp["userType"] = "EXTENDED"
+            emp["allowInformationRegistration"] = True
+            await client.put(f"/employee/{employee_id}", json=emp)
+            log.info(f"Upgraded employee {employee_id} to EXTENDED userType")
+    except Exception as e2:
+        log.warning(f"Employee upgrade also failed (non-fatal): {e2}")
 
 
 async def _find_employee_id(
@@ -403,7 +417,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
     }
     if dep_id:
         body["department"] = {"id": dep_id}
-    for field in ["email", "dateOfBirth", "phoneNumberMobile"]:
+    for field in ["email", "dateOfBirth", "phoneNumberMobile", "nationalIdentityNumber"]:
         if args.get(field):
             body[field] = args[field]
     if args.get("address"):
@@ -419,14 +433,37 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             employment_body = {
                 "employee": {"id": employee_id},
                 "startDate": args["startDate"],
+                "employmentType": args.get("employmentType", "ORDINARY"),
             }
             if args.get("endDate"):
                 employment_body["endDate"] = args["endDate"]
             if args.get("percentageOfFullTimeEquivalent"):
                 employment_body["percentageOfFullTimeEquivalent"] = float(args["percentageOfFullTimeEquivalent"])
+            if args.get("occupationCode"):
+                employment_body["occupationCode"] = {"code": str(args["occupationCode"])}
             await client.post("/employee/employment", json=employment_body)
         except Exception as e:
             log.warning(f"Employment creation failed: {e}")
+
+    # Set annual salary via employment details if provided
+    if employee_id and args.get("annualSalary"):
+        try:
+            # Get the employment record we just created
+            employments = await client.get("/employee/employment", params={"employeeId": employee_id, "count": 1})
+            if employments.get("values"):
+                emp_record = employments["values"][0]
+                emp_record_id = emp_record["id"]
+                # Set salary via employment/details
+                salary_body = {
+                    "employment": {"id": emp_record_id},
+                    "date": args.get("startDate", TODAY),
+                    "annualSalary": float(args["annualSalary"]),
+                }
+                if args.get("percentageOfFullTimeEquivalent"):
+                    salary_body["payrollPercentage"] = float(args["percentageOfFullTimeEquivalent"])
+                await client.post("/employee/employment/details", json=salary_body)
+        except Exception as e:
+            log.warning(f"Salary setup failed: {e}")
 
     return result
 

@@ -44,9 +44,14 @@ class CreateEmployeeArgs(BaseModel):
     userType: str = Field(default="STANDARD", description="STANDARD, EXTENDED (admin), or NO_ACCESS")
     dateOfBirth: Optional[str] = Field(default=None, description="YYYY-MM-DD")
     phoneNumberMobile: Optional[str] = None
+    nationalIdentityNumber: Optional[str] = Field(default=None, description="Norwegian national ID (personnummer), 11 digits")
     address: Optional[dict] = Field(default=None, description='Employee address, e.g. {"addressLine1":"...", "postalCode":"...", "city":"..."}')
     startDate: Optional[str] = Field(default=None, description="Employment start date YYYY-MM-DD")
     endDate: Optional[str] = Field(default=None, description="Employment end date YYYY-MM-DD")
+    employmentType: Optional[str] = Field(default=None, description="ORDINARY, MARITIME, FREELANCE")
+    percentageOfFullTimeEquivalent: Optional[float] = Field(default=None, description="Employment percentage, e.g. 100.0 for full-time, 50.0 for half")
+    annualSalary: Optional[float] = Field(default=None, description="Annual salary (årslønn) in NOK")
+    occupationCode: Optional[str] = Field(default=None, description="STYRK occupation code, e.g. '2511' for system developer")
 
 
 class CreateCustomerArgs(BaseModel):
