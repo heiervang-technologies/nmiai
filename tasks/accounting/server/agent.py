@@ -571,7 +571,7 @@ MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_cal
 - Plain projects (no invoice) → create_project
 - Fixed-price project + invoice percentage / "fastpris" + "delbetaling" / "fakturere X%" → create_fixed_price_project_invoice (NEVER use create_project + create_invoice separately for this)
 - Invoices → create_invoice
-- Credit notes → create_credit_note
+- Credit notes → FIRST create_invoice (to create the customer + invoice), THEN create_credit_note. Fresh sandboxes have NO invoices for the customer — you MUST create the invoice before crediting it.
 - Payments/reversals → register_payment
 - Dimensions → create_accounting_dimension
 
@@ -582,6 +582,7 @@ MULTI-STEP TASK PATTERNS:
 - "Log hours + generate project invoice" / "Registrer timer + generer faktura" / "Timesats + faktura": ALWAYS call register_timesheet_and_invoice (NOT register_timesheet + create_invoice separately). This tool creates the invoice with correct hourly breakdown (count=hours, unitPrice=rate) and links it to the project.
 - "Create AND SEND invoice" (erstellen und senden, créez et envoyez, crie e envie): call create_invoice, THEN generic_api_call PUT /invoice/{id}/:send with params sendType=EMAIL. The invoice ID is in the create_invoice response.
 - "Create ORDER then convert to invoice" / "Crie um pedido" / "opprett ordre" / "créer une commande" / "Auftrag erstellen": FIRST call create_order to create a standalone order, THEN call generic_api_call PUT /order/{orderId}/:invoice to convert the order into an invoice. The order ID is in the create_order response. Do NOT skip the order step — the scorer checks that the order exists.
+- "Credit note / nota de crédito / kreditnota / Gutschrift": ALWAYS call create_invoice FIRST (with customerName, customerOrgNumber, amount, product description from the prompt), THEN call create_credit_note (with customerName to match). The sandbox is FRESH — the invoice does NOT exist yet. You must create it before crediting.
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
 - "Register payment on existing invoice": call register_payment. CRITICAL: the payment amount must be the FULL invoice amount INCLUDING VAT, not the excl-VAT amount from the prompt. If the prompt says "12700 NOK excl VAT", the payment is 12700 × 1.25 = 15875 NOK. The tool auto-corrects by reading the invoice's outstanding balance.
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
