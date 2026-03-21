@@ -100,6 +100,7 @@ class CreateInvoiceArgs(BaseModel):
     customerOrgNumber: Optional[str] = None
     invoiceDate: Optional[str] = Field(default=None, description="YYYY-MM-DD, defaults to today")
     invoiceDueDate: Optional[str] = Field(default=None, description="YYYY-MM-DD")
+    currencyCode: Optional[str] = Field(default=None, description="Currency code e.g. EUR, USD, SEK. Omit for NOK.")
     orderLines: list[OrderLine]
 
 
@@ -496,6 +497,7 @@ MULTI-STEP TASK PATTERNS:
 - "Log hours + generate project invoice": call register_timesheet_and_invoice
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
 - "Payment was returned/reversed": call register_payment with NEGATIVE amount
+- "Foreign currency invoice + payment + agio": create_invoice with currencyCode (e.g. "EUR"), then register_payment with NOK amount (foreign amount × payment exchange rate). Then create_voucher to book the exchange rate difference (agio): debit account 8060 (agio gain) or credit 8160 (agio loss), balanced against 1500 (customer receivables). Agio = (payment_rate - invoice_rate) × foreign_amount.
 - "Bank statement / reconciliation / CSV payment matching": use register_payment with invoiceNumber when the statement includes an invoice reference; do not guess Tripletex invoice IDs from raw numbers
 
 KEY FACTS:

@@ -700,19 +700,35 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
     invoice_date = args.get("invoiceDate", TODAY)
     due_date = args.get("invoiceDueDate", args.get("dueDate", invoice_date))
 
+    # Resolve currency if specified (e.g. EUR, USD)
+    currency_id = None
+    if args.get("currencyCode"):
+        try:
+            currencies = await client.get("/currency", params={"code": args["currencyCode"]})
+            for cur in currencies.get("values", []):
+                if cur.get("code", "").upper() == args["currencyCode"].upper():
+                    currency_id = cur["id"]
+                    break
+        except Exception as e:
+            log.warning(f"Currency lookup failed: {e}")
+
     # Try with each VAT candidate (max 5 attempts)
     last_error = None
     for vat_id in vat_candidates:
         order_lines = _build_order_lines(vat_id)
+        order_body = {
+            "customer": {"id": customer_id},
+            "orderDate": invoice_date,
+            "deliveryDate": invoice_date,
+            "orderLines": order_lines,
+        }
+        if currency_id:
+            order_body["currency"] = {"id": currency_id}
+
         body = {
             "invoiceDate": invoice_date,
             "invoiceDueDate": due_date,
-            "orders": [{
-                "customer": {"id": customer_id},
-                "orderDate": invoice_date,
-                "deliveryDate": invoice_date,
-                "orderLines": order_lines,
-            }],
+            "orders": [order_body],
         }
         try:
             return await client.post("/invoice", json=body)
