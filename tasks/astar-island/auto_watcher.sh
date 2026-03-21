@@ -87,7 +87,7 @@ fetch_ground_truth_for_completed()
         QUERIES_USED=$(echo "$BUDGET" | python3 -c "import json,sys; print(json.load(sys.stdin).get('queries_used', 0))" 2>/dev/null)
 
         if [ "$QUERIES_USED" = "0" ]; then
-            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: BLITZING 50 queries (2/seed on 5 diverse viewports)" >> "$LOG_FILE"
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: BLITZING 50 queries (3 viewports x 3-4 queries per seed)" >> "$LOG_FILE"
             cd /home/me/ht/nmiai
 
             # Blitz: 5 viewports per seed, 2 queries each = 10/seed = 50 total
@@ -126,17 +126,17 @@ for si in range(5):
             frontier = dynamic & (patch >= 1) & (patch <= 6)
             sc = 3*(ipatch==1).sum() + frontier.sum()
             scores[(vx, vy)] = sc
-    # Pick top 2 viewports (5 queries each = better tau=10 overlay) with minimum spacing
+    # Pick top 3 viewports (3-4 queries each = optimal coverage+sampling) with minimum spacing
     chosen = []
     for pos, sc in sorted(scores.items(), key=lambda x: -x[1]):
-        if len(chosen) >= 2: break
+        if len(chosen) >= 3: break
         vx, vy = pos
         too_close = any(abs(vx-cx)<10 and abs(vy-cy)<10 for cx,cy in chosen)
         if not too_close:
             chosen.append(pos)
     obs = []
     for vx, vy in chosen:
-        for _ in range(5):
+        for _ in range(3):
             r = s.post(f'{BASE}/astar-island/simulate', json={'round_id':rid,'seed_index':si,'viewport_x':vx,'viewport_y':vy,'viewport_w':15,'viewport_h':15})
             if r.status_code == 200: obs.append({'grid':r.json()['grid'],'viewport_x':vx,'viewport_y':vy})
             elif r.status_code == 429: break
@@ -157,10 +157,24 @@ print('Blitz done')
     # === 30 MIN BEFORE CLOSE: Submit with round_optimizer (tries 8 strategies) ===
     if [ "$MINS_UNTIL_CLOSE" -le 30 ] && [ "$SUBMITTED_ROUND" != "$ACTIVE" ]; then
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: running round_optimizer (8 strategies)" >> "$LOG_FILE"
+        # CHECK HOLD LOCK
+        if [ -f "$SCRIPT_DIR/.hold_submissions" ]; then
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SUBMISSIONS HELD (lock file exists)" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM: submissions held pending new best." 2>/dev/null
+            SUBMITTED_ROUND="$ACTIVE"
+            continue
+        fi
         say "Astar round $ROUND_NUM: running optimizer and submitting." 2>/dev/null
         cd /home/me/ht/nmiai
 
         # Direct regime_predictor + tau=20 overlay (proven safe-best)
+        # CHECK HOLD LOCK
+        if [ -f "$SCRIPT_DIR/.hold_submissions" ]; then
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SUBMISSIONS HELD (lock file exists)" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM: submissions held pending new best." 2>/dev/null
+            SUBMITTED_ROUND="$ACTIVE"
+            continue
+        fi
         uv run python3 -c "
 import json, sys, time, numpy as np, requests
 from pathlib import Path
@@ -221,9 +235,23 @@ print('Safe-best submission done')
 " >> "$LOG_FILE" 2>&1
 
         echo "\$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: safe-best submitted" >> "$LOG_FILE"
+        # CHECK HOLD LOCK
+        if [ -f "$SCRIPT_DIR/.hold_submissions" ]; then
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SUBMISSIONS HELD (lock file exists)" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM: submissions held pending new best." 2>/dev/null
+            SUBMITTED_ROUND="$ACTIVE"
+            continue
+        fi
         say "Astar round $ROUND_NUM submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
         tmux-tool send %5 "<agent id=\"auto-watcher\" role=\"astar-watcher\" pane=\"bg\">R$ROUND_NUM: safe-best submitted.</agent>" 2>/dev/null
+        # CHECK HOLD LOCK
+        if [ -f "$SCRIPT_DIR/.hold_submissions" ]; then
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SUBMISSIONS HELD (lock file exists)" >> "$LOG_FILE"
+            say "Astar round $ROUND_NUM: submissions held pending new best." 2>/dev/null
+            SUBMITTED_ROUND="$ACTIVE"
+            continue
+        fi
         sleep 0.5
         tmux send-keys -t %5 Enter 2>/dev/null
     fi
