@@ -1700,12 +1700,18 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
     amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
-    # Activate modules that may unlock /incomingInvoice
-    for module in ["ELECTRONIC_VOUCHERS", "OCR"]:
-        try:
-            await client.post("/company/salesmodules", json={"name": module})
-        except Exception:
-            pass
+    # Check if modules are active before trying to activate (avoid write errors)
+    try:
+        active = await client.get("/company/salesmodules")
+        active_names = {m.get("name") for m in active.get("values", [])}
+        for module in ["ELECTRONIC_VOUCHERS", "OCR"]:
+            if module not in active_names:
+                try:
+                    await client.post("/company/salesmodules", json={"name": module})
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
     # Look up expense account for orderLines
     if not account_id and args.get("accountNumber"):
