@@ -125,6 +125,7 @@ Autoresearch should automate these tasks:
 8. Track unseen families versus known families.
 9. Flag attachment-based tasks, especially if `content_base64` is empty.
 10. Produce a scored priority queue so the weakest high-frequency families get fixed first.
+11. Sync visible dashboard task outcomes into `dashboard_scores.tsv` so Pareto and progress views reflect real scores.
 
 ## The Loop
 
@@ -188,6 +189,12 @@ This updates:
 - `tasks/accounting/analysis/pareto_dashboard_vs_errors.json`
 - `tasks/accounting/analysis/priority_queue.json`
 - `tasks/accounting/analysis/priority_queue.md`
+
+Before refreshing, pull visible dashboard results into the tracker with:
+
+```bash
+python tasks/accounting/sync_dashboard_scores.py
+```
 
 ## Bottom Line
 

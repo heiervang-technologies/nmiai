@@ -8,7 +8,84 @@
     "column": "dashboard_score",
     "direction": "max"
   },
-  "frontier": [],
-  "progress": [],
-  "points_considered": 0
+  "frontier": [
+    {
+      "label": "supplier",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T19:05:26.364161+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T19:05:26.488039+00:00"
+    }
+  ],
+  "progress": [
+    {
+      "time": "2026-03-21T19:05:25.703802+00:00",
+      "label": "invoice",
+      "current_y": 0.0,
+      "best_label": "invoice",
+      "best_y": 0.0
+    },
+    {
+      "time": "2026-03-21T19:05:25.705388+00:00",
+      "label": "employee",
+      "current_y": 0.0,
+      "best_label": "invoice",
+      "best_y": 0.0
+    },
+    {
+      "time": "2026-03-21T19:05:25.793076+00:00",
+      "label": "invoice",
+      "current_y": 86.0,
+      "best_label": "invoice",
+      "best_y": 86.0
+    },
+    {
+      "time": "2026-03-21T19:05:25.794351+00:00",
+      "label": "salary",
+      "current_y": 70.0,
+      "best_label": "invoice",
+      "best_y": 86.0
+    },
+    {
+      "time": "2026-03-21T19:05:25.898479+00:00",
+      "label": "project",
+      "current_y": 79.0,
+      "best_label": "invoice",
+      "best_y": 86.0
+    },
+    {
+      "time": "2026-03-21T19:05:26.364161+00:00",
+      "label": "supplier",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T19:05:26.414144+00:00",
+      "label": "customer",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T19:05:26.432978+00:00",
+      "label": "ledger_correction",
+      "current_y": 70.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T19:05:26.488039+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    }
+  ],
+  "points_considered": 9
 }
