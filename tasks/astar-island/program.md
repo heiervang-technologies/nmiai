@@ -16,8 +16,10 @@ The loop is split in two:
 
 ## Current Reality
 
-- Current best model: `regime_predictor.py` with Bayesian regime posterior, regime-specific priors, structural zeros, and floor `1e-6`.
+- Current best submission path is `round_optimizer.py`, which evaluates 8 strategies and currently beats the raw `regime_predictor.py` path.
+- The active recipe includes `tau=20`, a `2x` port boost on coastal cells, and `2 viewports x 5 queries` in the current live observation pattern.
 - The trusted validation signal is leave-one-round-out CV on completed round ground truth only.
+- Current definitive offline number: `wKL=0.0705` on `75` seeds.
 - In-sample benchmarks are not decision-grade.
 - `auto_watcher.sh` is the current safe-best live policy and should not be overridden casually.
 - The known recent bug is watcher overwrite risk: no challenger should replace a stronger submission without explicit held-out evidence.
@@ -93,7 +95,7 @@ Autoresearch should preserve this production rhythm:
 
 1. Between rounds: fetch GT, rebuild priors, rerun honest CV, update frontier.
 2. Round opens: ingest round metadata and announce.
-3. At about 60 minutes after open: spend the query budget according to the live policy, currently a blitz concentrated on the hottest viewports.
+3. At about 60 minutes after open: spend the query budget according to the live policy, currently `2 viewports x 5 queries` with the round optimizer stack.
 4. At about 30 minutes before close: submit with the current safe-best predictor.
 5. After scoring: compare live score to offline expectation and diagnose misses.
 
@@ -121,7 +123,8 @@ Loop forever unless interrupted.
 
 - Prosperous rounds remain the hardest regime.
 - Regime detection is still the key breakthrough candidate and must be measured on honest CV, not anecdotes.
-- Structural zeros and overlay settings changed recently and still need honest CV.
+- `R12` port underestimation is the main remaining bottleneck.
+- Structural zeros, `tau=20`, and coastal port boosting should be judged by honest CV and live round stability, not anecdotes.
 - Round-to-round variance is still too high.
 
 ## Pareto Frontier
