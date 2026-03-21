@@ -11,6 +11,11 @@ log = logging.getLogger(__name__)
 TODAY = date.today().isoformat()
 
 
+def _money(value: float | int) -> float:
+    """Normalize monetary values to 2 decimals to avoid Tripletex validation drift."""
+    return round(float(value), 2)
+
+
 async def action_discover_sandbox(client: TripletexClient, args: dict) -> dict:
     """Discover sandbox state: departments, employees, customers, invoices, payment types."""
     result = {}
@@ -133,19 +138,26 @@ async def action_setup_bank_account(client: TripletexClient, args: dict) -> dict
     """Register a bank account on the company. Required before invoice creation."""
     bank_num = args.get("bankAccountNumber", "12345678903")
 
-    # Approach 1: Find company via >withLoginAccess (use unencoded >)
+    # Approach 1: Find company via >withLoginAccess
     try:
-        companies = await client.get("/company", params={"isMyCompany": "true", "count": 1})
-        if not companies.get("values"):
-            companies = await client.get("/company/>withLoginAccess")
+        companies = await client.get("/company/>withLoginAccess")
         if companies.get("values"):
             company_id = companies["values"][0]["id"]
             company_data = await client.get(f"/company/{company_id}")
             company_obj = company_data.get("value", company_data)
+            if company_obj.get("bankAccountNumber") == bank_num:
+                log.info(f"Company {company_id} already has bank account number set")
+                return {"status": "already_set", "companyId": company_id}
             company_obj["bankAccountNumber"] = bank_num
-            result = await client.put(f"/company/{company_id}", json=company_obj)
-            log.info(f"Bank account set via company {company_id}")
-            return result
+            try:
+                result = await client.put("/company", json=company_obj)
+                log.info(f"Bank account set via PUT /company for company {company_id}")
+                return result
+            except Exception as put_company_error:
+                log.warning(f"PUT /company failed, trying PUT /company/{{id}} fallback: {put_company_error}")
+                result = await client.put(f"/company/{company_id}", json=company_obj)
+                log.info(f"Bank account set via PUT /company/{company_id}")
+                return result
     except Exception as e1:
         log.warning(f"Bank account via company lookup failed: {e1}")
 
@@ -196,14 +208,35 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
     if not customer_id:
         return {"error": "Could not find or create customer"}
 
+    # Look up default VAT type (25% utgående) — ID may differ per sandbox
+    default_vat_id = 3
+    try:
+        vat_types = await client.get("/ledger/vatType", params={"count": 50})
+        for vt in vat_types.get("values", []):
+            # Find "Utgående avgift, høy sats" (25% outgoing VAT)
+            if vt.get("percentage") == 25 and "utgående" in vt.get("name", "").lower():
+                default_vat_id = vt["id"]
+                break
+    except Exception:
+        pass
+
     # Build order lines
     order_lines = []
     for line in args.get("orderLines", []):
+        vat_id = int(line.get("vatTypeId", default_vat_id))
+        # Map common VAT percentages to correct IDs
+        if line.get("vatTypeId") and int(line["vatTypeId"]) in (25, 15, 12, 0):
+            pct = int(line["vatTypeId"])
+            # These are percentages, not IDs — need to look up
+            for vt in vat_types.get("values", []):
+                if vt.get("percentage") == pct and "utgående" in vt.get("name", "").lower():
+                    vat_id = vt["id"]
+                    break
         ol = {
             "description": line.get("description", ""),
             "count": float(line.get("count", 1)),
             "unitPriceExcludingVatCurrency": float(line.get("unitPrice", line.get("unitPriceExcludingVat", 0))),
-            "vatType": {"id": int(line.get("vatTypeId", 3))},
+            "vatType": {"id": vat_id},
         }
         if line.get("productNumber"):
             ol["product"] = {"number": str(line["productNumber"])}
@@ -223,7 +256,20 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
         }],
     }
 
-    return await client.post("/invoice", json=body)
+    try:
+        return await client.post("/invoice", json=body)
+    except Exception as e:
+        error_text = str(e)
+        if hasattr(e, "response"):
+            try:
+                error_text = e.response.text
+            except Exception:
+                pass
+        if "bankkontonummer" in error_text.lower() or "bank account" in error_text.lower():
+            log.warning("Invoice creation failed due to missing bank account, retrying once after company update")
+            await action_setup_bank_account(client, {})
+            return await client.post("/invoice", json=body)
+        raise
 
 
 async def action_create_order(client: TripletexClient, args: dict) -> dict:
@@ -344,8 +390,8 @@ async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
         posting = {
             "row": i,
             "account": {"id": account_id},
-            "amountGross": amount,
-            "amountGrossCurrency": amount,  # Must match amountGross
+            "amountGross": _money(amount),
+            "amountGrossCurrency": _money(amount),  # Must match amountGross exactly
         }
         if p.get("vatTypeId"):
             posting["vatType"] = {"id": int(p["vatTypeId"])}
@@ -500,8 +546,8 @@ async def action_create_accounting_dimension(client: TripletexClient, args: dict
             posting = {
                 "row": i,
                 "account": {"id": account_id},
-                "amountGross": amount,
-                "amountGrossCurrency": amount,  # Must match amountGross
+                "amountGross": _money(amount),
+                "amountGrossCurrency": _money(amount),  # Must match amountGross exactly
             }
             if p.get("vatTypeId"):
                 posting["vatType"] = {"id": int(p["vatTypeId"])}
@@ -661,7 +707,7 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                 break
 
     # Create the incoming invoice via voucher
-    amount = float(args.get("amountIncludingVat", args.get("amount", 0)))
+    amount = _money(args.get("amountIncludingVat", args.get("amount", 0)))
     invoice_date = args.get("invoiceDate", TODAY)
 
     # Use POST /incomingInvoice (BETA) with correct schema
@@ -684,8 +730,8 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
         body["orderLines"].append({
             "description": args.get("description", "Supplier invoice"),
             "account": {"id": account_id},
-            "amountExcludingVat": amount * 0.8,  # Estimate ex-VAT from inc-VAT at 25%
-            "amountExcludingVatCurrency": amount * 0.8,
+            "amountExcludingVat": _money(amount * 0.8),  # Estimate ex-VAT from inc-VAT at 25%
+            "amountExcludingVatCurrency": _money(amount * 0.8),
             "vatType": {"id": int(args.get("vatTypeId", 1))},  # id=1 = 25% inngående MVA
         })
 
@@ -720,13 +766,13 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
 
     # Balanced postings: expense debit + VAT debit = supplier credit
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": amount_ex_vat, "amountGrossCurrency": amount_ex_vat},
-        {"row": 2, "account": {"id": credit_account_id}, "amountGross": -amount, "amountGrossCurrency": -amount},
+        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount_ex_vat), "amountGrossCurrency": _money(amount_ex_vat)},
+        {"row": 2, "account": {"id": credit_account_id}, "amountGross": _money(-amount), "amountGrossCurrency": _money(-amount)},
     ]
     # Add VAT line if we have the account
     if vat_account_id:
         postings.append(
-            {"row": 3, "account": {"id": vat_account_id}, "amountGross": vat_amount, "amountGrossCurrency": vat_amount}
+            {"row": 3, "account": {"id": vat_account_id}, "amountGross": _money(vat_amount), "amountGrossCurrency": _money(vat_amount)}
         )
 
     voucher_body = {
@@ -831,8 +877,8 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
     # Debit 5000 (bonus) if applicable
     # Credit 1920 (bank) for net pay
     # Credit 2780 (withholding tax) for estimated tax (~30%)
-    estimated_tax = round(total_gross * 0.30, 2)
-    net_pay = round(total_gross - estimated_tax, 2)
+    estimated_tax = _money(total_gross * 0.30)
+    net_pay = _money(total_gross - estimated_tax)
 
     salary_account = account_cache.get(5000) or account_cache.get(5001)
     bank_account = account_cache.get(1920)
@@ -842,18 +888,18 @@ async def action_process_salary(client: TripletexClient, args: dict) -> dict:
         return {"error": f"Missing accounts: salary={salary_account}, bank={bank_account}"}
 
     postings = [
-        {"row": 1, "account": {"id": salary_account}, "amountGross": total_gross, "amountGrossCurrency": total_gross,
+        {"row": 1, "account": {"id": salary_account}, "amountGross": _money(total_gross), "amountGrossCurrency": _money(total_gross),
          "description": f"Lønn {args.get('employeeName', '')}"},
     ]
     row = 2
     if tax_account:
         postings.append(
-            {"row": row, "account": {"id": tax_account}, "amountGross": -estimated_tax, "amountGrossCurrency": -estimated_tax,
+            {"row": row, "account": {"id": tax_account}, "amountGross": _money(-estimated_tax), "amountGrossCurrency": _money(-estimated_tax),
              "description": "Skattetrekk"}
         )
         row += 1
     postings.append(
-        {"row": row, "account": {"id": bank_account}, "amountGross": -net_pay, "amountGrossCurrency": -net_pay,
+        {"row": row, "account": {"id": bank_account}, "amountGross": _money(-net_pay), "amountGrossCurrency": _money(-net_pay),
          "description": "Utbetaling"}
     )
 
