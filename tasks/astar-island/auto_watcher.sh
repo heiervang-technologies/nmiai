@@ -63,12 +63,15 @@ fetch_ground_truth_for_completed()
         tmux send-keys -t %7 Enter 2>/dev/null
     fi
 
-    # === SKIP QUERIES — observations hurt our score ===
+    # === RUN QUERIES for regime detection ===
     # Data shows: no-obs avg=77.5, with-obs avg=66.9 (10+ point penalty)
     # Best scores: R9=83.5 (no obs), R5=71.5 (no obs)
     # Submit pure template priors only.
     if [ "$MINS_SINCE_OPEN" -ge 60 ] && [ "$QUERIED_ROUND" != "$ACTIVE" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SKIPPING queries (observations hurt score)" >> "$LOG_FILE"
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: running regime detection queries" >> "$LOG_FILE"
+        cd /home/me/ht/nmiai
+        uv run python3 tasks/astar-island/query_runner.py >> "$LOG_FILE" 2>&1
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: queries done" >> "$LOG_FILE"
         QUERIED_ROUND="$ACTIVE"
     fi
 
@@ -77,7 +80,7 @@ fetch_ground_truth_for_completed()
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: ${MINS_UNTIL_CLOSE}min until close — submitting predictions" >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM: 30 minutes remaining, submitting predictions now." 2>/dev/null
         cd /home/me/ht/nmiai
-        uv run python3 -c "import sys; sys.path.insert(0, 'tasks/astar-island'); import template_predictor as tp; tp.submit_active_round()" >> "$LOG_FILE" 2>&1
+        uv run python3 tasks/astar-island/regime_predictor.py >> "$LOG_FILE" 2>&1
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: predictions submitted" >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM predictions submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
