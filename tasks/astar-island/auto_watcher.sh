@@ -63,20 +63,12 @@ fetch_ground_truth_for_completed()
         tmux send-keys -t %7 Enter 2>/dev/null
     fi
 
-    # === 1 HOUR AFTER OPENING: Run queries ===
+    # === SKIP QUERIES — observations hurt our score ===
+    # Data shows: no-obs avg=77.5, with-obs avg=66.9 (10+ point penalty)
+    # Best scores: R9=83.5 (no obs), R5=71.5 (no obs)
+    # Submit pure template priors only.
     if [ "$MINS_SINCE_OPEN" -ge 60 ] && [ "$QUERIED_ROUND" != "$ACTIVE" ]; then
-        TOKEN=$(cat "$SCRIPT_DIR/.token" 2>/dev/null | tr -d '\n')
-        BUDGET=$(curl -s -H "Authorization: Bearer $TOKEN" https://api.ainm.no/astar-island/budget 2>/dev/null)
-        QUERIES_USED=$(echo "$BUDGET" | python3 -c "import json,sys; print(json.load(sys.stdin).get('queries_used', 0))" 2>/dev/null)
-
-        if [ "$QUERIES_USED" = "0" ]; then
-            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: ${MINS_SINCE_OPEN}min since open — starting queries" >> "$LOG_FILE"
-            say "Astar Island round $ROUND_NUM: 1 hour since opening, starting queries now." 2>/dev/null
-            cd /home/me/ht/nmiai
-            uv run python3 tasks/astar-island/query_runner.py >> "$LOG_FILE" 2>&1
-            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: queries done" >> "$LOG_FILE"
-            say "Astar Island round $ROUND_NUM queries complete." 2>/dev/null
-        fi
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: SKIPPING queries (observations hurt score)" >> "$LOG_FILE"
         QUERIED_ROUND="$ACTIVE"
     fi
 
