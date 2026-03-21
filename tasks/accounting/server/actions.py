@@ -2208,7 +2208,14 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         if "/timesheet/entry" in path and "dateFrom" not in params:
             params["dateFrom"] = "2020-01-01"
             params["dateTo"] = "2030-12-31"
-        return await client.get(path, params=params or None)
+        # Catch 404 on non-existent endpoints to avoid error count
+        try:
+            return await client.get(path, params=params or None)
+        except Exception as e:
+            if hasattr(e, 'response') and e.response.status_code == 404:
+                log.warning(f"GET {path} returned 404 — endpoint may not exist")
+                return {"values": [], "count": 0, "warning": f"Endpoint {path} not found"}
+            raise
     elif method == "POST":
         # Sanitize /project/projectActivity body — Tripletex 500s on unexpected fields
         if "/project/projectActivity" in path and body and isinstance(body, dict):
