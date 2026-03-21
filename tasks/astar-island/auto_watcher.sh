@@ -87,15 +87,15 @@ fetch_ground_truth_for_completed()
         QUERIES_USED=$(echo "$BUDGET" | python3 -c "import json,sys; print(json.load(sys.stdin).get('queries_used', 0))" 2>/dev/null)
 
         if [ "$QUERIES_USED" = "0" ]; then
-            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: BLITZING all 50 queries (10/seed on hottest viewport)" >> "$LOG_FILE"
-            say "Astar round $ROUND_NUM: blitzing 50 queries now." 2>/dev/null
+            echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: BLITZING 50 queries (2/seed on 5 diverse viewports)" >> "$LOG_FILE"
             cd /home/me/ht/nmiai
 
-            # Blitz: 10 queries per seed on hottest viewport
+            # Blitz: 5 viewports per seed, 2 queries each = 10/seed = 50 total
+            # More viewports = better regime detection (sees more frontier cells)
             uv run python3 -c "
 import json, sys, time, numpy as np, requests
 from pathlib import Path
-from scipy.ndimage import distance_transform_cdt
+from scipy.ndimage import distance_transform_edt
 
 TOKEN = open('tasks/astar-island/.token').read().strip()
 s = requests.Session()
@@ -115,20 +115,34 @@ rd.mkdir(exist_ok=True, parents=True)
 for si in range(5):
     init = np.array(details['initial_states'][si]['grid'])
     civ = (init == 1) | (init == 2)
-    cd = distance_transform_cdt(~civ, metric='taxicab') if civ.any() else np.full(init.shape, 99)
-    bs, bv = -1, (0, 0)
-    for vy in range(0, 26, 3):
-        for vx in range(0, 26, 3):
-            sc = 3*(init[vy:vy+15,vx:vx+15]==1).sum() + ((cd[vy:vy+15,vx:vx+15]>=1)&(cd[vy:vy+15,vx:vx+15]<=4)).sum()
-            if sc > bs: bs = sc; bv = (vx, vy)
+    dist = distance_transform_edt(~civ) if civ.any() else np.full(init.shape, 99.0)
+    # Score viewports by frontier cell density
+    scores = {}
+    for vy in range(0, 26, 2):
+        for vx in range(0, 26, 2):
+            patch = dist[vy:vy+15, vx:vx+15]
+            ipatch = init[vy:vy+15, vx:vx+15]
+            dynamic = (ipatch != 10) & (ipatch != 5)
+            frontier = dynamic & (patch >= 1) & (patch <= 6)
+            sc = 3*(ipatch==1).sum() + frontier.sum()
+            scores[(vx, vy)] = sc
+    # Pick top 5 viewports with minimum spacing
+    chosen = []
+    for pos, sc in sorted(scores.items(), key=lambda x: -x[1]):
+        if len(chosen) >= 5: break
+        vx, vy = pos
+        too_close = any(abs(vx-cx)<10 and abs(vy-cy)<10 for cx,cy in chosen)
+        if not too_close:
+            chosen.append(pos)
     obs = []
-    for _ in range(10):
-        r = s.post(f'{BASE}/astar-island/simulate', json={'round_id':rid,'seed_index':si,'viewport_x':bv[0],'viewport_y':bv[1],'viewport_w':15,'viewport_h':15})
-        if r.status_code == 200: obs.append({'grid':r.json()['grid'],'viewport_x':bv[0],'viewport_y':bv[1]})
-        elif r.status_code == 429: break
-        time.sleep(0.15)
+    for vx, vy in chosen:
+        for _ in range(2):
+            r = s.post(f'{BASE}/astar-island/simulate', json={'round_id':rid,'seed_index':si,'viewport_x':vx,'viewport_y':vy,'viewport_w':15,'viewport_h':15})
+            if r.status_code == 200: obs.append({'grid':r.json()['grid'],'viewport_x':vx,'viewport_y':vy})
+            elif r.status_code == 429: break
+            time.sleep(0.12)
     with open(rd / f'observations_seed{si}.json', 'w') as f: json.dump(obs, f)
-    print(f'Seed {si}: {len(obs)} obs on {bv}')
+    print(f'Seed {si}: {len(obs)} obs on {len(chosen)} viewports')
 print('Blitz done')
 " >> "$LOG_FILE" 2>&1
 
