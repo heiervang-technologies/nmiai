@@ -1263,6 +1263,9 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         if "/ledger/voucher" in path and "dateFrom" not in params:
             params["dateFrom"] = "2020-01-01"
             params["dateTo"] = "2030-12-31"
+        if "/ledger/posting" in path and "dateFrom" not in params:
+            params["dateFrom"] = "2020-01-01"
+            params["dateTo"] = "2030-12-31"
         return await client.get(path, params=params or None)
     elif method == "POST":
         return await client.post(path, json=body)
