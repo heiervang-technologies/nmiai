@@ -32,12 +32,12 @@ DINO_PROBE_WEIGHTS = "dino_with_probe.pth"
 NUM_CLASSES = 356
 CONF_THRESH = 0.001
 NMS_IOU_THRESH = 0.45
-WBF_IOU_THRESH = 0.55
+WBF_IOU_THRESH = 0.60
 MAX_DET = 300
 CROP_BATCH_SIZE = 128
 
 # Ensemble config
-MODEL_WEIGHTS = [1.0, 1.0]  # Equal weight; tune if one model is stronger
+MODEL_WEIGHTS = [1.5, 1.0]  # V5 weighted higher (stronger model)
 ENABLE_TTA_FLIP = True       # Horizontal flip TTA per model
 
 

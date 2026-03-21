@@ -86,10 +86,13 @@ CHAT_PREFIX_IDS = [IM_START_TOKEN_ID, USER_TOKEN_ID, NEWLINE_TOKEN_ID, VISION_ST
 # <|vision_end|>classify<|im_end|>\n
 CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWLINE_TOKEN_ID]
 
-# Image preprocessing for Qwen3.5 processor
-QWEN_IMAGE_SIZE = 448  # default min_pixels patch grid
-QWEN_MEAN = [0.48145466, 0.4578275, 0.40821073]
-QWEN_STD = [0.26862954, 0.26130258, 0.27577711]
+# Image preprocessing for Qwen3.5 processor (match processor defaults)
+# factor = patch_size * merge_size = 16 * 2 = 32
+QWEN_IMAGE_FACTOR = 32
+QWEN_MIN_PIXELS = 65536
+QWEN_MAX_PIXELS = 16777216
+QWEN_MEAN = [0.5, 0.5, 0.5]
+QWEN_STD = [0.5, 0.5, 0.5]
 
 # ROPE config
 ROPE_THETA = 10000000
@@ -992,25 +995,33 @@ class MarkusNet(nn.Module):
         position_ids = torch.cat([prefix_pos, image_pos, suffix_pos], dim=1)
         return position_ids.unsqueeze(1)  # (3, 1, seq_len)
 
+    def smart_resize(self, height, width, factor=QWEN_IMAGE_FACTOR, min_pixels=QWEN_MIN_PIXELS, max_pixels=QWEN_MAX_PIXELS):
+        """Match transformers Qwen smart_resize: keep aspect ratio and divisibility by factor."""
+        if max(height, width) / max(1, min(height, width)) > 200:
+            return factor, factor
+        h_bar = max(factor, round(height / factor) * factor)
+        w_bar = max(factor, round(width / factor) * factor)
+        if h_bar * w_bar > max_pixels:
+            beta = math.sqrt((height * width) / max_pixels)
+            h_bar = max(factor, math.floor(height / beta / factor) * factor)
+            w_bar = max(factor, math.floor(width / beta / factor) * factor)
+        elif h_bar * w_bar < min_pixels:
+            beta = math.sqrt(min_pixels / (height * width))
+            h_bar = math.ceil(height * beta / factor) * factor
+            w_bar = math.ceil(width * beta / factor) * factor
+        return h_bar, w_bar
+
     def _preprocess_image(self, pil_img, device):
         """
         Preprocess a PIL image into pixel_values patches for the vision encoder.
-        Uses letterbox padding to preserve aspect ratio.
+        Uses Qwen smart resize + normalization.
 
         Returns: (pixel_values tensor, (t, h_patches, w_patches) tuple)
         """
-        target_size = QWEN_IMAGE_SIZE
         img = pil_img.convert("RGB")
         orig_w, orig_h = img.size
-        scale = min(target_size / orig_h, target_size / orig_w)
-        new_w = int(round(orig_w * scale))
-        new_h = int(round(orig_h * scale))
-        img = img.resize((new_w, new_h), Image.BICUBIC)
-        padded = Image.new("RGB", (target_size, target_size), (128, 128, 128))
-        paste_x = (target_size - new_w) // 2
-        paste_y = (target_size - new_h) // 2
-        padded.paste(img, (paste_x, paste_y))
-        img = padded
+        target_h, target_w = self.smart_resize(orig_h, orig_w)
+        img = img.resize((target_w, target_h), Image.BICUBIC)
 
         # Convert to tensor and normalize
         img_np = np.array(img, dtype=np.float32) / 255.0
@@ -1021,9 +1032,8 @@ class MarkusNet(nn.Module):
 
         # Create patches: temporal_patch=2 means we need 2 frames
         # For a single image, Qwen duplicates it to make 2 temporal frames
-        # Each frame is 448x448 after padding, giving 28x28 = 784 spatial patches
-        h_patches = target_size // VIS_PATCH_SIZE  # 28
-        w_patches = target_size // VIS_PATCH_SIZE  # 28
+        h_patches = target_h // VIS_PATCH_SIZE
+        w_patches = target_w // VIS_PATCH_SIZE
 
         # Stack 2 identical frames
         frames = torch.stack([img_tensor, img_tensor])  # (2, 3, H, W)
@@ -1037,7 +1047,7 @@ class MarkusNet(nn.Module):
         # Reshape: (2, 3, H, W) -> patches of (temporal_patch, patch_h, patch_w)
         # Unfold into patches
         C = 3
-        T, H, W = VIS_TEMPORAL_PATCH, target_size, target_size
+        T, H, W = VIS_TEMPORAL_PATCH, target_h, target_w
         pH, pW = VIS_PATCH_SIZE, VIS_PATCH_SIZE
         pT = VIS_TEMPORAL_PATCH
 

@@ -82,16 +82,15 @@ CHAT_PREFIX_IDS = [IM_START_TOKEN_ID, USER_TOKEN_ID, NEWLINE_TOKEN_ID, VISION_ST
 CHAT_SUFFIX_IDS = [VISION_END_TOKEN_ID, CLASSIFY_TOKEN_ID, IM_END_TOKEN_ID, NEWLINE_TOKEN_ID]
 
 # Image preprocessing for the Qwen vision tower.
-# Keep the dynamic sizing path here, but use the same normalization constants as
-# the working `run.py`/HF processor instead of generic 0.5/0.5 normalization.
+# Match Qwen3.5 processor defaults exactly.
 # factor = patch_size * merge_size = 16 * 2 = 32
-# min_pixels = 65536 (kept capped for the fast path)
-# max_pixels = 65536 (kept capped for the fast path)
+# min_pixels = 65536
+# max_pixels = 16777216
 QWEN_IMAGE_FACTOR = 32
-QWEN_MIN_PIXELS = 65536  # Match transformers processor exactly (size.shortest_edge)
-QWEN_MAX_PIXELS = 65536  # Cap to prevent huge images on L4 GPU
-QWEN_MEAN = [0.48145466, 0.4578275, 0.40821073]
-QWEN_STD = [0.26862954, 0.26130258, 0.27577711]
+QWEN_MIN_PIXELS = 65536
+QWEN_MAX_PIXELS = 16777216
+QWEN_MEAN = [0.5, 0.5, 0.5]
+QWEN_STD = [0.5, 0.5, 0.5]
 
 # ROPE config
 ROPE_THETA = 10000000
@@ -657,10 +656,9 @@ class DecoderLayer(nn.Module):
         beta = b.sigmoid()
         g = -self.A_log.float().exp() * F.softplus(a.float() + self.dt_bias)
 
-        # Use chunk_size = seq_len to avoid padding and minimize inner loop iterations
         core_out, _ = torch_chunk_gated_delta_rule(
             query, key, value, g=g, beta=beta,
-            chunk_size=seq_len, initial_state=None, output_final_state=False,
+            initial_state=None, output_final_state=False,
             use_qk_l2norm_in_kernel=True,
         )
 
