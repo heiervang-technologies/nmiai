@@ -58,9 +58,9 @@ fetch_ground_truth_for_completed()
         ANNOUNCED_ROUND="$ACTIVE"
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM OPENED. Closes at $CLOSES_AT UTC. ${MINS_UNTIL_CLOSE}min remaining." >> "$LOG_FILE"
         say "New Astar Island round opened. Round $ROUND_NUM, closes at $CLOSES_AT U T C. $MINS_UNTIL_CLOSE minutes remaining. Waiting to query." 2>/dev/null
-        tmux-tool send %7 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">NEW ROUND $ROUND_NUM opened. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). Will query at 60min mark, submit at 30min-before-close.</agent>" 2>/dev/null
+        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">NEW ROUND $ROUND_NUM opened. Closes $CLOSES_AT UTC (${MINS_UNTIL_CLOSE}min). Will query at 60min mark, submit at 30min-before-close.</agent>" 2>/dev/null
         sleep 0.5
-        tmux send-keys -t %7 Enter 2>/dev/null
+        tmux send-keys -t %1 Enter 2>/dev/null
     fi
 
     # === RUN QUERIES for regime detection ===
@@ -84,9 +84,9 @@ fetch_ground_truth_for_completed()
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) Round $ROUND_NUM: predictions submitted" >> "$LOG_FILE"
         say "Astar Island round $ROUND_NUM predictions submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
-        tmux-tool send %7 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">Round $ROUND_NUM: predictions auto-submitted with ${MINS_UNTIL_CLOSE}min remaining.</agent>" 2>/dev/null
+        tmux-tool send %1 "<agent id=\"auto-watcher\" role=\"astar-island-watcher\" pane=\"bg\">Round $ROUND_NUM: predictions auto-submitted with ${MINS_UNTIL_CLOSE}min remaining.</agent>" 2>/dev/null
         sleep 0.5
-        tmux send-keys -t %7 Enter 2>/dev/null
+        tmux send-keys -t %1 Enter 2>/dev/null
     fi
 
     sleep 120  # Check every 2 min
