@@ -367,7 +367,18 @@ async def action_create_supplier(client: TripletexClient, args: dict) -> dict:
 
 
 async def action_create_product(client: TripletexClient, args: dict) -> dict:
-    """Create a product. Resolve VAT dynamically per sandbox instead of hardcoding IDs."""
+    """Create a product. Check for duplicates first. Resolve VAT dynamically."""
+    # Check if product already exists by name
+    try:
+        products = await client.get("/product", params={"count": 100})
+        for p in products.get("values", []):
+            if args["name"].lower() == p.get("name", "").lower():
+                return {"value": p, "note": "Product already exists"}
+            if args.get("number") and str(args["number"]) == str(p.get("number", "")):
+                return {"value": p, "note": "Product with this number already exists"}
+    except Exception:
+        pass
+
     body = {"name": args["name"]}
     if args.get("number"):
         body["number"] = str(args["number"])
@@ -381,19 +392,14 @@ async def action_create_product(client: TripletexClient, args: dict) -> dict:
     default_vat_id = _resolve_default_vat_id(vat_types, 3)
     vat_id = _resolve_outgoing_vat_id(vat_types, args.get("vatTypeId"), default_vat_id)
 
-    # Smart shortlist: resolved, then common fallbacks (3=25% utgående, 6=0%, 5=0%, 7=no VAT)
-    candidates = list(dict.fromkeys([vat_id, 3, 6, 5, 7]))  # deduplicated, order preserved
-
-    for candidate_vat_id in candidates:
-        body["vatType"] = {"id": int(candidate_vat_id)}
-        try:
-            return await client.post("/product", json=body)
-        except Exception:
-            continue
-
-    # Last resort: try without vatType
-    body.pop("vatType", None)
-    return await client.post("/product", json=body)
+    # Try resolved VAT once, then fall back to no vatType (sandbox picks default).
+    # Avoids burning API calls with retry loops — the LLM also retries on failure.
+    body["vatType"] = {"id": int(vat_id)}
+    try:
+        return await client.post("/product", json=body)
+    except Exception:
+        body.pop("vatType", None)
+        return await client.post("/product", json=body)
 
 
 async def action_create_department(client: TripletexClient, args: dict) -> dict:
