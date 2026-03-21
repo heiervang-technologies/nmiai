@@ -2325,6 +2325,16 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                                 log.info(f"Auto-added customer.id={cust_id} to account {acct_num} ({ledger_type}) posting")
                 except Exception:
                     pass
+            # Pre-fix vatType: if account has a locked vatType, use it (prevents 422 retry)
+            for p in postings:
+                acct_id = p.get("account", {}).get("id")
+                acct_obj = acct_map.get(acct_id, {})
+                locked_vat = acct_obj.get("vatType")
+                if locked_vat and isinstance(locked_vat, dict) and locked_vat.get("id"):
+                    # Account has a locked VAT type — override whatever the LLM set
+                    if p.get("vatType") and p["vatType"].get("id") != locked_vat["id"]:
+                        log.info(f"Overriding vatType {p['vatType']} -> {locked_vat} for account {acct_obj.get('number', '?')}")
+                        p["vatType"] = {"id": locked_vat["id"]}
             # Auto-balance
             if len(postings) >= 2:
                 total = sum(float(p.get("amountGross", p.get("amount", 0))) for p in postings)
