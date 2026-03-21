@@ -1735,15 +1735,11 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
 
     # Balanced postings: expense debit + VAT debit = supplier credit
     # MUST include supplier:{id} on postings - Tripletex requires it for supplier invoices
+    # Use vatType id=1 (Inngående MVA 25%) on expense posting - Tripletex auto-generates VAT line
     postings = [
-        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount_ex_vat), "amountGrossCurrency": _money(amount_ex_vat), "supplier": {"id": supplier_id}},
+        {"row": 1, "account": {"id": account_id}, "amountGross": _money(amount), "amountGrossCurrency": _money(amount), "supplier": {"id": supplier_id}, "vatType": {"id": 1}},
         {"row": 2, "account": {"id": credit_account_id}, "amountGross": _money(-amount), "amountGrossCurrency": _money(-amount), "supplier": {"id": supplier_id}},
     ]
-    # Add VAT line if we have the account
-    if vat_account_id:
-        postings.append(
-            {"row": 3, "account": {"id": vat_account_id}, "amountGross": _money(vat_amount), "amountGrossCurrency": _money(vat_amount)}
-        )
 
     # Look up Leverandørfaktura voucher type
     voucher_type_id = None
