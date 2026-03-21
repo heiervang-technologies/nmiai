@@ -1857,14 +1857,30 @@ async def action_create_travel_expense(client: TripletexClient, args: dict) -> d
                 per_diem_body["countryCode"] = country_code
             if rate_type:
                 per_diem_body["rateType"] = {"id": rate_type["id"]}
-            if rate_category:
+            # Only set rateCategory if we found a valid rate for it (date-compatible)
+            if rate_category and rate_type:
                 per_diem_body["rateCategory"] = {"id": rate_category["id"]}
             elif country_code.upper() == "NO" and days > 1:
-                per_diem_body["rateCategory"] = {"id": 740}
+                # Don't set rateCategory at all — let Tripletex pick the default
+                pass
 
             if resolved_rate is not None:
-                await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
-                per_diem_added = True
+                try:
+                    await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
+                    per_diem_added = True
+                except Exception as e_per_diem:
+                    # If rateCategory mismatch, retry without rateCategory
+                    if "satskategori" in str(e_per_diem).lower() or "rateCategory" in str(e_per_diem):
+                        log.warning(f"Per diem rateCategory mismatch, retrying without it")
+                        per_diem_body.pop("rateCategory", None)
+                        per_diem_body.pop("rateType", None)
+                        try:
+                            await client.post("/travelExpense/perDiemCompensation", json=per_diem_body)
+                            per_diem_added = True
+                        except Exception:
+                            raise e_per_diem  # fall through to cost fallback
+                    else:
+                        raise
         except Exception as e:
             log.warning(f"Per diem creation failed, trying cost fallback: {e}")
             try:
