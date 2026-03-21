@@ -1725,12 +1725,49 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
             {"row": 3, "account": {"id": vat_account_id}, "amountGross": _money(vat_amount), "amountGrossCurrency": _money(vat_amount)}
         )
 
+    # Look up Leverandørfaktura voucher type
+    voucher_type_id = None
+    try:
+        vt_resp = await client.get("/ledger/voucherType", params={"count": 50})
+        for vt in vt_resp.get("values", []):
+            if "leverandør" in vt.get("name", "").lower() or "supplier" in vt.get("name", "").lower():
+                voucher_type_id = vt["id"]
+                break
+    except Exception:
+        pass
+
+    invoice_number = args.get("invoiceNumber", args.get("invoiceNo", ""))
+    due_date = args.get("dueDate", "")
+
     voucher_body = {
         "date": invoice_date,
-        "description": f"Supplier invoice {args.get('invoiceNumber', '')} from {args.get('supplierName', 'supplier')}",
+        "description": f"Supplier invoice {invoice_number} from {args.get('supplierName', 'supplier')}".strip(),
         "postings": postings,
     }
-    return await client.post("/ledger/voucher", json=voucher_body)
+    if voucher_type_id:
+        voucher_body["voucherType"] = {"id": voucher_type_id}
+
+    voucher_result = await client.post("/ledger/voucher", json=voucher_body)
+
+    # Try to also create a proper supplierInvoice record for scoring
+    if supplier_id and voucher_result.get("value", {}).get("id"):
+        voucher_id = voucher_result["value"]["id"]
+        try:
+            si_body = {
+                "invoiceNumber": invoice_number or f"INV-{voucher_id}",
+                "invoiceDate": invoice_date,
+                "supplier": {"id": supplier_id},
+                "voucher": {"id": voucher_id},
+                "amountExcludingVat": abs(float(args.get("amountExcludingVat", amount / 1.25))),
+                "amountExcludingVatCurrency": abs(float(args.get("amountExcludingVat", amount / 1.25))),
+            }
+            si_result = await client.post("/supplierInvoice", json=si_body)
+            log.info(f"Created supplierInvoice record: {si_result.get('value', {}).get('id')}")
+            return {"value": voucher_result.get("value"), "supplierInvoice": si_result.get("value")}
+        except Exception as e:
+            log.warning(f"supplierInvoice creation failed (non-fatal): {e}")
+
+    return voucher_result
 
 
 async def action_create_travel_expense(client: TripletexClient, args: dict) -> dict:
