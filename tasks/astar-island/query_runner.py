@@ -328,7 +328,7 @@ def main():
     for seed_idx in range(seeds_count):
         summary = plan["seed_summaries"][seed_idx]
         print(
-            f"  seed {seed_idx}: q={allocation[seed_idx]} combined_w={plan['combined_weights'][seed_idx]:.4f} "
+            f"  seed {seed_idx}: q={allocation[seed_idx]} alloc={allocation[seed_idx]} "
             f"sett={summary['settlements']} ports={summary['ports']} near_civ={summary['near_civ_land']} "
             f"coast_civ={summary['coastal_civ']} hotspots={summary['top_hotspots'][:3]}"
         )
