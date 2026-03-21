@@ -1081,6 +1081,63 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     amount = float(args.get("amount", args.get("paidAmount", 0)))
     payment_date = args.get("paymentDate", _today())
 
+    # REVERSAL HARDENING: if negative amount, ensure full flow exists
+    # Fresh sandbox may not have the right invoice — create customer+invoice+payment first
+    if amount < 0:
+        # Check if the found invoice actually belongs to the right customer and is paid
+        invoice_valid = False
+        if invoice_id:
+            try:
+                inv_detail = await client.get(f"/invoice/{invoice_id}")
+                inv_data = inv_detail.get("value", inv_detail)
+                outstanding = inv_data.get("amountOutstanding", inv_data.get("amountRemainder"))
+                total = inv_data.get("amount", 0)
+                # Invoice is valid if it's been paid (outstanding ~0 or less than total)
+                if outstanding is not None and total and abs(outstanding) < abs(total) * 0.5:
+                    invoice_valid = True
+                    log.info(f"Reversal: invoice {invoice_id} is paid (outstanding={outstanding}, total={total})")
+                # Also check customer match
+                inv_customer = inv_data.get("customer", {}).get("name", "")
+                if args.get("customerName") and args["customerName"].lower() not in inv_customer.lower():
+                    invoice_valid = False
+                    log.info(f"Reversal: invoice customer '{inv_customer}' doesn't match '{args.get('customerName')}'")
+            except Exception:
+                pass
+
+        if not invoice_valid:
+            # Need to create the full flow: customer -> invoice -> payment -> reversal
+            log.info(f"Reversal: creating full flow (customer+invoice+payment) before reversing")
+            pos_amount = abs(amount)
+            description = args.get("description", args.get("invoiceDescription", "Invoice"))
+
+            # Create invoice (which auto-creates customer)
+            invoice_args = {
+                "customerName": args.get("customerName", ""),
+                "customerOrgNumber": args.get("customerOrgNumber", ""),
+                "amount": pos_amount,
+                "description": description,
+                "orderLines": [{"description": description, "unitPrice": pos_amount, "count": 1}],
+            }
+            try:
+                inv_result = await action_create_invoice(client, invoice_args)
+                inv_value = inv_result.get("value", inv_result)
+                invoice_id = inv_value.get("id")
+                log.info(f"Reversal: created invoice {invoice_id} for {pos_amount}")
+
+                # Register positive payment first
+                pt_resp2 = await client.get("/invoice/paymentType")
+                pt_id = pt_resp2.get("values", [{}])[0].get("id") if pt_resp2.get("values") else payment_type_id
+                pay_params = {
+                    "paymentDate": payment_date,
+                    "paymentTypeId": int(pt_id),
+                    "paidAmount": pos_amount,
+                }
+                await client.put(f"/invoice/{invoice_id}/:payment", params=pay_params)
+                log.info(f"Reversal: registered positive payment {pos_amount} on invoice {invoice_id}")
+            except Exception as e:
+                log.warning(f"Reversal flow failed: {e}")
+                # Fall through to try reversal on whatever invoice_id we have
+
     # If we found the invoice, prefer its actual remaining amount over what the LLM computed
     # This fixes excl-VAT vs incl-VAT mismatches (prompt says "12700 excl VAT" but payment must be 15875 incl)
     if invoice_id and amount > 0:
