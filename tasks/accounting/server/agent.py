@@ -652,7 +652,11 @@ KEY FACTS:
 - Fresh sandbox: 1 employee, 1 department, no customers/invoices. Some tasks have pre-populated data.
 - ONLY call discover_sandbox if you need to find existing entities (invoices, customers, etc). Skip it for simple creation tasks.
 - For invoices: create_invoice handles bank account setup and customer creation automatically.
-- CRITICAL: For admin/administrator/Administratorrolle/tilgang/full access roles: ALWAYS set userType="EXTENDED" in create_employee. For onboarding/prompts from contracts or PDFs, also pass departmentName, startDate, percentageOfFullTimeEquivalent, annualSalary, occupationCode, and hoursPerDay whenever the prompt provides them.
+- CRITICAL EMPLOYEE RULES:
+  1) Admin/administrator/Administratorrolle/tilgang/full access → userType="EXTENDED"
+  2) For PDF/contract onboarding: Extract EVERY field from the PDF text. The scorer checks ALL of: firstName, lastName, email, departmentName, dateOfBirth, startDate, annualSalary, percentageOfFullTimeEquivalent (stillingsprosent), occupationCode (STYRK code), hoursPerDay, employmentType. Missing ANY field costs points.
+  3) If the PDF text mentions: "stillingsprosent"/"percentage"/"Beschäftigungsgrad" → percentageOfFullTimeEquivalent. "årslønn"/"salary"/"Jahresgehalt"/"salário" → annualSalary. "arbeidstid"/"hours per day"/"Arbeitszeit" → hoursPerDay. "yrkeskode"/"STYRK"/"occupation" → occupationCode.
+  4) ALWAYS pass departmentName from the PDF (look for "avdeling"/"department"/"Abteilung"/"département"/"departamento").
 - VAT types: 3=25% standard (default), 31=15% food, 32=12% transport/hotel, 5=0% exempt/fritatt/isento/exento. CRITICAL: For EVERY order line in create_invoice/create_order, you MUST pass BOTH vatTypeId AND vatPercentage (the actual percentage: 0, 12, 15, or 25). The vatPercentage field ensures correct VAT resolution. Example: {"description": "Training", "unitPrice": 5000, "count": 1, "vatTypeId": 31, "vatPercentage": 15}.
 - Dates must be YYYY-MM-DD format.
 - IMPORTANT: If a tool returns an error, DO NOT retry the same call more than once. Read the error, adjust, or try a different approach.
@@ -673,11 +677,72 @@ def build_system_prompt(playbook: dict | None = None) -> str:
     return "\n".join(parts)
 
 
+# --- Translation layer (Gemini 3.1 Pro for multilingual) ---
+
+TRANSLATE_MODEL = os.environ.get("TRANSLATE_MODEL", "google/gemini-3.1-pro-preview")
+
+def _looks_english(text: str) -> bool:
+    """Check for non-English accounting keywords."""
+    lower = text.lower()
+    signals = [
+        "faktura", "betaling", "leverandør", "opprett", "registrer", "avdeling",
+        "reiseregning", "reiserekning", "lønn", "mva", "årsavslutning", "periodiser",
+        "forskotsbetalt", "månavslutninga", "kostnad", "bokfør", "avskrivning",
+        "rechnung", "zahlung", "erstellen", "mitarbeiter", "abteilung", "gehaltsabrechnung",
+        "factura", "proveedor", "empleado", "departamento", "gastos de viaje", "sin iva",
+        "facture", "fournisseur", "employé", "département", "enregistrez", "hors tva",
+        "fatura", "fornecedor", "despesa de viagem", "sem iva", "crie", "registe",
+    ]
+    return sum(1 for kw in signals if kw in lower) < 2
+
+
+async def _translate_if_needed(user_content: str) -> str:
+    """If prompt is non-English, prepend Gemini translation for GPT-5.4."""
+    parts = user_content.split("## ATTACHED FILES", 1)
+    prompt_part = parts[0].strip()
+
+    if _looks_english(prompt_part):
+        return user_content
+
+    try:
+        from openai import AsyncOpenAI
+        client = AsyncOpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=os.environ.get("OPENROUTER_API_KEY", "none"),
+        )
+        resp = await client.chat.completions.create(
+            model=TRANSLATE_MODEL,
+            max_tokens=1024,
+            temperature=0,
+            messages=[
+                {"role": "system", "content": "Translate this accounting task to English. Preserve ALL numbers, dates, names, org numbers, email addresses, and amounts EXACTLY as written. Output ONLY the translation."},
+                {"role": "user", "content": prompt_part},
+            ],
+        )
+        translation = (resp.choices[0].message.content or "").strip()
+        if translation and len(translation) > 20:
+            log.info(f"Gemini translated ({len(prompt_part)} → {len(translation)} chars)")
+            combined = f"## ENGLISH TRANSLATION (use this to understand the task):\n{translation}\n\n## ORIGINAL PROMPT (use exact values from here):\n{prompt_part}"
+            if len(parts) > 1:
+                combined += f"\n\n## ATTACHED FILES{parts[1]}"
+            return combined
+        log.warning("Translation too short, using original")
+    except Exception as e:
+        log.warning(f"Translation failed, using original: {e}")
+
+    return user_content
+
+
 # --- Run the agent ---
 
-async def run_agent(api_client: TripletexClient, prompt: str, files: list = None, playbook: dict = None) -> dict:
-    """Run the Pydantic AI agent."""
+async def run_agent(api_client: TripletexClient, prompt: str, files: list = None, playbook: dict = None, model_override: str = None) -> dict:
+    """Run the Pydantic AI agent. model_override swaps the LLM for testing."""
     start_time = time.time()
+
+    # Swap model if override specified (for /solve-test endpoint)
+    if model_override:
+        agent._model = OpenRouterModel(model_override)
+        log.info(f"Using override model: {model_override}")
 
     system_prompt = build_system_prompt(playbook)
 
@@ -706,6 +771,9 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
                     user_content += f"TEXT CONTENT:\n{text[:2000]}\n"
             except Exception as e:
                 user_content += f"(Could not extract content: {e})\n"
+
+    # Translation layer: use Gemini 3.1 Pro for non-English prompts
+    user_content = await _translate_if_needed(user_content)
 
     deps = AgentDeps(client=api_client)
 
