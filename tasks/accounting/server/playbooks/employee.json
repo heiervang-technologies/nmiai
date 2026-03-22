@@ -11,7 +11,12 @@
     "onboarding",
     "tilbudsbrev",
     "contract",
-    "contrato"
+    "contrato",
+    "funcionario",
+    "contrato de trabalho",
+    "crie o funcionario",
+    "arbeidskontrakt",
+    "contrat de travail"
   ],
   "description": "Create, update, or manage employees. Includes onboarding from contracts.",
   "preflight": [

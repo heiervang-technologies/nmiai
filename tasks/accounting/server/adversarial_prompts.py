@@ -665,6 +665,83 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "project_lifecycle_hourlyrate_enum_incoming403_duplicates_issue28",
     },
+
+    # 27. Issue #31: French overdue invoice + reminder fee — createReminder 422 x3
+    #     Live: 20260322_091047 — LLM doesn't know createReminder needs type+date params.
+    #     Also GET /invoice without date params → 422 x2. System needs action-layer guard.
+    {
+        "family": "invoice",
+        "language": "fr",
+        "difficulty": "hard",
+        "prompt": (
+            "L'un de vos clients a une facture en retard. "
+            "Trouvez la facture en retard et enregistrez des frais de rappel de 70 NOK. "
+            "Debit creances clients (1500), credit revenus de rappel (3400). "
+            "Créez également une facture pour les frais de rappel au client et envoyez-la. "
+            "De plus, enregistrez un paiement partiel de 5000 NOK sur la facture en retard."
+        ),
+        "expected_fields": {
+            "reminderFee": 70,
+            "reminderAccounts": {"debit": 1500, "credit": 3400},
+            "partialPayment": 5000,
+            "shouldSend": True,
+            "createReminder": True,
+        },
+        "failure_mode_tested": "overdue_reminder_fee_createreminder_422_issue31",
+    },
+
+    # 28. Portuguese multi-VAT invoice — all lines got vatType id=3 (25%) instead of correct types
+    #     Live: 20260322_091349 — 0 errors but VAT types wrong: should be 25%, 15% food, 0% exempt.
+    {
+        "family": "invoice",
+        "language": "pt",
+        "difficulty": "hard",
+        "prompt": (
+            "Crie uma fatura para o cliente Floresta Lda (org. nº 944182802) "
+            "com três linhas de produto: "
+            "Relatório de análise (2039) a 19600 NOK com 25% IVA, "
+            "Design web (3304) a 12450 NOK com 15% IVA (alimentos), "
+            "e Licença de software (1599) a 9150 NOK com 0% IVA (isento)."
+        ),
+        "expected_fields": {
+            "customerName": "Floresta Lda",
+            "customerOrgNumber": "944182802",
+            "lines": [
+                {"description": "Relatório de análise", "unitPrice": 19600, "vatRate": 25, "productNumber": "2039"},
+                {"description": "Design web", "unitPrice": 12450, "vatRate": 15, "productNumber": "3304"},
+                {"description": "Licença de software", "unitPrice": 9150, "vatRate": 0, "productNumber": "1599"},
+            ],
+        },
+        "failure_mode_tested": "multi_vat_rate_portuguese_all_lines_got_25pct",
+    },
+
+    # 29. Portuguese employee from PDF — planner misclassifies as "department"
+    #     Live: 20260322_091356 — "departamento" in prompt triggers department family.
+    #     Execution succeeded anyway, but planner should route to employee.
+    {
+        "family": "employee",
+        "language": "pt",
+        "difficulty": "hard",
+        "prompt": (
+            "Voce recebeu um contrato de trabalho (ver PDF anexo). "
+            "Crie o funcionario no Tripletex com todos os detalhes do contrato: "
+            "numero de identidade nacional, data de nascimento, departamento, "
+            "codigo de ocupacao, salario, percentagem de emprego e data de inicio."
+        ),
+        "expected_fields": {
+            "firstName": "Mariana",
+            "lastName": "Costa",
+            "email": "mariana.costa@example.org",
+            "dateOfBirth": "1999-10-22",
+            "nationalIdentityNumber": "22109922602",
+            "department": "Kundeservice",
+            "occupationCode": "2511",
+            "annualSalary": 510000,
+            "employmentPercentage": 100,
+            "startDate": "2026-06-08",
+        },
+        "failure_mode_tested": "portuguese_employee_misclassified_as_department",
+    },
 ]
 
 
