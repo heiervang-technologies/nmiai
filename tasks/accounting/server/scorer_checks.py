@@ -120,11 +120,11 @@ SCORER_CHECKS = {
             {"entity": "employee", "field": "firstName", "points": 1},
             {"entity": "employee", "field": "lastName", "points": 1},
             {"entity": "employee", "field": "email", "points": 1},
-            # Admin role is 5 points — by far the biggest single check
-            {"entity": "employee", "field": "userType", "expected": "ADMINISTRATOR", "points": 5},
+            # Tripletex admin = userType "EXTENDED" + allowInformationRegistration=true
+            {"entity": "employee", "field": "userType", "expected": "EXTENDED", "points": 5},
         ],
         "call_checks": [],
-        "notes": "Admin role (userType=ADMINISTRATOR) is 50% of points. Never downgrade to NO_ACCESS.",
+        "notes": "Admin role (userType=EXTENDED) is 50% of points. Never downgrade to NO_ACCESS.",
     },
 
     "customer": {
@@ -460,11 +460,13 @@ def estimate_score(family: str, prompt: str, mock_state) -> dict:
         elif "timesheet" in path:
             post_bodies.setdefault("timesheet", []).append(body)
         else:
-            # Generic: match against entity type names
-            for etype in entities:
-                if etype.lower() in path or etype.replace("_", "").lower() in path:
-                    post_bodies.setdefault(etype, []).append(body)
-                    break
+            # Generic: match against entity type names, but skip sub-entity paths
+            _sub_paths = ("/employment", "/standardtime", "/cost", "/perdiem", "/projectactivity", "/details")
+            if not any(sub in path for sub in _sub_paths):
+                for etype in entities:
+                    if etype.lower() in path or etype.replace("_", "").lower() in path:
+                        post_bodies.setdefault(etype, []).append(body)
+                        break
 
     # Also use entities from mock_state.entities (created via create_handler)
     for etype, elist in entities.items():
@@ -560,7 +562,7 @@ def estimate_score(family: str, prompt: str, mock_state) -> dict:
         elif condition == "is_send":
             should_check = _is_send_task(prompt)
         elif condition == "is_invoice_task":
-            should_check = bool(re.search(r"\b(invoice|faktura|factura|fatura|Rechnung|facture)\b", prompt, re.I))
+            should_check = bool(re.search(r"(invoice|faktura|factura|fatura|Rechnung|facture)", prompt, re.I))
 
         if not should_check:
             continue
