@@ -54,3 +54,10 @@ merged_ties_adapter/
 merged_adapter/
 hf_parquet_tmp/
 tasks/object-detection/data-creation/hf_parquet_tmp/
+
+# Competition data too large for git
+tasks/object-detection/vlm-approach/cached_dataset/
+tasks/object-detection/vlm-approach/external_datasets/
+tasks/object-detection/musli_comparison/
+tasks/object-detection/shopping_crops/
+wandb/
