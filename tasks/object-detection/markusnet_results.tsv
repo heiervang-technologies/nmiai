@@ -4,3 +4,7 @@ timestamp	tag	combined	det_map50	cls_map50	data	description
 2026-03-22T19:42:00Z	exp002_knn_ensemble	0.850000	0.000000	0.850000	external_crops	DINOv2 frozen + linear + KNN lr=3e-3
 2026-03-22T19:45:00Z	exp003_mlp_768_lr1e3	0.873000	0.000000	0.873000	external_crops	DINOv2 frozen + MLP(768) lr=1e-3
 2026-03-22T20:00:00Z	exp004_unfreeze_bb1e5	0.885000	0.000000	0.885000	external_crops	DINOv2 unfreeze bb_lr=1e-5 + MLP (ep3, running)
+2026-03-22T20:30:00Z	exp004_unfreeze_bb3e5	0.882000	0.000000	0.882000	external_crops	DINOv2 unfreeze bb_lr=3e-5 FINAL
+2026-03-22T20:45:00Z	exp005_lora_r4	0.814000	0.000000	0.814000	external_crops	LoRA r=4 attention-only (too weak)
+2026-03-22T21:00:00Z	exp005_lora_r128_all	0.003000	0.000000	0.003000	external_crops	LoRA r=128 all layers BROKEN (head corruption)
+2026-03-22T21:10:00Z	exp005_lora_r128_bb	0.116000	0.000000	0.116000	external_crops	LoRA r=128 backbone-only UNSTABLE (collapsed)
