@@ -75,6 +75,10 @@ class CreateSupplierArgs(BaseModel):
     email: Optional[str] = None
     phoneNumber: Optional[str] = None
     organizationNumber: Optional[str] = None
+    postalAddress: Optional[dict] = Field(default=None, description="Address dict with addressLine1, postalCode, city, country")
+    addressLine1: Optional[str] = None
+    postalCode: Optional[str] = None
+    city: Optional[str] = None
 
 
 class CreateProductArgs(BaseModel):
@@ -170,6 +174,7 @@ class CreateProjectArgs(BaseModel):
     startDate: Optional[str] = None
     endDate: Optional[str] = None
     fixedPrice: Optional[float] = Field(default=None, description="Fixed price amount in NOK. Sets project as fixed-price.")
+    hourlyRate: Optional[float] = Field(default=None, description="Hourly billing rate in NOK for time-based projects")
 
 
 class ActivateModuleArgs(BaseModel):
@@ -248,6 +253,8 @@ class ProcessSalaryArgs(BaseModel):
 class RegisterSupplierInvoiceArgs(BaseModel):
     supplierName: str
     supplierOrgNumber: Optional[str] = None
+    supplierEmail: Optional[str] = None
+    supplierPhone: Optional[str] = None
     supplierId: Optional[int] = None
     invoiceNumber: Optional[str] = None
     amountIncludingVat: float = Field(description="Total amount including VAT")
@@ -481,6 +488,37 @@ async def register_timesheet_and_invoice(ctx: RunContext[AgentDeps], args: Regis
 
 
 @agent.tool
+async def run_python(ctx: RunContext[AgentDeps], args: RunPythonArgs) -> str:
+    """Execute arbitrary Python code. Full access to all imports, subprocess, and the Tripletex client.
+    Use for: calculations, CSV/PDF parsing, data analysis, shell commands, anything typed tools can't handle.
+    Has 'client' (async TripletexClient), all stdlib, subprocess. Use print() for output. Use 'await' for async calls."""
+    import io, contextlib, traceback, subprocess
+    code = args.code
+    globs = {
+        "client": ctx.deps.client,
+        "subprocess": subprocess,
+        "__builtins__": __builtins__,
+        "__import__": __import__,
+    }
+    stdout = io.StringIO()
+    try:
+        if "await " in code:
+            wrapped = "async def __run__():\n" + "\n".join(f"    {line}" for line in code.split("\n"))
+            exec(wrapped, globs)
+            with contextlib.redirect_stdout(stdout):
+                await globs["__run__"]()
+        else:
+            with contextlib.redirect_stdout(stdout):
+                exec(code, globs)
+        result = stdout.getvalue()
+        if not result.strip():
+            result = "(code executed successfully, no output)"
+        return result[:4000]
+    except Exception:
+        return f"Error:\n{traceback.format_exc()[:2000]}\nStdout so far:\n{stdout.getvalue()[:1000]}"
+
+
+@agent.tool
 async def generic_api_call(ctx: RunContext[AgentDeps], args: GenericApiCallArgs) -> str:
     """Fallback: make any Tripletex API call. Use only when no typed tool fits. Will reject calls that should use typed tools."""
     args_dict = args.model_dump(exclude_none=True)
@@ -586,6 +624,14 @@ MANDATORY TOOL ROUTING — you MUST use these typed tools, NEVER generic_api_cal
 - Dimensions → create_accounting_dimension
 
 generic_api_call is ONLY for tasks with no matching typed tool above. If you use generic_api_call for any of the above, it will fail.
+
+run_python — Execute ANY Python code. Full access to all imports, subprocess, and the Tripletex API client. Use for:
+- Calculations: depreciation, tax provisions, salary breakdowns, cost comparisons, percentage invoicing
+- Data processing: parse CSV attachments, analyze ledger postings, sum amounts by account
+- Shell commands: subprocess.run(["cmd", "arg"]) for any system operation
+- Complex multi-step logic that would take many tool calls
+- Fetching and processing API data programmatically: await client.get("/ledger/posting", params={...})
+Use print() to return results. Use 'await client.get/post/put(...)' for Tripletex API calls inside async code.
 
 MULTI-STEP TASK PATTERNS:
 - "Set fixed price on project + invoice X%": call create_fixed_price_project_invoice
