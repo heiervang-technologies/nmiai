@@ -20,7 +20,8 @@ from actions import ACTIONS
 log = logging.getLogger(__name__)
 
 MODEL = os.environ.get("LLM_MODEL", "openai/gpt-5.4")
-log.info(f"Agent using model: {MODEL}")
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "")
+log.info(f"Agent using model: {MODEL}" + (f" via {LLM_BASE_URL}" if LLM_BASE_URL else ""))
 
 
 # --- Dependencies (injected into tools) ---
@@ -312,8 +313,17 @@ class RunPythonArgs(BaseModel):
 
 # --- Build the agent ---
 
+def _build_model():
+    """Build model: use OpenAI-compatible for local base URLs, OpenRouter otherwise."""
+    if LLM_BASE_URL and "openrouter" not in LLM_BASE_URL:
+        from pydantic_ai.models.openai import OpenAIModel
+        from pydantic_ai.providers.openai import OpenAIProvider
+        provider = OpenAIProvider(base_url=LLM_BASE_URL, api_key="local")
+        return OpenAIModel(MODEL, provider=provider)
+    return OpenRouterModel(MODEL)
+
 agent = Agent(
-    OpenRouterModel(MODEL),
+    _build_model(),
     deps_type=AgentDeps,
     system_prompt="",  # Set dynamically per run
     retries=1,
