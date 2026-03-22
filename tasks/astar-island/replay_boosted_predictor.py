@@ -60,7 +60,7 @@ REPLAY_DIR = BASE_DIR / "replays"
 
 def load_replays():
     replays = {}
-    for f in sorted(REPLAY_DIR.glob("round*_seed*.json")):
+    for f in sorted(list(REPLAY_DIR.glob("round*_seed*.json")) + list((REPLAY_DIR / "dense_training").glob("round*_seed*.json")) if (REPLAY_DIR / "dense_training").exists() else sorted(REPLAY_DIR.glob("round*_seed*.json"))):
         parts = f.stem.split("_")
         rn = int(parts[0].replace("round", ""))
         sn = int(parts[1].replace("seed", ""))
