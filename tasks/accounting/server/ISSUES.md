@@ -14,6 +14,8 @@ Only %2 (master) restarts the server. Agents commit+push and notify %2.
 | 22 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction | advisor %6 |
 | 21 | YELLOW | planner | "Registrer timer på prosjektet" → project not timesheet | Word "prosjektet" wins over "timer". Need timesheet priority boost or multi-word phrase | all |
 | 20 | YELLOW | planner | "Opprett dimensjon Produktlinje" → product not voucher | "Produkt" in dimension name matches product family | all |
+| 27 | YELLOW | planner | French supplier invoice misclassified as "invoice" | "facture fournisseur" routes to invoice not supplier. POST /incomingInvoice → 403. LLM falls back to voucher. Prompt: "Vous avez recu une facture fournisseur" | failure-analysis |
+| 28 | RED | project | Project lifecycle 4 errors: hourlyRates 422 + incomingInvoice 403 + duplicates | Complex multi-step prompt. hourlyRateModel validation fails, incomingInvoice 403, then duplicate retries on hourlyRates and timesheet. Prompt: "Execute complete project lifecycle for System Upgrade Greenfield" | failure-analysis |
 
 ## FIXED (confirmed or deployed)
 
