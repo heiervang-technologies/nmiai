@@ -153,11 +153,16 @@ def main():
         outputs = session.run(None, {input_name: img_input})
         boxes, confs, class_ids = postprocess(outputs, orig_shape, ratio, pad)
 
+        image_id = int(img_path.stem.replace("img_", ""))
+        # Category aliases: merge umlaut spelling variants
+        ALIASES = {59: 61, 170: 260, 36: 201}
         for box, conf, cls_id in zip(boxes, confs, class_ids):
+            cat_id = int(cls_id)
+            cat_id = ALIASES.get(cat_id, cat_id)
             results.append({
-                'image_id': img_path.name,
+                'image_id': image_id,
                 'bbox': [round(v, 2) for v in box],
-                'category_id': int(cls_id),
+                'category_id': cat_id,
                 'score': round(float(conf), 4),
             })
 

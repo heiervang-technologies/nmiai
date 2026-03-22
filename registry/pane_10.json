@@ -1,9 +1,9 @@
 {
   "pane": "%10",
-  "name": "data-lead",
-  "role": "od-data-creation",
-  "description": "Data creation lead: all datasets built (V5 final 3315 train), 330/356 product images scraped, HF uploads done, standing by for tasks",
-  "session": "nmai-object-detection",
-  "registered_at": "2026-03-21T12:59:03Z",
-  "pid": 1524150
+  "name": "astar-frontier-advisor",
+  "role": "astar-sub-agent",
+  "description": "Building/testing surrogate Monte Carlo predictor for Astar Island with bounded CV.",
+  "session": "nmai-astar-island",
+  "registered_at": "2026-03-21T21:59:21Z",
+  "pid": 914627
 }

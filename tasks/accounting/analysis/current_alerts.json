@@ -1,12 +1,12 @@
 {
   "alerts": [
-    "annual_close clean rate is 25.0%; blockers: none; likely missing fields: none",
-    "cost_analysis clean rate is 0.0%; blockers: activity_type_required; likely missing fields: activity, employee",
-    "department clean rate is 60.9%; blockers: duplicate_identifier; likely missing fields: department",
-    "employee clean rate is 48.3%; blockers: email_validation; likely missing fields: employee, department",
-    "product clean rate is 27.3%; blockers: sandbox_valid_vat_type; likely missing fields: none",
+    "annual_close clean rate is 57.1%; blockers: none; likely missing fields: none",
+    "cost_analysis clean rate is 16.7%; blockers: activity_type_required; likely missing fields: activity, employee, project",
+    "department clean rate is 60.0%; blockers: duplicate_identifier, module_permission_blocked; likely missing fields: department",
+    "employee clean rate is 53.1%; blockers: email_validation; likely missing fields: employee, department",
+    "product clean rate is 40.7%; blockers: sandbox_valid_vat_type; likely missing fields: none",
     "timesheet clean rate is 28.6%; blockers: sandbox_valid_vat_type, employee_time_access, activity_type_required, vat_account_mapping; likely missing fields: activity, project, employee, hours",
-    "travel_expense clean rate is 41.2%; blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind, travel_expense_contents_required; likely missing fields: delivered_state, employee, rate_type, project",
+    "travel_expense clean rate is 44.4%; blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind, travel_expense_contents_required; likely missing fields: delivered_state, employee, rate_type, per_diem_completion",
     "travel_expense remains partial: focus on delivered_state, rate_type, travel_expense typing, and per-diem completion before broad retries"
   ]
 }

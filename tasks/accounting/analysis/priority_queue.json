@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-03-21T18:56:13.654300+00:00",
+  "generated_at": "2026-03-21T20:44:47.828938+00:00",
   "priority_targets": [
     {
       "family": "product",
       "priority_score": 44.65,
-      "proxy_clean_rate": 0.2727272727272727,
-      "runs": 22,
-      "last_seen": "20260321_174648",
+      "proxy_clean_rate": 0.4074074074074074,
+      "runs": 27,
+      "last_seen": "20260321_202155",
       "blockers": [
         "sandbox_valid_vat_type"
       ],
       "missing_fields": [],
-      "status": "manual_review"
+      "status": "watch"
     },
     {
       "family": "timesheet",
@@ -35,10 +35,10 @@
     },
     {
       "family": "employee",
-      "priority_score": 17.1,
-      "proxy_clean_rate": 0.4827586206896552,
-      "runs": 29,
-      "last_seen": "20260321_182557",
+      "priority_score": 17.35,
+      "proxy_clean_rate": 0.53125,
+      "runs": 32,
+      "last_seen": "20260321_201746",
       "blockers": [
         "email_validation"
       ],
@@ -51,9 +51,9 @@
     {
       "family": "invoice",
       "priority_score": 13.8,
-      "proxy_clean_rate": 0.7,
-      "runs": 30,
-      "last_seen": "20260321_183404",
+      "proxy_clean_rate": 0.775,
+      "runs": 40,
+      "last_seen": "20260321_203002",
       "blockers": [
         "sandbox_valid_vat_type",
         "vat_account_mapping",
@@ -64,10 +64,10 @@
     },
     {
       "family": "travel_expense",
-      "priority_score": 12.75,
-      "proxy_clean_rate": 0.4117647058823529,
-      "runs": 17,
-      "last_seen": "20260321_164216",
+      "priority_score": 12.8,
+      "proxy_clean_rate": 0.4444444444444444,
+      "runs": 18,
+      "last_seen": "20260321_193216",
       "blockers": [
         "employee_time_access",
         "rate_category_date_mismatch",
@@ -78,18 +78,19 @@
         "delivered_state",
         "employee",
         "rate_type",
-        "project"
+        "per_diem_completion"
       ],
       "status": "watch"
     },
     {
       "family": "department",
-      "priority_score": 10.25,
-      "proxy_clean_rate": 0.6086956521739131,
-      "runs": 23,
-      "last_seen": "20260321_182057",
+      "priority_score": 11.4,
+      "proxy_clean_rate": 0.6,
+      "runs": 25,
+      "last_seen": "20260321_194357",
       "blockers": [
-        "duplicate_identifier"
+        "duplicate_identifier",
+        "module_permission_blocked"
       ],
       "missing_fields": [
         "department"
@@ -98,13 +99,14 @@
     },
     {
       "family": "project",
-      "priority_score": 6.0,
-      "proxy_clean_rate": 0.75,
-      "runs": 16,
-      "last_seen": "20260321_181427",
+      "priority_score": 7.55,
+      "proxy_clean_rate": 0.7058823529411765,
+      "runs": 17,
+      "last_seen": "20260321_194120",
       "blockers": [
         "project_hourly_rates_endpoint",
-        "module_permission_blocked"
+        "module_permission_blocked",
+        "duplicate_identifier"
       ],
       "missing_fields": [
         "project",
@@ -115,28 +117,29 @@
     },
     {
       "family": "cost_analysis",
-      "priority_score": 3.35,
-      "proxy_clean_rate": 0.0,
-      "runs": 2,
-      "last_seen": "20260321_172812",
+      "priority_score": 6.55,
+      "proxy_clean_rate": 0.16666666666666666,
+      "runs": 6,
+      "last_seen": "20260321_201221",
       "blockers": [
         "activity_type_required"
       ],
       "missing_fields": [
         "activity",
-        "employee"
+        "employee",
+        "project"
       ],
       "status": "manual_review"
     },
     {
       "family": "annual_close",
       "priority_score": 3.0,
-      "proxy_clean_rate": 0.25,
-      "runs": 4,
-      "last_seen": "20260321_182457",
+      "proxy_clean_rate": 0.5714285714285714,
+      "runs": 7,
+      "last_seen": "20260321_202054",
       "blockers": [],
       "missing_fields": [],
-      "status": "manual_review"
+      "status": "watch"
     }
   ]
 }

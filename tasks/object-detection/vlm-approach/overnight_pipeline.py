@@ -50,6 +50,20 @@ NF4_TABLE = torch.tensor([
     0.44070982933044434, 0.5626170039176941, 0.7229568362236023, 1.0,
 ], dtype=torch.float32)
 GROUP_SIZE = 64
+SPECIAL_TOKEN_IDS = [248045, 846, 198, 248053, 248054, 91037, 248046]
+
+
+def extract_token_payload(model_state):
+    embed_key = "model.language_model.embed_tokens.weight"
+    if embed_key not in model_state:
+        raise KeyError(
+            f"Missing {embed_key} in checkpoint; cannot export stripped NF4 safely."
+        )
+
+    embed_weight = model_state[embed_key]
+    token_ids = torch.tensor(SPECIAL_TOKEN_IDS, dtype=torch.long)
+    token_embeds = embed_weight[token_ids].to(torch.float16).cpu()
+    return token_ids, token_embeds
 
 
 def nf4_quantize_checkpoint(ckpt_path, output_path):
@@ -57,10 +71,13 @@ def nf4_quantize_checkpoint(ckpt_path, output_path):
     print(f"  NF4 quantizing {ckpt_path.name}...")
     ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=False)
 
+    model_state = ckpt["model_state"]
+    token_ids, token_embeds = extract_token_payload(model_state)
+
     nf4_state = {}
     fp16_state = {}
 
-    for k, v in ckpt["model_state"].items():
+    for k, v in model_state.items():
         if "embed_tokens" in k or "lm_head" in k:
             continue
         if v.dim() >= 2 and v.numel() >= GROUP_SIZE:
@@ -90,6 +107,8 @@ def nf4_quantize_checkpoint(ckpt_path, output_path):
         "accuracy": ckpt.get("accuracy", 0),
         "global_step": ckpt.get("global_step", 0),
         "quantization": "nf4", "group_size": GROUP_SIZE,
+        "token_ids": token_ids,
+        "token_embeds": token_embeds,
     }, output_path)
 
     size = output_path.stat().st_size / 1024**2

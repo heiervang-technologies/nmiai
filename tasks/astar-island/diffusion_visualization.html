@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discrete Token Diffusion</title>
+<style>
+  body { font-family: sans-serif; background: #111; color: #fff; display: flex; flex-direction: column; align-items: center; }
+  .container { display: flex; gap: 40px; margin-top: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(40, 10px); grid-template-rows: repeat(40, 10px); gap: 1px; background: #333; border: 2px solid #555;}
+  .cell { width: 10px; height: 10px; }
+  .c0 { background: #bba080; } /* Empty/Plains */
+  .c1 { background: #aa5555; } /* Town */
+  .c2 { background: #ff0000; } /* City */
+  .c3 { background: #ff00ff; } /* Port */
+  .c4 { background: #228b22; } /* Forest */
+  .c5 { background: #888888; } /* Mountain */
+  .c6 { background: #000000; } /* Masked */
+  .c10 { background: #0000aa; } /* Ocean */
+  .title { text-align: center; font-weight: bold; margin-bottom: 10px; }
+  .controls { margin-top: 20px; text-align: center; }
+  input[type=range] { width: 300px; }
+  .legend { margin-top: 20px; display: flex; gap: 15px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; font-size: 12px;}
+  .leg-box { width: 10px; height: 10px; border: 1px solid #555; }
+</style>
+</head>
+<body>
+  <h2>Discrete Diffusion (Absorbing State)</h2>
+  <p>Left: True sample being masked (rewind). Right: Model generating sample from mask.</p>
+  
+  <div class="controls">
+    <label>Time Step: <span id="step-label">0</span> / 10</label><br><br>
+    <input type="range" id="step-slider" min="0" max="10" value="0">
+  </div>
+
+  <div class="container">
+    <div>
+      <div class="title">Ground Truth Rewind</div>
+      <div id="grid-gt" class="grid"></div>
+    </div>
+    <div>
+      <div class="title">Model Generation</div>
+      <div id="grid-model" class="grid"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-box c0"></div> Plains</div>
+    <div class="leg-item"><div class="leg-box c1"></div> Town</div>
+    <div class="leg-item"><div class="leg-box c2"></div> City</div>
+    <div class="leg-item"><div class="leg-box c3"></div> Port</div>
+    <div class="leg-item"><div class="leg-box c4"></div> Forest</div>
+    <div class="leg-item"><div class="leg-box c5"></div> Mountain</div>
+    <div class="leg-item"><div class="leg-box c10"></div> Ocean</div>
+    <div class="leg-item"><div class="leg-box c6"></div> Mask (Unknown)</div>
+  </div>
+
+  <script>
+    let visData = null;
+    
+    function renderGrid(gridEl, dataGrid, initialGrid) {
+      gridEl.innerHTML = '';
+      for (let y = 0; y < 40; y++) {
+        for (let x = 0; x < 40; x++) {
+          const cell = document.createElement('div');
+          let val = dataGrid[y][x];
+          
+          if (initialGrid[y][x] === 10) val = 10;
+          if (initialGrid[y][x] === 5) val = 5;
+          
+          cell.className = 'cell c' + val;
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+
+    function updateVis(step) {
+      if (!visData) return;
+      document.getElementById('step-label').innerText = step;
+      let gtStep = visData.gt_rewind[10 - step];
+      let modelStep = visData.model_steps[step];
+      
+      renderGrid(document.getElementById('grid-gt'), gtStep, visData.initial_grid);
+      renderGrid(document.getElementById('grid-model'), modelStep, visData.initial_grid);
+    }
+
+    fetch('diffusion_vis_data.json')
+      .then(r => r.json())
+      .then(data => {
+        visData = data;
+        updateVis(0);
+        
+        document.getElementById('step-slider').addEventListener('input', (e) => {
+          updateVis(parseInt(e.target.value));
+        });
+      });
+  </script>
+</body>
+</html>

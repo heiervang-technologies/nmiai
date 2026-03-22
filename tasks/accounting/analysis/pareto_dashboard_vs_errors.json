@@ -20,6 +20,60 @@
       "x": 0.0,
       "y": 100.0,
       "time": "2026-03-21T19:05:26.488039+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991449+00:00"
+    },
+    {
+      "label": "annual_close",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991477+00:00"
+    },
+    {
+      "label": "customer",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991495+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991499+00:00"
+    },
+    {
+      "label": "product",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991503+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991510+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991515+00:00"
+    },
+    {
+      "label": "employee",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991518+00:00"
+    },
+    {
+      "label": "invoice",
+      "x": 0.0,
+      "y": 100.0,
+      "time": "2026-03-21T20:44:51.991527+00:00"
     }
   ],
   "progress": [
@@ -85,7 +139,105 @@
       "current_y": 100.0,
       "best_label": "supplier",
       "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991449+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991477+00:00",
+      "label": "annual_close",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991483+00:00",
+      "label": "employee",
+      "current_y": 60.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991488+00:00",
+      "label": "invoice",
+      "current_y": 79.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991492+00:00",
+      "label": "invoice",
+      "current_y": 29.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991495+00:00",
+      "label": "customer",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991499+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991503+00:00",
+      "label": "product",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991506+00:00",
+      "label": "annual_close",
+      "current_y": 20.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991510+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991515+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991518+00:00",
+      "label": "employee",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991524+00:00",
+      "label": "annual_close",
+      "current_y": 13.0,
+      "best_label": "supplier",
+      "best_y": 100.0
+    },
+    {
+      "time": "2026-03-21T20:44:51.991527+00:00",
+      "label": "invoice",
+      "current_y": 100.0,
+      "best_label": "supplier",
+      "best_y": 100.0
     }
   ],
-  "points_considered": 9
+  "points_considered": 23
 }

@@ -29,9 +29,38 @@ async def main():
 
     p = await async_playwright().start()
     b = await p.chromium.connect_over_cdp(CDP_URL)
-    pg = b.contexts[0].pages[0]
+    # Find the tripletex submit page across all tabs
+    pg = None
+    for ctx in b.contexts:
+        for page in ctx.pages:
+            if "submit/tripletex" in page.url:
+                pg = page
+                break
+        if pg:
+            break
+    if not pg:
+        print("ERROR: No submit/tripletex tab found. Open it in Brave first.")
+        return
 
     print(f"Connected: {pg.url}")
+
+    # Ensure endpoint URL is filled
+    ENDPOINT = "https://newer-ate-sport-upc.trycloudflare.com/solve"
+    await pg.evaluate(f'''() => {{
+        const inputs = document.querySelectorAll('input');
+        for (const inp of inputs) {{
+            if (inp.placeholder && inp.placeholder.includes('solve')) {{
+                const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+                setter.call(inp, '{ENDPOINT}');
+                inp.dispatchEvent(new Event('input', {{ bubbles: true }}));
+                inp.dispatchEvent(new Event('change', {{ bubbles: true }}));
+                return true;
+            }}
+        }}
+        return false;
+    }}''')
+    await asyncio.sleep(1)
+    print(f"Endpoint set: {ENDPOINT}")
 
     # Get initial scores
     text = await pg.evaluate("()=>document.body.innerText")

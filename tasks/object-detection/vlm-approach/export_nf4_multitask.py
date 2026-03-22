@@ -1,7 +1,14 @@
 """Export the multitask best checkpoint to NF4."""
 import sys
 sys.path.insert(0, str(__import__('pathlib').Path(__file__).parent))
-from export_nf4 import quantize_tensor_nf4, dequantize_nf4, NF4_TABLE, GROUP_SIZE
+from export_nf4 import (
+    quantize_tensor_nf4,
+    dequantize_nf4,
+    NF4_TABLE,
+    GROUP_SIZE,
+    SPECIAL_TOKEN_IDS,
+    extract_token_payload,
+)
 
 import functools
 from pathlib import Path
@@ -16,8 +23,10 @@ print("=== MarkusNet Multitask NF4 Export ===")
 ckpt = torch.load(str(CHECKPOINT), map_location="cpu", weights_only=False)
 model_state = ckpt["model_state"]
 cls_state = ckpt["cls_head_state"]
+token_ids, token_embeds = extract_token_payload(model_state)
 val_acc = ckpt.get("val_acc", ckpt.get("accuracy", 0))
 print(f"Val accuracy: {val_acc:.4f}, Step: {ckpt.get('global_step', '?')}")
+print(f"Preserving {token_ids.numel()} special token embeddings for template tokens")
 
 nf4_state = {}
 kept_fp16 = {}
@@ -63,6 +72,8 @@ torch.save({
     "global_step": ckpt.get("global_step", 0),
     "quantization": "nf4",
     "group_size": GROUP_SIZE,
+    "token_ids": token_ids,
+    "token_embeds": token_embeds,
     "architecture": {
         "base": "Qwen3.5-0.8B",
         "text_layers_kept": 12,
@@ -70,6 +81,7 @@ torch.save({
         "vision_layers": 12,
         "num_classes": 356,
         "stripped": ["embed_tokens", "lm_head"],
+        "preserved_token_ids": SPECIAL_TOKEN_IDS,
     },
 }, OUTPUT)
 

@@ -24,6 +24,19 @@ print = functools.partial(print, flush=True)
 CHECKPOINT = Path(__file__).parent / "training_output" / "best" / "best.pt"
 OUTPUT_DIR = Path(__file__).parent / "exported"
 
+SPECIAL_TOKEN_IDS = [248045, 846, 198, 248053, 248054, 91037, 248046]
+
+
+def extract_token_payload(model_state: dict[str, torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+    """Preserve chat-template token embeddings when stripping full embed table."""
+    embed_key = "model.language_model.embed_tokens.weight"
+    if embed_key not in model_state:
+        raise KeyError(f"Missing {embed_key} in checkpoint; cannot export stripped model safely.")
+
+    token_ids = torch.tensor(SPECIAL_TOKEN_IDS, dtype=torch.long)
+    token_embeds = model_state[embed_key][token_ids].to(torch.float16).cpu()
+    return token_ids, token_embeds
+
 
 def export():
     print("=== MarkusNet Export Pipeline ===")
@@ -37,9 +50,11 @@ def export():
 
     model_state = ckpt["model_state"]
     cls_state = ckpt["cls_head_state"]
+    token_ids, token_embeds = extract_token_payload(model_state)
     accuracy = ckpt.get("accuracy", "unknown")
     step = ckpt.get("global_step", "unknown")
     print(f"Checkpoint: step={step}, accuracy={accuracy}")
+    print(f"Preserving {token_ids.numel()} special token embeddings for template tokens")
 
     # Strip embed_tokens and lm_head
     print("\nStripping text embeddings...")
@@ -67,6 +82,8 @@ def export():
         "cls_head_state": cls_state,
         "accuracy": accuracy,
         "global_step": step,
+        "token_ids": token_ids,
+        "token_embeds": token_embeds,
         "architecture": {
             "base": "Qwen3.5-0.8B",
             "text_layers_kept": 12,
@@ -76,6 +93,7 @@ def export():
             "vision_hidden": 768,
             "num_classes": 356,
             "stripped": ["embed_tokens", "lm_head"],
+            "preserved_token_ids": SPECIAL_TOKEN_IDS,
         },
     }, fp16_path)
     fp16_size = fp16_path.stat().st_size / 1024**2
@@ -111,6 +129,8 @@ def export():
         "accuracy": accuracy,
         "global_step": step,
         "quantization": "per_channel_int8",
+        "token_ids": token_ids,
+        "token_embeds": token_embeds,
         "architecture": {
             "base": "Qwen3.5-0.8B",
             "text_layers_kept": 12,
@@ -120,6 +140,7 @@ def export():
             "vision_hidden": 768,
             "num_classes": 356,
             "stripped": ["embed_tokens", "lm_head"],
+            "preserved_token_ids": SPECIAL_TOKEN_IDS,
         },
     }, int8_path)
     int8_size = int8_path.stat().st_size / 1024**2

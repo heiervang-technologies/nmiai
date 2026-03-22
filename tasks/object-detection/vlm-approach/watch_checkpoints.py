@@ -13,7 +13,7 @@ from pathlib import Path
 import torch
 
 from eval_stratified_map import append_csv, append_jsonl, evaluate_submission
-from export_nf4 import GROUP_SIZE, quantize_tensor_nf4
+from export_nf4 import GROUP_SIZE, quantize_tensor_nf4, extract_token_payload
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -101,6 +101,7 @@ def save_state(path: Path, state: dict):
 def export_checkpoint_to_nf4(checkpoint_path: Path, output_path: Path):
     ckpt = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
     model_state = ckpt["model_state"]
+    token_ids, token_embeds = extract_token_payload(model_state)
     nf4_state = {}
     fp16_state = {}
     for key, value in model_state.items():
@@ -121,6 +122,8 @@ def export_checkpoint_to_nf4(checkpoint_path: Path, output_path: Path):
             "global_step": ckpt.get("global_step", ckpt.get("step", 0)),
             "quantization": "nf4",
             "group_size": GROUP_SIZE,
+            "token_ids": token_ids,
+            "token_embeds": token_embeds,
             "source_checkpoint": str(checkpoint_path.resolve()),
         },
         output_path,

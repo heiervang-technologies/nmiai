@@ -482,6 +482,7 @@ class LanguageModel(nn.Module):
 
         # Final norm
         self.norm_weight = nn.Parameter(torch.zeros(TXT_HIDDEN))
+        self.active_layer_mask = None
 
     def forward(self, inputs_embeds, position_ids=None, attention_mask=None):
         """
@@ -503,7 +504,9 @@ class LanguageModel(nn.Module):
             diagonal=1
         ).unsqueeze(0).unsqueeze(0)  # (1, 1, seq_len, seq_len)
 
-        for layer in self.layers:
+        for layer_idx, layer in enumerate(self.layers):
+            if self.active_layer_mask is not None and not self.active_layer_mask[layer_idx]:
+                continue
             hidden = layer(hidden, cos, sin, causal_mask, attention_mask)
 
         hidden = rms_norm(hidden, self.norm_weight, TXT_RMS_EPS)
@@ -796,11 +799,14 @@ class ClassificationHead(nn.Module):
 # --- Full MarkusNet ---
 
 class MarkusNet(nn.Module):
-    def __init__(self):
+    def __init__(self, image_only=False, no_chat_template=False, lm_layers_mask=None):
         super().__init__()
         self.vision = VisionEncoder()
         self.language = LanguageModel()
         self.cls_head = ClassificationHead()
+        self.image_only = bool(image_only)
+        self.no_chat_template = bool(no_chat_template) or self.image_only
+        self.lm_layers_mask = lm_layers_mask
 
     def load_checkpoint(self, ckpt_path, device):
         NF4_TABLE = torch.tensor([
@@ -858,6 +864,14 @@ class MarkusNet(nn.Module):
         if token_embeds.ndim != 2 or token_embeds.shape[0] != token_ids.numel() or token_embeds.shape[1] != TXT_HIDDEN:
             raise RuntimeError(
                 f"Invalid token embedding payload: ids={token_ids.shape}, embeds={token_embeds.shape}"
+            )
+
+        required_ids = set(CHAT_PREFIX_IDS + CHAT_SUFFIX_IDS)
+        loaded_ids = set(token_ids.detach().cpu().tolist())
+        missing_ids = sorted(required_ids - loaded_ids)
+        if missing_ids:
+            raise RuntimeError(
+                f"Token embedding payload missing required template token ids: {missing_ids}"
             )
 
         self.language.embed_tokens.weight.data.zero_()
@@ -957,8 +971,12 @@ class MarkusNet(nn.Module):
                 llm_grid_w = w // VIS_SPATIAL_MERGE
 
                 # Build input_ids: prefix + image_placeholders + suffix
-                prefix_ids = CHAT_PREFIX_IDS
-                suffix_ids = CHAT_SUFFIX_IDS
+                if self.no_chat_template:
+                    prefix_ids = []
+                    suffix_ids = []
+                else:
+                    prefix_ids = CHAT_PREFIX_IDS
+                    suffix_ids = CHAT_SUFFIX_IDS
                 image_ids = [IMAGE_TOKEN_ID] * num_image_tokens
                 input_ids = torch.tensor(
                     [prefix_ids + image_ids + suffix_ids],
@@ -1097,7 +1115,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--image-only", action="store_true", help="Use image tokens only (no chat prefix/suffix).")
+    parser.add_argument("--no-chat-template", action="store_true", help="Disable chat template tokens in language input.")
+    parser.add_argument("--lm-layers-mask", default="all", help="Comma-separated 0/1 mask for 12 LM layers, e.g. 1,1,1,0,...")
     args = parser.parse_args()
+
+    lm_layers_mask = None
+    if args.lm_layers_mask.lower() != "all":
+        parts = [x.strip() for x in args.lm_layers_mask.split(",") if x.strip() != ""]
+        if len(parts) != TXT_NUM_LAYERS or any(x not in {"0", "1"} for x in parts):
+            raise ValueError("--lm-layers-mask must be 'all' or 12 comma-separated 0/1 values")
+        lm_layers_mask = [x == "1" for x in parts]
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     dtype = torch.bfloat16 if device.type == "cuda" else torch.float32
@@ -1122,8 +1150,14 @@ def main():
     # Load MarkusNet
     ckpt_path = SCRIPT_DIR / MARKUSNET_CKPT
     print(f"Loading MarkusNet from {ckpt_path}")
-    model = MarkusNet()
+    model = MarkusNet(
+        image_only=args.image_only,
+        no_chat_template=args.no_chat_template,
+        lm_layers_mask=lm_layers_mask,
+    )
     model.load_checkpoint(str(ckpt_path), device)
+    if lm_layers_mask is not None:
+        model.language.active_layer_mask = lm_layers_mask
     model = model.to(dtype).to(device)
     model.eval()
     print("Models loaded.")

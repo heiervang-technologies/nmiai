@@ -2,8 +2,8 @@
   "pane": "%19",
   "name": "astar-frontier-advisor",
   "role": "astar-sub-agent",
-  "description": "Auditing remaining frontier/port-gap improvements and reporting validated findings to master-astar-island.",
+  "description": "Resumed frontier calibration work; syncing validated tau findings and live-path status to master.",
   "session": "nmai-astar-island",
-  "registered_at": "2026-03-21T17:53:37Z",
-  "pid": 229747
+  "registered_at": "2026-03-21T20:18:16Z",
+  "pid": 3733471
 }
