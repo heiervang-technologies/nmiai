@@ -81,6 +81,34 @@ class TripletexClient:
     async def get(self, path: str, params: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
         merged_params = {**(path_params or {}), **(params or {})} or None
+        # Auto-add required date params (catches run_python bypassing action layer)
+        if merged_params is None:
+            merged_params = {}
+        lp = clean_path.lower()
+        # Only inject date params on LIST endpoints (not /invoice/{id} or /invoice/paymentType)
+        import re as _re
+        is_invoice_list = lp.rstrip("/").endswith("/invoice") or _re.search(r"/invoice\?", lp)
+        is_order_list = lp.rstrip("/").endswith("/order") or _re.search(r"/order\?", lp)
+        if is_invoice_list and "invoiceDateFrom" not in merged_params:
+            merged_params["invoiceDateFrom"] = "2020-01-01"
+            merged_params["invoiceDateTo"] = "2030-12-31"
+        if is_order_list and "orderDateFrom" not in merged_params:
+            merged_params["orderDateFrom"] = "2020-01-01"
+            merged_params["orderDateTo"] = "2030-12-31"
+        is_supplier_invoice_list = _re.search(r"/supplierinvoice/?$", lp) or _re.search(r"/supplierinvoice\?", lp)
+        if is_supplier_invoice_list and "invoiceDateFrom" not in merged_params:
+            merged_params["invoiceDateFrom"] = "2020-01-01"
+            merged_params["invoiceDateTo"] = "2030-12-31"
+        if "/timesheet/entry" in lp and "dateFrom" not in merged_params:
+            merged_params["dateFrom"] = "2020-01-01"
+            merged_params["dateTo"] = "2030-12-31"
+        if lp.rstrip("/").endswith("/ledger/voucher") and "dateFrom" not in merged_params:
+            merged_params["dateFrom"] = "2020-01-01"
+            merged_params["dateTo"] = "2030-12-31"
+        if "/ledger/posting" in lp and "dateFrom" not in merged_params:
+            merged_params["dateFrom"] = "2020-01-01"
+            merged_params["dateTo"] = "2030-12-31"
+        merged_params = merged_params or None
         # Cache key for deduplication within same request
         cache_key = f"{clean_path}|{json_mod.dumps(merged_params, sort_keys=True, default=str) if merged_params else ''}"
         if cache_key in self._get_cache:
@@ -107,6 +135,20 @@ class TripletexClient:
         if path_params and not json:
             log.warning(f"POST {clean_path}: converting query params to body: {path_params}")
             json = path_params
+        # Fix hourlyRateModel enum values (LLM sends wrong names)
+        if json and "hourlyrates" in clean_path.lower() and "hourlyRateModel" in json:
+            model_val = json["hourlyRateModel"]
+            # Tripletex requires TYPE_ prefix
+            valid_models = {"TYPE_PREDEFINED_HOURLY_RATES", "TYPE_PROJECT_SPECIFIC_HOURLY_RATES",
+                           "TYPE_FIXED_HOURLY_RATE"}
+            if model_val not in valid_models:
+                if "FIXED" in model_val.upper():
+                    json["hourlyRateModel"] = "TYPE_FIXED_HOURLY_RATE"
+                elif "PREDEFINED" in model_val.upper():
+                    json["hourlyRateModel"] = "TYPE_PREDEFINED_HOURLY_RATES"
+                else:
+                    json["hourlyRateModel"] = "TYPE_PROJECT_SPECIFIC_HOURLY_RATES"
+                log.warning(f"Fixed hourlyRateModel: {model_val} → {json['hourlyRateModel']}")
         # Auto-balance voucher postings at the client level (catches run_python too)
         if json and "voucher" in clean_path.lower() and "postings" in json:
             postings = json.get("postings", [])
@@ -143,6 +185,30 @@ class TripletexClient:
     async def put(self, path: str, json: dict | None = None, params: dict | None = None) -> dict:
         clean_path, path_params = _split_path_params(path)
         merged_params = {**(path_params or {}), **(params or {})} or None
+        # Auto-fix createReminder: LLM puts type/date in body instead of params
+        if "/:createReminder" in clean_path or "/:createreminder" in clean_path.lower():
+            merged_params = merged_params or {}
+            if json and isinstance(json, dict):
+                for field in ["type", "date", "includeCharge"]:
+                    if field in json and field not in merged_params:
+                        merged_params[field] = json.pop(field)
+            merged_params.setdefault("type", "REMINDER")
+            merged_params.setdefault("date", __import__("datetime").date.today().isoformat())
+            merged_params.setdefault("includeCharge", "true")
+            merged_params.setdefault("sendMethod", "EMAIL")
+            log.warning(f"Auto-fixed createReminder params: {merged_params}")
+        # Auto-fix invoice send: ensure sendType param
+        if "/:send" in clean_path and "/invoice/" in clean_path:
+            merged_params = merged_params or {}
+            merged_params.setdefault("sendType", "EMAIL")
+        # Auto-fix order→invoice: ensure invoiceDate param
+        if "/:invoice" in clean_path and "/order/" in clean_path:
+            merged_params = merged_params or {}
+            if "invoiceDate" not in merged_params:
+                merged_params["invoiceDate"] = __import__("datetime").date.today().isoformat()
+            if "invoiceDueDate" not in merged_params:
+                from datetime import timedelta
+                merged_params["invoiceDueDate"] = (__import__("datetime").date.today() + timedelta(days=30)).isoformat()
         url = f"{self.base_url}{clean_path}"
         log.info(f"PUT {clean_path} params={merged_params}")
         resp = await self._client.put(url, json=json, params=merged_params)

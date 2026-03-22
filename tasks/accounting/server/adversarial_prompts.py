@@ -742,6 +742,52 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "portuguese_employee_misclassified_as_department",
     },
+
+    # 30. Cost analysis activity duplicate name "General" — 422 x3
+    #     Live: 20260322_094249 — agent tries to create activity named "General" which already exists.
+    #     LLM retries 3x with same name. Should check existing or use account-specific names.
+    {
+        "family": "cost_analysis",
+        "language": "en",
+        "difficulty": "hard",
+        "prompt": (
+            "Total costs increased significantly from January to February 2026. "
+            "Analyze the general ledger and identify the three expense accounts "
+            "with the largest increase in amount. "
+            "Create an internal project for each of the three accounts using the account name. "
+            "Also create an activity for each project."
+        ),
+        "expected_fields": {
+            "months_compared": ["2026-01", "2026-02"],
+            "account_range": "4000-9999",
+            "top_n": 3,
+            "create_projects": True,
+            "create_activities": True,
+            "isInternal": True,
+        },
+        "failure_mode_tested": "cost_analysis_activity_duplicate_name_general",
+    },
+
+    # 31. Bank reconciliation — GET /supplierInvoice missing date params → 422 x6
+    #     Live: 20260322_094334 — LLM searches supplier invoices without required date params.
+    #     Client-level intercept missing for /supplierInvoice (only /invoice was covered).
+    {
+        "family": "bank_reconciliation",
+        "language": "es",
+        "difficulty": "hard",
+        "prompt": (
+            "Concilia el extracto bancario (CSV adjunto) con las facturas abiertas en Tripletex. "
+            "Relaciona los pagos entrantes con las facturas de clientes "
+            "y los pagos salientes con las facturas de proveedores. "
+            "Maneja los pagos parciales correctamente."
+        ),
+        "expected_fields": {
+            "matchIncoming": True,
+            "matchOutgoing": True,
+            "handlePartialPayments": True,
+        },
+        "failure_mode_tested": "bank_recon_supplier_invoice_missing_date_params",
+    },
 ]
 
 
