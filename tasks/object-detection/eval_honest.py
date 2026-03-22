@@ -356,7 +356,7 @@ def main():
             return
 
     # Run inference
-    images = sorted(COCO_IMAGES.glob("*.jpg"))
+    images = sorted(COCO_IMAGES.glob("*.jpg")) + sorted(COCO_IMAGES.glob("*.jpeg"))
     if len(images) != len(gt_by_img):
         print(f"WARNING: Expected {len(gt_by_img)} images, found {len(images)} on disk")
     print(f"\nRunning inference on {len(images)} images...")
