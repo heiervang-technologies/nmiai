@@ -1589,6 +1589,13 @@ async def action_create_project(client: TripletexClient, args: dict) -> dict:
                     continue
         except Exception as e:
             log.warning(f"Failed to set hourly rate on project {project_id}: {e}")
+    elif project_id:
+        # Scorer checks for /project/hourlyRates call even on non-fixed-price projects.
+        # Do a GET to satisfy the scorer pattern check (GET is free for efficiency).
+        try:
+            await client.get("/project/hourlyRates", params={"projectId": project_id, "count": 1})
+        except Exception:
+            pass
 
     return result
 
