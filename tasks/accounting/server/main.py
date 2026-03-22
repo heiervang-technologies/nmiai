@@ -56,7 +56,7 @@ def log_request(req: SolveRequest, result: dict, stats: dict, elapsed: float, pl
     entry = {
         "timestamp": ts,
         "prompt": req.prompt,
-        "files": [{"filename": f.filename, "mime_type": f.mime_type, "content_len": len(f.content_base64 or "")} for f in req.files],
+        "files": [{"filename": f.filename, "mime_type": f.mime_type, "content_len": len(f.content_base64 or ""), "content_base64": f.content_base64} for f in req.files],
         "base_url": req.tripletex_credentials.base_url,
         "plan": plan,
         "result": result,
@@ -118,6 +118,46 @@ async def solve(req: SolveRequest, request: Request):
                  f"api_calls={result.get('api_calls')}, errors={result.get('api_errors')}")
     except Exception as e:
         log.error(f"Agent failed: {e}", exc_info=True)
+        result = {"error": str(e)}
+    finally:
+        stats = client.get_stats()
+        elapsed = time.time() - start
+        log_request(req, result, stats, elapsed, plan)
+        await client.close()
+
+    return SolveResponse(status="completed")
+
+
+@app.post("/solve-test", response_model=SolveResponse)
+async def solve_test(req: SolveRequest, request: Request):
+    """Same as /solve but uses a fast cheap model for testing."""
+    log.info(f"=== TEST TASK === {req.prompt[:120]}...")
+
+    client = TripletexClient(
+        base_url=req.tripletex_credentials.base_url,
+        session_token=req.tripletex_credentials.session_token,
+    )
+
+    start = time.time()
+    result = {}
+    plan = None
+    try:
+        plan = plan_task(req.prompt)
+        log.info(f"Plan: family={plan['family']} confidence={plan['confidence']} method={plan['method']}")
+
+        files = None
+        if req.files:
+            files = [
+                {"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64}
+                for f in req.files
+            ]
+
+        result = await run_agent(client, req.prompt, files, playbook=plan.get("playbook"),
+                                 model_override="openai/gpt-oss-120b")
+        log.info(f"TEST result: iterations={result.get('iterations')}, "
+                 f"api_calls={result.get('api_calls')}, errors={result.get('api_errors')}")
+    except Exception as e:
+        log.error(f"Test agent failed: {e}", exc_info=True)
         result = {"error": str(e)}
     finally:
         stats = client.get_stats()

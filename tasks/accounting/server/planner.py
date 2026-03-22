@@ -122,6 +122,11 @@ def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
                 score += 2.0 if " " in kw else 1.0
                 if " " not in kw and len(kw) >= 10:
                     score += 0.5
+                
+                # HIGH-WEIGHT keywords for employee PDF tasks to override false department/customer matches
+                if family == "employee" and kw in ["tilbudsbrev", "contrato", "offer letter", "angebotsschreiben", "contrato de trabalho"]:
+                    score += 50.0
+
         if score:
             matches[family] = score
 
@@ -201,6 +206,20 @@ def plan_task(prompt: str) -> dict:
     # Try keywords first (free, fast)
     family, confidence = classify_by_keywords(prompt)
     method = "keyword"
+
+    # If NO keyword match, try embedding classifier before LLM fallback
+    if not family:
+        try:
+            from embed_classifier import classify as embed_classify
+            embed_results = embed_classify(prompt, top_k=2)
+            if embed_results and embed_results[0]["score"] > 0.65:
+                embed_top = embed_results[0]
+                log.info(f"Embedding match: {embed_top['family']} (score={embed_top['score']:.3f})")
+                family = embed_top["family"]
+                confidence = "medium"
+                method = "embed"
+        except Exception as e:
+            log.debug(f"Embedding classifier unavailable: {e}")
 
     # If low confidence, use LLM
     if not family or confidence == "low":

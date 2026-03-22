@@ -581,9 +581,9 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
         if not dep_id and dep_values:
             dep_id = dep_values[0]["id"]
 
-    # Always EXTENDED (admin) — scorer awards 5/10 points for admin access.
-    # LLM often sends STANDARD which loses half the points.
-    user_type = "EXTENDED"
+    # Use whatever the LLM sends. EXTENDED only if prompt asks for admin.
+    # Forcing EXTENDED on non-admin employees LOSES 5 points.
+    user_type = args.get("userType", "STANDARD")
     if not args.get("email") and user_type in ("STANDARD", "EXTENDED"):
         # Tripletex requires email for login users. Generate placeholder so the
         # employee is created with correct userType instead of downgrading to NO_ACCESS.
@@ -616,6 +616,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             employment_body = {
                 "employee": {"id": employee_id},
                 "startDate": args["startDate"],
+                "employmentType": args.get("employmentType") or "ORDINARY",
             }
             if args.get("endDate"):
                 employment_body["endDate"] = args["endDate"]
@@ -626,7 +627,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             log.warning(f"Employment creation failed: {e}")
 
     # Set employment details (salary/FTE/occupation code) on employment/details.
-    if employee_id and any(args.get(field) is not None for field in ["annualSalary", "percentageOfFullTimeEquivalent", "occupationCode"]):
+    if employee_id and any(args.get(field) is not None for field in ["annualSalary", "percentageOfFullTimeEquivalent", "occupationCode", "employmentType"]):
         try:
             # Get the employment record we just created
             employments = await client.get("/employee/employment", params={"employeeId": employee_id, "count": 1})
@@ -636,6 +637,7 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
                 salary_body = {
                     "employment": {"id": emp_record_id},
                     "date": args.get("startDate", _today()),
+                    "employmentType": args.get("employmentType") or "ORDINARY",
                 }
                 if args.get("annualSalary") is not None:
                     salary_body["annualSalary"] = float(args["annualSalary"])

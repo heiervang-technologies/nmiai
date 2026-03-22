@@ -122,6 +122,12 @@ class TripletexClient:
             resp.raise_for_status()
         except httpx.HTTPStatusError:
             error_text = resp.text[:500]
+            # Gracefully handle 404 on GET — return empty instead of raising.
+            # DO NOT swallow 422, as that hides validation errors (like missing required params) from the LLM.
+            if resp.status_code == 404:
+                log.warning(f"GET {clean_path} returned 404 — returning empty result")
+                self._log_call("GET", clean_path, 200, params=merged_params)  # Don't count as error
+                return {"values": [], "count": 0}
             self._log_call("GET", clean_path, resp.status_code, error_text, params=merged_params)
             raise
         self._log_call("GET", clean_path, resp.status_code, params=merged_params)
