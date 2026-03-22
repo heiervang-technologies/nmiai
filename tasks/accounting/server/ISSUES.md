@@ -14,13 +14,17 @@ Only %2 (master) restarts the server. Agents commit+push and notify %2.
 | 22 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction | advisor %6 |
 | 21 | YELLOW | planner | "Registrer timer på prosjektet" → project not timesheet | Word "prosjektet" wins over "timer". Need timesheet priority boost or multi-word phrase | all |
 | 20 | YELLOW | planner | "Opprett dimensjon Produktlinje" → product not voucher | "Produkt" in dimension name matches product family | all |
-| 27 | YELLOW | planner | French supplier invoice misclassified as "invoice" | "facture fournisseur" routes to invoice not supplier. POST /incomingInvoice → 403. LLM falls back to voucher. Prompt: "Vous avez recu une facture fournisseur" | failure-analysis |
-| 28 | RED | project | Project lifecycle 4 errors: hourlyRates 422 + incomingInvoice 403 + duplicates | Complex multi-step prompt. hourlyRateModel validation fails, incomingInvoice 403, then duplicate retries on hourlyRates and timesheet. Prompt: "Execute complete project lifecycle for System Upgrade Greenfield" | failure-analysis |
+| 28 | RED | project | Project lifecycle 4 errors: hourlyRates 422 + incomingInvoice 403 + duplicates | Complex multi-step prompt. hourlyRateModel validation fails (sent "FIXED_HOURLY_RATE" not "TYPE_FIXED_HOURLY_RATE"), incomingInvoice 403, then duplicate retries. Mock too permissive — does not validate hourlyRateModel enum. Prompt: "Execute complete project lifecycle for System Upgrade Greenfield" | failure-analysis |
+| 29 | YELLOW | planner | Portuguese salary misrouted to invoice | "pagamento" matches invoice keywords, ties with "salario" for salary. Invoice wins by priority. FIXED: added PT multi-word salary keywords (27c735f6) | harness |
+| 30 | YELLOW | planner | Portuguese cost_analysis misrouted to project | "projeto" in prompt matches project keywords (2.0) beating cost_analysis (1.0). FIXED: added PT multi-word cost_analysis keywords (27c735f6) | harness |
 
 ## FIXED (confirmed or deployed)
 
 | # | Severity | Family | Issue | Fix | Commit |
 |---|----------|--------|-------|-----|--------|
+| F27 | YELLOW | planner | French supplier invoice misclassified as "invoice" | Already fixed by prior keyword update. Planner now correctly routes "facture fournisseur" to supplier. Confirmed via harness. | 27c735f6 |
+| F29 | YELLOW | planner | Portuguese salary misrouted to invoice | Added PT multi-word salary keywords | 27c735f6 |
+| F30 | YELLOW | planner | Portuguese cost_analysis misrouted to project | Added PT multi-word cost_analysis keywords | 27c735f6 |
 | F20 | RED | dimension | 0/8 — dimension on BOTH postings | Strip from bank accounts | de513af |
 | F19 | RED | annual_close | Nynorsk misclassified as cost_analysis | Priority swap + keyword | 9aab175 |
 | F18 | RED | supplier | /incomingInvoice 422: missing externalId | Added externalId + hardened voucher fallback | f7f1309, faad591 |
