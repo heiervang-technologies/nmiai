@@ -887,6 +887,70 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "german_supplier_invoice_lieferantenrechnung_misroute",
     },
+
+    # 36. Issue #26: Payment reversal creates TWO invoices instead of one
+    #     LLM ignores action-layer auto-create signal, creates second invoice.
+    {
+        "family": "invoice",
+        "language": "nb",
+        "difficulty": "hard",
+        "prompt": (
+            "Kunden Nordlys AS (org.nr 912345678) betalte faktura #1 på 25000 kr, "
+            "men betalingen ble returnert av banken. "
+            "Reverser betalingen på den eksisterende fakturaen."
+        ),
+        "expected_fields": {
+            "customerName": "Nordlys AS",
+            "customerOrgNumber": "912345678",
+            "invoiceCount": 1,
+            "paymentReversed": True,
+        },
+        "failure_mode_tested": "payment_reversal_double_invoice_issue26",
+    },
+
+    # 37. Issue #24: Fixed-price project — LLM uses hourlyRates instead of project.fixedprice
+    {
+        "family": "project",
+        "language": "nb",
+        "difficulty": "hard",
+        "prompt": (
+            "Opprett et fastprisprosjekt «Nettside Redesign» for kunden Fjordtech AS "
+            "(org.nr 987654321) med fastpris 150000 kr. "
+            "Prosjektleder er Erik Hansen (erik.hansen@example.org). "
+            "Fakturer 50% av fastprisen som delbetaling."
+        ),
+        "expected_fields": {
+            "projectName": "Nettside Redesign",
+            "customerName": "Fjordtech AS",
+            "customerOrgNumber": "987654321",
+            "fixedPrice": 150000,
+            "invoicePercent": 50,
+            "projectManagerEmail": "erik.hansen@example.org",
+            "isFixedPrice": True,
+        },
+        "failure_mode_tested": "fixed_price_project_hourlyrates_bypass_issue24",
+    },
+
+    # 38. Issue #23: Order→invoice conversion missing invoiceDate
+    {
+        "family": "invoice",
+        "language": "en",
+        "difficulty": "hard",
+        "prompt": (
+            "Create an order for customer Greenfield Ltd (org no. 873288949) "
+            "with one line: 'Consulting services' quantity 10, unit price 1500 NOK, 25% VAT. "
+            "Then convert the order to an invoice and send it to the customer."
+        ),
+        "expected_fields": {
+            "customerName": "Greenfield Ltd",
+            "customerOrgNumber": "873288949",
+            "orderCreated": True,
+            "orderConvertedToInvoice": True,
+            "invoiceDate": True,
+            "shouldSend": True,
+        },
+        "failure_mode_tested": "order_to_invoice_missing_invoicedate_issue23",
+    },
 ]
 
 
