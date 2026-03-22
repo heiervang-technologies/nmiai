@@ -149,12 +149,32 @@ def load_linear_probe(device):
     if not probe_path.exists():
         return None
     state = torch.load(probe_path, map_location=device, weights_only=True)
-    if not isinstance(state, dict) or "weight" not in state:
+    if not isinstance(state, dict):
         return None
-    num_classes, embed_dim = state["weight"].shape
-    probe = torch.nn.Linear(embed_dim, num_classes)
-    probe.load_state_dict(state)
-    return probe.eval().to(device)
+    # Auto-detect MLP vs linear probe
+    if "fc1.weight" in state:
+        # MLP probe: fc1 -> BN -> GELU -> fc2
+        in_dim = state["fc1.weight"].shape[1]
+        hidden = state["fc1.weight"].shape[0]
+        out_dim = state["fc2.weight"].shape[0]
+        import torch.nn as nn
+        class MLPProbe(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.fc1 = nn.Linear(in_dim, hidden)
+                self.bn = nn.BatchNorm1d(hidden)
+                self.fc2 = nn.Linear(hidden, out_dim)
+            def forward(self, x):
+                return self.fc2(F.gelu(self.bn(self.fc1(x))))
+        probe = MLPProbe()
+        probe.load_state_dict(state)
+        return probe.eval().to(device)
+    elif "weight" in state:
+        num_classes, embed_dim = state["weight"].shape
+        probe = torch.nn.Linear(embed_dim, num_classes)
+        probe.load_state_dict(state)
+        return probe.eval().to(device)
+    return None
 
 
 def classify_boxes(image_bgr, boxes, detector_labels, detector_scores, dino_model, transform, linear_probe, device):
