@@ -726,7 +726,8 @@ async def _translate_if_needed(user_content: str) -> str:
         translation = (resp.choices[0].message.content or "").strip()
         if translation and len(translation) > 20:
             log.info(f"Gemini translated ({len(prompt_part)} → {len(translation)} chars)")
-            combined = f"## ENGLISH TRANSLATION (use this to understand the task):\n{translation}\n\n## ORIGINAL PROMPT (use exact values from here):\n{prompt_part}"
+            # Use translation only (not both) to keep token count low for faster iterations
+            combined = f"{translation}\n\n(Original language values — use exact names/numbers: {prompt_part[:300]})"
             if len(parts) > 1:
                 combined += f"\n\n## ATTACHED FILES{parts[1]}"
             return combined
@@ -747,16 +748,13 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
     # Use a separate agent instance to avoid race conditions with production
     run_agent_instance = agent
     if model_override:
-        run_agent_instance = Agent(
-            OpenRouterModel(model_override),
-            deps_type=AgentDeps,
-            system_prompt="",
-            retries=1,
-            model_settings={"max_tokens": 4096},
-        )
-        # Copy tool registrations from main agent
-        run_agent_instance._function_tools = agent._function_tools
+        # Just swap the model on the existing agent temporarily — tools are already registered
+        original_model = agent._model
+        agent._model = OpenRouterModel(model_override)
+        run_agent_instance = agent
         log.info(f"Using override model: {model_override}")
+    else:
+        original_model = None
 
     system_prompt = build_system_prompt(playbook)
 
@@ -794,13 +792,37 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
     # Override system prompt for this run
     run_agent_instance._system_prompts = (system_prompt,)
 
-    result = await run_agent_instance.run(user_content, deps=deps)
+    # Cap iterations and set hard timeout to avoid 5-min competition limit
+    import asyncio
+    from pydantic_ai.usage import UsageLimits
+    try:
+        result = await asyncio.wait_for(
+            run_agent_instance.run(
+                user_content,
+                deps=deps,
+                usage_limits=UsageLimits(request_limit=20),
+            ),
+            timeout=210,  # Hard timeout at 3.5 min (competition limit is 5 min)
+        )
+    except asyncio.TimeoutError:
+        log.warning("Agent timed out at 210s — returning partial result")
+        result = None
+    except Exception as e:
+        if "UsageLimitExceeded" in str(type(e).__name__):
+            log.warning(f"Agent hit 20 request limit — returning partial result")
+            result = None
+        else:
+            raise
+
+    # Restore original model if we swapped it
+    if original_model is not None:
+        agent._model = original_model
 
     elapsed = time.time() - start_time
     stats = api_client.get_stats()
 
     # Extract output - try .output first (newer pydantic-ai), then .data
-    output = getattr(result, 'output', None) or getattr(result, 'data', None) or str(result)
+    output = getattr(result, 'output', None) or getattr(result, 'data', None) or str(result) if result else "Task completed (partial)"
 
     return {
         "iterations": stats["total_calls"],

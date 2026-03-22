@@ -43,6 +43,9 @@ class MockState:
             "travelExpense": [],
             "perDiemCompensation": [],
             "travelCost": [],
+            "employment": [],
+            "employmentDetails": [],
+            "standardTime": [],
         }
         # Pre-populate company
         self.company = {
@@ -191,6 +194,18 @@ async def list_handler(request):
     path = request.url.path
     state.log_call("GET", path, params=params)
     path_lower = path.lower()
+
+    # --- GET Param Validations ---
+    if ("invoice" in path_lower and "paymenttype" not in path_lower) or "supplierinvoice" in path_lower:
+        if "invoiceDateFrom" not in params or "invoiceDateTo" not in params:
+            state.log_validation(path, "GET missing invoiceDateFrom/To params (returns 422 in prod)", "error", params)
+    if "order" in path_lower and "orderline" not in path_lower:
+        if "orderDateFrom" not in params or "orderDateTo" not in params:
+            state.log_validation(path, "GET missing orderDateFrom/To params (returns 422 in prod)", "error", params)
+    if "/timesheet/entry" in path_lower or "/ledger/voucher" in path_lower or "/ledger/posting" in path_lower:
+        if "dateFrom" not in params or "dateTo" not in params:
+            state.log_validation(path, "GET missing dateFrom/To params (returns 422 in prod)", "error", params)
+
     # Travel expense sub-resources
     if "travelexpense/paymenttype" in path_lower:
         return JSONResponse(_wrap_list([
@@ -211,6 +226,13 @@ async def list_handler(request):
         ]))
     if "perdiemcompensation" in path_lower:
         return JSONResponse(_wrap_list(state.entities.get("perDiemCompensation", [])))
+    # Route employee sub-entity GETs to correct buckets (most specific first)
+    if "/employment/details" in path_lower:
+        return JSONResponse(_wrap_list(state.entities.get("employmentDetails", [])))
+    if "/employment" in path_lower and "/details" not in path_lower:
+        return JSONResponse(_wrap_list(state.entities.get("employment", [])))
+    if "/standardtime" in path_lower:
+        return JSONResponse(_wrap_list(state.entities.get("standardTime", [])))
     # Figure out entity type from path
     for etype in state.entities:
         if etype.lower() in path_lower or etype.replace("_", "").lower() in path_lower:
@@ -291,12 +313,26 @@ async def create_handler(request):
                 if abs(total) > 0.01:
                     state.log_validation(path, f"Unbalanced voucher: postings sum to {total}", "error", body)
 
-        # 7. Employee: firstName + lastName required
-        if "employee" in path_lower:
+        # 7. Employee: firstName + lastName required (only for top-level /employee, not /employee/employment etc)
+        if path_lower.rstrip("/").endswith("/employee") or re.match(r".*/employee$", path_lower):
             if not body.get("firstName"):
                 state.log_validation(path, "Employee missing firstName", "error", body)
             if not body.get("lastName"):
                 state.log_validation(path, "Employee missing lastName", "error", body)
+
+        # 8. Activity: name and activityType required
+        if path_lower.rstrip("/").endswith("/activity"):
+            if not body.get("name"):
+                state.log_validation(path, "Activity missing name", "error", body)
+            if not body.get("activityType"):
+                state.log_validation(path, "Activity missing activityType", "error", body)
+
+        # 9. Department: name and departmentNumber required
+        if path_lower.rstrip("/").endswith("/department"):
+            if not body.get("name"):
+                state.log_validation(path, "Department missing name", "error", body)
+            if not body.get("departmentNumber"):
+                state.log_validation(path, "Department missing departmentNumber", "error", body)
 
     entity = dict(body or {})
     entity["id"] = _id()
@@ -316,11 +352,26 @@ async def create_handler(request):
         stored = True
 
     if not stored:
-        for etype in state.entities:
-            if etype.lower() in path_lower or etype.replace("_", "").lower() in path_lower:
-                state.entities[etype].append(entity)
-                stored = True
-                break
+        # Route employee sub-entity paths to their own buckets
+        if "/employment/details" in path_lower:
+            state.entities["employmentDetails"].append(entity)
+            stored = True
+        elif "/employment" in path_lower and "/details" not in path_lower:
+            state.entities["employment"].append(entity)
+            stored = True
+        elif "/standardtime" in path_lower:
+            state.entities["standardTime"].append(entity)
+            stored = True
+        else:
+            # Skip other sub-entity paths (e.g. /cost, /perDiem, /projectActivity)
+            sub_entity_patterns = ["/cost", "/perDiem", "/projectActivity"]
+            is_sub_entity = any(sub in path_lower for sub in sub_entity_patterns)
+            if not is_sub_entity:
+                for etype in state.entities:
+                    if etype.lower() in path_lower or etype.replace("_", "").lower() in path_lower:
+                        state.entities[etype].append(entity)
+                        stored = True
+                        break
 
     if not stored:
         if "voucher" in path_lower:
@@ -412,6 +463,16 @@ async def catchall_post(request):
                         desc = line.get("description", "")
                         if not _FOOD_KEYWORDS.search(desc):
                             state.log_validation(path, f"Wrong VAT: food rate (id=31) on non-food item '{desc}'", "error", body)
+        if "activity" in path_lower:
+            if not body.get("name"):
+                state.log_validation(path, "Activity missing name", "error", body)
+            if not body.get("activityType"):
+                state.log_validation(path, "Activity missing activityType", "error", body)
+        if "department" in path_lower:
+            if not body.get("name"):
+                state.log_validation(path, "Department missing name", "error", body)
+            if not body.get("departmentNumber"):
+                state.log_validation(path, "Department missing departmentNumber", "error", body)
     entity = dict(body or {})
     entity["id"] = _id()
     return JSONResponse(_wrap(entity), status_code=201)

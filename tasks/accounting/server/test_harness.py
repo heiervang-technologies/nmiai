@@ -46,6 +46,11 @@ FAMILY_EXPECTATIONS = {
     "project": {"entities": {"project": 1}},
     "voucher": {"entities": {"voucher": 1}},
     "salary": {"path_contains": ["/salary"]},
+    "department": {"entities": {"department": 1}},
+    "product": {"entities": {"product": 1}},
+    "customer": {"entities": {"customer": 1}},
+    "bank_reconciliation": {"path_contains": ["/bank/reconciliation"]},
+    "cost_analysis": {"entities": {"activity": 1}},
 }
 
 _REVERSAL_PATTERN = re.compile(
