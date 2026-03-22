@@ -1,45 +1,63 @@
 # Accounting Agent Issue Tracker
 
 All agents: check this before pushing fixes. Update status when fixing.
+Only %2 (master) restarts the server. Agents commit+push and notify %2.
 
-## OPEN
+## OPEN (Day 4 priority)
 
 | # | Severity | Family | Issue | Root Cause | Owner |
 |---|----------|--------|-------|------------|-------|
-| 20 | RED | dimension | 0/8 — dimension on BOTH postings (expense+bank) | Strip freeAccountingDimension from bank accts + multi-lang keywords. Fix: de513af (confirmed root cause by comparing 13/13 vs 0/8 logs) | blindspot %45 |
-| 19 | YELLOW | annual_close | 0/8 — Nynorsk "månavslutninga" misclassified | Added Nynorsk keyword + priority swap. Fix: 9aab175 + de513af | blindspot %45 |
-| 21 | YELLOW | invoice | PUT /order/:invoice 422 — missing invoiceDate param (4x retries) | Auto-inject TODAY as invoiceDate in generic_api_call PUT handler. Fix: 2747d1d | regression-tracker %30 |
-| 20 | YELLOW | invoice | PUT /invoice/:send missing sendType param | LLM calls /:send without sendType. Fix: auto-inject sendType=EMAIL (8ff2072). | regression %30 |
-| 19 | YELLOW | invoice | PUT /order/:invoice missing invoiceDate despite auto-add | LLM calls /:invoice but invoiceDate param not reaching API (4x 422). Auto-add guard exists at line 2592 in actions.py but may hit during server reload. | regression %30 |
-| 17 | YELLOW | invoice | 6.5/8 — "Crie um pedido" order->invoice flow missing | Agent goes straight to invoice instead of creating order first. Fix deployed (12e99cb) but unconfirmed. | blindspot %3 |
-| 16 | YELLOW | project | 4.5/8 — fixed-price project uses wrong tool | LLM used create_project + manual invoice instead of create_fixed_price_project_invoice. Fix deployed (ec4b8d1) but unconfirmed. | blindspot %3 |
-| 15 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction. Needs PATH A attempt. | advisor %6 |
+| 26 | RED | invoice | Payment reversal creates TWO invoices | LLM ignores action-layer auto-create signal, creates second invoice. Fix deployed (3b6c6f3f) — action returns {COMPLETE:true} — UNCONFIRMED | failure-analysis %5 |
+| 25 | RED | invoice | "formation" triggers food VAT detection | Word "formation" falsely matches food signals. vatTypeId=31 applied to 25% standard item. Fix needed: tighten food keyword list | blindspot %3 |
+| 24 | YELLOW | project | 4.5/8 — fixed-price project LLM ignores typed tool | LLM uses hourlyRates.fixedRate instead of project.fixedprice. Action-layer intercept deployed (e63eaf13, 9d3da67f) — UNCONFIRMED | advisor %6 |
+| 23 | YELLOW | invoice | 6.5/8 — order→invoice flow check 4 fails | Order created but /:invoice conversion needs bank account + invoiceDate. Fix deployed (08bcfdd) — UNCONFIRMED | blindspot %3 |
+| 22 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction | advisor %6 |
+| 21 | YELLOW | planner | "Registrer timer på prosjektet" → project not timesheet | Word "prosjektet" wins over "timer". Need timesheet priority boost or multi-word phrase | all |
+| 20 | YELLOW | planner | "Opprett dimensjon Produktlinje" → product not voucher | "Produkt" in dimension name matches product family | all |
 
-## FIXED (confirmed by dashboard)
+## FIXED (confirmed or deployed)
 
 | # | Severity | Family | Issue | Fix | Commit |
 |---|----------|--------|-------|-----|--------|
-| 18 | RED | supplier | 0/8 — /incomingInvoice 422: missing externalId | Added externalId to orderLines + vendorId extraction from invoiceHeader | f7f1309 |
-| 14 | RED | invoice | 0% VAT sent as id=31 (15% food) | Hard override in action layer for exempt keywords | b8f9814 |
-| 13 | RED | invoice | Planner duplicate keyword bug — product won over invoice | Dedup keywords at load time | b8f9814 |
-| 12 | RED | invoice | Payment classified as "customer" not "invoice" | Added payment keywords in 6 languages | 0887e92 |
-| 11 | RED | invoice | Payment used excl-VAT amount instead of incl-VAT | Auto-correct from invoice outstanding balance | 2c8c589 |
-| 10 | YELLOW | employee | 11/14 — userType=NO_ACCESS, no email from PDF | PDF limit 3000->6000, never downgrade userType | ee2e5c9 |
-| 9 | YELLOW | travel | 4.5/8 — redundant /expense/:deliver call (wrong endpoint) | Redirect /expense/ to /travelExpense/ | cdc1a2f |
-| 8 | YELLOW | travel | isForeignTravel always False, isDayTrip wrong | Derive from countryCode | 9450b5d |
-| 7 | YELLOW | product | VAT cascade tries all types (13 errors avg) | Limited to 3 attempts | 9450b5d |
-| 6 | YELLOW | employee | Missing department defaults to first | Create department from prompt | 9450b5d |
-| 5 | RED | all | 0/8 — server --reload causes 1-2s downtime | Removed --reload, manual restarts only | operational |
-| 4 | YELLOW | cost_analysis | Activity creation fails (empty body) | Guard against None/empty, activity via /activity | 0c7a553 |
-| 3 | YELLOW | invoice | Due date = invoice date (same day) | Default +30 days | 12e99cb |
-| 2 | YELLOW | timesheet | Separate tools instead of register_timesheet_and_invoice | System prompt reinforced combined tool routing | 2c8c589 |
-| 1 | YELLOW | cost_analysis | Playbook says DON'T create activities but scorer expects them | Updated playbook to create GENERAL_ACTIVITY | manual edit |
+| F20 | RED | dimension | 0/8 — dimension on BOTH postings | Strip from bank accounts | de513af |
+| F19 | RED | annual_close | Nynorsk misclassified as cost_analysis | Priority swap + keyword | 9aab175 |
+| F18 | RED | supplier | /incomingInvoice 422: missing externalId | Added externalId + hardened voucher fallback | f7f1309, faad591 |
+| F17 | RED | invoice | 0% VAT sent as id=31 (15% food) | Hard override for exempt keywords + vatPercentage field | b8f9814, 9144b7b, c4cfd240 |
+| F16 | RED | invoice | Payment classified as "customer" | Added payment keywords in 6 languages | 0887e92 |
+| F15 | RED | invoice | Payment used excl-VAT amount | Auto-correct from invoice outstanding balance | 2c8c589 |
+| F14 | RED | all | Server --reload causes 0/8 during restarts | Removed --reload, only master restarts | operational |
+| F13 | RED | invoice | order/:invoice 422 missing invoiceDate | Auto-inject + bank account setup + dueDate +30 | 08bcfdd |
+| F12 | YELLOW | employee | userType=NO_ACCESS, no email from PDF | PDF limit 6000 chars, placeholder email, never downgrade | ee2e5c9 |
+| F11 | YELLOW | travel | Redundant /expense/:deliver (wrong endpoint) | Redirect /expense/ → /travelExpense/ | cdc1a2f |
+| F10 | YELLOW | travel | isForeignTravel always False | Derive from countryCode | 9450b5d |
+| F9 | YELLOW | product | VAT cascade tries all types (13 errors) | Limited to 3 attempts | 9450b5d |
+| F8 | YELLOW | employee | Department defaults to first | Create from prompt | 9450b5d |
+| F7 | YELLOW | department | departmentNumber collision with default | Auto-assign next available | 5c1e462 |
+| F6 | YELLOW | cost_analysis | Activity creation empty body | Guard + GENERAL_ACTIVITY via /activity | 0c7a553 |
+| F5 | YELLOW | invoice | dueDate = invoiceDate | Default +30 days | 12e99cb |
+| F4 | YELLOW | timesheet | Separate tools instead of combined | System prompt routing | 2c8c589 |
+| F3 | YELLOW | invoice | Credit note on pre-populated invoice | Must create customer+invoice first | d39dc8f |
+| F2 | YELLOW | invoice | /invoice/:send missing sendType | Auto-inject sendType=EMAIL | 8ff2072 |
+| F1 | YELLOW | customer | "cliente" keyword gives customer double score | Removed "client" from customer, dedup | e1ac6097 |
 
-## RULES (hard code guards, not prompt hints)
+## RULES (hard code guards — prompt hints unreliable)
 
-- **0% VAT**: Action layer forces vatType.id=5 when description contains befreit/exempt/fritatt/isento/0%
-- **No --reload**: Server must be restarted manually after code changes
+- **0% VAT**: Action layer forces vatType.id=5 when description has exempt keywords
+- **Non-food vatType=31 override**: If vatTypeId=31 but description has no food keywords → 0% exempt
+- **No --reload**: Server restarted manually by master (%2) only
 - **Payment amount**: Uses invoice outstanding balance, not prompt amount
+- **Payment reversal**: Action layer creates full chain (customer→invoice→+payment→-payment)
 - **userType**: Never downgrades to NO_ACCESS, generates placeholder email
-- **Travel redirect**: /expense/ -> /travelExpense/ automatically
-- **Dimension stripping**: freeAccountingDimension* stripped from bank account (1920 etc) postings in vouchers
+- **Travel redirect**: /expense/ → /travelExpense/ automatically
+- **Dimension stripping**: freeAccountingDimension* stripped from bank account postings
+- **Fixed-price intercept**: hourlyRates PUT with fixedRate → redirect to typed action
+- **Fresh sandbox**: ALWAYS create entities first, never assume pre-existing data
+- **vatPercentage required**: System prompt requires BOTH vatTypeId AND vatPercentage on order lines
+
+## Score History
+
+| Time | Score | Rank | Notes |
+|------|-------|------|-------|
+| Day 2 evening | 45.8 | #40 | Before major refactor |
+| Day 3 pre-reboot | 71.0 | #21 | Peak before PC freeze |
+| Day 3 post-fixes | 71.5 | #22-26 | After 20+ fixes, 300 submissions |
