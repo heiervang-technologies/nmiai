@@ -788,6 +788,83 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "bank_recon_supplier_invoice_missing_date_params",
     },
+
+    # 32. Employee from PDF — Spanish, 0 errors but only 3/8 score
+    #     Live: 20260322_094937 — all fields extracted correctly but scorer expects more.
+    #     Agent created: employee, department, employment, employment/details, standardTime.
+    #     Scored 3/8 despite doing everything right. Scorer gap investigation needed.
+    {
+        "family": "employee",
+        "language": "es",
+        "difficulty": "hard",
+        "prompt": (
+            "Has recibido un contrato de trabajo (ver PDF adjunto). "
+            "Crea el empleado en Tripletex con todos los datos del contrato: "
+            "numero de identidad, fecha de nacimiento, departamento, "
+            "codigo de ocupacion, salario, porcentaje de empleo y fecha de inicio."
+        ),
+        "expected_fields": {
+            "firstName": "Lucía",
+            "lastName": "Martínez",
+            "email": "lucia.martinez@example.org",
+            "dateOfBirth": "1998-04-17",
+            "nationalIdentityNumber": "17049848676",
+            "department": "Markedsføring",
+            "occupationCode": "1211",
+            "annualSalary": 550000,
+            "employmentPercentage": 100,
+            "startDate": "2026-06-15",
+            "hoursPerDay": 7.5,
+            "userType": "EXTENDED",
+        },
+        "failure_mode_tested": "employee_pdf_spanish_all_fields_but_low_score",
+    },
+
+    # 33. Simple employee — English, 0 errors but only 2/7 score
+    #     Live: 20260322_095248 — simple prompt, agent guessed department "Drift" not in prompt.
+    #     Only 5 API calls. Missing employment details because prompt didn't mention them.
+    {
+        "family": "employee",
+        "language": "en",
+        "difficulty": "easy",
+        "prompt": (
+            "We have a new employee named Thomas Harris, born 4. June 1991. "
+            "Please create them as an employee with email thomas.harris@example.org "
+            "and start date 6. October 2026."
+        ),
+        "expected_fields": {
+            "firstName": "Thomas",
+            "lastName": "Harris",
+            "email": "thomas.harris@example.org",
+            "dateOfBirth": "1991-06-04",
+            "startDate": "2026-10-06",
+        },
+        "failure_mode_tested": "simple_employee_low_score_missing_fields",
+    },
+
+    # 34. French supplier invoice with PDF — incomingInvoice 403, voucher fallback scores 3/8
+    #     Live: 20260322_095237 — planner correctly routes to supplier, but voucher fallback
+    #     only gets partial score. Need to understand what scorer fields the voucher misses.
+    {
+        "family": "supplier",
+        "language": "fr",
+        "difficulty": "hard",
+        "prompt": (
+            "Vous avez recu une facture fournisseur (voir PDF ci-joint). "
+            "Enregistrez la facture dans Tripletex. "
+            "Creez le fournisseur s'il n'existe pas. "
+            "Utilisez le bon compte de charges et la TVA deductible."
+        ),
+        "expected_fields": {
+            "supplierName": "Forêt SARL",
+            "supplierOrgNumber": "900969147",
+            "invoiceNumber": "INV-2026-1881",
+            "chargeAccount": "6540",
+            "amountIncludingVat": 30562,
+            "voucherFallback": True,
+        },
+        "failure_mode_tested": "supplier_invoice_403_voucher_fallback_partial_score",
+    },
 ]
 
 
