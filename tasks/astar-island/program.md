@@ -1,189 +1,95 @@
 # autoresearch: astar-island
 
-This is the Astar Island variant of the `autoresearch` pattern.
-
-The loop is split in two:
-
-- offline, honest validation on completed rounds
-- live, conservative round execution with a safe-best submission path
-
-## Mission
-
-- Win the Astar Island task.
-- Primary optimization target: lower leave-one-round-out mean weighted KL.
-- Live objective: deploy the best validated predictor on every remaining round, without overwriting a stronger safe submission.
-- Strategic stance: later rounds are worth more, so live policy should bias toward safe exploitation unless held-out CV gives strong evidence for change.
-
-## Current Reality
-
-- Current live submission path is the clean `regime_predictor.py` pipeline driven by `auto_watcher.sh`.
-- `round_optimizer.py` and UNet-style alternatives are not the live path right now; the watcher was rewritten clean after leakage concerns.
-- The active live pattern still uses `tau=20`, a `2x` port boost on coastal cells, and a `50`-query budget across `5` seeds.
-- The trusted validation signal is leave-one-round-out CV on completed round ground truth only.
-- Current definitive offline number: `wKL=0.0705` on `75` seeds.
-- In-sample benchmarks are not decision-grade.
-- `auto_watcher.sh` is the current safe-best live policy and should not be overridden casually.
-- The watcher has been rewritten clean to remove the leaked UNet path; treat the current regime-predictor watcher as the production baseline.
-- The known recent bug is watcher overwrite risk: no challenger should replace a stronger submission without explicit held-out evidence.
+This is an experiment to have the LLM autonomously improve an island simulator predictor.
 
 ## Setup
 
-Before starting the loop:
+To set up a new experiment, work with the user to:
 
-1. Fetch any missing ground truth from completed rounds.
-2. Confirm `tasks/astar-island/ground_truth/` is current.
-3. Confirm `tasks/astar-island/autoresearch_results.tsv` exists.
-4. Confirm `eval_system.py` or equivalent honest CV path is using only held-out rounds for evaluation.
-5. Confirm GT ingestion from completed rounds feeds the next predictor build automatically or with a single safe command.
-6. Treat `auto_watcher.sh` as production until a challenger proves itself out-of-sample.
+1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar22`).
+2. **Read the in-scope files**:
+   - `tasks/astar-island/README.md` — task context, API, scoring.
+   - `tasks/astar-island/regime_predictor.py` — the predictor. This is the file you modify.
+   - `tasks/astar-island/eval_cv.py` — leave-one-round-out cross-validation. Read-only unless running validation refinement.
+   - `tasks/astar-island/ground_truth/` — completed round data.
+3. **Verify ground truth is current**: Check that `ground_truth/` contains data from completed rounds.
+4. **Initialize results.tsv** with the header row.
+5. **Confirm and go**.
 
-## In-Scope Files
+## Experimentation
 
-Read these first:
+Each experiment runs leave-one-round-out cross-validation on completed rounds. No live API calls needed — this is pure offline evaluation.
 
-- `tasks/astar-island/README.md`
-- `tasks/astar-island/regime_predictor.py`
-- `tasks/astar-island/eval_system.py`
-- `tasks/astar-island/auto_watcher.sh`
-- `tasks/astar-island/query_runner.py`
-- `tasks/astar-island/eval_final.md`
-- `tasks/astar-island/advisor_final.md`
-- `tasks/astar-island/gemini_advice.md`
+You launch evaluation as: `python tasks/astar-island/eval_cv.py`
 
-## Trusted Metrics
+**What you CAN do:**
+- Modify `regime_predictor.py` — this is the only file you edit. Everything is fair game: regime detection, prior construction, query strategy, tau parameter, port estimation, structural zeros, population modeling, Bayesian updates.
 
-Use this ranking of trust:
+**What you CANNOT do:**
+- Modify `eval_cv.py` in the optimization loop. It is read-only.
+- Use more than 50 queries per round (competition budget).
+- Access future round data during prediction (the CV harness enforces this).
 
-1. Leave-one-round-out CV mean weighted KL.
-2. Per-round held-out KL consistency and variance.
-3. Live competition score after submission.
-4. In-sample results: ignore for keep/discard.
+**The goal is simple: get the lowest `mean_wkl`.** This is the mean entropy-weighted KL divergence across held-out rounds. Lower is better.
 
-## What You Can Change
+**Simplicity criterion**: All else being equal, simpler is better. A predictor with fewer special cases that achieves equal wKL is preferred.
 
-- Predictor logic.
-- Query selection logic.
-- Honest CV harnesses.
-- GT ingestion / rebuild automation between rounds.
-- Logging, diagnostics, and frontier tracking.
+## Output format
 
-## Parallel Sidecars
+The evaluator prints:
 
-The task lead owns the critical path.
-
-Spawn regular ephemeral sub-agents only for bounded sidecar work that does not block the next decision, for example:
-
-- GT-ingestion checks
-- CV/frontier refreshes
-- plots, diagnostics, and round postmortems
-
-Do not delegate:
-
-- live submission choice
-- watcher override decisions
-- strategic regime pivots without held-out evidence
-
-## What You Must Not Do
-
-- Do not ship a change based only on in-sample gains.
-- Do not override the live safe-best pipeline unless the challenger beats it by more than `5%` on held-out CV.
-- Do not spend live rounds on experiments that have no honest offline support.
-
-## Results Logging
-
-Log every serious offline or live evaluation to `tasks/astar-island/autoresearch_results.tsv`.
-
-Columns:
-
-```tsv
-timestamp	experiment_id	model	cv_weighted_kl	cv_rounds	live_score	queries_used	compute_minutes	submissions_used	override_safe_best	status	description
+```
+---
+mean_wkl:         0.0580
+std_wkl:          0.0120
+worst_round:      R12
+worst_wkl:        0.0890
+rounds_evaluated: 15
+queries_per_round: 50
 ```
 
-Status values:
+Extract: `grep "^mean_wkl:" run.log`
 
-- `keep`
-- `discard`
-- `safe_best`
-- `challenger`
-- `manual_review`
+## Logging results
 
-## Required Live Loop
+Log to `results.tsv` (tab-separated).
 
-Autoresearch should preserve this production rhythm:
-
-1. Between rounds: fetch GT, rebuild priors, rerun honest CV, update frontier.
-2. Round opens: ingest round metadata and announce.
-3. At about 60 minutes after open: spend the query budget according to the live policy, currently a `50`-query / `5`-seed pattern under the clean regime-predictor watcher.
-4. At about 30 minutes before close: submit with the current safe-best predictor.
-5. After scoring: compare live score to offline expectation and diagnose misses.
-
-## The Loop
-
-Loop forever unless interrupted.
-
-1. Fetch newly completed ground truth.
-2. Rebuild or refresh the predictor.
-3. Run leave-one-round-out CV.
-4. Record mean weighted KL, per-round breakdowns, regime-specific behavior, and variance.
-5. If a challenger beats safe-best by more than `5%` on held-out CV, mark it as a manual promotion candidate.
-6. Otherwise keep the live watcher unchanged.
-7. Bias late-round policy toward exploitation unless the challenger evidence is clearly strong.
-8. After each live round, log the realized score and compare it to the CV-implied expectation.
-
-## Keep / Discard Rules
-
-- Keep changes that improve held-out mean weighted KL and do not materially worsen variance.
-- Keep changes that specifically improve prosperous-round behavior without hurting moderate/harsh rounds too much.
-- Discard changes that only help in-sample.
-- Discard changes that weaken the watcher safety guarantees.
-
-## Known Bottlenecks
-
-- Prosperous rounds remain the hardest regime.
-- Regime detection is still the key breakthrough candidate and must be measured on honest CV, not anecdotes.
-- `R12` port underestimation is the main remaining bottleneck.
-- UNet is explicitly ruled out for deployment after honest CV showed leakage-driven overestimation; keep it out of the live path.
-- Structural zeros, `tau=20`, and coastal port boosting should be judged by honest CV and live round stability, not anecdotes.
-- Round-to-round variance is still too high.
-
-## Pareto Frontier
-
-Maintain the frontier on at least these axes:
-
-- `cv_weighted_kl` vs `compute_minutes`
-- `live_score` vs `submissions_used`
-- `cv_weighted_kl` vs `queries_used`
-
-Suggested command:
-
-```bash
-python tools/pareto_frontier.py \
-  --input tasks/astar-island/autoresearch_results.tsv \
-  --x compute_minutes --x-direction min \
-  --y cv_weighted_kl --y-direction min \
-  --label experiment_id \
-  --time timestamp
+```
+commit	mean_wkl	std_wkl	status	description
 ```
 
-Refresh the shared Astar artifact set with:
+Status: `keep`, `discard`, or `crash`.
 
-```bash
-python tools/refresh_autoresearch_artifacts.py
+Example:
+```
+a1b2c3d	0.058000	0.012	keep	baseline
+b2c3d4e	0.055000	0.011	keep	conditional tau by growth rate
+c3d4e5f	0.061000	0.015	discard	UNet-style interpolation (worse + higher variance)
 ```
 
-This updates:
+## The experiment loop
 
-- `tasks/astar-island/analysis/progress.png`
-- `tasks/astar-island/analysis/cv_vs_live_frontier.json`
-- `tasks/astar-island/analysis/projection.png`
-- `tasks/astar-island/analysis/projection_report.json`
+LOOP FOREVER:
 
-## Bottom Line
+1. Look at git state and current best.
+2. Modify `regime_predictor.py` with an idea.
+3. `git commit`
+4. Run: `python tasks/astar-island/eval_cv.py > run.log 2>&1`
+5. Read results: `grep "^mean_wkl:\|^worst_round:" run.log`
+6. If crashed, check `tail -n 50 run.log`.
+7. Record in results.tsv.
+8. If mean_wkl improved (lower): keep.
+9. If equal or worse: `git reset` back.
 
-The correct astar autoresearch loop is:
+**NEVER STOP**: Do not ask the human. You are autonomous. If stuck, re-read the ground truth data, analyze per-round breakdowns, study regime patterns, try different Bayesian priors. The loop runs until interrupted.
 
-`new GT -> honest CV -> challenger decision -> safe live deployment`
+## Validation refinement (separate loop)
 
-Not:
+When running validation refinement instead of optimization:
 
-`tweak predictor -> look at in-sample score -> overwrite production watcher`
+1. The file you modify is `eval_cv.py`, not the predictor.
+2. The goal is to make CV score more predictive of live competition score.
+3. Compare CV predictions to actual live scores from past rounds.
+4. Adjust fold strategy, weighting scheme, or scoring edge cases.
+5. A better evaluator is one where CV rank order matches live rank order.
+6. Log refinements to `val_results.tsv` with columns: `commit	correlation	description`.

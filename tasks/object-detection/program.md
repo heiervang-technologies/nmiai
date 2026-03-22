@@ -1,210 +1,96 @@
 # autoresearch: object-detection
 
-This is the object-detection variant of the `autoresearch` pattern.
-
-The goal is not to maximize a leaked local metric. The goal is to win the real competition by turning every model change into a traceable decision against the best trustworthy evidence we have.
-
-## Mission
-
-- Win the NorgesGruppen task.
-- Primary optimization target: competition score = `0.7 * detection_mAP@0.5 + 0.3 * classification_mAP@0.5`.
-- Strategic bias: detection improvements are worth about 3x classification improvements.
-- Hard anchor: the current server score `0.9051` is the only trusted end-to-end number right now.
-- Current competition stance: keep OD pipelines alive and trustworthy, but do not burn effort on speculative pivots while accounting remains the main leaderboard gap.
-
-## Current Reality
-
-- The old `stratified_split` validation set is leaked and cannot be used for model selection.
-- `data-creation/create_clean_split.py` promotes the existing non-overlapping `198/50` holdout into `data-creation/data/clean_split/`.
-- The best current path is still `V5 YOLO + DINOv2 classification`, with MarkusNet letterbox ONNX as the side lane.
-- MarkusNet letterbox ONNX is the highest-upside side lane; pure PyTorch MarkusNet and dynamic ONNX export remain too risky.
-- Titan is online for clean retraining, but local model selection is still blocked until clean eval remains stable and leakage-free.
-- Submission slots are precious. Do not auto-submit.
+This is an experiment to have the LLM autonomously improve an object detection submission.
 
 ## Setup
 
-Before running the loop, verify or do this work:
+To set up a new experiment, work with the user to:
 
-1. Confirm the clean split exists at `tasks/object-detection/data-creation/data/clean_split/`.
-2. Read `tasks/object-detection/data-creation/data/clean_split/leakage_audit.json` and treat it as the local eval source of truth.
-3. Do not trust any result produced from `stratified_split`.
-4. Make sure every evaluator, leaderboard, and watcher is pointed at `clean_split` explicitly.
-5. Initialize `tasks/object-detection/autoresearch_results.tsv` if missing.
-6. Initialize or update experiment provenance tracking before starting a new batch.
-7. Confirm packaging constraints are still respected: submission ZIP under `420MB`, runtime under `360s`, L4 GPU, no network, restricted imports.
+1. **Agree on a run tag**: propose a tag based on today's date (e.g. `mar22`). The branch `autoresearch/<tag>` must not already exist.
+2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current master.
+3. **Read the in-scope files**:
+   - `tasks/object-detection/README.md` — task context, metrics, constraints.
+   - `tasks/object-detection/submission-markusnet/run.py` — the submission script. This is the file you modify.
+   - `tasks/object-detection/eval_local.py` — the local evaluator. Read-only unless running the validation refinement loop.
+4. **Verify data exists**: Check that the validation set exists at `tasks/object-detection/data-creation/data/clean_split/`. If not, tell the human.
+5. **Initialize results.tsv**: Create `results.tsv` with just the header row. The baseline will be recorded after the first run.
+6. **Confirm and go**.
 
-## In-Scope Files
+## Experimentation
 
-Read these first:
+Each experiment evaluates a submission against the local validation set. The submission runs inside the same constraints as the competition: NVIDIA GPU, no network, 360s timeout, 420MB ZIP limit.
 
-- `tasks/object-detection/README.md`
-- `tasks/object-detection/data_leakage_report.json`
-- `tasks/object-detection/data-creation/create_clean_split.py`
-- `tasks/object-detection/data-creation/build_final_dataset.py`
-- `tasks/object-detection/vlm-approach/eval_stratified_map.py`
-- `tasks/object-detection/vlm-approach/build_val_leaderboard.py`
-- `tasks/object-detection/vlm-approach/watch_checkpoints.py`
-- `tasks/object-detection/yolo-approach/export_v5_submission.py`
+You launch evaluation as: `python tasks/object-detection/eval_local.py`
 
-Read these when working on a specific branch of the stack:
+**What you CAN do:**
+- Modify `run.py` — this is the only file you edit. Everything is fair game: model loading, preprocessing, postprocessing, NMS thresholds, TTA, confidence filtering, class remapping, ensemble logic.
 
-- `tasks/object-detection/submission-single-model/run.py`
-- `tasks/object-detection/submission-markusnet/run.py`
-- `tasks/object-detection/submission-markusnet/run_fast.py`
+**What you CANNOT do:**
+- Modify `eval_local.py` in the optimization loop. It is read-only. It contains the fixed evaluation.
+- Add dependencies that aren't available in the competition sandbox.
+- Exceed the 420MB ZIP or 360s runtime constraint.
 
-## Trusted Metrics
+**The goal is simple: get the highest `combined_map`.** The metric is `0.7 * detection_mAP@0.5 + 0.3 * classification_mAP@0.5`. Detection improvements are worth ~2.3x classification improvements.
 
-Use this ranking of trust:
+**Simplicity criterion**: All else being equal, simpler is better. A small improvement that adds fragile complexity is not worth it. Removing code for equal results is a win.
 
-1. Private server score from competition submissions.
-2. Clean validation score on `clean_split`.
-3. External-data training metrics that do not touch the leaked local split.
-4. Everything measured on `stratified_split`: ignore for selection.
+## Output format
 
-## What You Can Change
+The evaluator prints:
 
-- Eval automation, leaderboard generation, checkpoint watchers, export/package flows.
-- Clean-val threshold, NMS, and TTA sweeps.
-- Experiment tracking and provenance files.
-- V5 YOLO `best.pt -> ONNX -> ZIP` automation and continuous checkpoint scoring.
-- Training configs and post-processing if they can be evaluated on clean val or justified for server testing.
-
-## Parallel Sidecars
-
-The task lead owns the critical path.
-
-Spawn regular ephemeral sub-agents only for bounded sidecar work that does not block the next decision, for example:
-
-- clean-val sweeps, leaderboard refreshes, plots, or provenance/report generation
-- checkpoint export/package verification
-- tracker maintenance and frontier updates
-
-Do not delegate:
-
-- submission decisions
-- strategic pivots
-- final keep/discard judgment on borderline candidates
-
-## What You Must Not Do
-
-- Do not auto-submit to the competition.
-- Do not use leaked val metrics for any keep/discard decision.
-- Do not start CPU training.
-- Do not spend time on blocked paths unless the human explicitly reopens them.
-- Do not treat local leaked-val wins as evidence of generalization.
-
-Blocked paths right now:
-
-- MarkusNet pure PyTorch reimplementation.
-- Dynamic ONNX export for the vision encoder.
-- Vendoring `transformers` into the submission sandbox.
-- SLERP model merging in its current form.
-
-## Results Logging
-
-Log every evaluated artifact to `tasks/object-detection/autoresearch_results.tsv`.
-
-Columns:
-
-```tsv
-timestamp	experiment_id	model	train_data	eval_data	leakage_status	combined_score	detection_map50	classification_map50	server_score	runtime_sec	compute_hours	submissions_used	submission_ready	status	description
+```
+---
+detection_map50:      0.9200
+classification_map50: 0.8800
+combined_map:         0.9080
+runtime_sec:          142.3
+zip_size_mb:          380.2
 ```
 
-Status values:
+Extract the key metric: `grep "^combined_map:" run.log`
 
-- `keep`
-- `discard`
-- `blocked`
-- `needs_server_eval`
-- `submission_candidate`
+## Logging results
 
-## Provenance Contract
+Log to `results.tsv` (tab-separated).
 
-Every experiment must carry this minimum schema somewhere machine-readable:
-
-```json
-{
-  "experiment_id": "...",
-  "model": {"name": "...", "checkpoint": "..."},
-  "training_data": {"name": "...", "sources": []},
-  "eval_data": {"name": "clean_split_50", "path": "..."},
-  "leakage_status": "clean|suspect|unknown",
-  "compute": {"device": "...", "precision": "..."},
-  "metrics": {"det_map50": null, "cls_map50": null, "combined": null, "runtime_sec": null},
-  "submission_ready": false
-}
+```
+commit	combined_map	runtime_sec	status	description
 ```
 
-## The Loop
+Status: `keep`, `discard`, or `crash`. Use 0.000000 for crashes.
 
-Loop forever unless interrupted.
-
-1. Sync the state of the clean split, tracker, current best server score, and available checkpoints.
-2. If the evaluator stack still points at `stratified_split`, fix that first.
-3. Score every new checkpoint or submission artifact on `clean_split`.
-4. Append the result and provenance to the tracker.
-5. If the artifact is a YOLO checkpoint, run the export path: `best.pt -> ONNX -> submission ZIP`.
-6. Prioritize detection-improving candidates over classification-only wins unless runtime or packaging risk changes the tradeoff.
-7. Run lightweight sweeps on post-processing only after a clean baseline exists.
-8. Produce a ranked shortlist for humans, but do not submit automatically.
-9. Keep only changes that improve a trusted metric or materially improve automation reliability.
-10. If a change only improves leaked metrics, revert it.
-
-## Keep / Discard Rules
-
-- Keep if clean-val combined score improves with acceptable runtime and no new leakage risk.
-- Keep if detection improves meaningfully even with flat classification, unless runtime becomes submission-risky.
-- Keep if automation reliability improves without harming evaluation correctness.
-- Discard if improvement exists only on leaked or untrusted metrics.
-- Discard if packaging/export becomes brittle enough to threaten the current safe submission.
-
-## Submission Policy
-
-- The human decides when to spend a submission slot.
-- Autoresearch prepares candidates, manifests, provenance, and expected tradeoffs.
-- Prefer server submissions for candidates that either:
-  - clearly beat current clean-val best, or
-  - represent a distinct strategic bet not captured by current trusted offline eval.
-- Keep final train-on-val / retrain-on-all-data protocols ready, but only trigger them for the chosen finalist.
-
-## Pareto Frontier
-
-Maintain the frontier on at least these axes:
-
-- `combined_score` vs `runtime_sec`
-- `combined_score` vs `compute_hours`
-- `server_score` vs `submissions_used`
-
-Suggested command:
-
-```bash
-python tools/pareto_frontier.py \
-  --input tasks/object-detection/autoresearch_results.tsv \
-  --x runtime_sec --x-direction min \
-  --y combined_score --y-direction max \
-  --label experiment_id \
-  --time timestamp
+Example:
+```
+a1b2c3d	0.908000	142.3	keep	baseline
+b2c3d4e	0.912000	155.1	keep	lower NMS threshold to 0.3
+c3d4e5f	0.905000	180.2	discard	add horizontal flip TTA
 ```
 
-Refresh the shared OD artifact set with:
+## The experiment loop
 
-```bash
-python tools/refresh_autoresearch_artifacts.py
-```
+LOOP FOREVER:
 
-This updates:
+1. Look at git state and current best.
+2. Modify `run.py` with an experimental idea.
+3. `git commit`
+4. Run: `python tasks/object-detection/eval_local.py > run.log 2>&1`
+5. Read results: `grep "^combined_map:\|^runtime_sec:" run.log`
+6. If grep is empty, it crashed. `tail -n 50 run.log` for the traceback.
+7. Record in results.tsv.
+8. If combined_map improved: keep the commit.
+9. If equal or worse: `git reset` back.
 
-- `tasks/object-detection/analysis/progress.png`
-- `tasks/object-detection/analysis/detection_frontier.json`
-- `tasks/object-detection/analysis/projection.png`
-- `tasks/object-detection/analysis/projection_report.json`
+**Timeout**: If a run exceeds 400s, kill it. Treat as failure.
 
-## Bottom Line
+**NEVER STOP**: Do not pause to ask the human. The human may be asleep. You are autonomous. If you run out of ideas, re-read the code, try combining near-misses, try more radical changes. The loop runs until interrupted.
 
-The correct object-detection autoresearch loop is:
+## Validation refinement (separate loop)
 
-`change -> clean eval -> provenance log -> shortlist -> human submission decision`
+When running validation refinement instead of optimization:
 
-Not:
-
-`change -> leaked metric -> false confidence -> wasted submission`
+1. The file you modify is `eval_local.py`, not `run.py`.
+2. The goal is to make local eval more predictive of competition server score.
+3. Compare local predictions to known server scores. Minimize the gap.
+4. Adjust the val set composition, augmentations, scoring edge cases, or class weighting.
+5. A better evaluator is one where local rank order matches server rank order.
+6. Log refinements to `val_results.tsv` with columns: `commit	correlation	description`.
