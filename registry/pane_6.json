@@ -1,9 +1,9 @@
 {
   "pane": "%6",
-  "name": "od-orchestrator",
-  "role": "object-detection-lead",
-  "description": "Orchestrating 8 OD agents: V5 YOLO training, MarkusNet ONNX eval, detection sweeps, cloud training, pruning",
-  "session": "nmai-object-detection",
-  "registered_at": "2026-03-21T12:59:01Z",
-  "pid": 1523062
+  "name": "twin",
+  "role": "advisor-clone",
+  "description": "reviewing BLACKBOARD.md to chip in",
+  "session": "nmai-astar-island",
+  "registered_at": "2026-03-22T09:26:49Z",
+  "pid": 2154074
 }
