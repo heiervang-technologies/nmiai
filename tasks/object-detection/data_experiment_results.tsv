@@ -1,3 +1,6 @@
 timestamp	experiment_id	combined_map	det_map50	cls_map50	unique_images	aug_images	data_sources	description
 2026-03-20T22:00:00Z	ref_server_v1	0.907900	0.000000	0.000000	248	0	competition_trained	SERVER REFERENCE: best server score (trained on competition data)
 2026-03-22T00:00:00Z	ref_sota	0.920000	0.000000	0.000000	0	0	unknown	REFERENCE: competitor SOTA target
+2026-03-22T07:36:53Z	exp000_coco_zeroshot	0.020729	0.029612	0.000003	0	0	coco_pretrained	YOLOv8x COCO pretrained zero-shot
+2026-03-22T08:20:44Z	exp001_pretrain_356cls_20ep	0.365787	0.522550	0.000008	2045	0	polish_1k,grocery_45,sku110k_1k	Pretrain 2K 356cls 20ep Blackwell
+2026-03-22T08:55:57Z	exp002_fixed_20ep	0.380184	0.543116	0.000008	2045	0	polish_1k,grocery_45,sku110k_1k	Pretrain 2K 20ep lr=0.001 Blackwell
