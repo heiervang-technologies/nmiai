@@ -144,6 +144,11 @@ class TripletexClient:
         if path_params and not json:
             log.warning(f"POST {clean_path}: converting query params to body: {path_params}")
             json = path_params
+        # Strip employmentType from /employee/employment — Tripletex rejects it
+        # ("Feltet eksisterer ikke i objektet"). employmentType belongs on employment/details only.
+        if json and "/employee/employment" in clean_path and "employmentType" in json:
+            json.pop("employmentType")
+            log.warning(f"Stripped employmentType from /employee/employment POST (not accepted)")
         # Fix hourlyRateModel enum values (LLM sends wrong names)
         if json and "hourlyrates" in clean_path.lower() and "hourlyRateModel" in json:
             model_val = json["hourlyRateModel"]

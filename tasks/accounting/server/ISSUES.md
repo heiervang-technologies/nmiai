@@ -20,6 +20,9 @@ Only %2 (master) restarts the server. Agents commit+push and notify %2.
 | 31 | RED | invoice | Overdue invoice + reminder fee: createReminder 422 x3 | Client-level fix EXISTS (b573ae96 line 161-170) auto-injects type=REMINDER,date,includeCharge. Also GET /invoice date params fix (line 88-90). NEEDS SERVER RESTART. | failure-analysis |
 | 32 | YELLOW | invoice | Portuguese multi-VAT: all lines got 25% instead of 25%/15%/0% | VAT food/exempt keyword detection doesn't recognize Portuguese descriptions. Need to add PT food keywords to _FOOD_KEYWORDS pattern. Live: 091349 | harness |
 | 33 | YELLOW | planner | Portuguese employee from PDF misclassified as department | "departamento" in prompt triggers department. FIXED: added 'funcionario','contrato de trabalho' to employee keywords (6072e22d) | harness |
+| 34 | RED | employee | employmentType on /employment POST → 422 "Feltet eksisterer ikke" | Tripletex does NOT accept employmentType on /employee/employment. LLM sends it via run_python. FIXED: client-level strip (bb7df635+). NEEDS RESTART. Live: 103530 | harness |
+| 35 | YELLOW | department | Account 7350 VAT-locked to 0% but agent sends vatType id=3 (25%) | Voucher posting on Representasjon account requires vatType 0%. Need: check account.vatLocked before posting. Live: 103949 | harness |
+| 36 | YELLOW | invoice | Payment /:payment returns 500 internal server error | Tripletex internal error, not our bug. May be invoice state issue. Live: 104511 | harness |
 
 ## FIXED (confirmed or deployed)
 
