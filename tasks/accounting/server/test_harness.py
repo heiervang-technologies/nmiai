@@ -223,7 +223,8 @@ async def replay_single(prompt_entry: dict, mock_base_url: str) -> dict:
         await client.close()
 
     # Post-run assertions from mock state
-    assertions = get_state().get_assertions()
+    mock_st = get_state()
+    assertions = mock_st.get_assertions()
     tool_calls = [c["path"] for c in stats.get("calls", [])]
 
     # Check family-specific expectations
@@ -231,6 +232,10 @@ async def replay_single(prompt_entry: dict, mock_base_url: str) -> dict:
     expectation_mismatches = _check_family_expectations(
         family, prompt_entry["prompt"], assertions, tool_calls
     )
+
+    # Scorer estimate
+    from scorer_checks import estimate_score
+    scorer = estimate_score(family, prompt_entry["prompt"], mock_st)
 
     return {
         "ts": prompt_entry["ts"],
@@ -247,6 +252,7 @@ async def replay_single(prompt_entry: dict, mock_base_url: str) -> dict:
         "final_message": (result.get("final_message") or "")[:200] if isinstance(result, dict) else "",
         "assertions": assertions,
         "expectation_mismatches": expectation_mismatches,
+        "scorer": scorer,
     }
 
 
@@ -275,6 +281,7 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
             assert_errs = assertions.get("error_count", 0)
             assert_warns = assertions.get("warning_count", 0)
             expect_misses = r.get("expectation_mismatches", [])
+            scorer = r.get("scorer", {})
 
             has_issues = r["error"] or r["api_errors"] > 0 or assert_errs > 0 or any(m["severity"] == "error" for m in expect_misses)
             status = "ERR" if has_issues else "OK"
@@ -285,6 +292,9 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
                 extra += f" assert:{assert_errs}E/{assert_warns}W"
             if expect_misses:
                 extra += f" expect-miss:{len(expect_misses)}"
+            if scorer:
+                sc_pct = scorer.get("correctness", 0)
+                extra += f" score:{scorer.get('points_earned', 0)}/{scorer.get('max_points', '?')}={sc_pct:.0%}"
 
             print(f"  [{status}] [{fam_ok}] calls={r['api_calls']} errors={r['api_errors']}{extra} elapsed={r['elapsed']}s")
             if r["error"]:
@@ -293,6 +303,11 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
                 print(f"    ASSERT-{issue['severity'].upper()}: {issue['issue']}")
             for mm in expect_misses:
                 print(f"    EXPECT-{mm['severity'].upper()}: {mm['check']} expected={mm['expected']} got={mm['got']}")
+            for si in scorer.get("issues", []):
+                print(f"    SCORER: {si}")
+            for check in scorer.get("checks", []):
+                if not check["passed"]:
+                    print(f"    SCORE-FAIL: {check['label']} ({check['detail']})")
     finally:
         server.should_exit = True
         await server_task
@@ -321,7 +336,7 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
     for r in results:
         fam = r["expected_family"] or "unknown"
         if fam not in families:
-            families[fam] = {"total": 0, "clean": 0, "errors": 0, "assert_errs": 0, "expect_miss": 0}
+            families[fam] = {"total": 0, "clean": 0, "errors": 0, "assert_errs": 0, "expect_miss": 0, "scorer_sum": 0.0}
         families[fam]["total"] += 1
         if not r["error"] and r["api_errors"] == 0:
             families[fam]["clean"] += 1
@@ -329,13 +344,15 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
             families[fam]["errors"] += 1
         families[fam]["assert_errs"] += r.get("assertions", {}).get("error_count", 0)
         families[fam]["expect_miss"] += len(r.get("expectation_mismatches", []))
+        families[fam]["scorer_sum"] += r.get("scorer", {}).get("correctness", 0)
 
-    print(f"\n{'Family':<25} {'Clean':>6} {'Total':>6} {'Rate':>6} {'AssrtE':>7} {'ExpMs':>6}")
-    print("-" * 62)
-    for fam in sorted(families, key=lambda f: families[f]["clean"] / max(families[f]["total"], 1)):
+    print(f"\n{'Family':<25} {'Clean':>6} {'Total':>6} {'Rate':>6} {'AssrtE':>7} {'AvgScr':>7}")
+    print("-" * 65)
+    for fam in sorted(families, key=lambda f: families[f]["scorer_sum"] / max(families[f]["total"], 1)):
         f = families[fam]
         rate = f["clean"] / f["total"] * 100 if f["total"] else 0
-        print(f"{fam:<25} {f['clean']:>6} {f['total']:>6} {rate:>5.0f}% {f['assert_errs']:>7} {f['expect_miss']:>6}")
+        avg_score = f["scorer_sum"] / f["total"] * 100 if f["total"] else 0
+        print(f"{fam:<25} {f['clean']:>6} {f['total']:>6} {rate:>5.0f}% {f['assert_errs']:>7} {avg_score:>6.0f}%")
 
     # Write results to file (family-specific to avoid overwrites)
     family_tag = results[0]["expected_family"] if results and results[0].get("expected_family") else "mixed"
