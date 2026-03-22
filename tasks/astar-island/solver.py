@@ -352,35 +352,34 @@ def compute_hotspot_scores(initial_grid, height, width):
 
 
 def select_viewports_adaptive(initial_grid, height, width, n_queries):
-    """V2 adaptive strategy: reconnaissance + exploitation."""
-    scores = compute_hotspot_scores(initial_grid, height, width)
-
-    # Sort by score descending
-    ranked = sorted(scores.items(), key=lambda x: -x[1])
-
-    # Greedy selection: pick top viewports with some spacing
+    """V3 strategy: Spatially Uniform Random Sampling to avoid chunkiness bias."""
+    import random
     selected = []
     used_cells = set()
-
-    for (vx, vy), score in ranked:
-        if len(selected) >= n_queries:
-            break
-        # Check overlap with already selected viewports
+    
+    # Try random placements, ensure they don't overlap too much
+    attempts = 0
+    while len(selected) < n_queries and attempts < 1000:
+        attempts += 1
+        vx = random.randint(0, max(0, width - 15))
+        vy = random.randint(0, max(0, height - 15))
+        
+        vw = min(15, width - vx)
+        vh = min(15, height - vy)
+        
         new_cells = set()
-        for dy in range(min(15, height - vy)):
-            for dx in range(min(15, width - vx)):
+        for dy in range(vh):
+            for dx in range(vw):
                 new_cells.add((vy + dy, vx + dx))
+                
+        # Reject if overlap is > 10%
         overlap = len(new_cells & used_cells) / len(new_cells) if new_cells else 1.0
-
-        # Recon phase: require low overlap for diversity. Exploit phase: allow repeats.
-        if len(selected) < n_queries // 2 and overlap > 0.3:
-            continue  # Skip overlapping viewports in recon phase
-        if len(selected) >= n_queries // 2 and overlap > 0.95:
-            continue  # Even in exploit, skip near-duplicates
-
-        selected.append((vx, vy, min(15, width - vx), min(15, height - vy)))
+        if overlap > 0.1:
+            continue
+            
+        selected.append((vx, vy, vw, vh))
         used_cells |= new_cells
-
+        
     return selected
 
 

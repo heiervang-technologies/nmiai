@@ -121,20 +121,22 @@ SCORER_CHECKS = {
             {"entity": "employee", "field": "lastName", "points": 1},
             {"entity": "employee", "field": "email", "points": 1},
             # 10-point variant: admin role check (5pts)
-            # 8-point variant: employment details replace admin check
-            # We check admin conditionally — only award if userType=EXTENDED is set
             {"entity": "employee", "field": "userType", "expected": "EXTENDED", "points": 5, "conditional": True},
+            # 8-point variant (PDF): employment details instead of admin
+            {"entity": "employmentDetails", "field": "annualSalary", "points": 1, "conditional": True},
+            {"entity": "employmentDetails", "field": "percentageOfFullTimeEquivalent", "points": 1, "conditional": True},
+            {"entity": "employmentDetails", "field": "occupationCode", "points": 1, "conditional": True},
+            {"entity": "employment", "field": "employmentType", "points": 1, "conditional": True},
         ],
         "call_checks": [
             # Employment sub-entity creation (for 8-point PDF/onboarding variant)
-            {"pattern": "/employee/employment", "points": 1, "label": "Employment record created"},
-            {"pattern": "/employee/employment/details", "points": 1, "label": "Employment details set (salary/FTE)"},
-            {"pattern": "/employee/standardTime", "points": 1, "label": "Standard work time configured"},
+            {"pattern": "/employee/employment", "points": 1, "label": "Employment record created", "conditional": True},
+            {"pattern": "/employee/employment/details", "points": 1, "label": "Employment details set (salary/FTE)", "conditional": True},
         ],
         "notes": (
             "Two variants: 10-point (basic + admin role = 5pts) and 8-point (PDF/onboarding + employment details). "
             "Admin role only awarded when prompt asks for it. Employment details checks: "
-            "startDate, annualSalary, percentageOfFullTimeEquivalent, occupationCode, hoursPerDay."
+            "startDate, annualSalary, percentageOfFullTimeEquivalent, occupationCode."
         ),
     },
 
@@ -308,6 +310,7 @@ SCORER_CHECKS = {
             {"entity": "timesheet", "field": "date", "points": 0.5},
         ],
         "call_checks": [
+            {"pattern": "/project/hourlyRates", "condition": "always", "points": 1.5, "label": "Hourly rates set"},
             {"pattern": "/invoice", "condition": "is_invoice_task", "points": 2, "label": "Timesheet invoiced"},
         ],
         "notes": (
@@ -579,7 +582,7 @@ def estimate_score(family: str, prompt: str, mock_state) -> dict:
         elif condition == "is_send":
             should_check = _is_send_task(prompt)
         elif condition == "is_invoice_task":
-            should_check = bool(re.search(r"(invoice|faktura|factura|fatura|Rechnung|facture)", prompt, re.I))
+            should_check = bool(re.search(r"(invoice|faktur|factura|fatura|Rechnung|facture)", prompt, re.I))
 
         if not should_check:
             continue

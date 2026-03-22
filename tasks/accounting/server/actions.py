@@ -124,12 +124,69 @@ def _requested_vat_percentages(requested: int | None) -> list[int]:
         return [requested]
     legacy_map = {
         3: [25],
-        5: [15, 0],
+        5: [0],
         6: [0],
         31: [15],
         32: [12],
     }
     return legacy_map.get(requested, [])
+
+
+def _default_due_date(invoice_date: str) -> str:
+    from datetime import timedelta
+
+    try:
+        return (date.fromisoformat(invoice_date) + timedelta(days=30)).isoformat()
+    except Exception:
+        return invoice_date
+
+
+def _overdue_dates() -> tuple[str, str]:
+    from datetime import timedelta
+
+    today = date.today()
+    invoice_date = (today - timedelta(days=60)).isoformat()
+    due_date = (today - timedelta(days=14)).isoformat()
+    return invoice_date, due_date
+
+
+async def _create_order_and_invoice(
+    client: TripletexClient,
+    *,
+    customer_id: int,
+    invoice_date: str,
+    invoice_due_date: str,
+    order_lines: list[dict],
+    currency_id: int | None = None,
+    project_id: int | None = None,
+) -> dict:
+    order_body = {
+        "customer": {"id": customer_id},
+        "orderDate": invoice_date,
+        "deliveryDate": invoice_date,
+        "orderLines": order_lines,
+    }
+    if currency_id:
+        order_body["currency"] = {"id": currency_id}
+    if project_id:
+        order_body["project"] = {"id": project_id}
+
+    order_result = await client.post("/order", json=order_body)
+    order_value = order_result.get("value", order_result)
+    order_id = order_value.get("id")
+    if not order_id:
+        return order_result
+
+    invoice_result = await client.put(
+        f"/order/{order_id}/:invoice",
+        params={"invoiceDate": invoice_date, "invoiceDueDate": invoice_due_date},
+    )
+
+    return {
+        "value": invoice_result.get("value", invoice_result),
+        "order": order_result.get("value", order_result),
+        "invoice": invoice_result.get("value", invoice_result),
+    }
 
 
 def _resolve_outgoing_vat_id(vat_types: dict, requested: int | None, fallback: int = 3) -> int:
@@ -954,13 +1011,14 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
         lines = []
         for line in args.get("orderLines", []):
             detected_pct = _detect_vat_percentage(line)
+            explicit_pct = line.get("vatPercentage", line.get("vatRate"))
             if detected_pct is not None:
                 resolved = _find_vat_type_id(vat_types, percentage=detected_pct, prefer_outgoing=True)
                 line_vat = resolved if resolved is not None else _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
             else:
                 line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), vat_id)
             # Guard: if VAT id=31 (food 15%) but description has no food keywords, override to standard 25%
-            if line_vat == 31:
+            if line_vat == 31 and explicit_pct is None:
                 import re as _re
                 _food_guard = _re.compile(
                     r"\b(food|mat(?:vare)?|aliment(?:aire|os)?|lebensmittel|comida|"
@@ -980,15 +1038,16 @@ async def action_create_invoice(client: TripletexClient, args: dict) -> dict:
             lines.append(ol)
         return lines
 
-    invoice_date = args.get("invoiceDate", _today())
+    if args.get("isOverdue") and not args.get("invoiceDate"):
+        invoice_date, overdue_due_date = _overdue_dates()
+    else:
+        invoice_date = args.get("invoiceDate", _today())
+        overdue_due_date = None
+
     # Default due date to +30 days if not specified or if same as invoiceDate
-    from datetime import timedelta
     raw_due = args.get("invoiceDueDate", args.get("dueDate"))
     if not raw_due or raw_due == invoice_date:
-        try:
-            due_date = (date.fromisoformat(invoice_date) + timedelta(days=30)).isoformat()
-        except Exception:
-            due_date = invoice_date
+        due_date = overdue_due_date or _default_due_date(invoice_date)
     else:
         due_date = raw_due
 
@@ -1063,9 +1122,14 @@ async def action_create_order(client: TripletexClient, args: dict) -> dict:
     )
     order_lines = []
     for line in args.get("orderLines", []):
-        line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)
+        explicit_pct = line.get("vatPercentage", line.get("vatRate"))
+        if explicit_pct is not None:
+            resolved = _find_vat_type_id(vat_types, percentage=int(explicit_pct), prefer_outgoing=True)
+            line_vat = resolved if resolved is not None else _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)
+        else:
+            line_vat = _resolve_outgoing_vat_id(vat_types, line.get("vatTypeId"), default_vat_id)
         # Guard: food VAT on non-food item
-        if line_vat == 31 and not _food_guard.search(line.get("description", "")):
+        if line_vat == 31 and explicit_pct is None and not _food_guard.search(line.get("description", "")):
             log.warning(f"Order: overriding food VAT (31) to standard (3) for: {line.get('description', '')[:50]}")
             line_vat = 3
         ol = {
@@ -1128,7 +1192,7 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
     # Fresh sandbox may not have the right invoice — create customer+invoice+payment first
     if amount < 0:
         # Check if the found invoice actually belongs to the right customer and is paid
-        invoice_valid = False
+        invoice_valid = bool(args.get("invoiceId"))
         if invoice_id:
             try:
                 inv_detail = await client.get(f"/invoice/{invoice_id}")
@@ -1141,11 +1205,11 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
                     log.info(f"Reversal: invoice {invoice_id} is paid (outstanding={outstanding}, total={total})")
                 # Also check customer match
                 inv_customer = inv_data.get("customer", {}).get("name", "")
-                if args.get("customerName") and args["customerName"].lower() not in inv_customer.lower():
+                if args.get("customerName") and inv_customer and args["customerName"].lower() not in inv_customer.lower():
                     invoice_valid = False
                     log.info(f"Reversal: invoice customer '{inv_customer}' doesn't match '{args.get('customerName')}'")
             except Exception:
-                pass
+                invoice_valid = bool(args.get("invoiceId"))
 
         if not invoice_valid:
             # Need to create the full flow: customer -> invoice -> payment -> reversal
@@ -1154,9 +1218,12 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
             description = args.get("description", args.get("invoiceDescription", "Invoice"))
 
             # Create invoice (which auto-creates customer)
+            reversal_invoice_date, reversal_due_date = _overdue_dates()
             invoice_args = {
                 "customerName": args.get("customerName", ""),
                 "customerOrgNumber": args.get("customerOrgNumber", ""),
+                "invoiceDate": reversal_invoice_date,
+                "invoiceDueDate": reversal_due_date,
                 "amount": pos_amount,
                 "description": description,
                 "orderLines": [{"description": description, "unitPrice": pos_amount, "count": 1}],
@@ -2542,26 +2609,34 @@ async def action_create_fixed_price_project_invoice(client: TripletexClient, arg
             "fixedPriceOnly": True,
         }
 
-    invoice_amount = _money(fixed_price * (invoice_percent / 100.0))
-    invoice_result = await action_create_invoice(
+    customer_id = await _find_customer_id(
         client,
-        {
-            "customerId": args.get("customerId"),
-            "customerName": args.get("customerName"),
-            "customerOrgNumber": args.get("customerOrgNumber"),
-            "invoiceDate": args.get("invoiceDate", _today()),
-            "invoiceDueDate": args.get("invoiceDueDate") or (date.fromisoformat(args.get("invoiceDate", _today())) + __import__("datetime").timedelta(days=30)).isoformat(),
-            "orderLines": [
-                {
-                    "description": args.get(
-                        "description",
-                        f"{_money(invoice_percent)}% delbetaling for prosjekt {args.get('projectName', project_id)}",
-                    ),
-                    "count": 1,
-                    "unitPrice": invoice_amount,
-                }
-            ],
-        },
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
+    invoice_amount = _money(fixed_price * (invoice_percent / 100.0))
+    invoice_date = args.get("invoiceDate", _today())
+    invoice_due_date = args.get("invoiceDueDate") or _default_due_date(invoice_date)
+    vat_types = await _get_outgoing_vat_types(client)
+    line_vat = _resolve_default_vat_id(vat_types, 3)
+    invoice_result = await _create_order_and_invoice(
+        client,
+        customer_id=customer_id,
+        invoice_date=invoice_date,
+        invoice_due_date=invoice_due_date,
+        project_id=project_id,
+        order_lines=[
+            {
+                "description": args.get(
+                    "description",
+                    f"{_money(invoice_percent)}% delbetaling for prosjekt {args.get('projectName', project_id)}",
+                ),
+                "count": 1.0,
+                "unitPriceExcludingVatCurrency": invoice_amount,
+                "vatType": {"id": line_vat},
+            }
+        ],
     )
 
     return {
@@ -2615,26 +2690,34 @@ async def action_register_timesheet_and_invoice(client: TripletexClient, args: d
         },
     )
 
-    invoice_amount = _money(float(args["hours"]) * float(args["hourlyRate"]))
-    invoice_result = await action_create_invoice(
+    customer_id = await _find_customer_id(
         client,
-        {
-            "customerId": args.get("customerId"),
-            "customerName": args.get("customerName"),
-            "customerOrgNumber": args.get("customerOrgNumber"),
-            "invoiceDate": args.get("invoiceDate", args.get("date", _today())),
-            "invoiceDueDate": args.get("invoiceDueDate") or (date.fromisoformat(args.get("invoiceDate", args.get("date", _today()))) + __import__("datetime").timedelta(days=30)).isoformat(),
-            "orderLines": [
-                {
-                    "description": args.get(
-                        "description",
-                        f"{args.get('activityName', 'Project work')} {args['hours']}h on {args.get('projectName', 'project')}",
-                    ),
-                    "count": 1,
-                    "unitPrice": invoice_amount,
-                }
-            ],
-        },
+        customer_id=args.get("customerId"),
+        customer_name=args.get("customerName"),
+        customer_org_number=args.get("customerOrgNumber"),
+    )
+    invoice_date = args.get("invoiceDate", args.get("date", _today()))
+    invoice_due_date = args.get("invoiceDueDate") or _default_due_date(invoice_date)
+    vat_types = await _get_outgoing_vat_types(client)
+    line_vat = _resolve_default_vat_id(vat_types, 3)
+    invoice_amount = _money(float(args["hours"]) * float(args["hourlyRate"]))
+    invoice_result = await _create_order_and_invoice(
+        client,
+        customer_id=customer_id,
+        invoice_date=invoice_date,
+        invoice_due_date=invoice_due_date,
+        project_id=project_id,
+        order_lines=[
+            {
+                "description": args.get(
+                    "description",
+                    f"{args.get('activityName', 'Project work')} {args['hours']}h on {args.get('projectName', 'project')}",
+                ),
+                "count": float(args["hours"]),
+                "unitPriceExcludingVatCurrency": float(args["hourlyRate"]),
+                "vatType": {"id": line_vat},
+            }
+        ],
     )
 
     return {

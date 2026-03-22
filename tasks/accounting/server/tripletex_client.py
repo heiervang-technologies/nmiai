@@ -149,7 +149,7 @@ class TripletexClient:
         # Block duplicate invoice creation after reversal flow completed
         if self._reversal_invoice_id and clean_path.rstrip("/").endswith("/invoice"):
             log.warning(f"Blocked duplicate POST /invoice — reversal already created invoice {self._reversal_invoice_id}")
-            return {"value": {"id": self._reversal_invoice_id}, "message": "Invoice already created during reversal flow"}
+            return {"blocked": True, "value": {"id": self._reversal_invoice_id}, "message": "Invoice already created during reversal flow"}
         # Auto-inject invoiceDueDate on POST /invoice if missing (LLM forgets via run_python)
         if json and clean_path.rstrip("/").endswith("/invoice") and "invoiceDueDate" not in json:
             inv_date = json.get("invoiceDate", __import__("datetime").date.today().isoformat())

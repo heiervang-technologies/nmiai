@@ -122,33 +122,47 @@ def compute_obs_ll(pred, obs_list):
     return ll
 
 
-def tto_select_round(all_tensors, round_nums, initial_states, obs_by_seed, num_sims=200):
-    """Test-Time Optimization: find best matching historical round from observations."""
+def tto_ensemble_blend(all_tensors, round_nums, initial_states, obs_by_seed, num_sims=200, top_k=5):
+    """TTO with ensemble blending: softmax-weight top-K rounds by observation LL."""
     if not obs_by_seed or all(len(obs) == 0 for obs in obs_by_seed.values()):
-        # No observations - return None (will use fallback)
-        return None, -1
+        return None, None, []
 
-    best_ll = -1e18
-    best_idx = 0
+    total_obs_cells = sum(
+        np.array(obs['grid']).shape[0] * np.array(obs['grid']).shape[1]
+        for obs_list in obs_by_seed.values() for obs in obs_list
+    )
 
+    round_lls = []
     for ti, rn in enumerate(round_nums):
         total_ll = 0.0
-
         for seed_idx, initial_state in enumerate(initial_states):
             obs_list = obs_by_seed.get(seed_idx, [])
             if not obs_list:
                 continue
-
             ig = np.array(initial_state["grid"], dtype=np.int32)
             pred = run_gpu_mc(ig, all_tensors[ti], num_sims=num_sims)
             pred = apply_structural_zeros(pred, ig)
             total_ll += compute_obs_ll(pred, obs_list)
+        round_lls.append((total_ll, ti, rn))
 
-        if total_ll > best_ll:
-            best_ll = total_ll
-            best_idx = ti
+    round_lls.sort(reverse=True)
+    top = round_lls[:top_k]
 
-    return best_idx, round_nums[best_idx]
+    temperature = max(total_obs_cells / 5, 1.0)
+    lls = np.array([ll for ll, _, _ in top])
+    lls_adj = lls - lls.max()
+    weights = np.exp(lls_adj / temperature)
+    weights /= weights.sum()
+
+    blended = sum(float(w) * all_tensors[ti] for w, (_, ti, _) in zip(weights, top))
+    blend_info = [(rn, float(w)) for w, (_, _, rn) in zip(weights, top)]
+    best_round = top[0][2]
+
+    print(f"  Ensemble blend (T={temperature:.0f}, {total_obs_cells} obs cells):")
+    for rn, w in blend_info:
+        print(f"    R{rn}: weight={w:.3f}")
+
+    return blended, best_round, blend_info
 
 
 def solve_gpu_mc():
@@ -195,17 +209,18 @@ def solve_gpu_mc():
     total_obs = sum(len(v) for v in obs_by_seed.values())
     print(f"Loaded {total_obs} observations across {len(obs_by_seed)} seeds")
 
-    # TTO: find best matching historical round
-    print("\nRunning TTO to select best matching round...")
+    # TTO: single best round pick (validated better than ensemble)
+    print("\nRunning TTO single-pick...")
     t0 = time.time()
-    best_idx, best_round = tto_select_round(
-        all_tensors, round_nums, detail["initial_states"], obs_by_seed, num_sims=200
+    # Reuse ensemble function but only take top-1
+    blended_tensor, best_round, blend_info = tto_ensemble_blend(
+        all_tensors, round_nums, detail["initial_states"], obs_by_seed, num_sims=200, top_k=1
     )
     t1 = time.time()
 
-    if best_idx is not None:
-        print(f"TTO selected: R{best_round} (idx={best_idx}) in {t1 - t0:.1f}s")
-        selected_tensor = all_tensors[best_idx]
+    if blended_tensor is not None:
+        print(f"TTO selected: R{best_round} in {t1 - t0:.1f}s")
+        selected_tensor = blended_tensor
         
         # Determine adaptive tau based on historical wKL
         wkl_path = "tasks/astar-island/historical_wkl.json"

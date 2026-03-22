@@ -99,6 +99,8 @@ class OrderLine(BaseModel):
     count: float = 1
     unitPrice: float = Field(description="Price per unit excluding VAT in NOK")
     vatTypeId: int = Field(default=3, description="3=25%, 31=15%, 32=12%, 5=0%")
+    vatPercentage: Optional[int] = Field(default=None, description="Explicit VAT percentage: 0, 12, 15, or 25")
+    vatRate: Optional[int] = Field(default=None, description="Alias for vatPercentage")
     productNumber: Optional[str] = None
 
 
@@ -800,16 +802,16 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
             run_agent_instance.run(
                 user_content,
                 deps=deps,
-                usage_limits=UsageLimits(request_limit=20),
+                usage_limits=UsageLimits(request_limit=30),
             ),
-            timeout=210,  # Hard timeout at 3.5 min (competition limit is 5 min)
+            timeout=270,  # Hard timeout at 4.5 min (competition limit is 5 min)
         )
     except asyncio.TimeoutError:
-        log.warning("Agent timed out at 210s — returning partial result")
+        log.warning("Agent timed out at 270s — returning partial result")
         result = None
     except Exception as e:
         if "UsageLimitExceeded" in str(type(e).__name__):
-            log.warning(f"Agent hit 20 request limit — returning partial result")
+            log.warning(f"Agent hit 30 request limit — returning partial result")
             result = None
         else:
             raise

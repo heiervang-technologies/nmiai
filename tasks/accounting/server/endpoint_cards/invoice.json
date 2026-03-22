@@ -226,7 +226,7 @@
       "optional_params": [
         "updateLinesAndGroups (query)"
       ],
-      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, currency: Currency, invoicesDueIn: integer"
+      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, internalComment: string, currency: Currency"
     },
     {
       "method": "DELETE",
@@ -317,7 +317,7 @@
       "summary": "Create order.",
       "required_params": [],
       "optional_params": [],
-      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, currency: Currency, invoicesDueIn: integer"
+      "body_fields": "id: integer, version: integer, changes: array, url: string, customer: Customer, contact: Contact, attn: Contact, displayName: string, receiverEmail: string, overdueNoticeEmail: string, number: string, reference: string, ourContact: Contact, ourContactEmployee: Employee, department: Department, orderDate: string, project: Project, invoiceComment: string, internalComment: string, currency: Currency"
     },
     {
       "method": "PUT",

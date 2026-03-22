@@ -12,6 +12,9 @@ dependencies = [
     "pydantic-ai>=1.70.0",
     "pymupdf>=1.27.2.2",
     "pillow>=12.1.1",
+    "numpy>=2.0.0",
+    "sentence-transformers>=5.0.0",
+    "torch>=2.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]

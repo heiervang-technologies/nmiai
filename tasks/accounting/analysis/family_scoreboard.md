@@ -1,6 +1,6 @@
 # Accounting Family Scoreboard
 
-Generated: `2026-03-21T20:52:46.326251+00:00`
+Generated: `2026-03-22T06:41:05.937777+00:00`
 Projection status: `noisy_calibration`
 
 ## Best Observed / Estimated By Family
