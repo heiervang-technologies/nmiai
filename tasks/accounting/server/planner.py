@@ -131,6 +131,10 @@ def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
                 if family == "project" and kw in ["project lifecycle", "complete project lifecycle", "prosjektsyklusen", "heile prosjektsyklusen", "projektzyklus"]:
                     score += 50.0
 
+                # HIGH-WEIGHT keywords for bank reconciliation
+                if family == "bank_reconciliation" and kw in ["concilia", "reconcil", "bankutskrift", "extracto bancario", "bank statement", "kontoauszug", "relevé bancaire", "extrato bancário", "extrato bancario", "avstem"]:
+                    score += 50.0
+
         if score:
             matches[family] = score
 

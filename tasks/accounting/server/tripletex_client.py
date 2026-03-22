@@ -206,6 +206,19 @@ class TripletexClient:
         try:
             resp.raise_for_status()
         except httpx.HTTPStatusError:
+            # Auto-dedup: if POST /activity fails with "name in use", GET the existing one
+            if (clean_path.rstrip("/") == "/activity" and resp.status_code == 422
+                    and json and "name" in json):
+                try:
+                    existing = await self.get("/activity", params={"name": json["name"], "count": 1})
+                    vals = existing.get("values", [])
+                    if vals:
+                        log.warning(f"Activity '{json['name']}' already exists (id={vals[0].get('id')}), returning existing")
+                        self._log_call("POST", clean_path, 200, json=json)  # log as success
+                        self.error_count = max(0, self.error_count - 1)  # undo error count
+                        return {"value": vals[0]}
+                except Exception:
+                    pass  # fall through to original error
             self._log_call("POST", clean_path, resp.status_code, resp.text[:500], json=json)
             raise
         self._log_call("POST", clean_path, resp.status_code, json=json)
@@ -224,9 +237,9 @@ class TripletexClient:
             merged_params.setdefault("type", "REMINDER")
             merged_params.setdefault("date", __import__("datetime").date.today().isoformat())
             merged_params.setdefault("includeCharge", "true")
-            # Tripletex requires at least one send type ("Minst én sendetype må oppgis")
-            # Same param name as /:send endpoint
-            merged_params.setdefault("sendType", "EMAIL")
+            # Tripletex requires at least one dispatch type ("Minst én sendetype må oppgis")
+            # The param name is dispatchType for createReminder, not sendType
+            merged_params.setdefault("dispatchType", "EMAIL")
             log.warning(f"Auto-fixed createReminder params: {merged_params}")
         # Auto-fix invoice send: ensure sendType param
         if "/:send" in clean_path and "/invoice/" in clean_path:
