@@ -14,9 +14,12 @@ Only %2 (master) restarts the server. Agents commit+push and notify %2.
 | 22 | YELLOW | salary | 3/8 — voucher-only salary misses scorer checks | process_salary uses voucher fallback. Scorer may want real /salary/transaction | advisor %6 |
 | 21 | YELLOW | planner | "Registrer timer på prosjektet" → project not timesheet | Word "prosjektet" wins over "timer". Need timesheet priority boost or multi-word phrase | all |
 | 20 | YELLOW | planner | "Opprett dimensjon Produktlinje" → product not voucher | "Produkt" in dimension name matches product family | all |
-| 28 | RED | project | Project lifecycle 4 errors: hourlyRates 422 + incomingInvoice 403 + duplicates | Complex multi-step prompt. hourlyRateModel validation fails (sent "FIXED_HOURLY_RATE" not "TYPE_FIXED_HOURLY_RATE"), incomingInvoice 403, then duplicate retries. Mock too permissive — does not validate hourlyRateModel enum. Prompt: "Execute complete project lifecycle for System Upgrade Greenfield" | failure-analysis |
+| 28 | RED | project | Project lifecycle 4 errors: hourlyRates 422 + incomingInvoice 403 + duplicates | Client-level fix EXISTS (b573ae96 line 110-123) but server not restarted. Fix auto-corrects hourlyRateModel enum. NEEDS SERVER RESTART. | failure-analysis |
 | 29 | YELLOW | planner | Portuguese salary misrouted to invoice | "pagamento" matches invoice keywords, ties with "salario" for salary. Invoice wins by priority. FIXED: added PT multi-word salary keywords (27c735f6) | harness |
 | 30 | YELLOW | planner | Portuguese cost_analysis misrouted to project | "projeto" in prompt matches project keywords (2.0) beating cost_analysis (1.0). FIXED: added PT multi-word cost_analysis keywords (27c735f6) | harness |
+| 31 | RED | invoice | Overdue invoice + reminder fee: createReminder 422 x3 | Client-level fix EXISTS (b573ae96 line 161-170) auto-injects type=REMINDER,date,includeCharge. Also GET /invoice date params fix (line 88-90). NEEDS SERVER RESTART. | failure-analysis |
+| 32 | YELLOW | invoice | Portuguese multi-VAT: all lines got 25% instead of 25%/15%/0% | VAT food/exempt keyword detection doesn't recognize Portuguese descriptions. Need to add PT food keywords to _FOOD_KEYWORDS pattern. Live: 091349 | harness |
+| 33 | YELLOW | planner | Portuguese employee from PDF misclassified as department | "departamento" in prompt triggers department. FIXED: added 'funcionario','contrato de trabalho' to employee keywords (6072e22d) | harness |
 
 ## FIXED (confirmed or deployed)
 
