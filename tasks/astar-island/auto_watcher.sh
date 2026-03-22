@@ -155,9 +155,9 @@ for si in range(5):
                 exp_growth=pred[frontier,1].mean()
             else: exp_growth=0.1
         else: exp_growth=0.1
-        if exp_growth>=0.16: tau=27.0
-        elif exp_growth>=0.08: tau=20.0
-        else: tau=14.0
+        if exp_growth>=0.16: tau=100.0
+        elif exp_growth>=0.08: tau=100.0
+        else: tau=100.0
         counts=np.zeros((40,40,6));oc=np.zeros((40,40),dtype=int)
         for o in obs:
             for dy,row in enumerate(o['grid']):
