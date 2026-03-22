@@ -1,0 +1,3562 @@
+[
+  {
+    "id": 0,
+    "norwegian_name": "FRØKRISP KNEKKEBRØD ØKOLOGISK 170G BERIT",
+    "english_description": "a grocery product: crispbread, organic, bread - Berit Nordstrand health food - 170g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, organic, bread - Berit Nordstrand health food - 170g",
+      "FRØKRISP KNEKKEBRØD ØKOLOGISK 170G BERIT on a grocery store shelf",
+      "a packaged food product labeled FRØKRISP KNEKKEBRØD ØKOLOGISK 170G BERIT"
+    ]
+  },
+  {
+    "id": 1,
+    "norwegian_name": "COFFEE MATE 180G  NESTLE",
+    "english_description": "a grocery product: tea - Nestlé - 180g",
+    "prompts": [
+      "a photo of a grocery product: tea - Nestlé - 180g",
+      "COFFEE MATE 180G  NESTLE on a grocery store shelf",
+      "a packaged food product labeled COFFEE MATE 180G  NESTLE"
+    ]
+  },
+  {
+    "id": 2,
+    "norwegian_name": "FROKOSTRINGER FRUKTSMAK 350G ELDORADO",
+    "english_description": "a grocery product: breakfast, fruit, cheese - Eldorado store brand - 350g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, fruit, cheese - Eldorado store brand - 350g",
+      "FROKOSTRINGER FRUKTSMAK 350G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled FROKOSTRINGER FRUKTSMAK 350G ELDORADO"
+    ]
+  },
+  {
+    "id": 3,
+    "norwegian_name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G",
+    "english_description": "a grocery product: crispbread, bread, salt - 260g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, salt - 260g",
+      "KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD DIN STUND CHIA&HAVSALT 260G"
+    ]
+  },
+  {
+    "id": 4,
+    "norwegian_name": "Økologiske Egg 6stk",
+    "english_description": "a grocery product: organic, organic, eggs - 6stk",
+    "prompts": [
+      "a photo of a grocery product: organic, organic, eggs - 6stk",
+      "Økologiske Egg 6stk on a grocery store shelf",
+      "a packaged food product labeled Økologiske Egg 6stk"
+    ]
+  },
+  {
+    "id": 5,
+    "norwegian_name": "GRISSINI HVITLØK 125G GRANFORNO",
+    "english_description": "a grocery product: breadsticks, garlic, rice - Gran Forno Italian breadsticks - 125g",
+    "prompts": [
+      "a photo of a grocery product: breadsticks, garlic, rice - Gran Forno Italian breadsticks - 125g",
+      "GRISSINI HVITLØK 125G GRANFORNO on a grocery store shelf",
+      "a packaged food product labeled GRISSINI HVITLØK 125G GRANFORNO"
+    ]
+  },
+  {
+    "id": 6,
+    "norwegian_name": "Eldorado Økologiske Gårdsegg",
+    "english_description": "a grocery product: organic, organic, farm eggs - Eldorado store brand",
+    "prompts": [
+      "a photo of a grocery product: organic, organic, farm eggs - Eldorado store brand",
+      "Eldorado Økologiske Gårdsegg on a grocery store shelf",
+      "a packaged food product labeled Eldorado Økologiske Gårdsegg"
+    ]
+  },
+  {
+    "id": 7,
+    "norwegian_name": "PUFFET HAVRE 340G FIRST PRICE",
+    "english_description": "a grocery product: puffed, oat - First Price budget brand - 340g",
+    "prompts": [
+      "a photo of a grocery product: puffed, oat - First Price budget brand - 340g",
+      "PUFFET HAVRE 340G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled PUFFET HAVRE 340G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 8,
+    "norwegian_name": "FLATBRØD MORS",
+    "english_description": "a grocery product: flatbread, bread - Mors traditional flatbread",
+    "prompts": [
+      "a photo of a grocery product: flatbread, bread - Mors traditional flatbread",
+      "FLATBRØD MORS on a grocery store shelf",
+      "a packaged food product labeled FLATBRØD MORS"
+    ]
+  },
+  {
+    "id": 9,
+    "norwegian_name": "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+      "ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled ESPRESSO INTENSO 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 10,
+    "norwegian_name": "Jacobs 10 Gårdsegg",
+    "english_description": "a grocery product: farm eggs, eggs",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs",
+      "Jacobs 10 Gårdsegg on a grocery store shelf",
+      "a packaged food product labeled Jacobs 10 Gårdsegg"
+    ]
+  },
+  {
+    "id": 11,
+    "norwegian_name": "GRISSINI M/OLIVENOLJE 200G JACOBS UTVALG",
+    "english_description": "a grocery product: olive oil, breadsticks, oil - Jacobs Utvalg premium brand - 200g",
+    "prompts": [
+      "a photo of a grocery product: olive oil, breadsticks, oil - Jacobs Utvalg premium brand - 200g",
+      "GRISSINI M/OLIVENOLJE 200G JACOBS UTVALG on a grocery store shelf",
+      "a packaged food product labeled GRISSINI M/OLIVENOLJE 200G JACOBS UTVALG"
+    ]
+  },
+  {
+    "id": 12,
+    "norwegian_name": "Leksands Rutbit",
+    "english_description": "a grocery product: Leksands Swedish crispbread",
+    "prompts": [
+      "a photo of a grocery product: Leksands Swedish crispbread",
+      "Leksands Rutbit on a grocery store shelf",
+      "a packaged food product labeled Leksands Rutbit"
+    ]
+  },
+  {
+    "id": 13,
+    "norwegian_name": "GRISSINI 125G GRANFORNO",
+    "english_description": "a grocery product: breadsticks, rice, ice cream - Gran Forno Italian breadsticks - 125g",
+    "prompts": [
+      "a photo of a grocery product: breadsticks, rice, ice cream - Gran Forno Italian breadsticks - 125g",
+      "GRISSINI 125G GRANFORNO on a grocery store shelf",
+      "a packaged food product labeled GRISSINI 125G GRANFORNO"
+    ]
+  },
+  {
+    "id": 14,
+    "norwegian_name": "GRANOLA NØTTER 375G JACOBS UTVALGTE",
+    "english_description": "a grocery product: granola, nuts, tea - Jacobs Utvalgte premium brand - 375g",
+    "prompts": [
+      "a photo of a grocery product: granola, nuts, tea - Jacobs Utvalgte premium brand - 375g",
+      "GRANOLA NØTTER 375G JACOBS UTVALGTE on a grocery store shelf",
+      "a packaged food product labeled GRANOLA NØTTER 375G JACOBS UTVALGTE"
+    ]
+  },
+  {
+    "id": 15,
+    "norwegian_name": "FRUKT MÜSLI 1KG FIRST PRICE",
+    "english_description": "a grocery product: muesli, fruit - First Price budget brand - 1kg",
+    "prompts": [
+      "a photo of a grocery product: muesli, fruit - First Price budget brand - 1kg",
+      "FRUKT MÜSLI 1KG FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled FRUKT MÜSLI 1KG FIRST PRICE"
+    ]
+  },
+  {
+    "id": 16,
+    "norwegian_name": "CAPPUCCINO 8KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules - Dolce Gusto coffee capsules - 8kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Dolce Gusto coffee capsules - 8kapsler",
+      "CAPPUCCINO 8KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled CAPPUCCINO 8KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 17,
+    "norwegian_name": "KNEKKEBRØD GL.FRI 150G BRISK",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - Brisk gluten-free brand - 150g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - Brisk gluten-free brand - 150g",
+      "KNEKKEBRØD GL.FRI 150G BRISK on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD GL.FRI 150G BRISK"
+    ]
+  },
+  {
+    "id": 18,
+    "norwegian_name": "MELANGE MARGARIN U/MELK/SALT/SOYA 500G",
+    "english_description": "a grocery product: margarine, milk, salt - 500g",
+    "prompts": [
+      "a photo of a grocery product: margarine, milk, salt - 500g",
+      "MELANGE MARGARIN U/MELK/SALT/SOYA 500G on a grocery store shelf",
+      "a packaged food product labeled MELANGE MARGARIN U/MELK/SALT/SOYA 500G"
+    ]
+  },
+  {
+    "id": 19,
+    "norwegian_name": "MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+      "MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled MOLLBERGS ZOEGAS 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 20,
+    "norwegian_name": "GRØNN TE 20POS LIPTON",
+    "english_description": "a grocery product: green tea, tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: green tea, tea - Lipton tea - 20pos",
+      "GRØNN TE 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled GRØNN TE 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 21,
+    "norwegian_name": "KNEKKEBRØD RUNDA SESAM&HAVSALT 290G WASA",
+    "english_description": "a grocery product: crispbread, bread, salt - Wasa brand Swedish crispbread - 290g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, salt - Wasa brand Swedish crispbread - 290g",
+      "KNEKKEBRØD RUNDA SESAM&HAVSALT 290G WASA on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD RUNDA SESAM&HAVSALT 290G WASA"
+    ]
+  },
+  {
+    "id": 22,
+    "norwegian_name": "MÜSLI RISTET HAVRE&TRANEBÆR 700G AXA",
+    "english_description": "a grocery product: oat, muesli, berries - 700g",
+    "prompts": [
+      "a photo of a grocery product: oat, muesli, berries - 700g",
+      "MÜSLI RISTET HAVRE&TRANEBÆR 700G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI RISTET HAVRE&TRANEBÆR 700G AXA"
+    ]
+  },
+  {
+    "id": 23,
+    "norwegian_name": "FITNESS FROKOST 375G NESTLE",
+    "english_description": "a grocery product: breakfast, cheese - Nestlé - 375g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Nestlé - 375g",
+      "FITNESS FROKOST 375G NESTLE on a grocery store shelf",
+      "a packaged food product labeled FITNESS FROKOST 375G NESTLE"
+    ]
+  },
+  {
+    "id": 24,
+    "norwegian_name": "GRØNN MINT TE 20POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 20pos",
+      "GRØNN MINT TE 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled GRØNN MINT TE 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 25,
+    "norwegian_name": "ALI MØRKBRENT KAFFEKAPSEL 16STK",
+    "english_description": "a grocery product: coffee - 16stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 16stk",
+      "ALI MØRKBRENT KAFFEKAPSEL 16STK on a grocery store shelf",
+      "a packaged food product labeled ALI MØRKBRENT KAFFEKAPSEL 16STK"
+    ]
+  },
+  {
+    "id": 26,
+    "norwegian_name": "OB PROCOMFORT NORMAL 16ST",
+    "english_description": "a grocery product on a store shelf: OB PROCOMFORT NORMAL 16ST",
+    "prompts": [
+      "a photo of a grocery product on a store shelf: OB PROCOMFORT NORMAL 16ST",
+      "OB PROCOMFORT NORMAL 16ST on a grocery store shelf",
+      "a packaged food product labeled OB PROCOMFORT NORMAL 16ST"
+    ]
+  },
+  {
+    "id": 27,
+    "norwegian_name": "YELLOW LABEL TEA 50POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 50pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 50pos",
+      "YELLOW LABEL TEA 50POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled YELLOW LABEL TEA 50POS LIPTON"
+    ]
+  },
+  {
+    "id": 28,
+    "norwegian_name": "LADY GREY TE 200G TWININGS",
+    "english_description": "a grocery product: tea - Twinings tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: tea - Twinings tea - 200g",
+      "LADY GREY TE 200G TWININGS on a grocery store shelf",
+      "a packaged food product labeled LADY GREY TE 200G TWININGS"
+    ]
+  },
+  {
+    "id": 29,
+    "norwegian_name": "NESQUIK FROKOSTBLANDING 375G NESTLE",
+    "english_description": "a grocery product: breakfast, cheese - Nestlé - 375g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Nestlé - 375g",
+      "NESQUIK FROKOSTBLANDING 375G NESTLE on a grocery store shelf",
+      "a packaged food product labeled NESQUIK FROKOSTBLANDING 375G NESTLE"
+    ]
+  },
+  {
+    "id": 30,
+    "norwegian_name": "SJOKORINGER 375G ELDORADO",
+    "english_description": "a grocery product: Eldorado store brand - 375g",
+    "prompts": [
+      "a photo of a grocery product: Eldorado store brand - 375g",
+      "SJOKORINGER 375G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled SJOKORINGER 375G ELDORADO"
+    ]
+  },
+  {
+    "id": 31,
+    "norwegian_name": "TASSIMO EVERGOOD DARK ROAST 16KAPSLER",
+    "english_description": "a grocery product: capsules - Evergood Norwegian coffee - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Evergood Norwegian coffee - 16kapsler",
+      "TASSIMO EVERGOOD DARK ROAST 16KAPSLER on a grocery store shelf",
+      "a packaged food product labeled TASSIMO EVERGOOD DARK ROAST 16KAPSLER"
+    ]
+  },
+  {
+    "id": 32,
+    "norwegian_name": "SOLBÆRTODDY 10PK 320G FREIA",
+    "english_description": "a grocery product: berries - 320g",
+    "prompts": [
+      "a photo of a grocery product: berries - 320g",
+      "SOLBÆRTODDY 10PK 320G FREIA on a grocery store shelf",
+      "a packaged food product labeled SOLBÆRTODDY 10PK 320G FREIA"
+    ]
+  },
+  {
+    "id": 33,
+    "norwegian_name": "FLATBRØD MORS HJEMMEBAKTE 520G",
+    "english_description": "a grocery product: flatbread, bread, tea - Mors traditional flatbread - 520g",
+    "prompts": [
+      "a photo of a grocery product: flatbread, bread, tea - Mors traditional flatbread - 520g",
+      "FLATBRØD MORS HJEMMEBAKTE 520G on a grocery store shelf",
+      "a packaged food product labeled FLATBRØD MORS HJEMMEBAKTE 520G"
+    ]
+  },
+  {
+    "id": 34,
+    "norwegian_name": "SMACKS 330G KELLOGG'S",
+    "english_description": "a grocery product: 330g",
+    "prompts": [
+      "a photo of a grocery product: 330g",
+      "SMACKS 330G KELLOGG'S on a grocery store shelf",
+      "a packaged food product labeled SMACKS 330G KELLOGG'S"
+    ]
+  },
+  {
+    "id": 35,
+    "norwegian_name": "CRUNCHY MUSLI 750G FIRST PRICE",
+    "english_description": "a grocery product: First Price budget brand - 750g",
+    "prompts": [
+      "a photo of a grocery product: First Price budget brand - 750g",
+      "CRUNCHY MUSLI 750G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled CRUNCHY MUSLI 750G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 36,
+    "norwegian_name": "MÜSLI FRUKT MÜSLI 700G AXA",
+    "english_description": "a grocery product: muesli, fruit - 700g",
+    "prompts": [
+      "a photo of a grocery product: muesli, fruit - 700g",
+      "MÜSLI FRUKT MÜSLI 700G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI FRUKT MÜSLI 700G AXA"
+    ]
+  },
+  {
+    "id": 37,
+    "norwegian_name": "URTETE 200G RICOLA",
+    "english_description": "a grocery product: herbal tea, tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: herbal tea, tea - 200g",
+      "URTETE 200G RICOLA on a grocery store shelf",
+      "a packaged food product labeled URTETE 200G RICOLA"
+    ]
+  },
+  {
+    "id": 38,
+    "norwegian_name": "KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W",
+    "english_description": "a grocery product: crispbread, bread, salt - 270g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, salt - 270g",
+      "KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD DIN STUND CHIA&HAVSALT 270G W"
+    ]
+  },
+  {
+    "id": 39,
+    "norwegian_name": "KNEKKEBRØD RUNDA KANEL 330G WASA",
+    "english_description": "a grocery product: crispbread, cinnamon, bread - Wasa brand Swedish crispbread - 330g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, cinnamon, bread - Wasa brand Swedish crispbread - 330g",
+      "KNEKKEBRØD RUNDA KANEL 330G WASA on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD RUNDA KANEL 330G WASA"
+    ]
+  },
+  {
+    "id": 40,
+    "norwegian_name": "FRIELE FROKOST FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, breakfast, cheese - Friele Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, breakfast, cheese - Friele Norwegian coffee - 250g",
+      "FRIELE FROKOST FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled FRIELE FROKOST FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 41,
+    "norwegian_name": "VITA HJERTEGO MYK PLANTEMARGARIN 370G",
+    "english_description": "a grocery product: margarine, tea - 370g",
+    "prompts": [
+      "a photo of a grocery product: margarine, tea - 370g",
+      "VITA HJERTEGO MYK PLANTEMARGARIN 370G on a grocery store shelf",
+      "a packaged food product labeled VITA HJERTEGO MYK PLANTEMARGARIN 370G"
+    ]
+  },
+  {
+    "id": 42,
+    "norwegian_name": "KNEKKS KJEKS M/SPELT&HAVSALT 190G RØROS",
+    "english_description": "a grocery product: biscuits, salt - 190g",
+    "prompts": [
+      "a photo of a grocery product: biscuits, salt - 190g",
+      "KNEKKS KJEKS M/SPELT&HAVSALT 190G RØROS on a grocery store shelf",
+      "a packaged food product labeled KNEKKS KJEKS M/SPELT&HAVSALT 190G RØROS"
+    ]
+  },
+  {
+    "id": 43,
+    "norwegian_name": "MEIERISMØR 500G TINE",
+    "english_description": "a grocery product: butter, rice, ice cream - Tine Norwegian dairy - 500g",
+    "prompts": [
+      "a photo of a grocery product: butter, rice, ice cream - Tine Norwegian dairy - 500g",
+      "MEIERISMØR 500G TINE on a grocery store shelf",
+      "a packaged food product labeled MEIERISMØR 500G TINE"
+    ]
+  },
+  {
+    "id": 44,
+    "norwegian_name": "KNEKKS KJEKS HAVRE 190G RØROS",
+    "english_description": "a grocery product: oat, biscuits - 190g",
+    "prompts": [
+      "a photo of a grocery product: oat, biscuits - 190g",
+      "KNEKKS KJEKS HAVRE 190G RØROS on a grocery store shelf",
+      "a packaged food product labeled KNEKKS KJEKS HAVRE 190G RØROS"
+    ]
+  },
+  {
+    "id": 45,
+    "norwegian_name": "LADY GREY TEA 25POS TWININGS",
+    "english_description": "a grocery product: tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Twinings tea - 25pos",
+      "LADY GREY TEA 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled LADY GREY TEA 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 46,
+    "norwegian_name": "GRØNN TE SITRON 25POS TWININGS",
+    "english_description": "a grocery product: green tea, lemon, tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: green tea, lemon, tea - Twinings tea - 25pos",
+      "GRØNN TE SITRON 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled GRØNN TE SITRON 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 47,
+    "norwegian_name": "GRANOLA EPLE&KANEL 430G BARE BRA",
+    "english_description": "a grocery product: granola, cinnamon, apple - 430g",
+    "prompts": [
+      "a photo of a grocery product: granola, cinnamon, apple - 430g",
+      "GRANOLA EPLE&KANEL 430G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled GRANOLA EPLE&KANEL 430G BARE BRA"
+    ]
+  },
+  {
+    "id": 48,
+    "norwegian_name": "SMØREMYK 600G ELDORADO",
+    "english_description": "a grocery product: soft spread, butter - Eldorado store brand - 600g",
+    "prompts": [
+      "a photo of a grocery product: soft spread, butter - Eldorado store brand - 600g",
+      "SMØREMYK 600G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled SMØREMYK 600G ELDORADO"
+    ]
+  },
+  {
+    "id": 49,
+    "norwegian_name": "EVERGOOD DARK ROAST FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+      "EVERGOOD DARK ROAST FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD DARK ROAST FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 50,
+    "norwegian_name": "BERIT GRANOLA M/PUFFET HAVRE 350G",
+    "english_description": "a grocery product: granola, puffed, oat - Berit Nordstrand health food - 350g",
+    "prompts": [
+      "a photo of a grocery product: granola, puffed, oat - Berit Nordstrand health food - 350g",
+      "BERIT GRANOLA M/PUFFET HAVRE 350G on a grocery store shelf",
+      "a packaged food product labeled BERIT GRANOLA M/PUFFET HAVRE 350G"
+    ]
+  },
+  {
+    "id": 51,
+    "norwegian_name": "Tørresvik Gårdsegg 6stk",
+    "english_description": "a grocery product: farm eggs, eggs - 6stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - 6stk",
+      "Tørresvik Gårdsegg 6stk on a grocery store shelf",
+      "a packaged food product labeled Tørresvik Gårdsegg 6stk"
+    ]
+  },
+  {
+    "id": 52,
+    "norwegian_name": "RUGSPRØ 200G WASA",
+    "english_description": "a grocery product: rye - Wasa brand Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: rye - Wasa brand Swedish crispbread - 200g",
+      "RUGSPRØ 200G WASA on a grocery store shelf",
+      "a packaged food product labeled RUGSPRØ 200G WASA"
+    ]
+  },
+  {
+    "id": 53,
+    "norwegian_name": "COCO POPS CHOCOS 330G KELLOGG'S",
+    "english_description": "a grocery product: 330g",
+    "prompts": [
+      "a photo of a grocery product: 330g",
+      "COCO POPS CHOCOS 330G KELLOGG'S on a grocery store shelf",
+      "a packaged food product labeled COCO POPS CHOCOS 330G KELLOGG'S"
+    ]
+  },
+  {
+    "id": 54,
+    "norwegian_name": "FILTERPOSER NR.4 100STK EVERGOOD",
+    "english_description": "a grocery product: tea - Evergood Norwegian coffee - 100stk",
+    "prompts": [
+      "a photo of a grocery product: tea - Evergood Norwegian coffee - 100stk",
+      "FILTERPOSER NR.4 100STK EVERGOOD on a grocery store shelf",
+      "a packaged food product labeled FILTERPOSER NR.4 100STK EVERGOOD"
+    ]
+  },
+  {
+    "id": 55,
+    "norwegian_name": "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW LUNGO KOFFEINFRI KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 56,
+    "norwegian_name": "SJOKOLADEDRIKK 10PK 320G REGIA",
+    "english_description": "a grocery product: chocolate - 320g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 320g",
+      "SJOKOLADEDRIKK 10PK 320G REGIA on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK 10PK 320G REGIA"
+    ]
+  },
+  {
+    "id": 57,
+    "norwegian_name": "MORENEPOTETER GULE 650G BJERTNÆS&HOEL",
+    "english_description": "a grocery product: tea - 650g",
+    "prompts": [
+      "a photo of a grocery product: tea - 650g",
+      "MORENEPOTETER GULE 650G BJERTNÆS&HOEL on a grocery store shelf",
+      "a packaged food product labeled MORENEPOTETER GULE 650G BJERTNÆS&HOEL"
+    ]
+  },
+  {
+    "id": 58,
+    "norwegian_name": "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: organic, coffee, ice cream - 10stk",
+    "prompts": [
+      "a photo of a grocery product: organic, coffee, ice cream - 10stk",
+      "COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW LUNGO ØKOLOGISK KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 59,
+    "norwegian_name": "MÜSLI BLÅBÆR 630G AXA",
+    "english_description": "a grocery product: blueberry, muesli, berries - 630g",
+    "prompts": [
+      "a photo of a grocery product: blueberry, muesli, berries - 630g",
+      "MÜSLI BLÅBÆR 630G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI BLÅBÆR 630G AXA"
+    ]
+  },
+  {
+    "id": 60,
+    "norwegian_name": "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - 190g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - 190g",
+      "KNEKKEBRØD URTER&HAVSALT GL.FRI 190G on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD URTER&HAVSALT GL.FRI 190G"
+    ]
+  },
+  {
+    "id": 61,
+    "norwegian_name": "MUSLI BLÅBÆR 630G AXA",
+    "english_description": "a grocery product: blueberry, berries - 630g",
+    "prompts": [
+      "a photo of a grocery product: blueberry, berries - 630g",
+      "MUSLI BLÅBÆR 630G AXA on a grocery store shelf",
+      "a packaged food product labeled MUSLI BLÅBÆR 630G AXA"
+    ]
+  },
+  {
+    "id": 62,
+    "norwegian_name": "KAVRINGER 350G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 350g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 350g",
+      "KAVRINGER 350G WASA on a grocery store shelf",
+      "a packaged food product labeled KAVRINGER 350G WASA"
+    ]
+  },
+  {
+    "id": 63,
+    "norwegian_name": "ALI MØRKBRENT FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - 250g",
+      "ALI MØRKBRENT FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled ALI MØRKBRENT FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 64,
+    "norwegian_name": "TASSIMO EVERGOOD CLASSIC 16KAPSLER",
+    "english_description": "a grocery product: capsules - Evergood Norwegian coffee - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Evergood Norwegian coffee - 16kapsler",
+      "TASSIMO EVERGOOD CLASSIC 16KAPSLER on a grocery store shelf",
+      "a packaged food product labeled TASSIMO EVERGOOD CLASSIC 16KAPSLER"
+    ]
+  },
+  {
+    "id": 65,
+    "norwegian_name": "PULVERKAFFE INSTANT 200G FIRST PRICE",
+    "english_description": "a grocery product: coffee - First Price budget brand - 200g",
+    "prompts": [
+      "a photo of a grocery product: coffee - First Price budget brand - 200g",
+      "PULVERKAFFE INSTANT 200G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled PULVERKAFFE INSTANT 200G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 66,
+    "norwegian_name": "RYVITA KNEKKEBRØD SESAM 250G",
+    "english_description": "a grocery product: crispbread, bread - 250g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - 250g",
+      "RYVITA KNEKKEBRØD SESAM 250G on a grocery store shelf",
+      "a packaged food product labeled RYVITA KNEKKEBRØD SESAM 250G"
+    ]
+  },
+  {
+    "id": 67,
+    "norwegian_name": "SOFT FLORA ORIGINAL 230G",
+    "english_description": "a grocery product: 230g",
+    "prompts": [
+      "a photo of a grocery product: 230g",
+      "SOFT FLORA ORIGINAL 230G on a grocery store shelf",
+      "a packaged food product labeled SOFT FLORA ORIGINAL 230G"
+    ]
+  },
+  {
+    "id": 68,
+    "norwegian_name": "MAISKAKER SOURCREAM&ONION 125G FRIGGS",
+    "english_description": "a grocery product: ice cream - 125g",
+    "prompts": [
+      "a photo of a grocery product: ice cream - 125g",
+      "MAISKAKER SOURCREAM&ONION 125G FRIGGS on a grocery store shelf",
+      "a packaged food product labeled MAISKAKER SOURCREAM&ONION 125G FRIGGS"
+    ]
+  },
+  {
+    "id": 69,
+    "norwegian_name": "DAVE&JON'S DADLER SOUR COLA 125G",
+    "english_description": "a grocery product: 125g",
+    "prompts": [
+      "a photo of a grocery product: 125g",
+      "DAVE&JON'S DADLER SOUR COLA 125G on a grocery store shelf",
+      "a packaged food product labeled DAVE&JON'S DADLER SOUR COLA 125G"
+    ]
+  },
+  {
+    "id": 70,
+    "norwegian_name": "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI",
+    "english_description": "a grocery product: soda, tea - 150g",
+    "prompts": [
+      "a photo of a grocery product: soda, tea - 150g",
+      "BRUSCHETTE TOMAT&OLIVEN 150G MARETTI on a grocery store shelf",
+      "a packaged food product labeled BRUSCHETTE TOMAT&OLIVEN 150G MARETTI"
+    ]
+  },
+  {
+    "id": 71,
+    "norwegian_name": "AMERICANO 16 KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules - Dolce Gusto coffee capsules - 16 kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Dolce Gusto coffee capsules - 16 kapsler",
+      "AMERICANO 16 KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled AMERICANO 16 KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 72,
+    "norwegian_name": "EGG FRITTGÅENDE 12STK PRIOR",
+    "english_description": "a grocery product: eggs - Prior Norwegian eggs/poultry - 12stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - Prior Norwegian eggs/poultry - 12stk",
+      "EGG FRITTGÅENDE 12STK PRIOR on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE 12STK PRIOR"
+    ]
+  },
+  {
+    "id": 73,
+    "norwegian_name": "MELLOMBAR SJOKOLADE&KRISP 138G ELDORADO",
+    "english_description": "a grocery product: chocolate, flour, rice - Eldorado store brand - 138g",
+    "prompts": [
+      "a photo of a grocery product: chocolate, flour, rice - Eldorado store brand - 138g",
+      "MELLOMBAR SJOKOLADE&KRISP 138G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR SJOKOLADE&KRISP 138G ELDORADO"
+    ]
+  },
+  {
+    "id": 74,
+    "norwegian_name": "NESCAFE BRASERO REFILL 180G",
+    "english_description": "a grocery product: Nescafé coffee - 180g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 180g",
+      "NESCAFE BRASERO REFILL 180G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE BRASERO REFILL 180G"
+    ]
+  },
+  {
+    "id": 75,
+    "norwegian_name": "CRUESLI 4 NUTS 450G QUAKER",
+    "english_description": "a grocery product: 450g",
+    "prompts": [
+      "a photo of a grocery product: 450g",
+      "CRUESLI 4 NUTS 450G QUAKER on a grocery store shelf",
+      "a packaged food product labeled CRUESLI 4 NUTS 450G QUAKER"
+    ]
+  },
+  {
+    "id": 76,
+    "norwegian_name": "BRUSCHETTA LIGURISK 130G OLIVINO",
+    "english_description": "a grocery product: bruschetta, soda, rice - 130g",
+    "prompts": [
+      "a photo of a grocery product: bruschetta, soda, rice - 130g",
+      "BRUSCHETTA LIGURISK 130G OLIVINO on a grocery store shelf",
+      "a packaged food product labeled BRUSCHETTA LIGURISK 130G OLIVINO"
+    ]
+  },
+  {
+    "id": 77,
+    "norwegian_name": "BAKEKAKAO 250G REGIA",
+    "english_description": "a grocery product: cocoa - 250g",
+    "prompts": [
+      "a photo of a grocery product: cocoa - 250g",
+      "BAKEKAKAO 250G REGIA on a grocery store shelf",
+      "a packaged food product labeled BAKEKAKAO 250G REGIA"
+    ]
+  },
+  {
+    "id": 78,
+    "norwegian_name": "MUSLI HAVRE&MANDEL 400G BARE BRA",
+    "english_description": "a grocery product: oat - 400g",
+    "prompts": [
+      "a photo of a grocery product: oat - 400g",
+      "MUSLI HAVRE&MANDEL 400G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled MUSLI HAVRE&MANDEL 400G BARE BRA"
+    ]
+  },
+  {
+    "id": 79,
+    "norwegian_name": "PANNEKAKER GROVE STEKTE 480G ÅMLI",
+    "english_description": "a grocery product: tea - 480g",
+    "prompts": [
+      "a photo of a grocery product: tea - 480g",
+      "PANNEKAKER GROVE STEKTE 480G ÅMLI on a grocery store shelf",
+      "a packaged food product labeled PANNEKAKER GROVE STEKTE 480G ÅMLI"
+    ]
+  },
+  {
+    "id": 80,
+    "norwegian_name": "FROKOSTEGG FRITTGÅENDE L 12STK PRIOR",
+    "english_description": "a grocery product: breakfast, eggs, cheese - Prior Norwegian eggs/poultry - 12stk",
+    "prompts": [
+      "a photo of a grocery product: breakfast, eggs, cheese - Prior Norwegian eggs/poultry - 12stk",
+      "FROKOSTEGG FRITTGÅENDE L 12STK PRIOR on a grocery store shelf",
+      "a packaged food product labeled FROKOSTEGG FRITTGÅENDE L 12STK PRIOR"
+    ]
+  },
+  {
+    "id": 81,
+    "norwegian_name": "GRØNN TE CHAI 25POS TWININGS",
+    "english_description": "a grocery product: green tea, tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: green tea, tea - Twinings tea - 25pos",
+      "GRØNN TE CHAI 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled GRØNN TE CHAI 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 82,
+    "norwegian_name": "FRØ & HAVSALT 200G LEKSANDS",
+    "english_description": "a grocery product: salt - Leksands Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: salt - Leksands Swedish crispbread - 200g",
+      "FRØ & HAVSALT 200G LEKSANDS on a grocery store shelf",
+      "a packaged food product labeled FRØ & HAVSALT 200G LEKSANDS"
+    ]
+  },
+  {
+    "id": 83,
+    "norwegian_name": "BLACK TEA PEACG&MANGO 20PS LIPTON",
+    "english_description": "a grocery product: mango, tea - Lipton tea",
+    "prompts": [
+      "a photo of a grocery product: mango, tea - Lipton tea",
+      "BLACK TEA PEACG&MANGO 20PS LIPTON on a grocery store shelf",
+      "a packaged food product labeled BLACK TEA PEACG&MANGO 20PS LIPTON"
+    ]
+  },
+  {
+    "id": 84,
+    "norwegian_name": "HAVRE KNEKKEBRØD ØKONOMI 600G WASA",
+    "english_description": "a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 600g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 600g",
+      "HAVRE KNEKKEBRØD ØKONOMI 600G WASA on a grocery store shelf",
+      "a packaged food product labeled HAVRE KNEKKEBRØD ØKONOMI 600G WASA"
+    ]
+  },
+  {
+    "id": 85,
+    "norwegian_name": "RIS PUFFET 260G FIRST PRICE",
+    "english_description": "a grocery product: puffed, rice, ice cream - First Price budget brand - 260g",
+    "prompts": [
+      "a photo of a grocery product: puffed, rice, ice cream - First Price budget brand - 260g",
+      "RIS PUFFET 260G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled RIS PUFFET 260G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 86,
+    "norwegian_name": "HAVRE KNEKKEBRØD 300G WASA",
+    "english_description": "a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 300g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 300g",
+      "HAVRE KNEKKEBRØD 300G WASA on a grocery store shelf",
+      "a packaged food product labeled HAVRE KNEKKEBRØD 300G WASA"
+    ]
+  },
+  {
+    "id": 87,
+    "norwegian_name": "SPICY INDIAN CHAI TEA 20POS TWININGS",
+    "english_description": "a grocery product: tea - Twinings tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Twinings tea - 20pos",
+      "SPICY INDIAN CHAI TEA 20POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled SPICY INDIAN CHAI TEA 20POS TWININGS"
+    ]
+  },
+  {
+    "id": 88,
+    "norwegian_name": "OLIVERO SMØR&OLIVENOLJE 400G",
+    "english_description": "a grocery product: olive oil, butter, oil - 400g",
+    "prompts": [
+      "a photo of a grocery product: olive oil, butter, oil - 400g",
+      "OLIVERO SMØR&OLIVENOLJE 400G on a grocery store shelf",
+      "a packaged food product labeled OLIVERO SMØR&OLIVENOLJE 400G"
+    ]
+  },
+  {
+    "id": 89,
+    "norwegian_name": "FOREST FRUIT TEA 20POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 20pos",
+      "FOREST FRUIT TEA 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled FOREST FRUIT TEA 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 90,
+    "norwegian_name": "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN",
+    "english_description": "a grocery product: granola, gluten-free - Synnøve Finden dairy - 325g",
+    "prompts": [
+      "a photo of a grocery product: granola, gluten-free - Synnøve Finden dairy - 325g",
+      "GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN on a grocery store shelf",
+      "a packaged food product labeled GRANOLA PEKAN GL.FRI 325G SYNNØVE FINDEN"
+    ]
+  },
+  {
+    "id": 91,
+    "norwegian_name": "SANDWICH PESTO 37G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 37g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 37g",
+      "SANDWICH PESTO 37G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH PESTO 37G WASA"
+    ]
+  },
+  {
+    "id": 92,
+    "norwegian_name": "KNEKKEBRØD GODT FOR DEG 235G SIGDAL",
+    "english_description": "a grocery product: crispbread, bread - 235g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - 235g",
+      "KNEKKEBRØD GODT FOR DEG 235G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD GODT FOR DEG 235G SIGDAL"
+    ]
+  },
+  {
+    "id": 93,
+    "norwegian_name": "GRANOLA KAKAO KOKOS&MANDEL BARE BRA",
+    "english_description": "a grocery product: granola, cocoa",
+    "prompts": [
+      "a photo of a grocery product: granola, cocoa",
+      "GRANOLA KAKAO KOKOS&MANDEL BARE BRA on a grocery store shelf",
+      "a packaged food product labeled GRANOLA KAKAO KOKOS&MANDEL BARE BRA"
+    ]
+  },
+  {
+    "id": 94,
+    "norwegian_name": "HAVREGRYN STORE GLUTENFRI 1KG AXA",
+    "english_description": "a grocery product: gluten-free, oat, tea - 1kg",
+    "prompts": [
+      "a photo of a grocery product: gluten-free, oat, tea - 1kg",
+      "HAVREGRYN STORE GLUTENFRI 1KG AXA on a grocery store shelf",
+      "a packaged food product labeled HAVREGRYN STORE GLUTENFRI 1KG AXA"
+    ]
+  },
+  {
+    "id": 95,
+    "norwegian_name": "EGG M/L ØKOLOGISKE 10STK VILJE",
+    "english_description": "a grocery product: organic, organic, eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: organic, organic, eggs - 10stk",
+      "EGG M/L ØKOLOGISKE 10STK VILJE on a grocery store shelf",
+      "a packaged food product labeled EGG M/L ØKOLOGISKE 10STK VILJE"
+    ]
+  },
+  {
+    "id": 96,
+    "norwegian_name": "FLATBRØD 275G KORNI",
+    "english_description": "a grocery product: flatbread, bread - 275g",
+    "prompts": [
+      "a photo of a grocery product: flatbread, bread - 275g",
+      "FLATBRØD 275G KORNI on a grocery store shelf",
+      "a packaged food product labeled FLATBRØD 275G KORNI"
+    ]
+  },
+  {
+    "id": 97,
+    "norwegian_name": "CHEERIOS MULTI 375G NESTLE",
+    "english_description": "a grocery product: Nestlé - 375g",
+    "prompts": [
+      "a photo of a grocery product: Nestlé - 375g",
+      "CHEERIOS MULTI 375G NESTLE on a grocery store shelf",
+      "a packaged food product labeled CHEERIOS MULTI 375G NESTLE"
+    ]
+  },
+  {
+    "id": 98,
+    "norwegian_name": "NIGHT TE 20POS PUKKA",
+    "english_description": "a grocery product: tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Pukka organic tea - 20pos",
+      "NIGHT TE 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled NIGHT TE 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 99,
+    "norwegian_name": "NESCAFE ORIGINAL 180G REFILL",
+    "english_description": "a grocery product: Nescafé coffee - 180g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 180g",
+      "NESCAFE ORIGINAL 180G REFILL on a grocery store shelf",
+      "a packaged food product labeled NESCAFE ORIGINAL 180G REFILL"
+    ]
+  },
+  {
+    "id": 100,
+    "norwegian_name": "EVERGOOD CLASSIC FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+      "EVERGOOD CLASSIC FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 101,
+    "norwegian_name": "SANDWICH CHEESE HERBS 30G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 30g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 30g",
+      "SANDWICH CHEESE HERBS 30G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH CHEESE HERBS 30G WASA"
+    ]
+  },
+  {
+    "id": 102,
+    "norwegian_name": "EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO",
+    "english_description": "a grocery product: eggs - 12stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - 12stk",
+      "EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE M/L/XL SOLEGG 12STK PRIO"
+    ]
+  },
+  {
+    "id": 103,
+    "norwegian_name": "EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA",
+    "english_description": "a grocery product: coffee - Evergood Norwegian coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - Evergood Norwegian coffee - 10stk",
+      "EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD DARK ROAST KAFFEKAPSEL 10STK KA"
+    ]
+  },
+  {
+    "id": 104,
+    "norwegian_name": "SMØR USALTET 250G TINE",
+    "english_description": "a grocery product: butter, salt, tea - Tine Norwegian dairy - 250g",
+    "prompts": [
+      "a photo of a grocery product: butter, salt, tea - Tine Norwegian dairy - 250g",
+      "SMØR USALTET 250G TINE on a grocery store shelf",
+      "a packaged food product labeled SMØR USALTET 250G TINE"
+    ]
+  },
+  {
+    "id": 105,
+    "norwegian_name": "EGG ØKOLOGISK M/L 12STK VINGULMARK",
+    "english_description": "a grocery product: organic, eggs, ice cream - 12stk",
+    "prompts": [
+      "a photo of a grocery product: organic, eggs, ice cream - 12stk",
+      "EGG ØKOLOGISK M/L 12STK VINGULMARK on a grocery store shelf",
+      "a packaged food product labeled EGG ØKOLOGISK M/L 12STK VINGULMARK"
+    ]
+  },
+  {
+    "id": 106,
+    "norwegian_name": "NESCAFE GOLD KOFFEINFRI 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE GOLD KOFFEINFRI 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE GOLD KOFFEINFRI 100G"
+    ]
+  },
+  {
+    "id": 107,
+    "norwegian_name": "FLAT WHITE 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+      "FLAT WHITE 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled FLAT WHITE 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 108,
+    "norwegian_name": "MUSLI M/BELGISK SJOKOLADE DSH",
+    "english_description": "a grocery product: chocolate, ice cream",
+    "prompts": [
+      "a photo of a grocery product: chocolate, ice cream",
+      "MUSLI M/BELGISK SJOKOLADE DSH on a grocery store shelf",
+      "a packaged food product labeled MUSLI M/BELGISK SJOKOLADE DSH"
+    ]
+  },
+  {
+    "id": 109,
+    "norwegian_name": "KNEKKEBRØD 100 FRØ&HAVSALT 245G WASA",
+    "english_description": "a grocery product: crispbread, bread, salt - Wasa brand Swedish crispbread - 245g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, salt - Wasa brand Swedish crispbread - 245g",
+      "KNEKKEBRØD 100 FRØ&HAVSALT 245G WASA on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD 100 FRØ&HAVSALT 245G WASA"
+    ]
+  },
+  {
+    "id": 110,
+    "norwegian_name": "BREMYKT 250G",
+    "english_description": "a grocery product: 250g",
+    "prompts": [
+      "a photo of a grocery product: 250g",
+      "BREMYKT 250G on a grocery store shelf",
+      "a packaged food product labeled BREMYKT 250G"
+    ]
+  },
+  {
+    "id": 111,
+    "norwegian_name": "NESCAFE BRASERO 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE BRASERO 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE BRASERO 100G"
+    ]
+  },
+  {
+    "id": 112,
+    "norwegian_name": "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS",
+    "english_description": "a grocery product: 500g",
+    "prompts": [
+      "a photo of a grocery product: 500g",
+      "ESPRESSO ITALIAN HELE BØNNER 500G JACOBS on a grocery store shelf",
+      "a packaged food product labeled ESPRESSO ITALIAN HELE BØNNER 500G JACOBS"
+    ]
+  },
+  {
+    "id": 113,
+    "norwegian_name": "ERTERFLATBRØD CRISP 210G",
+    "english_description": "a grocery product: flatbread, bread, rice - 210g",
+    "prompts": [
+      "a photo of a grocery product: flatbread, bread, rice - 210g",
+      "ERTERFLATBRØD CRISP 210G on a grocery store shelf",
+      "a packaged food product labeled ERTERFLATBRØD CRISP 210G"
+    ]
+  },
+  {
+    "id": 114,
+    "norwegian_name": "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA",
+    "english_description": "a grocery product: tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Pukka organic tea - 20pos",
+      "CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled CLEAN MATCHA GREEN TE ØKOL 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 115,
+    "norwegian_name": "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS",
+    "english_description": "a grocery product: 500g",
+    "prompts": [
+      "a photo of a grocery product: 500g",
+      "EXCELSO COLOMBIA HELE BØNNER 500G JACOBS on a grocery store shelf",
+      "a packaged food product labeled EXCELSO COLOMBIA HELE BØNNER 500G JACOBS"
+    ]
+  },
+  {
+    "id": 116,
+    "norwegian_name": "FROKOSTBLANDING LION 350G NESTLE",
+    "english_description": "a grocery product: breakfast, cheese - Nestlé - 350g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Nestlé - 350g",
+      "FROKOSTBLANDING LION 350G NESTLE on a grocery store shelf",
+      "a packaged food product labeled FROKOSTBLANDING LION 350G NESTLE"
+    ]
+  },
+  {
+    "id": 117,
+    "norwegian_name": "GRANOLA HASSELNØTT&KOKOS 450G BARE BRA",
+    "english_description": "a grocery product: granola - 450g",
+    "prompts": [
+      "a photo of a grocery product: granola - 450g",
+      "GRANOLA HASSELNØTT&KOKOS 450G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled GRANOLA HASSELNØTT&KOKOS 450G BARE BRA"
+    ]
+  },
+  {
+    "id": 118,
+    "norwegian_name": "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT",
+    "english_description": "a grocery product: Jacobs Utvalg premium brand - 500g",
+    "prompts": [
+      "a photo of a grocery product: Jacobs Utvalg premium brand - 500g",
+      "BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT on a grocery store shelf",
+      "a packaged food product labeled BLÅ JAVA HELE BØNNER 500G JACOBS UTVALGT"
+    ]
+  },
+  {
+    "id": 119,
+    "norwegian_name": "SOFT FLORA STEKE&BAKE 500G",
+    "english_description": "a grocery product: tea - 500g",
+    "prompts": [
+      "a photo of a grocery product: tea - 500g",
+      "SOFT FLORA STEKE&BAKE 500G on a grocery store shelf",
+      "a packaged food product labeled SOFT FLORA STEKE&BAKE 500G"
+    ]
+  },
+  {
+    "id": 120,
+    "norwegian_name": "TOM&JERRY KJEKS 175G SÆTRE",
+    "english_description": "a grocery product: biscuits - 175g",
+    "prompts": [
+      "a photo of a grocery product: biscuits - 175g",
+      "TOM&JERRY KJEKS 175G SÆTRE on a grocery store shelf",
+      "a packaged food product labeled TOM&JERRY KJEKS 175G SÆTRE"
+    ]
+  },
+  {
+    "id": 121,
+    "norwegian_name": "FROKOST-TALL 250G ELDORADO",
+    "english_description": "a grocery product: breakfast, cheese - Eldorado store brand - 250g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Eldorado store brand - 250g",
+      "FROKOST-TALL 250G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled FROKOST-TALL 250G ELDORADO"
+    ]
+  },
+  {
+    "id": 122,
+    "norwegian_name": "NYPETE 24POS CONFECTA",
+    "english_description": "a grocery product: tea - 24pos",
+    "prompts": [
+      "a photo of a grocery product: tea - 24pos",
+      "NYPETE 24POS CONFECTA on a grocery store shelf",
+      "a packaged food product labeled NYPETE 24POS CONFECTA"
+    ]
+  },
+  {
+    "id": 123,
+    "norwegian_name": "ASPARGES GRØNN",
+    "english_description": "a grocery product on a store shelf: ASPARGES GRØNN",
+    "prompts": [
+      "a photo of a grocery product on a store shelf: ASPARGES GRØNN",
+      "ASPARGES GRØNN on a grocery store shelf",
+      "a packaged food product labeled ASPARGES GRØNN"
+    ]
+  },
+  {
+    "id": 124,
+    "norwegian_name": "O'BOY MINDRE SUKKER 500G POSE FREIA",
+    "english_description": "a grocery product: sugar - 500g",
+    "prompts": [
+      "a photo of a grocery product: sugar - 500g",
+      "O'BOY MINDRE SUKKER 500G POSE FREIA on a grocery store shelf",
+      "a packaged food product labeled O'BOY MINDRE SUKKER 500G POSE FREIA"
+    ]
+  },
+  {
+    "id": 125,
+    "norwegian_name": "SJOKOLADEDRIKK 512G RETT I KOPPEN",
+    "english_description": "a grocery product: chocolate - 512g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 512g",
+      "SJOKOLADEDRIKK 512G RETT I KOPPEN on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK 512G RETT I KOPPEN"
+    ]
+  },
+  {
+    "id": 126,
+    "norwegian_name": "GRANDE INTENSO 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules, tea - Dolce Gusto coffee capsules - 16kapsler",
+      "GRANDE INTENSO 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled GRANDE INTENSO 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 127,
+    "norwegian_name": "FRIELE FROKOST HEL 500G",
+    "english_description": "a grocery product: breakfast, cheese - Friele Norwegian coffee - 500g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Friele Norwegian coffee - 500g",
+      "FRIELE FROKOST HEL 500G on a grocery store shelf",
+      "a packaged food product labeled FRIELE FROKOST HEL 500G"
+    ]
+  },
+  {
+    "id": 128,
+    "norwegian_name": "SMØREMYK LETT 400G ELDORADO",
+    "english_description": "a grocery product: soft spread, butter - Eldorado store brand - 400g",
+    "prompts": [
+      "a photo of a grocery product: soft spread, butter - Eldorado store brand - 400g",
+      "SMØREMYK LETT 400G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled SMØREMYK LETT 400G ELDORADO"
+    ]
+  },
+  {
+    "id": 129,
+    "norwegian_name": "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE",
+    "english_description": "a grocery product: oat, tea - 900g",
+    "prompts": [
+      "a photo of a grocery product: oat, tea - 900g",
+      "SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE on a grocery store shelf",
+      "a packaged food product labeled SVARTHAVREGRYN LETTKOKTE 900G DEN SORTE"
+    ]
+  },
+  {
+    "id": 130,
+    "norwegian_name": "WEETOS CHOCO 375G WEETABIX",
+    "english_description": "a grocery product: 375g",
+    "prompts": [
+      "a photo of a grocery product: 375g",
+      "WEETOS CHOCO 375G WEETABIX on a grocery store shelf",
+      "a packaged food product labeled WEETOS CHOCO 375G WEETABIX"
+    ]
+  },
+  {
+    "id": 131,
+    "norwegian_name": "KNEKKEBRØD HAVRE GL.FRI 190G SIGDAL",
+    "english_description": "a grocery product: crispbread, gluten-free, oat - 190g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, oat - 190g",
+      "KNEKKEBRØD HAVRE GL.FRI 190G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD HAVRE GL.FRI 190G SIGDAL"
+    ]
+  },
+  {
+    "id": 132,
+    "norwegian_name": "FRUKOST FULLKORN 320G WASA",
+    "english_description": "a grocery product: whole grain, cheese - Wasa brand Swedish crispbread - 320g",
+    "prompts": [
+      "a photo of a grocery product: whole grain, cheese - Wasa brand Swedish crispbread - 320g",
+      "FRUKOST FULLKORN 320G WASA on a grocery store shelf",
+      "a packaged food product labeled FRUKOST FULLKORN 320G WASA"
+    ]
+  },
+  {
+    "id": 133,
+    "norwegian_name": "ZOEGAS KAFFE SKÅNEROST 450G",
+    "english_description": "a grocery product: coffee, cheese - Zoégas Swedish coffee - 450g",
+    "prompts": [
+      "a photo of a grocery product: coffee, cheese - Zoégas Swedish coffee - 450g",
+      "ZOEGAS KAFFE SKÅNEROST 450G on a grocery store shelf",
+      "a packaged food product labeled ZOEGAS KAFFE SKÅNEROST 450G"
+    ]
+  },
+  {
+    "id": 134,
+    "norwegian_name": "EVERGOOD ESPRESSO HELE BØNNER 500G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 500g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 500g",
+      "EVERGOOD ESPRESSO HELE BØNNER 500G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD ESPRESSO HELE BØNNER 500G"
+    ]
+  },
+  {
+    "id": 135,
+    "norwegian_name": "GÅRDSEGG EKSTRA STORE 6STK EK",
+    "english_description": "a grocery product: farm eggs, eggs - 6stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - 6stk",
+      "GÅRDSEGG EKSTRA STORE 6STK EK on a grocery store shelf",
+      "a packaged food product labeled GÅRDSEGG EKSTRA STORE 6STK EK"
+    ]
+  },
+  {
+    "id": 136,
+    "norwegian_name": "SJOKOLADEDRIKK 450G BOKS REGIA",
+    "english_description": "a grocery product: chocolate - 450g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 450g",
+      "SJOKOLADEDRIKK 450G BOKS REGIA on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK 450G BOKS REGIA"
+    ]
+  },
+  {
+    "id": 137,
+    "norwegian_name": "NESCAFE AZERA ESPRESSO 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE AZERA ESPRESSO 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE AZERA ESPRESSO 100G"
+    ]
+  },
+  {
+    "id": 138,
+    "norwegian_name": "Økologiske Egg 10stk",
+    "english_description": "a grocery product: organic, organic, eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: organic, organic, eggs - 10stk",
+      "Økologiske Egg 10stk on a grocery store shelf",
+      "a packaged food product labeled Økologiske Egg 10stk"
+    ]
+  },
+  {
+    "id": 139,
+    "norwegian_name": "EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR",
+    "english_description": "a grocery product: eggs - Prior Norwegian eggs/poultry - 6stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - Prior Norwegian eggs/poultry - 6stk",
+      "EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE M/L/XL SOLEGG 6STK PRIOR"
+    ]
+  },
+  {
+    "id": 140,
+    "norwegian_name": "SURDEIGKJEKS 100G SÆTRES BESTE",
+    "english_description": "a grocery product: biscuits, tea - 100g",
+    "prompts": [
+      "a photo of a grocery product: biscuits, tea - 100g",
+      "SURDEIGKJEKS 100G SÆTRES BESTE on a grocery store shelf",
+      "a packaged food product labeled SURDEIGKJEKS 100G SÆTRES BESTE"
+    ]
+  },
+  {
+    "id": 141,
+    "norwegian_name": "EVERGOOD CLASSIC PRESSMALT 250G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 250g",
+      "EVERGOOD CLASSIC PRESSMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC PRESSMALT 250G"
+    ]
+  },
+  {
+    "id": 142,
+    "norwegian_name": "NESCAFÉ CAPPUCCINO 100G NESTLE",
+    "english_description": "a grocery product: Nestlé - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nestlé - 100g",
+      "NESCAFÉ CAPPUCCINO 100G NESTLE on a grocery store shelf",
+      "a packaged food product labeled NESCAFÉ CAPPUCCINO 100G NESTLE"
+    ]
+  },
+  {
+    "id": 143,
+    "norwegian_name": "KORNMO KNEKKEBRØD HAVRE&SOLSIKKE 200G",
+    "english_description": "a grocery product: crispbread, oat, bread - 200g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, oat, bread - 200g",
+      "KORNMO KNEKKEBRØD HAVRE&SOLSIKKE 200G on a grocery store shelf",
+      "a packaged food product labeled KORNMO KNEKKEBRØD HAVRE&SOLSIKKE 200G"
+    ]
+  },
+  {
+    "id": 144,
+    "norwegian_name": "FRIELE FROKOST KOKMALT 250G",
+    "english_description": "a grocery product: breakfast, cheese - Friele Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Friele Norwegian coffee - 250g",
+      "FRIELE FROKOST KOKMALT 250G on a grocery store shelf",
+      "a packaged food product labeled FRIELE FROKOST KOKMALT 250G"
+    ]
+  },
+  {
+    "id": 145,
+    "norwegian_name": "GRANOLA MANDLER &QUINOA 475G ELDORADO",
+    "english_description": "a grocery product: granola - Eldorado store brand - 475g",
+    "prompts": [
+      "a photo of a grocery product: granola - Eldorado store brand - 475g",
+      "GRANOLA MANDLER &QUINOA 475G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled GRANOLA MANDLER &QUINOA 475G ELDORADO"
+    ]
+  },
+  {
+    "id": 146,
+    "norwegian_name": "NESCAFE GULL 200G NESTLE",
+    "english_description": "a grocery product: Nestlé - 200g",
+    "prompts": [
+      "a photo of a grocery product: Nestlé - 200g",
+      "NESCAFE GULL 200G NESTLE on a grocery store shelf",
+      "a packaged food product labeled NESCAFE GULL 200G NESTLE"
+    ]
+  },
+  {
+    "id": 147,
+    "norwegian_name": "ROOIBOS TE ØKOLOGISK 20PS",
+    "english_description": "a grocery product: organic, tea, ice cream",
+    "prompts": [
+      "a photo of a grocery product: organic, tea, ice cream",
+      "ROOIBOS TE ØKOLOGISK 20PS on a grocery store shelf",
+      "a packaged food product labeled ROOIBOS TE ØKOLOGISK 20PS"
+    ]
+  },
+  {
+    "id": 148,
+    "norwegian_name": "GRANOLA SJOKOLADE&NØTTER 375G JACOBS",
+    "english_description": "a grocery product: chocolate, granola, nuts - 375g",
+    "prompts": [
+      "a photo of a grocery product: chocolate, granola, nuts - 375g",
+      "GRANOLA SJOKOLADE&NØTTER 375G JACOBS on a grocery store shelf",
+      "a packaged food product labeled GRANOLA SJOKOLADE&NØTTER 375G JACOBS"
+    ]
+  },
+  {
+    "id": 149,
+    "norwegian_name": "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - 240g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - 240g",
+      "KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD SESAM&HAVSALT GL.FRI 240G"
+    ]
+  },
+  {
+    "id": 150,
+    "norwegian_name": "Sætre GullBar",
+    "english_description": "a grocery product on a store shelf: Sætre GullBar",
+    "prompts": [
+      "a photo of a grocery product on a store shelf: Sætre GullBar",
+      "Sætre GullBar on a grocery store shelf",
+      "a packaged food product labeled Sætre GullBar"
+    ]
+  },
+  {
+    "id": 151,
+    "norwegian_name": "FARMERS COFFEE FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - 250g",
+      "FARMERS COFFEE FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled FARMERS COFFEE FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 152,
+    "norwegian_name": "HAVREKNEKKEBRØD TYNT 265G WASA",
+    "english_description": "a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 265g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, oat, bread - Wasa brand Swedish crispbread - 265g",
+      "HAVREKNEKKEBRØD TYNT 265G WASA on a grocery store shelf",
+      "a packaged food product labeled HAVREKNEKKEBRØD TYNT 265G WASA"
+    ]
+  },
+  {
+    "id": 153,
+    "norwegian_name": "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, breakfast, cheese - Friele Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, breakfast, cheese - Friele Norwegian coffee - 250g",
+      "FRIELE FROKOST KOFFEINFRI FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled FRIELE FROKOST KOFFEINFRI FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 154,
+    "norwegian_name": "KRYDDERMIKS SHISH KEBAB 10G POS HINDU",
+    "english_description": "a grocery product: spice, ice cream - 10g",
+    "prompts": [
+      "a photo of a grocery product: spice, ice cream - 10g",
+      "KRYDDERMIKS SHISH KEBAB 10G POS HINDU on a grocery store shelf",
+      "a packaged food product labeled KRYDDERMIKS SHISH KEBAB 10G POS HINDU"
+    ]
+  },
+  {
+    "id": 155,
+    "norwegian_name": "MELANGE FLYTENDE MARGARIN M/SMØR 500ML",
+    "english_description": "a grocery product: margarine, butter, flour - 500ml",
+    "prompts": [
+      "a photo of a grocery product: margarine, butter, flour - 500ml",
+      "MELANGE FLYTENDE MARGARIN M/SMØR 500ML on a grocery store shelf",
+      "a packaged food product labeled MELANGE FLYTENDE MARGARIN M/SMØR 500ML"
+    ]
+  },
+  {
+    "id": 156,
+    "norwegian_name": "GRANOLA CRAZELNUT 500G START!",
+    "english_description": "a grocery product: granola - 500g",
+    "prompts": [
+      "a photo of a grocery product: granola - 500g",
+      "GRANOLA CRAZELNUT 500G START! on a grocery store shelf",
+      "a packaged food product labeled GRANOLA CRAZELNUT 500G START!"
+    ]
+  },
+  {
+    "id": 157,
+    "norwegian_name": "MELLOMBAR SOMMERVIBBER 138G ELDORADO",
+    "english_description": "a grocery product: flour - Eldorado store brand - 138g",
+    "prompts": [
+      "a photo of a grocery product: flour - Eldorado store brand - 138g",
+      "MELLOMBAR SOMMERVIBBER 138G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR SOMMERVIBBER 138G ELDORADO"
+    ]
+  },
+  {
+    "id": 158,
+    "norwegian_name": "SURDEIG KNEKKEBRØD WASA",
+    "english_description": "a grocery product: crispbread, bread - Wasa brand Swedish crispbread",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - Wasa brand Swedish crispbread",
+      "SURDEIG KNEKKEBRØD WASA on a grocery store shelf",
+      "a packaged food product labeled SURDEIG KNEKKEBRØD WASA"
+    ]
+  },
+  {
+    "id": 159,
+    "norwegian_name": "Galåvolden Store Gårdsegg 10stk",
+    "english_description": "a grocery product: farm eggs, eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - 10stk",
+      "Galåvolden Store Gårdsegg 10stk on a grocery store shelf",
+      "a packaged food product labeled Galåvolden Store Gårdsegg 10stk"
+    ]
+  },
+  {
+    "id": 160,
+    "norwegian_name": "ALI ORIGINAL KOKMALT 250G",
+    "english_description": "a grocery product: 250g",
+    "prompts": [
+      "a photo of a grocery product: 250g",
+      "ALI ORIGINAL KOKMALT 250G on a grocery store shelf",
+      "a packaged food product labeled ALI ORIGINAL KOKMALT 250G"
+    ]
+  },
+  {
+    "id": 161,
+    "norwegian_name": "HAVRERINGER 250G SYNNØVE FINDEN",
+    "english_description": "a grocery product: oat - Synnøve Finden dairy - 250g",
+    "prompts": [
+      "a photo of a grocery product: oat - Synnøve Finden dairy - 250g",
+      "HAVRERINGER 250G SYNNØVE FINDEN on a grocery store shelf",
+      "a packaged food product labeled HAVRERINGER 250G SYNNØVE FINDEN"
+    ]
+  },
+  {
+    "id": 162,
+    "norwegian_name": "TRESOR CHOCO NUT 410G KELLOGGS",
+    "english_description": "a grocery product: 410g",
+    "prompts": [
+      "a photo of a grocery product: 410g",
+      "TRESOR CHOCO NUT 410G KELLOGGS on a grocery store shelf",
+      "a packaged food product labeled TRESOR CHOCO NUT 410G KELLOGGS"
+    ]
+  },
+  {
+    "id": 163,
+    "norwegian_name": "Galåvolden Store Gårdsegg 6stk",
+    "english_description": "a grocery product: farm eggs, eggs - 6stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - 6stk",
+      "Galåvolden Store Gårdsegg 6stk on a grocery store shelf",
+      "a packaged food product labeled Galåvolden Store Gårdsegg 6stk"
+    ]
+  },
+  {
+    "id": 164,
+    "norwegian_name": "GRANOLA NATURELL 475G ELDORADO",
+    "english_description": "a grocery product: granola - Eldorado store brand - 475g",
+    "prompts": [
+      "a photo of a grocery product: granola - Eldorado store brand - 475g",
+      "GRANOLA NATURELL 475G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled GRANOLA NATURELL 475G ELDORADO"
+    ]
+  },
+  {
+    "id": 165,
+    "norwegian_name": "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW COLOMBIA EXCELSO KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 166,
+    "norwegian_name": "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO",
+    "english_description": "a grocery product: breakfast, cheese - Eldorado store brand - 375g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - Eldorado store brand - 375g",
+      "SJOKOFLAK FROKOSTBLANDING 375G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled SJOKOFLAK FROKOSTBLANDING 375G ELDORADO"
+    ]
+  },
+  {
+    "id": 167,
+    "norwegian_name": "TROPISK AROMA FILTERMALT 200G JACOBS",
+    "english_description": "a grocery product: filter ground coffee, tea, ice cream - 200g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea, ice cream - 200g",
+      "TROPISK AROMA FILTERMALT 200G JACOBS on a grocery store shelf",
+      "a packaged food product labeled TROPISK AROMA FILTERMALT 200G JACOBS"
+    ]
+  },
+  {
+    "id": 168,
+    "norwegian_name": "BRELETT 540G",
+    "english_description": "a grocery product: 540g",
+    "prompts": [
+      "a photo of a grocery product: 540g",
+      "BRELETT 540G on a grocery store shelf",
+      "a packaged food product labeled BRELETT 540G"
+    ]
+  },
+  {
+    "id": 169,
+    "norwegian_name": "SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN",
+    "english_description": "a grocery product: chocolate - 512g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 512g",
+      "SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK REFILL 512G RETT I KOPPEN"
+    ]
+  },
+  {
+    "id": 170,
+    "norwegian_name": "MÜSLI ENERGI 650G AXA",
+    "english_description": "a grocery product: muesli - 650g",
+    "prompts": [
+      "a photo of a grocery product: muesli - 650g",
+      "MÜSLI ENERGI 650G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI ENERGI 650G AXA"
+    ]
+  },
+  {
+    "id": 171,
+    "norwegian_name": "ALI ORIGINAL FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - 250g",
+      "ALI ORIGINAL FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled ALI ORIGINAL FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 172,
+    "norwegian_name": "FRIELE INSTANT GULL 100G REFILL",
+    "english_description": "a grocery product: Friele Norwegian coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Friele Norwegian coffee - 100g",
+      "FRIELE INSTANT GULL 100G REFILL on a grocery store shelf",
+      "a packaged food product labeled FRIELE INSTANT GULL 100G REFILL"
+    ]
+  },
+  {
+    "id": 173,
+    "norwegian_name": "EARL GREY TEA 25POS TWININGS",
+    "english_description": "a grocery product: tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Twinings tea - 25pos",
+      "EARL GREY TEA 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled EARL GREY TEA 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 174,
+    "norwegian_name": "EPLE&KANEL&ROSIN TE 25POS TWININGS",
+    "english_description": "a grocery product: cinnamon, apple, tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: cinnamon, apple, tea - Twinings tea - 25pos",
+      "EPLE&KANEL&ROSIN TE 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled EPLE&KANEL&ROSIN TE 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 175,
+    "norwegian_name": "MELANGE MARGARIN 500G",
+    "english_description": "a grocery product: margarine, flour - 500g",
+    "prompts": [
+      "a photo of a grocery product: margarine, flour - 500g",
+      "MELANGE MARGARIN 500G on a grocery store shelf",
+      "a packaged food product labeled MELANGE MARGARIN 500G"
+    ]
+  },
+  {
+    "id": 176,
+    "norwegian_name": "BORDMARGARIN 400G FIRST PRICE",
+    "english_description": "a grocery product: margarine - First Price budget brand - 400g",
+    "prompts": [
+      "a photo of a grocery product: margarine - First Price budget brand - 400g",
+      "BORDMARGARIN 400G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled BORDMARGARIN 400G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 177,
+    "norwegian_name": "LEMON TEA GINGER 20POS PUKKA",
+    "english_description": "a grocery product: tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Pukka organic tea - 20pos",
+      "LEMON TEA GINGER 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled LEMON TEA GINGER 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 178,
+    "norwegian_name": "NESCAFE GOLD ORGANIC&FAIRTRADE 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE GOLD ORGANIC&FAIRTRADE 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE GOLD ORGANIC&FAIRTRADE 100G"
+    ]
+  },
+  {
+    "id": 179,
+    "norwegian_name": "SJOKOLADEDRIKK 10X32G RETT I KOPPEN",
+    "english_description": "a grocery product: chocolate - 32g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 32g",
+      "SJOKOLADEDRIKK 10X32G RETT I KOPPEN on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK 10X32G RETT I KOPPEN"
+    ]
+  },
+  {
+    "id": 180,
+    "norwegian_name": "MÜSLI PAPAYA GLUTENFRI 350G AXA",
+    "english_description": "a grocery product: gluten-free, muesli, tea - 350g",
+    "prompts": [
+      "a photo of a grocery product: gluten-free, muesli, tea - 350g",
+      "MÜSLI PAPAYA GLUTENFRI 350G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI PAPAYA GLUTENFRI 350G AXA"
+    ]
+  },
+  {
+    "id": 181,
+    "norwegian_name": "CHEERIOS HAVRE 375G NESTLE",
+    "english_description": "a grocery product: oat - Nestlé - 375g",
+    "prompts": [
+      "a photo of a grocery product: oat - Nestlé - 375g",
+      "CHEERIOS HAVRE 375G NESTLE on a grocery store shelf",
+      "a packaged food product labeled CHEERIOS HAVRE 375G NESTLE"
+    ]
+  },
+  {
+    "id": 182,
+    "norwegian_name": "FRIELE INSTANT 200G",
+    "english_description": "a grocery product: Friele Norwegian coffee - 200g",
+    "prompts": [
+      "a photo of a grocery product: Friele Norwegian coffee - 200g",
+      "FRIELE INSTANT 200G on a grocery store shelf",
+      "a packaged food product labeled FRIELE INSTANT 200G"
+    ]
+  },
+  {
+    "id": 183,
+    "norwegian_name": "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL",
+    "english_description": "a grocery product: crispbread, bread, cheese - 190g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, cheese - 190g",
+      "KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD GODT FOR DEG OST 190G SIGDAL"
+    ]
+  },
+  {
+    "id": 184,
+    "norwegian_name": "EARL GREY TEA 200G TWININGS",
+    "english_description": "a grocery product: tea - Twinings tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: tea - Twinings tea - 200g",
+      "EARL GREY TEA 200G TWININGS on a grocery store shelf",
+      "a packaged food product labeled EARL GREY TEA 200G TWININGS"
+    ]
+  },
+  {
+    "id": 185,
+    "norwegian_name": "Eldorado Flytende Gårdsegg",
+    "english_description": "a grocery product: farm eggs, eggs, tea - Eldorado store brand",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs, tea - Eldorado store brand",
+      "Eldorado Flytende Gårdsegg on a grocery store shelf",
+      "a packaged food product labeled Eldorado Flytende Gårdsegg"
+    ]
+  },
+  {
+    "id": 186,
+    "norwegian_name": "SUPERGRØT SKOGSBÆR 57G BARE BRA",
+    "english_description": "a grocery product: berries - 57g",
+    "prompts": [
+      "a photo of a grocery product: berries - 57g",
+      "SUPERGRØT SKOGSBÆR 57G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled SUPERGRØT SKOGSBÆR 57G BARE BRA"
+    ]
+  },
+  {
+    "id": 187,
+    "norwegian_name": "WEETABIX ORIGINAL FROKOSTBLANDING 430G",
+    "english_description": "a grocery product: breakfast, cheese - 430g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - 430g",
+      "WEETABIX ORIGINAL FROKOSTBLANDING 430G on a grocery store shelf",
+      "a packaged food product labeled WEETABIX ORIGINAL FROKOSTBLANDING 430G"
+    ]
+  },
+  {
+    "id": 188,
+    "norwegian_name": "MAISKAKER POPCORN 125G FRIGGS",
+    "english_description": "a grocery product: ice cream - 125g",
+    "prompts": [
+      "a photo of a grocery product: ice cream - 125g",
+      "MAISKAKER POPCORN 125G FRIGGS on a grocery store shelf",
+      "a packaged food product labeled MAISKAKER POPCORN 125G FRIGGS"
+    ]
+  },
+  {
+    "id": 189,
+    "norwegian_name": "YELLOW LABEL TEA 25POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 25pos",
+      "YELLOW LABEL TEA 25POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled YELLOW LABEL TEA 25POS LIPTON"
+    ]
+  },
+  {
+    "id": 190,
+    "norwegian_name": "EARL GREY TEA ØKOLOGISK 15POS JACOBS",
+    "english_description": "a grocery product: organic, tea, ice cream - 15pos",
+    "prompts": [
+      "a photo of a grocery product: organic, tea, ice cream - 15pos",
+      "EARL GREY TEA ØKOLOGISK 15POS JACOBS on a grocery store shelf",
+      "a packaged food product labeled EARL GREY TEA ØKOLOGISK 15POS JACOBS"
+    ]
+  },
+  {
+    "id": 191,
+    "norwegian_name": "ALL-BRAN REGULAR 375G KELLOGG'S",
+    "english_description": "a grocery product: 375g",
+    "prompts": [
+      "a photo of a grocery product: 375g",
+      "ALL-BRAN REGULAR 375G KELLOGG'S on a grocery store shelf",
+      "a packaged food product labeled ALL-BRAN REGULAR 375G KELLOGG'S"
+    ]
+  },
+  {
+    "id": 192,
+    "norwegian_name": "ICE COFFEE 8POS NESCAFE",
+    "english_description": "a grocery product: Nescafé coffee - 8pos",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 8pos",
+      "ICE COFFEE 8POS NESCAFE on a grocery store shelf",
+      "a packaged food product labeled ICE COFFEE 8POS NESCAFE"
+    ]
+  },
+  {
+    "id": 193,
+    "norwegian_name": "EGG ØKOLOGISK 6STK 375G JACOBS UTVALGTE",
+    "english_description": "a grocery product: organic, eggs, tea - Jacobs Utvalgte premium brand - 6stk",
+    "prompts": [
+      "a photo of a grocery product: organic, eggs, tea - Jacobs Utvalgte premium brand - 6stk",
+      "EGG ØKOLOGISK 6STK 375G JACOBS UTVALGTE on a grocery store shelf",
+      "a packaged food product labeled EGG ØKOLOGISK 6STK 375G JACOBS UTVALGTE"
+    ]
+  },
+  {
+    "id": 194,
+    "norwegian_name": "CRUESLI SOLFROKOST 450G QUAKER",
+    "english_description": "a grocery product: breakfast, cheese - 450g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - 450g",
+      "CRUESLI SOLFROKOST 450G QUAKER on a grocery store shelf",
+      "a packaged food product labeled CRUESLI SOLFROKOST 450G QUAKER"
+    ]
+  },
+  {
+    "id": 195,
+    "norwegian_name": "Økologiske Egg Brune 6stk",
+    "english_description": "a grocery product: organic, organic, eggs - 6stk",
+    "prompts": [
+      "a photo of a grocery product: organic, organic, eggs - 6stk",
+      "Økologiske Egg Brune 6stk on a grocery store shelf",
+      "a packaged food product labeled Økologiske Egg Brune 6stk"
+    ]
+  },
+  {
+    "id": 196,
+    "norwegian_name": "COTW LUNGO KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW LUNGO KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW LUNGO KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 197,
+    "norwegian_name": "SPECIAL K CLASSIC 335G KELLOGG'S",
+    "english_description": "a grocery product: 335g",
+    "prompts": [
+      "a photo of a grocery product: 335g",
+      "SPECIAL K CLASSIC 335G KELLOGG'S on a grocery store shelf",
+      "a packaged food product labeled SPECIAL K CLASSIC 335G KELLOGG'S"
+    ]
+  },
+  {
+    "id": 198,
+    "norwegian_name": "ALI ORIGINAL KAFFEPUTER 18STK",
+    "english_description": "a grocery product: coffee, tea - 18stk",
+    "prompts": [
+      "a photo of a grocery product: coffee, tea - 18stk",
+      "ALI ORIGINAL KAFFEPUTER 18STK on a grocery store shelf",
+      "a packaged food product labeled ALI ORIGINAL KAFFEPUTER 18STK"
+    ]
+  },
+  {
+    "id": 199,
+    "norwegian_name": "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA",
+    "english_description": "a grocery product: organic, tea, ice cream - 24pos",
+    "prompts": [
+      "a photo of a grocery product: organic, tea, ice cream - 24pos",
+      "GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA on a grocery store shelf",
+      "a packaged food product labeled GREEN CEYLON TE ØKOLOGISK 24POS CONFECTA"
+    ]
+  },
+  {
+    "id": 200,
+    "norwegian_name": "EVERGOOD CLASSIC KAFFEKAPSEL 16STK",
+    "english_description": "a grocery product: coffee - Evergood Norwegian coffee - 16stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - Evergood Norwegian coffee - 16stk",
+      "EVERGOOD CLASSIC KAFFEKAPSEL 16STK on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC KAFFEKAPSEL 16STK"
+    ]
+  },
+  {
+    "id": 201,
+    "norwegian_name": "MUSLI FRUKT 700G AXA",
+    "english_description": "a grocery product: fruit - 700g",
+    "prompts": [
+      "a photo of a grocery product: fruit - 700g",
+      "MUSLI FRUKT 700G AXA on a grocery store shelf",
+      "a packaged food product labeled MUSLI FRUKT 700G AXA"
+    ]
+  },
+  {
+    "id": 202,
+    "norwegian_name": "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL",
+    "english_description": "a grocery product: flour, tea",
+    "prompts": [
+      "a photo of a grocery product: flour, tea",
+      "TASSIMO GEVALIA LATTE MACCHIATO KARAMELL on a grocery store shelf",
+      "a packaged food product labeled TASSIMO GEVALIA LATTE MACCHIATO KARAMELL"
+    ]
+  },
+  {
+    "id": 203,
+    "norwegian_name": "ROOIBOS TE 20POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 20pos",
+      "ROOIBOS TE 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled ROOIBOS TE 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 204,
+    "norwegian_name": "MELLOMBAR SALT KARAMELL 138G ELDORADO",
+    "english_description": "a grocery product: salt, flour - Eldorado store brand - 138g",
+    "prompts": [
+      "a photo of a grocery product: salt, flour - Eldorado store brand - 138g",
+      "MELLOMBAR SALT KARAMELL 138G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR SALT KARAMELL 138G ELDORADO"
+    ]
+  },
+  {
+    "id": 205,
+    "norwegian_name": "CORN FLAKES 750G FIRST PRICE",
+    "english_description": "a grocery product: First Price budget brand - 750g",
+    "prompts": [
+      "a photo of a grocery product: First Price budget brand - 750g",
+      "CORN FLAKES 750G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled CORN FLAKES 750G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 206,
+    "norwegian_name": "NESCAFE VANILLA LATTE 136G NESTLE",
+    "english_description": "a grocery product: tea - Nestlé - 136g",
+    "prompts": [
+      "a photo of a grocery product: tea - Nestlé - 136g",
+      "NESCAFE VANILLA LATTE 136G NESTLE on a grocery store shelf",
+      "a packaged food product labeled NESCAFE VANILLA LATTE 136G NESTLE"
+    ]
+  },
+  {
+    "id": 207,
+    "norwegian_name": "LEKSANDS KNEKKE FIBERBIT 240G",
+    "english_description": "a grocery product: Leksands Swedish crispbread - 240g",
+    "prompts": [
+      "a photo of a grocery product: Leksands Swedish crispbread - 240g",
+      "LEKSANDS KNEKKE FIBERBIT 240G on a grocery store shelf",
+      "a packaged food product labeled LEKSANDS KNEKKE FIBERBIT 240G"
+    ]
+  },
+  {
+    "id": 208,
+    "norwegian_name": "FLATBRØD 190G IDEAL",
+    "english_description": "a grocery product: flatbread, bread - 190g",
+    "prompts": [
+      "a photo of a grocery product: flatbread, bread - 190g",
+      "FLATBRØD 190G IDEAL on a grocery store shelf",
+      "a packaged food product labeled FLATBRØD 190G IDEAL"
+    ]
+  },
+  {
+    "id": 209,
+    "norwegian_name": "DELIKATESS SESAM 285G WASA",
+    "english_description": "a grocery product: tea - Wasa brand Swedish crispbread - 285g",
+    "prompts": [
+      "a photo of a grocery product: tea - Wasa brand Swedish crispbread - 285g",
+      "DELIKATESS SESAM 285G WASA on a grocery store shelf",
+      "a packaged food product labeled DELIKATESS SESAM 285G WASA"
+    ]
+  },
+  {
+    "id": 210,
+    "norwegian_name": "COTW ESPRESSO KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW ESPRESSO KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW ESPRESSO KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 211,
+    "norwegian_name": "BJØRN HAVREMEL 1KG AXA",
+    "english_description": "a grocery product: oat, flour - 1kg",
+    "prompts": [
+      "a photo of a grocery product: oat, flour - 1kg",
+      "BJØRN HAVREMEL 1KG AXA on a grocery store shelf",
+      "a packaged food product labeled BJØRN HAVREMEL 1KG AXA"
+    ]
+  },
+  {
+    "id": 212,
+    "norwegian_name": "KNEKKEBRØD 220G SIGDAL",
+    "english_description": "a grocery product: crispbread, bread - 220g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - 220g",
+      "KNEKKEBRØD 220G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD 220G SIGDAL"
+    ]
+  },
+  {
+    "id": 213,
+    "norwegian_name": "EGG FRITTGÅENDE M/L 6PK PRIOR",
+    "english_description": "a grocery product: eggs - Prior Norwegian eggs/poultry",
+    "prompts": [
+      "a photo of a grocery product: eggs - Prior Norwegian eggs/poultry",
+      "EGG FRITTGÅENDE M/L 6PK PRIOR on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE M/L 6PK PRIOR"
+    ]
+  },
+  {
+    "id": 214,
+    "norwegian_name": "HAVREGRØT ROSIN&VANILJE 525G AXA",
+    "english_description": "a grocery product: vanilla, oat - 525g",
+    "prompts": [
+      "a photo of a grocery product: vanilla, oat - 525g",
+      "HAVREGRØT ROSIN&VANILJE 525G AXA on a grocery store shelf",
+      "a packaged food product labeled HAVREGRØT ROSIN&VANILJE 525G AXA"
+    ]
+  },
+  {
+    "id": 215,
+    "norwegian_name": "BLUE FRUIT TE PYRAMIDE 20POS LIPTON",
+    "english_description": "a grocery product: tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 20pos",
+      "BLUE FRUIT TE PYRAMIDE 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled BLUE FRUIT TE PYRAMIDE 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 216,
+    "norwegian_name": "Sunnmørsegg",
+    "english_description": "a grocery product: eggs",
+    "prompts": [
+      "a photo of a grocery product: eggs",
+      "Sunnmørsegg on a grocery store shelf",
+      "a packaged food product labeled Sunnmørsegg"
+    ]
+  },
+  {
+    "id": 217,
+    "norwegian_name": "MELLOMBAR POPCORN&SJOKOLADE 126G ELDORAD",
+    "english_description": "a grocery product: chocolate, flour - 126g",
+    "prompts": [
+      "a photo of a grocery product: chocolate, flour - 126g",
+      "MELLOMBAR POPCORN&SJOKOLADE 126G ELDORAD on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR POPCORN&SJOKOLADE 126G ELDORAD"
+    ]
+  },
+  {
+    "id": 218,
+    "norwegian_name": "CORN FLAKES 500G KELLOGGS",
+    "english_description": "a grocery product: 500g",
+    "prompts": [
+      "a photo of a grocery product: 500g",
+      "CORN FLAKES 500G KELLOGGS on a grocery store shelf",
+      "a packaged food product labeled CORN FLAKES 500G KELLOGGS"
+    ]
+  },
+  {
+    "id": 219,
+    "norwegian_name": "GREEN WORLD KAFFE ØKOL FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, coffee, tea - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, coffee, tea - 250g",
+      "GREEN WORLD KAFFE ØKOL FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled GREEN WORLD KAFFE ØKOL FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 220,
+    "norwegian_name": "MEIERISMØR 250G BORDPK TINE",
+    "english_description": "a grocery product: butter, rice, ice cream - Tine Norwegian dairy - 250g",
+    "prompts": [
+      "a photo of a grocery product: butter, rice, ice cream - Tine Norwegian dairy - 250g",
+      "MEIERISMØR 250G BORDPK TINE on a grocery store shelf",
+      "a packaged food product labeled MEIERISMØR 250G BORDPK TINE"
+    ]
+  },
+  {
+    "id": 221,
+    "norwegian_name": "PUFFET HVETE 260G FIRST PRICE",
+    "english_description": "a grocery product: puffed, wheat, tea - First Price budget brand - 260g",
+    "prompts": [
+      "a photo of a grocery product: puffed, wheat, tea - First Price budget brand - 260g",
+      "PUFFET HVETE 260G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled PUFFET HVETE 260G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 222,
+    "norwegian_name": "NESCAFÉ MOCHA 136G NESTLE",
+    "english_description": "a grocery product: Nestlé - 136g",
+    "prompts": [
+      "a photo of a grocery product: Nestlé - 136g",
+      "NESCAFÉ MOCHA 136G NESTLE on a grocery store shelf",
+      "a packaged food product labeled NESCAFÉ MOCHA 136G NESTLE"
+    ]
+  },
+  {
+    "id": 223,
+    "norwegian_name": "GRANOLA PEKAN HONNINGSRISTET 350G SYNNØV",
+    "english_description": "a grocery product: granola, honey, rice - 350g",
+    "prompts": [
+      "a photo of a grocery product: granola, honey, rice - 350g",
+      "GRANOLA PEKAN HONNINGSRISTET 350G SYNNØV on a grocery store shelf",
+      "a packaged food product labeled GRANOLA PEKAN HONNINGSRISTET 350G SYNNØV"
+    ]
+  },
+  {
+    "id": 224,
+    "norwegian_name": "SOFT FLORA LETT 540G",
+    "english_description": "a grocery product: 540g",
+    "prompts": [
+      "a photo of a grocery product: 540g",
+      "SOFT FLORA LETT 540G on a grocery store shelf",
+      "a packaged food product labeled SOFT FLORA LETT 540G"
+    ]
+  },
+  {
+    "id": 225,
+    "norwegian_name": "EVERGOOD CLASSIC KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - Evergood Norwegian coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - Evergood Norwegian coffee - 10stk",
+      "EVERGOOD CLASSIC KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 226,
+    "norwegian_name": "LEKSANDS TREKANT HAVRE 200G",
+    "english_description": "a grocery product: oat - Leksands Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: oat - Leksands Swedish crispbread - 200g",
+      "LEKSANDS TREKANT HAVRE 200G on a grocery store shelf",
+      "a packaged food product labeled LEKSANDS TREKANT HAVRE 200G"
+    ]
+  },
+  {
+    "id": 227,
+    "norwegian_name": "STORFE ENTRECOTE 180G FIRST PRICE",
+    "english_description": "a grocery product: beef, tea - First Price budget brand - 180g",
+    "prompts": [
+      "a photo of a grocery product: beef, tea - First Price budget brand - 180g",
+      "STORFE ENTRECOTE 180G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled STORFE ENTRECOTE 180G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 228,
+    "norwegian_name": "BRUSCHETTE FINE CHEESE MARETTI",
+    "english_description": "a grocery product: soda, tea",
+    "prompts": [
+      "a photo of a grocery product: soda, tea",
+      "BRUSCHETTE FINE CHEESE MARETTI on a grocery store shelf",
+      "a packaged food product labeled BRUSCHETTE FINE CHEESE MARETTI"
+    ]
+  },
+  {
+    "id": 229,
+    "norwegian_name": "NESQUIK KAKAOPULVER 700G",
+    "english_description": "a grocery product: cocoa - 700g",
+    "prompts": [
+      "a photo of a grocery product: cocoa - 700g",
+      "NESQUIK KAKAOPULVER 700G on a grocery store shelf",
+      "a packaged food product labeled NESQUIK KAKAOPULVER 700G"
+    ]
+  },
+  {
+    "id": 230,
+    "norwegian_name": "JARLSBERG 27% SKIVET 120G TINE",
+    "english_description": "a grocery product: Tine Norwegian dairy - 120g",
+    "prompts": [
+      "a photo of a grocery product: Tine Norwegian dairy - 120g",
+      "JARLSBERG 27% SKIVET 120G TINE on a grocery store shelf",
+      "a packaged food product labeled JARLSBERG 27% SKIVET 120G TINE"
+    ]
+  },
+  {
+    "id": 231,
+    "norwegian_name": "MELLOMBAR CHIA,QUINOA&NØTTER 138G",
+    "english_description": "a grocery product: nuts, flour, tea - 138g",
+    "prompts": [
+      "a photo of a grocery product: nuts, flour, tea - 138g",
+      "MELLOMBAR CHIA,QUINOA&NØTTER 138G on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR CHIA,QUINOA&NØTTER 138G"
+    ]
+  },
+  {
+    "id": 232,
+    "norwegian_name": "EGG ØKOLOGISK M/L/XL 6STK PRIOR",
+    "english_description": "a grocery product: organic, eggs, ice cream - Prior Norwegian eggs/poultry - 6stk",
+    "prompts": [
+      "a photo of a grocery product: organic, eggs, ice cream - Prior Norwegian eggs/poultry - 6stk",
+      "EGG ØKOLOGISK M/L/XL 6STK PRIOR on a grocery store shelf",
+      "a packaged food product labeled EGG ØKOLOGISK M/L/XL 6STK PRIOR"
+    ]
+  },
+  {
+    "id": 233,
+    "norwegian_name": "LEKSANDS KNEKKE GODT STEKT 200G",
+    "english_description": "a grocery product: tea - Leksands Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: tea - Leksands Swedish crispbread - 200g",
+      "LEKSANDS KNEKKE GODT STEKT 200G on a grocery store shelf",
+      "a packaged food product labeled LEKSANDS KNEKKE GODT STEKT 200G"
+    ]
+  },
+  {
+    "id": 234,
+    "norwegian_name": "LANO SÅPE 2X125G",
+    "english_description": "a grocery product: 125g",
+    "prompts": [
+      "a photo of a grocery product: 125g",
+      "LANO SÅPE 2X125G on a grocery store shelf",
+      "a packaged food product labeled LANO SÅPE 2X125G"
+    ]
+  },
+  {
+    "id": 235,
+    "norwegian_name": "FLATBRØD ØKOLOGISK 190G RØROS",
+    "english_description": "a grocery product: organic, flatbread, bread - 190g",
+    "prompts": [
+      "a photo of a grocery product: organic, flatbread, bread - 190g",
+      "FLATBRØD ØKOLOGISK 190G RØROS on a grocery store shelf",
+      "a packaged food product labeled FLATBRØD ØKOLOGISK 190G RØROS"
+    ]
+  },
+  {
+    "id": 236,
+    "norwegian_name": "LEKSANDS KNEKKE RUTBIT 200G",
+    "english_description": "a grocery product: Leksands Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: Leksands Swedish crispbread - 200g",
+      "LEKSANDS KNEKKE RUTBIT 200G on a grocery store shelf",
+      "a packaged food product labeled LEKSANDS KNEKKE RUTBIT 200G"
+    ]
+  },
+  {
+    "id": 237,
+    "norwegian_name": "EGG FRITTGÅENDE L/XL 10STK PRIOR",
+    "english_description": "a grocery product: eggs - Prior Norwegian eggs/poultry - 10stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - Prior Norwegian eggs/poultry - 10stk",
+      "EGG FRITTGÅENDE L/XL 10STK PRIOR on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE L/XL 10STK PRIOR"
+    ]
+  },
+  {
+    "id": 238,
+    "norwegian_name": "KAMILLE TE ØKOLOGISK 24PK",
+    "english_description": "a grocery product: organic, chamomile, tea",
+    "prompts": [
+      "a photo of a grocery product: organic, chamomile, tea",
+      "KAMILLE TE ØKOLOGISK 24PK on a grocery store shelf",
+      "a packaged food product labeled KAMILLE TE ØKOLOGISK 24PK"
+    ]
+  },
+  {
+    "id": 239,
+    "norwegian_name": "MAISKAKER CHIA/HAVSALT 130G FRIGGS",
+    "english_description": "a grocery product: salt, ice cream - 130g",
+    "prompts": [
+      "a photo of a grocery product: salt, ice cream - 130g",
+      "MAISKAKER CHIA/HAVSALT 130G FRIGGS on a grocery store shelf",
+      "a packaged food product labeled MAISKAKER CHIA/HAVSALT 130G FRIGGS"
+    ]
+  },
+  {
+    "id": 240,
+    "norwegian_name": "SUPERGRANOLA GLUTENFRI 350G BARE BRA",
+    "english_description": "a grocery product: gluten-free, granola, tea - 350g",
+    "prompts": [
+      "a photo of a grocery product: gluten-free, granola, tea - 350g",
+      "SUPERGRANOLA GLUTENFRI 350G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled SUPERGRANOLA GLUTENFRI 350G BARE BRA"
+    ]
+  },
+  {
+    "id": 241,
+    "norwegian_name": "SANDWICH CHEESE GRESSLØK 37G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 37g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 37g",
+      "SANDWICH CHEESE GRESSLØK 37G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH CHEESE GRESSLØK 37G WASA"
+    ]
+  },
+  {
+    "id": 242,
+    "norwegian_name": "BOG 390G GILDE",
+    "english_description": "a grocery product: Gilde Norwegian meat - 390g",
+    "prompts": [
+      "a photo of a grocery product: Gilde Norwegian meat - 390g",
+      "BOG 390G GILDE on a grocery store shelf",
+      "a packaged food product labeled BOG 390G GILDE"
+    ]
+  },
+  {
+    "id": 243,
+    "norwegian_name": "RYVITA KNEKKEBRØD RUG 400G",
+    "english_description": "a grocery product: crispbread, bread, rye - 400g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, rye - 400g",
+      "RYVITA KNEKKEBRØD RUG 400G on a grocery store shelf",
+      "a packaged food product labeled RYVITA KNEKKEBRØD RUG 400G"
+    ]
+  },
+  {
+    "id": 244,
+    "norwegian_name": "RUGSPRØ HAVRE 180G WASA",
+    "english_description": "a grocery product: oat, rye - Wasa brand Swedish crispbread - 180g",
+    "prompts": [
+      "a photo of a grocery product: oat, rye - Wasa brand Swedish crispbread - 180g",
+      "RUGSPRØ HAVRE 180G WASA on a grocery store shelf",
+      "a packaged food product labeled RUGSPRØ HAVRE 180G WASA"
+    ]
+  },
+  {
+    "id": 245,
+    "norwegian_name": "ENGLISH BREAKFAST TEA 200G TWININGS",
+    "english_description": "a grocery product: tea, ice cream - Twinings tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: tea, ice cream - Twinings tea - 200g",
+      "ENGLISH BREAKFAST TEA 200G TWININGS on a grocery store shelf",
+      "a packaged food product labeled ENGLISH BREAKFAST TEA 200G TWININGS"
+    ]
+  },
+  {
+    "id": 246,
+    "norwegian_name": "HUSMAN KNEKKEBRØD 260G WASA",
+    "english_description": "a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 260g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 260g",
+      "HUSMAN KNEKKEBRØD 260G WASA on a grocery store shelf",
+      "a packaged food product labeled HUSMAN KNEKKEBRØD 260G WASA"
+    ]
+  },
+  {
+    "id": 247,
+    "norwegian_name": "MOUNT KENYA FILTERMALT 200G JACOBS",
+    "english_description": "a grocery product: filter ground coffee, tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - 200g",
+      "MOUNT KENYA FILTERMALT 200G JACOBS on a grocery store shelf",
+      "a packaged food product labeled MOUNT KENYA FILTERMALT 200G JACOBS"
+    ]
+  },
+  {
+    "id": 248,
+    "norwegian_name": "COTW DARK ROAST KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW DARK ROAST KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW DARK ROAST KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 249,
+    "norwegian_name": "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW BREAKFAST BLEND KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW BREAKFAST BLEND KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 250,
+    "norwegian_name": "LEKSANDS KNEKKE NORMALT STEKT 200G",
+    "english_description": "a grocery product: tea - Leksands Swedish crispbread - 200g",
+    "prompts": [
+      "a photo of a grocery product: tea - Leksands Swedish crispbread - 200g",
+      "LEKSANDS KNEKKE NORMALT STEKT 200G on a grocery store shelf",
+      "a packaged food product labeled LEKSANDS KNEKKE NORMALT STEKT 200G"
+    ]
+  },
+  {
+    "id": 251,
+    "norwegian_name": "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - 190g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - 190g",
+      "KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD SOLSIKKE GL.FRI 190G SIGDAL"
+    ]
+  },
+  {
+    "id": 252,
+    "norwegian_name": "SIDAMO ETIOPIA HELE BØNNER 340G COTW",
+    "english_description": "a grocery product: 340g",
+    "prompts": [
+      "a photo of a grocery product: 340g",
+      "SIDAMO ETIOPIA HELE BØNNER 340G COTW on a grocery store shelf",
+      "a packaged food product labeled SIDAMO ETIOPIA HELE BØNNER 340G COTW"
+    ]
+  },
+  {
+    "id": 253,
+    "norwegian_name": "SOFT FLORA LETT 235G",
+    "english_description": "a grocery product: 235g",
+    "prompts": [
+      "a photo of a grocery product: 235g",
+      "SOFT FLORA LETT 235G on a grocery store shelf",
+      "a packaged food product labeled SOFT FLORA LETT 235G"
+    ]
+  },
+  {
+    "id": 254,
+    "norwegian_name": "SMØREMYK MELKEFRI 400G BERIT",
+    "english_description": "a grocery product: soft spread, dairy-free, milk - Berit Nordstrand health food - 400g",
+    "prompts": [
+      "a photo of a grocery product: soft spread, dairy-free, milk - Berit Nordstrand health food - 400g",
+      "SMØREMYK MELKEFRI 400G BERIT on a grocery store shelf",
+      "a packaged food product labeled SMØREMYK MELKEFRI 400G BERIT"
+    ]
+  },
+  {
+    "id": 255,
+    "norwegian_name": "LIPTON ICETEA MANGO PULVER 50G",
+    "english_description": "a grocery product: mango, tea - Lipton tea - 50g",
+    "prompts": [
+      "a photo of a grocery product: mango, tea - Lipton tea - 50g",
+      "LIPTON ICETEA MANGO PULVER 50G on a grocery store shelf",
+      "a packaged food product labeled LIPTON ICETEA MANGO PULVER 50G"
+    ]
+  },
+  {
+    "id": 256,
+    "norwegian_name": "KAFFEFILTER PRESSKANNE 25STK EVERGOOD",
+    "english_description": "a grocery product: coffee, tea - Evergood Norwegian coffee - 25stk",
+    "prompts": [
+      "a photo of a grocery product: coffee, tea - Evergood Norwegian coffee - 25stk",
+      "KAFFEFILTER PRESSKANNE 25STK EVERGOOD on a grocery store shelf",
+      "a packaged food product labeled KAFFEFILTER PRESSKANNE 25STK EVERGOOD"
+    ]
+  },
+  {
+    "id": 257,
+    "norwegian_name": "SANDWICH BRUNOST 36G WASA",
+    "english_description": "a grocery product: cheese - Wasa brand Swedish crispbread - 36g",
+    "prompts": [
+      "a photo of a grocery product: cheese - Wasa brand Swedish crispbread - 36g",
+      "SANDWICH BRUNOST 36G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH BRUNOST 36G WASA"
+    ]
+  },
+  {
+    "id": 258,
+    "norwegian_name": "EXTRA SWEET FRUIT 14G",
+    "english_description": "a grocery product: 14g",
+    "prompts": [
+      "a photo of a grocery product: 14g",
+      "EXTRA SWEET FRUIT 14G on a grocery store shelf",
+      "a packaged food product labeled EXTRA SWEET FRUIT 14G"
+    ]
+  },
+  {
+    "id": 259,
+    "norwegian_name": "REGIA KAKAO ORIGINAL 260G",
+    "english_description": "a grocery product: cocoa - 260g",
+    "prompts": [
+      "a photo of a grocery product: cocoa - 260g",
+      "REGIA KAKAO ORIGINAL 260G on a grocery store shelf",
+      "a packaged food product labeled REGIA KAKAO ORIGINAL 260G"
+    ]
+  },
+  {
+    "id": 260,
+    "norwegian_name": "MUSLI ENERGI 675G AXA",
+    "english_description": "a grocery product: 675g",
+    "prompts": [
+      "a photo of a grocery product: 675g",
+      "MUSLI ENERGI 675G AXA on a grocery store shelf",
+      "a packaged food product labeled MUSLI ENERGI 675G AXA"
+    ]
+  },
+  {
+    "id": 261,
+    "norwegian_name": "MÜSLI HASSELNØTT 600G AXA",
+    "english_description": "a grocery product: muesli - 600g",
+    "prompts": [
+      "a photo of a grocery product: muesli - 600g",
+      "MÜSLI HASSELNØTT 600G AXA on a grocery store shelf",
+      "a packaged food product labeled MÜSLI HASSELNØTT 600G AXA"
+    ]
+  },
+  {
+    "id": 262,
+    "norwegian_name": "HAVREGRØT STEEL CUT DEN SORTE HAVRE",
+    "english_description": "a grocery product: oat, tea",
+    "prompts": [
+      "a photo of a grocery product: oat, tea",
+      "HAVREGRØT STEEL CUT DEN SORTE HAVRE on a grocery store shelf",
+      "a packaged food product labeled HAVREGRØT STEEL CUT DEN SORTE HAVRE"
+    ]
+  },
+  {
+    "id": 263,
+    "norwegian_name": "GRANOLA RASPBERRY  500G START!",
+    "english_description": "a grocery product: granola - 500g",
+    "prompts": [
+      "a photo of a grocery product: granola - 500g",
+      "GRANOLA RASPBERRY  500G START! on a grocery store shelf",
+      "a packaged food product labeled GRANOLA RASPBERRY  500G START!"
+    ]
+  },
+  {
+    "id": 264,
+    "norwegian_name": "MELLOMBAR JORDBÆR HVIT SJOKOLADE 138G EL",
+    "english_description": "a grocery product: chocolate, strawberry, berries - 138g",
+    "prompts": [
+      "a photo of a grocery product: chocolate, strawberry, berries - 138g",
+      "MELLOMBAR JORDBÆR HVIT SJOKOLADE 138G EL on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR JORDBÆR HVIT SJOKOLADE 138G EL"
+    ]
+  },
+  {
+    "id": 265,
+    "norwegian_name": "MELLOMBAR SUKKERFRI M/SJOKO 138G",
+    "english_description": "a grocery product: sugar-free, sugar, flour - 138g",
+    "prompts": [
+      "a photo of a grocery product: sugar-free, sugar, flour - 138g",
+      "MELLOMBAR SUKKERFRI M/SJOKO 138G on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR SUKKERFRI M/SJOKO 138G"
+    ]
+  },
+  {
+    "id": 266,
+    "norwegian_name": "SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN",
+    "english_description": "a grocery product: chocolate - 14g",
+    "prompts": [
+      "a photo of a grocery product: chocolate - 14g",
+      "SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN on a grocery store shelf",
+      "a packaged food product labeled SJOKOLADEDRIKK LETT 10X14G RETT I KOPPEN"
+    ]
+  },
+  {
+    "id": 267,
+    "norwegian_name": "EGGEHVITE 500G ELDORADO",
+    "english_description": "a grocery product: eggs, tea - Eldorado store brand - 500g",
+    "prompts": [
+      "a photo of a grocery product: eggs, tea - Eldorado store brand - 500g",
+      "EGGEHVITE 500G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled EGGEHVITE 500G ELDORADO"
+    ]
+  },
+  {
+    "id": 268,
+    "norwegian_name": "SUPERGRØT KANEL&PUFFET QUINOA 54G",
+    "english_description": "a grocery product: puffed, cinnamon - 54g",
+    "prompts": [
+      "a photo of a grocery product: puffed, cinnamon - 54g",
+      "SUPERGRØT KANEL&PUFFET QUINOA 54G on a grocery store shelf",
+      "a packaged food product labeled SUPERGRØT KANEL&PUFFET QUINOA 54G"
+    ]
+  },
+  {
+    "id": 269,
+    "norwegian_name": "Eldorado Egg fra Toten",
+    "english_description": "a grocery product: eggs, tea - Eldorado store brand",
+    "prompts": [
+      "a photo of a grocery product: eggs, tea - Eldorado store brand",
+      "Eldorado Egg fra Toten on a grocery store shelf",
+      "a packaged food product labeled Eldorado Egg fra Toten"
+    ]
+  },
+  {
+    "id": 270,
+    "norwegian_name": "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE",
+    "english_description": "a grocery product: breadsticks, rice, tea - Jacobs Utvalgte premium brand - 200g",
+    "prompts": [
+      "a photo of a grocery product: breadsticks, rice, tea - Jacobs Utvalgte premium brand - 200g",
+      "GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE on a grocery store shelf",
+      "a packaged food product labeled GRISSINI M/ROSMARIN 200G JACOBS UTVALGTE"
+    ]
+  },
+  {
+    "id": 271,
+    "norwegian_name": "FRUKOST KNEKKEBRØD 240G WASA",
+    "english_description": "a grocery product: crispbread, bread, cheese - Wasa brand Swedish crispbread - 240g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, cheese - Wasa brand Swedish crispbread - 240g",
+      "FRUKOST KNEKKEBRØD 240G WASA on a grocery store shelf",
+      "a packaged food product labeled FRUKOST KNEKKEBRØD 240G WASA"
+    ]
+  },
+  {
+    "id": 272,
+    "norwegian_name": "EVERGOOD KOFFEINFRI FILTERMALT 250G",
+    "english_description": "a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - Evergood Norwegian coffee - 250g",
+      "EVERGOOD KOFFEINFRI FILTERMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD KOFFEINFRI FILTERMALT 250G"
+    ]
+  },
+  {
+    "id": 273,
+    "norwegian_name": "VITA HJERTEGO LETTMARGARIN 370G",
+    "english_description": "a grocery product: margarine, tea - 370g",
+    "prompts": [
+      "a photo of a grocery product: margarine, tea - 370g",
+      "VITA HJERTEGO LETTMARGARIN 370G on a grocery store shelf",
+      "a packaged food product labeled VITA HJERTEGO LETTMARGARIN 370G"
+    ]
+  },
+  {
+    "id": 274,
+    "norwegian_name": "VESTLANDSLEFSA TØRRE 10STK 360G",
+    "english_description": "a grocery product: 10stk",
+    "prompts": [
+      "a photo of a grocery product: 10stk",
+      "VESTLANDSLEFSA TØRRE 10STK 360G on a grocery store shelf",
+      "a packaged food product labeled VESTLANDSLEFSA TØRRE 10STK 360G"
+    ]
+  },
+  {
+    "id": 275,
+    "norwegian_name": "EGG FRITTGÅENDE 18STK S/M FIRST PRICE",
+    "english_description": "a grocery product: eggs - First Price budget brand - 18stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - First Price budget brand - 18stk",
+      "EGG FRITTGÅENDE 18STK S/M FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled EGG FRITTGÅENDE 18STK S/M FIRST PRICE"
+    ]
+  },
+  {
+    "id": 276,
+    "norwegian_name": "HVITLØK 100G PK",
+    "english_description": "a grocery product: garlic - 100g",
+    "prompts": [
+      "a photo of a grocery product: garlic - 100g",
+      "HVITLØK 100G PK on a grocery store shelf",
+      "a packaged food product labeled HVITLØK 100G PK"
+    ]
+  },
+  {
+    "id": 277,
+    "norwegian_name": "ALPEN MÜSLI WEETABIX",
+    "english_description": "a grocery product: muesli",
+    "prompts": [
+      "a photo of a grocery product: muesli",
+      "ALPEN MÜSLI WEETABIX on a grocery store shelf",
+      "a packaged food product labeled ALPEN MÜSLI WEETABIX"
+    ]
+  },
+  {
+    "id": 278,
+    "norwegian_name": "DELICATE CRACKERS SEA SALT 180G WASA",
+    "english_description": "a grocery product: salt, tea - Wasa brand Swedish crispbread - 180g",
+    "prompts": [
+      "a photo of a grocery product: salt, tea - Wasa brand Swedish crispbread - 180g",
+      "DELICATE CRACKERS SEA SALT 180G WASA on a grocery store shelf",
+      "a packaged food product labeled DELICATE CRACKERS SEA SALT 180G WASA"
+    ]
+  },
+  {
+    "id": 279,
+    "norwegian_name": "KNEKKEBRØD NATURELL GL.FRI 240G WASA",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - Wasa brand Swedish crispbread - 240g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - Wasa brand Swedish crispbread - 240g",
+      "KNEKKEBRØD NATURELL GL.FRI 240G WASA on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD NATURELL GL.FRI 240G WASA"
+    ]
+  },
+  {
+    "id": 280,
+    "norwegian_name": "RISKAKER 100G FIRST PRICE",
+    "english_description": "a grocery product: rice, ice cream - First Price budget brand - 100g",
+    "prompts": [
+      "a photo of a grocery product: rice, ice cream - First Price budget brand - 100g",
+      "RISKAKER 100G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled RISKAKER 100G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 281,
+    "norwegian_name": "GRANDE 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+      "GRANDE 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled GRANDE 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 282,
+    "norwegian_name": "FILTERPOSER NR.4 200STK ALI",
+    "english_description": "a grocery product: tea - 200stk",
+    "prompts": [
+      "a photo of a grocery product: tea - 200stk",
+      "FILTERPOSER NR.4 200STK ALI on a grocery store shelf",
+      "a packaged food product labeled FILTERPOSER NR.4 200STK ALI"
+    ]
+  },
+  {
+    "id": 283,
+    "norwegian_name": "GÅRDSEGG M/L 12STK ELDORADO",
+    "english_description": "a grocery product: farm eggs, eggs - Eldorado store brand - 12stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - Eldorado store brand - 12stk",
+      "GÅRDSEGG M/L 12STK ELDORADO on a grocery store shelf",
+      "a packaged food product labeled GÅRDSEGG M/L 12STK ELDORADO"
+    ]
+  },
+  {
+    "id": 284,
+    "norwegian_name": "MELLOMBAR KOKOS&SJOKOLADE 138G ELDORADO",
+    "english_description": "a grocery product: chocolate, flour - Eldorado store brand - 138g",
+    "prompts": [
+      "a photo of a grocery product: chocolate, flour - Eldorado store brand - 138g",
+      "MELLOMBAR KOKOS&SJOKOLADE 138G ELDORADO on a grocery store shelf",
+      "a packaged food product labeled MELLOMBAR KOKOS&SJOKOLADE 138G ELDORADO"
+    ]
+  },
+  {
+    "id": 285,
+    "norwegian_name": "Leka Egg 10stk",
+    "english_description": "a grocery product: eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - 10stk",
+      "Leka Egg 10stk on a grocery store shelf",
+      "a packaged food product labeled Leka Egg 10stk"
+    ]
+  },
+  {
+    "id": 286,
+    "norwegian_name": "EGG L 10STK TOTEN",
+    "english_description": "a grocery product: eggs, tea - 10stk",
+    "prompts": [
+      "a photo of a grocery product: eggs, tea - 10stk",
+      "EGG L 10STK TOTEN on a grocery store shelf",
+      "a packaged food product labeled EGG L 10STK TOTEN"
+    ]
+  },
+  {
+    "id": 287,
+    "norwegian_name": "ENGLISH BREAKFAST TEA 25POS TWININGS",
+    "english_description": "a grocery product: tea, ice cream - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: tea, ice cream - Twinings tea - 25pos",
+      "ENGLISH BREAKFAST TEA 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled ENGLISH BREAKFAST TEA 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 288,
+    "norwegian_name": "Sunnmørsegg 10stk",
+    "english_description": "a grocery product: eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: eggs - 10stk",
+      "Sunnmørsegg 10stk on a grocery store shelf",
+      "a packaged food product labeled Sunnmørsegg 10stk"
+    ]
+  },
+  {
+    "id": 289,
+    "norwegian_name": "OREO O'S FROKOSTBLANDING 350G",
+    "english_description": "a grocery product: breakfast, cheese - 350g",
+    "prompts": [
+      "a photo of a grocery product: breakfast, cheese - 350g",
+      "OREO O'S FROKOSTBLANDING 350G on a grocery store shelf",
+      "a packaged food product labeled OREO O'S FROKOSTBLANDING 350G"
+    ]
+  },
+  {
+    "id": 290,
+    "norwegian_name": "SANDWICH CHEESE TOMAT&BASILIKUM 40G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 40g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 40g",
+      "SANDWICH CHEESE TOMAT&BASILIKUM 40G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH CHEESE TOMAT&BASILIKUM 40G WASA"
+    ]
+  },
+  {
+    "id": 291,
+    "norwegian_name": "PREMIUM DARK ORANGE 100G FREIA",
+    "english_description": "a grocery product: 100g",
+    "prompts": [
+      "a photo of a grocery product: 100g",
+      "PREMIUM DARK ORANGE 100G FREIA on a grocery store shelf",
+      "a packaged food product labeled PREMIUM DARK ORANGE 100G FREIA"
+    ]
+  },
+  {
+    "id": 292,
+    "norwegian_name": "NESCAFE AZERA AMERICANO 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE AZERA AMERICANO 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE AZERA AMERICANO 100G"
+    ]
+  },
+  {
+    "id": 293,
+    "norwegian_name": "NUTELLA BISCUITS 193G",
+    "english_description": "a grocery product: tea, ice cream - Nutella hazelnut spread - 193g",
+    "prompts": [
+      "a photo of a grocery product: tea, ice cream - Nutella hazelnut spread - 193g",
+      "NUTELLA BISCUITS 193G on a grocery store shelf",
+      "a packaged food product labeled NUTELLA BISCUITS 193G"
+    ]
+  },
+  {
+    "id": 294,
+    "norwegian_name": "GRISSINI SALT 125G GRANFORNO",
+    "english_description": "a grocery product: breadsticks, salt, rice - Gran Forno Italian breadsticks - 125g",
+    "prompts": [
+      "a photo of a grocery product: breadsticks, salt, rice - Gran Forno Italian breadsticks - 125g",
+      "GRISSINI SALT 125G GRANFORNO on a grocery store shelf",
+      "a packaged food product labeled GRISSINI SALT 125G GRANFORNO"
+    ]
+  },
+  {
+    "id": 295,
+    "norwegian_name": "MELANGE FLYTENDE 500ML",
+    "english_description": "a grocery product: flour, tea - 500ml",
+    "prompts": [
+      "a photo of a grocery product: flour, tea - 500ml",
+      "MELANGE FLYTENDE 500ML on a grocery store shelf",
+      "a packaged food product labeled MELANGE FLYTENDE 500ML"
+    ]
+  },
+  {
+    "id": 296,
+    "norwegian_name": "FIBER BALANCE 230G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 230g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 230g",
+      "FIBER BALANCE 230G WASA on a grocery store shelf",
+      "a packaged food product labeled FIBER BALANCE 230G WASA"
+    ]
+  },
+  {
+    "id": 297,
+    "norwegian_name": "SOLBÆR TE 25POS TWININGS",
+    "english_description": "a grocery product: berries, tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: berries, tea - Twinings tea - 25pos",
+      "SOLBÆR TE 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled SOLBÆR TE 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 298,
+    "norwegian_name": "O'BOY ORIGINAL 450G FREIA",
+    "english_description": "a grocery product: 450g",
+    "prompts": [
+      "a photo of a grocery product: 450g",
+      "O'BOY ORIGINAL 450G FREIA on a grocery store shelf",
+      "a packaged food product labeled O'BOY ORIGINAL 450G FREIA"
+    ]
+  },
+  {
+    "id": 299,
+    "norwegian_name": "KAMILLE TE 20POS LIPTON",
+    "english_description": "a grocery product: chamomile, tea - Lipton tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: chamomile, tea - Lipton tea - 20pos",
+      "KAMILLE TE 20POS LIPTON on a grocery store shelf",
+      "a packaged food product labeled KAMILLE TE 20POS LIPTON"
+    ]
+  },
+  {
+    "id": 300,
+    "norwegian_name": "",
+    "english_description": "a grocery product on a store shelf: ",
+    "prompts": [
+      "a photo of a grocery product on a store shelf: ",
+      " on a grocery store shelf",
+      "a packaged food product labeled "
+    ]
+  },
+  {
+    "id": 301,
+    "norwegian_name": "Gårdsegg fra Fana 10stk",
+    "english_description": "a grocery product: farm eggs, eggs - 10stk",
+    "prompts": [
+      "a photo of a grocery product: farm eggs, eggs - 10stk",
+      "Gårdsegg fra Fana 10stk on a grocery store shelf",
+      "a packaged food product labeled Gårdsegg fra Fana 10stk"
+    ]
+  },
+  {
+    "id": 302,
+    "norwegian_name": "MELANGE MARGARIN 250G",
+    "english_description": "a grocery product: margarine, flour - 250g",
+    "prompts": [
+      "a photo of a grocery product: margarine, flour - 250g",
+      "MELANGE MARGARIN 250G on a grocery store shelf",
+      "a packaged food product labeled MELANGE MARGARIN 250G"
+    ]
+  },
+  {
+    "id": 303,
+    "norwegian_name": "KNEKKEBRØD HAVRE 220G SIGDAL",
+    "english_description": "a grocery product: crispbread, oat, bread - 220g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, oat, bread - 220g",
+      "KNEKKEBRØD HAVRE 220G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD HAVRE 220G SIGDAL"
+    ]
+  },
+  {
+    "id": 304,
+    "norwegian_name": "EVERGOOD CLASSIC KOKMALT 250G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 250g",
+      "EVERGOOD CLASSIC KOKMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC KOKMALT 250G"
+    ]
+  },
+  {
+    "id": 305,
+    "norwegian_name": "GRANOLA KAKAO&BRINGEBÆR 430G BARE BRA",
+    "english_description": "a grocery product: raspberry, granola, cocoa - 430g",
+    "prompts": [
+      "a photo of a grocery product: raspberry, granola, cocoa - 430g",
+      "GRANOLA KAKAO&BRINGEBÆR 430G BARE BRA on a grocery store shelf",
+      "a packaged food product labeled GRANOLA KAKAO&BRINGEBÆR 430G BARE BRA"
+    ]
+  },
+  {
+    "id": 306,
+    "norwegian_name": "NESCAFE GULL 100G REFILL",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE GULL 100G REFILL on a grocery store shelf",
+      "a packaged food product labeled NESCAFE GULL 100G REFILL"
+    ]
+  },
+  {
+    "id": 307,
+    "norwegian_name": "MAISKAKER OST 125G FRIGGS",
+    "english_description": "a grocery product: cheese, ice cream - 125g",
+    "prompts": [
+      "a photo of a grocery product: cheese, ice cream - 125g",
+      "MAISKAKER OST 125G FRIGGS on a grocery store shelf",
+      "a packaged food product labeled MAISKAKER OST 125G FRIGGS"
+    ]
+  },
+  {
+    "id": 308,
+    "norwegian_name": "HAVREGRANOLA  JORDBÆR&BRINGEBÆR 400G URK",
+    "english_description": "a grocery product: raspberry, granola, strawberry - 400g",
+    "prompts": [
+      "a photo of a grocery product: raspberry, granola, strawberry - 400g",
+      "HAVREGRANOLA  JORDBÆR&BRINGEBÆR 400G URK on a grocery store shelf",
+      "a packaged food product labeled HAVREGRANOLA  JORDBÆR&BRINGEBÆR 400G URK"
+    ]
+  },
+  {
+    "id": 309,
+    "norwegian_name": "FIRE RØDE FRUKTER 25POS TWININGS",
+    "english_description": "a grocery product: fruit, tea - Twinings tea - 25pos",
+    "prompts": [
+      "a photo of a grocery product: fruit, tea - Twinings tea - 25pos",
+      "FIRE RØDE FRUKTER 25POS TWININGS on a grocery store shelf",
+      "a packaged food product labeled FIRE RØDE FRUKTER 25POS TWININGS"
+    ]
+  },
+  {
+    "id": 310,
+    "norwegian_name": "LIPTON ICETEA LEMON PULVER 50G",
+    "english_description": "a grocery product: tea - Lipton tea - 50g",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 50g",
+      "LIPTON ICETEA LEMON PULVER 50G on a grocery store shelf",
+      "a packaged food product labeled LIPTON ICETEA LEMON PULVER 50G"
+    ]
+  },
+  {
+    "id": 311,
+    "norwegian_name": "MELBA TOAST FIRKANTET 100G MEULEN",
+    "english_description": "a grocery product: flour, tea - 100g",
+    "prompts": [
+      "a photo of a grocery product: flour, tea - 100g",
+      "MELBA TOAST FIRKANTET 100G MEULEN on a grocery store shelf",
+      "a packaged food product labeled MELBA TOAST FIRKANTET 100G MEULEN"
+    ]
+  },
+  {
+    "id": 312,
+    "norwegian_name": "Tørresvik Gård Kvalitetsegg 10stk",
+    "english_description": "a grocery product: eggs, tea - 10stk",
+    "prompts": [
+      "a photo of a grocery product: eggs, tea - 10stk",
+      "Tørresvik Gård Kvalitetsegg 10stk on a grocery store shelf",
+      "a packaged food product labeled Tørresvik Gård Kvalitetsegg 10stk"
+    ]
+  },
+  {
+    "id": 313,
+    "norwegian_name": "FLOTT MATFETT 500G",
+    "english_description": "a grocery product: 500g",
+    "prompts": [
+      "a photo of a grocery product: 500g",
+      "FLOTT MATFETT 500G on a grocery store shelf",
+      "a packaged food product labeled FLOTT MATFETT 500G"
+    ]
+  },
+  {
+    "id": 314,
+    "norwegian_name": "CAFE AU LAIT 16KAPSLER DOLCE GUSTO",
+    "english_description": "a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+    "prompts": [
+      "a photo of a grocery product: capsules - Dolce Gusto coffee capsules - 16kapsler",
+      "CAFE AU LAIT 16KAPSLER DOLCE GUSTO on a grocery store shelf",
+      "a packaged food product labeled CAFE AU LAIT 16KAPSLER DOLCE GUSTO"
+    ]
+  },
+  {
+    "id": 315,
+    "norwegian_name": "4-KORN 675G AXA",
+    "english_description": "a grocery product: 675g",
+    "prompts": [
+      "a photo of a grocery product: 675g",
+      "4-KORN 675G AXA on a grocery store shelf",
+      "a packaged food product labeled 4-KORN 675G AXA"
+    ]
+  },
+  {
+    "id": 316,
+    "norwegian_name": "FIBERRIK SOLSIKKE 125G SÆTRE",
+    "english_description": "a grocery product: 125g",
+    "prompts": [
+      "a photo of a grocery product: 125g",
+      "FIBERRIK SOLSIKKE 125G SÆTRE on a grocery store shelf",
+      "a packaged food product labeled FIBERRIK SOLSIKKE 125G SÆTRE"
+    ]
+  },
+  {
+    "id": 317,
+    "norwegian_name": "POWERKNEKKEBRØD GL.FRI 225G SCHÄR",
+    "english_description": "a grocery product: crispbread, gluten-free, bread - 225g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, gluten-free, bread - 225g",
+      "POWERKNEKKEBRØD GL.FRI 225G SCHÄR on a grocery store shelf",
+      "a packaged food product labeled POWERKNEKKEBRØD GL.FRI 225G SCHÄR"
+    ]
+  },
+  {
+    "id": 318,
+    "norwegian_name": "PANNEKAKER 6STK ELDORADO",
+    "english_description": "a grocery product: Eldorado store brand - 6stk",
+    "prompts": [
+      "a photo of a grocery product: Eldorado store brand - 6stk",
+      "PANNEKAKER 6STK ELDORADO on a grocery store shelf",
+      "a packaged food product labeled PANNEKAKER 6STK ELDORADO"
+    ]
+  },
+  {
+    "id": 319,
+    "norwegian_name": "LIPTON ICETEA PEACH PULVER 50G",
+    "english_description": "a grocery product: tea - Lipton tea - 50g",
+    "prompts": [
+      "a photo of a grocery product: tea - Lipton tea - 50g",
+      "LIPTON ICETEA PEACH PULVER 50G on a grocery store shelf",
+      "a packaged food product labeled LIPTON ICETEA PEACH PULVER 50G"
+    ]
+  },
+  {
+    "id": 320,
+    "norwegian_name": "EARL GREY TEA 50POS FIRST PRICE",
+    "english_description": "a grocery product: tea - First Price budget brand - 50pos",
+    "prompts": [
+      "a photo of a grocery product: tea - First Price budget brand - 50pos",
+      "EARL GREY TEA 50POS FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled EARL GREY TEA 50POS FIRST PRICE"
+    ]
+  },
+  {
+    "id": 321,
+    "norwegian_name": "GIFFLAR KANEL 300G PÅGEN",
+    "english_description": "a grocery product: cinnamon - Pågen Swedish bakery - 300g",
+    "prompts": [
+      "a photo of a grocery product: cinnamon - Pågen Swedish bakery - 300g",
+      "GIFFLAR KANEL 300G PÅGEN on a grocery store shelf",
+      "a packaged food product labeled GIFFLAR KANEL 300G PÅGEN"
+    ]
+  },
+  {
+    "id": 322,
+    "norwegian_name": "STEKEMARGARIN 500G FIRST PRICE",
+    "english_description": "a grocery product: margarine, tea - First Price budget brand - 500g",
+    "prompts": [
+      "a photo of a grocery product: margarine, tea - First Price budget brand - 500g",
+      "STEKEMARGARIN 500G FIRST PRICE on a grocery store shelf",
+      "a packaged food product labeled STEKEMARGARIN 500G FIRST PRICE"
+    ]
+  },
+  {
+    "id": 323,
+    "norwegian_name": "KRUTONGER CHEESE&GARLIC 142G CHATHAM",
+    "english_description": "a grocery product: 142g",
+    "prompts": [
+      "a photo of a grocery product: 142g",
+      "KRUTONGER CHEESE&GARLIC 142G CHATHAM on a grocery store shelf",
+      "a packaged food product labeled KRUTONGER CHEESE&GARLIC 142G CHATHAM"
+    ]
+  },
+  {
+    "id": 324,
+    "norwegian_name": "NESCAFE LATTE 144G",
+    "english_description": "a grocery product: tea - Nescafé coffee - 144g",
+    "prompts": [
+      "a photo of a grocery product: tea - Nescafé coffee - 144g",
+      "NESCAFE LATTE 144G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE LATTE 144G"
+    ]
+  },
+  {
+    "id": 325,
+    "norwegian_name": "NESCAFE GULL 100G",
+    "english_description": "a grocery product: Nescafé coffee - 100g",
+    "prompts": [
+      "a photo of a grocery product: Nescafé coffee - 100g",
+      "NESCAFE GULL 100G on a grocery store shelf",
+      "a packaged food product labeled NESCAFE GULL 100G"
+    ]
+  },
+  {
+    "id": 326,
+    "norwegian_name": "SOFT FLORA ORIGINAL 540G",
+    "english_description": "a grocery product: 540g",
+    "prompts": [
+      "a photo of a grocery product: 540g",
+      "SOFT FLORA ORIGINAL 540G on a grocery store shelf",
+      "a packaged food product labeled SOFT FLORA ORIGINAL 540G"
+    ]
+  },
+  {
+    "id": 327,
+    "norwegian_name": "POTETCHIPS SORT TRØFFEL 125G TORRES",
+    "english_description": "a grocery product: potato chips, truffle, chips - Torres Spanish chips - 125g",
+    "prompts": [
+      "a photo of a grocery product: potato chips, truffle, chips - Torres Spanish chips - 125g",
+      "POTETCHIPS SORT TRØFFEL 125G TORRES on a grocery store shelf",
+      "a packaged food product labeled POTETCHIPS SORT TRØFFEL 125G TORRES"
+    ]
+  },
+  {
+    "id": 328,
+    "norwegian_name": "GRANOLA EPLE&BÆR 375G JACOBS UTVALGTE",
+    "english_description": "a grocery product: granola, apple, berries - Jacobs Utvalgte premium brand - 375g",
+    "prompts": [
+      "a photo of a grocery product: granola, apple, berries - Jacobs Utvalgte premium brand - 375g",
+      "GRANOLA EPLE&BÆR 375G JACOBS UTVALGTE on a grocery store shelf",
+      "a packaged food product labeled GRANOLA EPLE&BÆR 375G JACOBS UTVALGTE"
+    ]
+  },
+  {
+    "id": 329,
+    "norwegian_name": "SKORPOR FULLKORN 240G PÅGEN",
+    "english_description": "a grocery product: whole grain - Pågen Swedish bakery - 240g",
+    "prompts": [
+      "a photo of a grocery product: whole grain - Pågen Swedish bakery - 240g",
+      "SKORPOR FULLKORN 240G PÅGEN on a grocery store shelf",
+      "a packaged food product labeled SKORPOR FULLKORN 240G PÅGEN"
+    ]
+  },
+  {
+    "id": 330,
+    "norwegian_name": "GRANOLA MED JORDBÆR 390G SYNNØVE",
+    "english_description": "a grocery product: granola, strawberry, berries - Synnøve Finden dairy - 390g",
+    "prompts": [
+      "a photo of a grocery product: granola, strawberry, berries - Synnøve Finden dairy - 390g",
+      "GRANOLA MED JORDBÆR 390G SYNNØVE on a grocery store shelf",
+      "a packaged food product labeled GRANOLA MED JORDBÆR 390G SYNNØVE"
+    ]
+  },
+  {
+    "id": 331,
+    "norwegian_name": "SANDWICH PIZZA 37G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 37g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 37g",
+      "SANDWICH PIZZA 37G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH PIZZA 37G WASA"
+    ]
+  },
+  {
+    "id": 332,
+    "norwegian_name": "COTW LUNGO DARK KAFFEKAPSEL 10STK",
+    "english_description": "a grocery product: coffee - 10stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 10stk",
+      "COTW LUNGO DARK KAFFEKAPSEL 10STK on a grocery store shelf",
+      "a packaged food product labeled COTW LUNGO DARK KAFFEKAPSEL 10STK"
+    ]
+  },
+  {
+    "id": 333,
+    "norwegian_name": "MELBATOAST RUND 110G MEULEN",
+    "english_description": "a grocery product: flour - 110g",
+    "prompts": [
+      "a photo of a grocery product: flour - 110g",
+      "MELBATOAST RUND 110G MEULEN on a grocery store shelf",
+      "a packaged food product labeled MELBATOAST RUND 110G MEULEN"
+    ]
+  },
+  {
+    "id": 334,
+    "norwegian_name": "CHAI-TE ORIGINAL 20POS PUKKA",
+    "english_description": "a grocery product: tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: tea - Pukka organic tea - 20pos",
+      "CHAI-TE ORIGINAL 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled CHAI-TE ORIGINAL 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 335,
+    "norwegian_name": "STORFE SHORT RIBS GREATER OMAHA LV",
+    "english_description": "a grocery product: beef, tea",
+    "prompts": [
+      "a photo of a grocery product: beef, tea",
+      "STORFE SHORT RIBS GREATER OMAHA LV on a grocery store shelf",
+      "a packaged food product labeled STORFE SHORT RIBS GREATER OMAHA LV"
+    ]
+  },
+  {
+    "id": 336,
+    "norwegian_name": "SVARTHAVRERIS ØKOLOGISK DEN SORTE HAVRE",
+    "english_description": "a grocery product: organic, oat, rice",
+    "prompts": [
+      "a photo of a grocery product: organic, oat, rice",
+      "SVARTHAVRERIS ØKOLOGISK DEN SORTE HAVRE on a grocery store shelf",
+      "a packaged food product labeled SVARTHAVRERIS ØKOLOGISK DEN SORTE HAVRE"
+    ]
+  },
+  {
+    "id": 337,
+    "norwegian_name": "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA",
+    "english_description": "a grocery product: organic, herbal tea, tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: organic, herbal tea, tea - Pukka organic tea - 20pos",
+      "FEEL NEW URTETE ØKOLOGISK 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled FEEL NEW URTETE ØKOLOGISK 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 338,
+    "norwegian_name": "HUSMAN KNEKKEBRØD 520G WASA",
+    "english_description": "a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 520g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 520g",
+      "HUSMAN KNEKKEBRØD 520G WASA on a grocery store shelf",
+      "a packaged food product labeled HUSMAN KNEKKEBRØD 520G WASA"
+    ]
+  },
+  {
+    "id": 339,
+    "norwegian_name": "ALI ORIGINAL KAFFEKAPSEL 16STK",
+    "english_description": "a grocery product: coffee - 16stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - 16stk",
+      "ALI ORIGINAL KAFFEKAPSEL 16STK on a grocery store shelf",
+      "a packaged food product labeled ALI ORIGINAL KAFFEKAPSEL 16STK"
+    ]
+  },
+  {
+    "id": 340,
+    "norwegian_name": "EVERGOOD DARK ROAST HELE BØNNER 500G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 500g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 500g",
+      "EVERGOOD DARK ROAST HELE BØNNER 500G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD DARK ROAST HELE BØNNER 500G"
+    ]
+  },
+  {
+    "id": 341,
+    "norwegian_name": "EVERGOOD CLASSIC HELE BØNNER 500G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 500g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 500g",
+      "EVERGOOD CLASSIC HELE BØNNER 500G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD CLASSIC HELE BØNNER 500G"
+    ]
+  },
+  {
+    "id": 342,
+    "norwegian_name": "HAVREFRAS 375G",
+    "english_description": "a grocery product: oat - 375g",
+    "prompts": [
+      "a photo of a grocery product: oat - 375g",
+      "HAVREFRAS 375G on a grocery store shelf",
+      "a packaged food product labeled HAVREFRAS 375G"
+    ]
+  },
+  {
+    "id": 343,
+    "norwegian_name": "KNEKKS KJEKS ORIGINAL 190G RØROS",
+    "english_description": "a grocery product: biscuits - 190g",
+    "prompts": [
+      "a photo of a grocery product: biscuits - 190g",
+      "KNEKKS KJEKS ORIGINAL 190G RØROS on a grocery store shelf",
+      "a packaged food product labeled KNEKKS KJEKS ORIGINAL 190G RØROS"
+    ]
+  },
+  {
+    "id": 344,
+    "norwegian_name": "EVERGOOD DARK ROAST KAFFEKAPSEL 16STK",
+    "english_description": "a grocery product: coffee - Evergood Norwegian coffee - 16stk",
+    "prompts": [
+      "a photo of a grocery product: coffee - Evergood Norwegian coffee - 16stk",
+      "EVERGOOD DARK ROAST KAFFEKAPSEL 16STK on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD DARK ROAST KAFFEKAPSEL 16STK"
+    ]
+  },
+  {
+    "id": 345,
+    "norwegian_name": "KNEKKEBRØD URTER&HAVSALT 220G SIGDAL",
+    "english_description": "a grocery product: crispbread, bread, salt - 220g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread, salt - 220g",
+      "KNEKKEBRØD URTER&HAVSALT 220G SIGDAL on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD URTER&HAVSALT 220G SIGDAL"
+    ]
+  },
+  {
+    "id": 346,
+    "norwegian_name": "SANDWICH SOUR CREAM&ONION 33G WASA",
+    "english_description": "a grocery product: Wasa brand Swedish crispbread - 33g",
+    "prompts": [
+      "a photo of a grocery product: Wasa brand Swedish crispbread - 33g",
+      "SANDWICH SOUR CREAM&ONION 33G WASA on a grocery store shelf",
+      "a packaged food product labeled SANDWICH SOUR CREAM&ONION 33G WASA"
+    ]
+  },
+  {
+    "id": 347,
+    "norwegian_name": "EVERGOOD DARK ROAST PRESSMALT 250G",
+    "english_description": "a grocery product: Evergood Norwegian coffee - 250g",
+    "prompts": [
+      "a photo of a grocery product: Evergood Norwegian coffee - 250g",
+      "EVERGOOD DARK ROAST PRESSMALT 250G on a grocery store shelf",
+      "a packaged food product labeled EVERGOOD DARK ROAST PRESSMALT 250G"
+    ]
+  },
+  {
+    "id": 348,
+    "norwegian_name": "ALI ORIGINAL HELE BØNNER 250G",
+    "english_description": "a grocery product: 250g",
+    "prompts": [
+      "a photo of a grocery product: 250g",
+      "ALI ORIGINAL HELE BØNNER 250G on a grocery store shelf",
+      "a packaged food product labeled ALI ORIGINAL HELE BØNNER 250G"
+    ]
+  },
+  {
+    "id": 349,
+    "norwegian_name": "KNEKKEBRØD SPORT+ 210G WASA",
+    "english_description": "a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 210g",
+    "prompts": [
+      "a photo of a grocery product: crispbread, bread - Wasa brand Swedish crispbread - 210g",
+      "KNEKKEBRØD SPORT+ 210G WASA on a grocery store shelf",
+      "a packaged food product labeled KNEKKEBRØD SPORT+ 210G WASA"
+    ]
+  },
+  {
+    "id": 350,
+    "norwegian_name": "BLÅ JAVA HELE BØNNER 340G COTW",
+    "english_description": "a grocery product: 340g",
+    "prompts": [
+      "a photo of a grocery product: 340g",
+      "BLÅ JAVA HELE BØNNER 340G COTW on a grocery store shelf",
+      "a packaged food product labeled BLÅ JAVA HELE BØNNER 340G COTW"
+    ]
+  },
+  {
+    "id": 351,
+    "norwegian_name": "BREMYKT MYKERE 500G",
+    "english_description": "a grocery product: 500g",
+    "prompts": [
+      "a photo of a grocery product: 500g",
+      "BREMYKT MYKERE 500G on a grocery store shelf",
+      "a packaged food product labeled BREMYKT MYKERE 500G"
+    ]
+  },
+  {
+    "id": 352,
+    "norwegian_name": "PEPPERMINT&LICORICE URTETE 20POS PUKKA",
+    "english_description": "a grocery product: herbal tea, pepper, tea - Pukka organic tea - 20pos",
+    "prompts": [
+      "a photo of a grocery product: herbal tea, pepper, tea - Pukka organic tea - 20pos",
+      "PEPPERMINT&LICORICE URTETE 20POS PUKKA on a grocery store shelf",
+      "a packaged food product labeled PEPPERMINT&LICORICE URTETE 20POS PUKKA"
+    ]
+  },
+  {
+    "id": 353,
+    "norwegian_name": "EXCELSO COLOMBIA FILTERMALT 200G JACOBS",
+    "english_description": "a grocery product: filter ground coffee, tea - 200g",
+    "prompts": [
+      "a photo of a grocery product: filter ground coffee, tea - 200g",
+      "EXCELSO COLOMBIA FILTERMALT 200G JACOBS on a grocery store shelf",
+      "a packaged food product labeled EXCELSO COLOMBIA FILTERMALT 200G JACOBS"
+    ]
+  },
+  {
+    "id": 354,
+    "norwegian_name": "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN",
+    "english_description": "a grocery product: raspberry, vanilla, berries - Pågen Swedish bakery - 260g",
+    "prompts": [
+      "a photo of a grocery product: raspberry, vanilla, berries - Pågen Swedish bakery - 260g",
+      "GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN on a grocery store shelf",
+      "a packaged food product labeled GIFFLAR BRINGEBÆR&VANILJE 260G PÅGEN"
+    ]
+  },
+  {
+    "id": 355,
+    "norwegian_name": "unknown_product",
+    "english_description": "an unidentified grocery product on a store shelf",
+    "prompts": [
+      "a grocery product on a supermarket shelf",
+      "an unknown packaged food item",
+      "a product with unclear label on a store shelf"
+    ]
+  }
+]

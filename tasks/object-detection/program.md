@@ -1,118 +1,101 @@
-# autoresearch: object-detection
+# autoresearch: MarkusNet Object Detection
 
-Data-mixture optimization for object detection. We optimize **what data to train on** and **how to train**, not inference tricks.
+Turn MarkusNet (pruned Qwen3.5-0.8B, 351M params) into the best embedded VLM for zero-shot object detection.
 
-## Philosophy: Zen of Model Training
+## Research Question
 
-**Transfer learning pyramid** (bottom → top):
-1. **Broad OOD data** — large external datasets (Polish shelves, COCO, Open Images)
-2. **In-domain bridge** — store photos, product reference images, curated subsets
-3. **Target eval** — competition 248 images (validation ONLY until final stage)
-4. **Submit** — only when local val convincingly beats 0.92 mAP@0.5
+Can a pruned Qwen3.5 VLM do both object detection AND zero-shot classification, trained only on external data, evaluated on competition data?
 
-**Sacred rules:**
-- The 248 competition images are **validation only**. Never train on them until the final submission stage.
-- Augmentation ≠ unique samples. Track them separately. Augmentation is fancy upsampling.
-- Pseudo-labels are suspect. Verify quality before trusting them.
-- Maximize **mAP@0.5** (0.7 × detection + 0.3 × classification).
-- Only 6 test submissions remaining. Don't waste them.
+## Architecture: MarkusNet 351M
 
-## Setup
+```
+Input Image (variable size)
+  → Vision Encoder (12 ViT blocks, 768d, 12 heads)
+  → Spatial Merger (2×2 pool, 768→1024d)
+  → Hybrid Decoder (9 Mamba + 3 full attention, 1024d)
+  → Detection Head (bbox regression + classification)
+```
 
-1. **Agree on a run tag** with the user (e.g. `mar22-data`). Branch: `autoresearch/<tag>`.
-2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current main.
-3. **Read the key files**:
-   - `tasks/object-detection/README.md` — task context, scoring, constraints.
-   - `tasks/object-detection/data-creation/data/coco_dataset/train/annotations.json` — the 248-image ground truth (THIS IS YOUR VAL SET).
-   - `tasks/object-detection/submission-markusnet/run.py` — current best submission.
-4. **Verify validation set**: All 248 competition images with COCO annotations must be available for eval.
-5. **Initialize results.tsv** with header. Baseline = current best model on full 248-image val.
-6. **Go**.
+Current state: classification-only (crop-based). Goal: add detection.
 
-## Data inventory
+## Key Challenge
 
-| Source | Images | Type | Quality | Location |
-|--------|--------|------|---------|----------|
-| Competition (VAL ONLY) | 248 | Shelf photos | Ground truth | `data/coco_dataset/train/` |
-| External Polish shelves | 27,246 | Shelf photos | COCO annotations, different products | `data/external/` |
-| Store photos (Markus) | 39 + video | Shelf photos | Unlabeled, in-domain | `data/store_photos/` |
-| Product references | 327 | Product crops | Multi-angle, clean | `data/product_images/` |
-| Silver augmented | 6,477 | Synthetic | Copy-paste augmentation | `data/silver_augmented_dataset/` |
-| Pseudo-labeled | 2,014 | Auto-labeled | SUSPECT - needs QA | `data/pseudo_labels/` |
+MarkusNet is a VLM — it processes single images and outputs class labels. Object detection requires:
+1. **Dense prediction**: output bounding boxes at multiple scales
+2. **Multi-object**: detect all products in one forward pass
+3. **Zero-shot classification**: use text/reference embeddings instead of fixed class head
 
-## What you optimize
+## Approaches to Test
 
-The **data mixture** fed to training. Augmentation is OFF by default. Fix the data first.
+### A. ViTDet-style: Feature Pyramid from ViT tokens
+- Reshape decoder token sequence back to 2D spatial grid
+- Extract features from layers 4, 8, 12 → build FPN (P3, P4, P5)
+- Attach lightweight YOLO-style detection head
+- Classification: dot product with pre-computed text embeddings (356 product names)
+- Train detection head only (freeze backbone) → then full fine-tune
 
-**Phase 1: Clean data only (NO augmentation)**
-1. **Source selection**: Which external datasets to include/exclude
-2. **Category mapping**: How to map external categories → our 356 categories
-3. **Data quality filtering**: Removing bad labels, low-confidence pseudo-labels
-4. **Sample curation**: Which images actually help? Remove harmful ones.
-5. **Training schedule**: Learning rate, epochs, warmup, freeze stages
-6. **Architecture**: Model size, backbone, head configuration
+### B. DETR-style: Object queries on decoder output
+- Add learned object queries (100-300)
+- Cross-attend with decoder features
+- Predict boxes + class logits per query
+- Hungarian matching loss
+- More elegant but slower convergence
 
-**Phase 2: Augmentation (only after Phase 1 converges)**
-7. **Augmentation policy**: What augmentation, applied to which sources
-   - Only worth doing once the clean dataset is already strong
-   - The only thing worse than bad data is bad data + augmented bad data
+### C. Sliding window with NMS
+- Run MarkusNet at multiple positions/scales
+- Each position classifies the central region
+- NMS to merge overlapping detections
+- Simplest but slowest inference
 
-## The experiment loop
+### D. Hybrid: MarkusNet backbone + YOLO head
+- Use MarkusNet vision encoder + merger as backbone
+- Discard the language decoder
+- Attach standard YOLOv8 neck (PANet) + head
+- Fine-tune end-to-end
+- Loses VLM zero-shot capability but gains detection speed
+
+## Evaluation
+
+**Validation set**: All 248 competition images (COCO format, 22,731 annotations, 356 categories)
+**Metric**: `combined_map = 0.7 * detection_mAP@0.5 + 0.3 * classification_mAP@0.5`
+**Training data**: External only (Polish shelves 27K, SKU-110K 7.5K, Grocery Shelves 45, store photos 93)
+**Sacred rule**: Competition 248 images are validation ONLY
+
+## Experiment Loop
 
 LOOP FOREVER:
 
-1. **Hypothesize**: What data change should improve mAP@0.5? (add source, filter bad labels, adjust mixture ratio, change augmentation)
-2. **Build dataset**: Create the training dataset with the proposed mixture. Record exact composition:
-   - Unique images per source
-   - Augmented copies per source (separate count!)
-   - Total annotations, category coverage
-3. **Train**: Launch training on GPU. Use YOLOv8x as default architecture unless testing alternatives.
-4. **Evaluate**: Run trained model on ALL 248 competition images. Report:
-   ```
-   detection_map50:      X.XXXX
-   classification_map50: X.XXXX
-   combined_map:         X.XXXX
-   unique_train_images:  NNNNN
-   augmented_copies:     NNNNN
-   data_sources:         source1(N), source2(N), ...
-   ```
-5. **Log to results.tsv** (see format below).
-6. If combined_map improved → keep. If not → revert data change.
-7. **Commit** the dataset build script (never the data itself).
+1. Pick an approach (A/B/C/D) and a specific modification
+2. Implement the change
+3. Train on external data only (GPU: local 3090 or rent cloud)
+4. Evaluate on all 248 competition images with `eval_honest.py`
+5. Log to `data_experiment_results.tsv`
+6. Update `plot_progress.py`
+7. If improved → keep. If not → revert.
 
-## Logging results
+## Current Baselines
 
-Log to `results.tsv` (tab-separated):
+| Model | det_mAP@0.5 | cls_mAP@0.5 | Combined | Notes |
+|-------|-------------|-------------|----------|-------|
+| YOLOv8x external pretrain | 0.543 | 0.000 | 0.380 | Single-class, no classification |
+| YOLO World L zero-shot | 0.182 | 0.000 | 0.127 | Norwegian text prompts |
+| MarkusNet 351M (crop cls) | — | 0.812 top-1 | — | Classification only, no detection |
+| Server baseline (v6_clean) | — | — | 0.908 | Trained on competition data |
 
-```
-commit	combined_map	det_map50	cls_map50	unique_images	aug_images	status	description
-```
+## Key Files
 
-Example:
-```
-a1b2c3d	0.850000	0.920000	0.690000	27246	0	keep	baseline: external polish only
-b2c3d4e	0.870000	0.930000	0.730000	27285	0	keep	+ 39 store photos with Gemini labels
-c3d4e5f	0.860000	0.925000	0.710000	33723	6477	discard	+ silver augmented (hurts)
-```
+- `vlm-approach/run_markusnet.py` — full architecture (PyTorch native)
+- `vlm-approach/export_markusnet.py` — export + quantization
+- `vlm-approach/train_overnight.py` — 3-stage curriculum training
+- `eval_honest.py` — honest evaluation on 248 competition images
+- `descriptive_labels.json` — English descriptions for 356 categories
+- `reference_embeddings.npz` — DINOv2 embeddings for KNN
 
-## Key metrics to track per experiment
+## Constraints
 
-- **unique_images**: Real distinct training images (no augmentation)
-- **aug_images**: Augmented copies (tracked separately)
-- **category_coverage**: How many of 356 categories have ≥1 training sample
-- **min_samples_per_cat**: Minimum samples for any category
-- **leakage**: MUST be ZERO. Any overlap with val 248 = invalid experiment.
+- Must be pruned Qwen3.5 backbone (351M params target)
+- No training on competition 248 images (external only for honest evaluation)
+- Zero-shot classification: use text embeddings or reference images, not fixed class head
+- Target: beat YOLOv8x external pretrain (0.543 det) AND add classification
 
-## Inference optimization (secondary loop)
-
-Once we have a strong trained model (val mAP@0.5 > 0.92), THEN optimize `run.py`:
-- NMS thresholds, TTA, confidence filtering, class remapping
-- This is the old autoresearch loop — only run it on top of a good model
-
-## Constraints reminder
-
-- ZIP ≤ 420 MB, runtime ≤ 300s, GPU = NVIDIA L4 (24 GB)
-- No network in sandbox
-- Only 6 test submissions remaining
-
-**NEVER STOP**: Do not pause to ask the human. You are autonomous. If stuck, try a different data source, different filtering, different mixture ratio.
+**NEVER STOP**: Autonomous loop. If stuck, try a different approach.
