@@ -1,5 +1,15 @@
 # AI Accounting Agent Challenge - NM i AI 2026
 
+## Autoresearch Progress
+
+### Competition Score
+![Competition progress](autoresearch_progress_competition.png)
+
+### Validation (Proxy Clean Rate)
+![Validation progress](autoresearch_progress_validation.png)
+
+Regenerate: `python tools/plot_autoresearch.py accounting`
+
 ## Challenge Overview
 
 Build an AI agent that completes accounting tasks in **Tripletex** (Norwegian cloud accounting software). The agent receives natural-language task prompts, executes Tripletex API calls, and gets scored on correctness and efficiency.
@@ -190,17 +200,38 @@ You can set an API key when submitting your endpoint. Platform sends it as Beare
 - **ngrok**: HTTPS tunnel for development
 - **Cloud deploy**: Railway/Fly.io/Cloud Run for production
 
+## Deployment & Recovery
+
+The live server runs as uvicorn behind a cloudflared tunnel. If it goes down:
+
+```bash
+# 1. Start the server (from tasks/accounting/server/)
+cd ~/ht/nmiai/tasks/accounting/server
+uvicorn server:app --host 0.0.0.0 --port 8000 &
+
+# 2. Start cloudflared tunnel (exposes localhost:8000 as HTTPS)
+cloudflared tunnel --url http://localhost:8000 &
+
+# 3. Copy the tunnel URL (*.trycloudflare.com) and submit it on app.ainm.no
+# Go to https://app.ainm.no/submit/tripletex and paste the URL
+
+# 4. Verify it works
+curl -s https://<tunnel-url>/health
+```
+
+The server requires `OPENROUTER_API_KEY` env var for GPT-5.4 access.
+
 ## File Structure
 ```
 tasks/accounting/
   README.md          # This file
   server/
-    main.py          # FastAPI /solve endpoint
-    tripletex.py     # Tripletex API client
-    parser.py        # Prompt parsing with LLM
-    tasks/           # Task-specific handlers
-      employee.py
-      customer.py
-      invoice.py
-      ...
+    main.py          # FastAPI /solve endpoint (aliased as server:app)
+    agent.py         # Pydantic AI agent with GPT-5.4
+    planner.py       # Task planning / prompt parsing
+    executor.py      # Action execution engine
+    actions.py       # Tripletex API action implementations
+    tripletex_client.py  # Tripletex API client
+    playbooks/       # Task-specific playbooks
+    endpoint_cards/  # API endpoint documentation
 ```

@@ -12,6 +12,16 @@
 
 **Dashboard:** https://app.ainm.no/submit/norgesgruppen-data
 
+## Autoresearch Progress
+
+### Competition Score
+![Competition progress](autoresearch_progress_competition.png)
+
+### Validation (mAP@0.5)
+![Validation progress](autoresearch_progress_validation.png)
+
+Regenerate: `python tools/plot_autoresearch.py object-detection`
+
 ## Example Task Data
 
 Shelf image with ground truth annotations (bounding boxes + product category labels):

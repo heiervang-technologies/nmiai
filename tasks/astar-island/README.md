@@ -1,17 +1,37 @@
 # Astar Island Challenge - Strategy & Reference
 
+## Autoresearch Progress
+
+### Competition Score
+![Competition progress](autoresearch_progress_competition.png)
+
+### Validation (CV wKL)
+![Validation progress](autoresearch_progress_validation.png)
+
+Regenerate: `python tools/plot_autoresearch.py astar-island`
+
 ## Score Progress
 
 ![Score over time](score_over_time.png)
 
-| Round | Score | Rank | Model | Key Change |
-|-------|-------|------|-------|------------|
-| 1 | 59.3 | 17/117 | Hand-tuned Dirichlet priors | First submission, full coverage queries |
-| 2-4 | — | — | — | Missed (overnight, no auto-watcher) |
-| 5 | 71.5 | 60/144 | Empirical transition priors | +12 pts from data-driven priors alone |
-| 6 | pending | — | HistGBT + Empirical Bayes | ML model trained on 40K ground truth cells |
+| Round | Raw Score | Key Change |
+|-------|-----------|------------|
+| R1 | 62.3 | Hand-tuned Dirichlet priors, 50q full coverage |
+| R2-4 | — | Missed (overnight, no auto-watcher) |
+| R5 | 91.3 | Empirical bucket priors, minimal obs |
+| R6 | 78.0 | HistGBT hybrid (regressed) |
+| R7 | 84.9 | Recursive conv model |
+| R8 | 90.7 | 55/45 blend regime+neighborhood |
+| R9 | 129.6 | Temp-scaled bucket priors, NO obs |
+| R10 | 91.1 | Smooth predictor, wasted 50q |
+| R11 | 127.5 | Template predictor + 5 regime obs |
+| R12 | 75.0 | Template predictor (prosperous round) |
+| R13 | 165.8 | Blitz 50q + bucket priors + tau=2 |
+| R14 | 156.4 | Regime predictor + blitz + tau=10 |
+| R15 | 184.2 | Bayesian regime + structural zeros + tau=10 |
+| R16-18 | pending | tau=100 deployed (CV wKL 0.033) |
 
-**Best score: 71.5** | **Target: 85+**
+**Best score: 93.6** (normalized, ~184.2 raw at R15)
 
 ## Challenge Overview
 
