@@ -27,53 +27,69 @@ def calc_wkl(pred, target, ig):
 
 def run_gpu_mc(ig, interpolated_lookup, num_sims=2000):
     H, W = ig.shape
-    
+    has_ruin_dim = interpolated_lookup.dim() >= 8  # v2 tensor has r3 dimension
+
     # Kernels
     k3 = torch.ones((1, 1, 3, 3), device=device, dtype=torch.float32)
     k3[0, 0, 1, 1] = 0
     k7 = torch.ones((1, 1, 7, 7), device=device, dtype=torch.float32)
     k7[0, 0, 3, 3] = 0
-    
+
     state = torch.tensor(ig, device=device, dtype=torch.long).unsqueeze(0).repeat(num_sims, 1, 1)
-    
-    # Handle raw vs interpolated lookup
-    if interpolated_lookup.dim() == 8:  # Raw tensor [3, 4, 12, 9, 26, 9, 9, 12]
-        # Default to equal blend of all regimes
+
+    # Handle raw tensor with regime dimension
+    if interpolated_lookup.dim() == 8 and interpolated_lookup.shape[0] == 3 and interpolated_lookup.shape[-1] == 12 and interpolated_lookup.shape[1] == 4:
+        # v1 raw [3, 4, 12, 9, 26, 9, 9, 12] - blend regimes
         interpolated_lookup = (interpolated_lookup[0] + interpolated_lookup[1] + interpolated_lookup[2]) / 3.0
-    # interpolated_lookup shape: (4, 12, 9, 26, 9, 9, 12)
-    
+        has_ruin_dim = False
+    elif interpolated_lookup.dim() == 9 and interpolated_lookup.shape[0] == 3:
+        # v2 raw [3, 4, 12, 9, 26, 9, 9, 4, 12] - blend regimes
+        interpolated_lookup = (interpolated_lookup[0] + interpolated_lookup[1] + interpolated_lookup[2]) / 3.0
+        has_ruin_dim = True
+    elif interpolated_lookup.dim() == 8 and interpolated_lookup.shape[-1] == 12 and interpolated_lookup.shape[0] == 4:
+        # v2 interpolated [4, 12, 9, 26, 9, 9, 4, 12]
+        has_ruin_dim = True
+    else:
+        # v1 interpolated [4, 12, 9, 26, 9, 9, 12]
+        has_ruin_dim = False
+
     for step in range(1, 51):
         phase = step % 4
-        
+
         is_civ = ((state == 1) | (state == 2)).float().unsqueeze(1)
         n_civ3 = F.conv2d(is_civ, k3, padding=1).squeeze(1).long()
         n_civ3 = torch.clamp(n_civ3, 0, 8)
-        
+
         n_civ7 = F.conv2d(is_civ, k7, padding=3).squeeze(1).long()
         n_civ7 = torch.clamp(n_civ7, 0, 25)
-        
+
         is_ocean = (state == 10).float().unsqueeze(1)
         n_ocean = F.conv2d(is_ocean, k3, padding=1).squeeze(1).long()
         n_ocean = torch.clamp(n_ocean, 0, 8)
-        
+
         is_forest = (state == 4).float().unsqueeze(1)
         n_forest = F.conv2d(is_forest, k3, padding=1).squeeze(1).long()
         n_forest = torch.clamp(n_forest, 0, 8)
-        
+
         phase_lookup = interpolated_lookup[phase]
-        # Gather probabilities with strict bounds clamping to prevent Index Out Of Bounds
         flat_state = torch.clamp(state.view(-1), 0, 11)
         flat_c3 = torch.clamp(n_civ3.view(-1), 0, 8)
         flat_c7 = torch.clamp(n_civ7.view(-1), 0, 25)
         flat_o3 = torch.clamp(n_ocean.view(-1), 0, 8)
         flat_f3 = torch.clamp(n_forest.view(-1), 0, 8)
 
-        probs = phase_lookup[flat_state, flat_c3, flat_c7, flat_o3, flat_f3] # [B*H*W, 12]
-        
+        if has_ruin_dim:
+            is_ruin = (state == 3).float().unsqueeze(1)
+            n_ruin3 = F.conv2d(is_ruin, k3, padding=1).squeeze(1).long()
+            flat_r3 = torch.clamp(n_ruin3.view(-1), 0, 3)
+            probs = phase_lookup[flat_state, flat_c3, flat_c7, flat_o3, flat_f3, flat_r3]
+        else:
+            probs = phase_lookup[flat_state, flat_c3, flat_c7, flat_o3, flat_f3]
+
         # Safety: ensure valid probability distribution for multinomial
         probs = torch.clamp(probs, min=1e-8)
         probs = probs / probs.sum(dim=-1, keepdim=True)
-        
+
         sampled = torch.multinomial(probs, 1).squeeze(-1)
         state = sampled.view(num_sims, H, W)
         
@@ -134,7 +150,7 @@ def eval_gpu_mc():
         rn = int(basename.split('_')[0].replace('round', ''))
         sn = int(basename.split('_')[1].replace('seed', '').replace('.json', ''))
         
-        if rn < 15 or rn > 17:
+        if rn < 1:
             continue
             
         with open(f) as fh:

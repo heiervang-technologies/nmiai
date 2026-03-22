@@ -113,76 +113,12 @@ print('Blitz done')
         QUERIED_ROUND="$ACTIVE"
     fi
 
-    # === 30 MIN: Submit regime_predictor ===
+    # === 30 MIN: Submit gpu_mc_solver ===
     if [ "$MINS_LEFT" -le 30 ] && [ "$SUBMITTED_ROUND" != "$ACTIVE" ]; then
-        echo "$(date -u +%Y-%m-%dT%H:%M:%S) R$ROUND_NUM: submitting regime_predictor" >> "$LOG_FILE"
-        say "Astar round $ROUND_NUM submitting." 2>/dev/null
+        echo "$(date -u +%Y-%m-%dT%H:%M:%S) R$ROUND_NUM: submitting gpu_mc_solver" >> "$LOG_FILE"
+        say "Astar round $ROUND_NUM submitting using GPU MC model." 2>/dev/null
         cd /home/me/ht/nmiai
-        uv run python3 -c "
-import json,sys,time,numpy as np,requests
-from pathlib import Path
-sys.path.insert(0,'tasks/astar-island')
-import replay_boosted_predictor as rp
-def ccc(c):
-    if c in (0,10,11): return 0
-    if c==1: return 1
-    if c==2: return 2
-    if c==3: return 3
-    if c==4: return 4
-    if c==5: return 5
-    return 0
-TOKEN=open('tasks/astar-island/.token').read().strip()
-s=requests.Session(); s.cookies.set('access_token',TOKEN); s.headers['Authorization']=f'Bearer {TOKEN}'
-BASE='https://api.ainm.no'
-rounds=s.get(f'{BASE}/astar-island/rounds').json()
-active=next(r for r in rounds if r['status']=='active')
-rid=active['id']; rn=active['round_number']
-details=s.get(f'{BASE}/astar-island/rounds/{rid}').json()
-rd=Path(f'tasks/astar-island/logs/round{rn}')
-for si in range(5):
-    op=rd/f'observations_seed{si}.json'
-    obs=json.loads(op.read_text()) if op.exists() else []
-    pred=rp.predict(details['initial_states'][si]['grid'],observations=obs if obs else None)
-    if obs:
-        init=np.array(details['initial_states'][si]['grid'])
-        # Conditional tau: estimate expected frontier growth from template weights
-        from scipy.ndimage import distance_transform_edt
-        civ_m=(init==1)|(init==2)
-        if civ_m.any():
-            d_civ=distance_transform_edt(~civ_m)
-            frontier=(d_civ>=1.5)&(d_civ<=6)&(init!=10)&(init!=5)
-            if frontier.any():
-                exp_growth=pred[frontier,1].mean()
-            else: exp_growth=0.1
-        else: exp_growth=0.1
-        if exp_growth>=0.16: tau=100.0
-        elif exp_growth>=0.08: tau=100.0
-        else: tau=100.0
-        counts=np.zeros((40,40,6));oc=np.zeros((40,40),dtype=int)
-        for o in obs:
-            for dy,row in enumerate(o['grid']):
-                for dx,cell in enumerate(row):
-                    y,x=o['viewport_y']+dy,o['viewport_x']+dx
-                    if 0<=y<40 and 0<=x<40: counts[y,x,ccc(cell)]+=1; oc[y,x]+=1
-        for y in range(40):
-            for x in range(40):
-                if oc[y,x]>=2 and init[y,x] not in (10,5):
-                    alpha=tau*pred[y,x];post=counts[y,x]+alpha;pred[y,x]=post/post.sum()
-    # Sigma=0.3 spatial smoothing (+1.9% CV validated)
-    from scipy.ndimage import gaussian_filter
-    init=np.array(details['initial_states'][si]['grid'])
-    ocean=(init==10);mount=(init==5)
-    for c in range(6):
-        ch=pred[:,:,c].copy();ch[ocean|mount]=0;ch=gaussian_filter(ch,sigma=0.3);pred[:,:,c]=ch
-    pred[ocean]=np.array([1,0,0,0,0,0]);pred[mount]=np.array([0,0,0,0,0,1])
-    pred=np.maximum(pred,1e-6);pred/=pred.sum(axis=2,keepdims=True)
-    for attempt in range(3):
-        r=s.post(f'{BASE}/astar-island/submit',json={'round_id':rid,'seed_index':si,'prediction':pred.tolist()})
-        if r.status_code==200: print(f'Seed {si}: accepted ({len(obs)} obs)'); break
-        time.sleep(2)
-    time.sleep(0.3)
-print('Safe-best submitted')
-" >> "$LOG_FILE" 2>&1
+        uv run python3 tasks/astar-island/gpu_mc_solver.py >> "$LOG_FILE" 2>&1
         echo "$(date -u +%Y-%m-%dT%H:%M:%S) R$ROUND_NUM: submitted" >> "$LOG_FILE"
         say "Astar round $ROUND_NUM submitted." 2>/dev/null
         SUBMITTED_ROUND="$ACTIVE"
