@@ -2593,6 +2593,7 @@ async def action_register_timesheet_and_invoice(client: TripletexClient, args: d
                 "projectManagerEmail": args.get("projectManagerEmail") or args.get("employeeEmail"),
                 "projectManagerName": args.get("projectManagerName") or args.get("employeeName"),
                 "startDate": args.get("date", _today()),
+                "hourlyRate": args.get("hourlyRate"),
             },
         )
         project_value = project_result.get("value", project_result)
