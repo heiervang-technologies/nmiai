@@ -1,0 +1,14 @@
+{
+  "name": "exp002_polish_mapped",
+  "description": "Polish shelves with semantic category mapping (Polish -> Norwegian)",
+  "sources": [
+    {
+      "name": "polish_shelves",
+      "type": "coco",
+      "images": "data-creation/data/external/skus_on_shelves_pl/extracted",
+      "annotations": "data-creation/data/external/skus_on_shelves_pl/extracted/annotations.json",
+      "category_mapping": "mappings/polish_to_competition.json",
+      "max_images": null
+    }
+  ]
+}

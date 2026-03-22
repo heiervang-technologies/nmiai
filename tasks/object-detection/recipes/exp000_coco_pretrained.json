@@ -1,0 +1,5 @@
+{
+  "name": "exp000_coco_pretrained",
+  "description": "Baseline: COCO-pretrained YOLOv8x with zero training. Eval only.",
+  "sources": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "exp001_polish_det_only",
+  "description": "Polish shelves, all categories mapped to class 0 (detection-only transfer)",
+  "sources": [
+    {
+      "name": "polish_shelves",
+      "type": "coco",
+      "images": "data-creation/data/external/skus_on_shelves_pl/extracted",
+      "annotations": "data-creation/data/external/skus_on_shelves_pl/extracted/annotations.json",
+      "category_mapping": "detection_only",
+      "max_images": null
+    }
+  ]
+}

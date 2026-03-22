@@ -1,0 +1,3 @@
+timestamp	experiment_id	combined_map	det_map50	cls_map50	unique_images	aug_images	data_sources	description
+2026-03-20T22:00:00Z	ref_server_v1	0.907900	0.000000	0.000000	248	0	competition_trained	SERVER REFERENCE: best server score (trained on competition data)
+2026-03-22T00:00:00Z	ref_sota	0.920000	0.000000	0.000000	0	0	unknown	REFERENCE: competitor SOTA target
