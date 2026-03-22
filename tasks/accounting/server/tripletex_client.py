@@ -126,7 +126,10 @@ class TripletexClient:
             # DO NOT swallow 422, as that hides validation errors (like missing required params) from the LLM.
             if resp.status_code == 404:
                 log.warning(f"GET {clean_path} returned 404 — returning empty result")
-                self._log_call("GET", clean_path, 200, params=merged_params)  # Don't count as error
+                # Log real status but don't count as error (saves error budget)
+                self.call_count += 1
+                self.calls_log.append({"method": "GET", "path": clean_path, "status": 404,
+                                       "error": None, **({"params": _payload_preview(merged_params)} if merged_params else {})})
                 return {"values": [], "count": 0}
             self._log_call("GET", clean_path, resp.status_code, error_text, params=merged_params)
             raise
@@ -201,7 +204,7 @@ class TripletexClient:
             merged_params.setdefault("type", "REMINDER")
             merged_params.setdefault("date", __import__("datetime").date.today().isoformat())
             merged_params.setdefault("includeCharge", "true")
-            merged_params.setdefault("sendMethod", "EMAIL")
+            # Note: don't add sendMethod — not a documented createReminder param, could cause 422
             log.warning(f"Auto-fixed createReminder params: {merged_params}")
         # Auto-fix invoice send: ensure sendType param
         if "/:send" in clean_path and "/invoice/" in clean_path:
