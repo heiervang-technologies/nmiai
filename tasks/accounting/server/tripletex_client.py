@@ -107,6 +107,28 @@ class TripletexClient:
         if path_params and not json:
             log.warning(f"POST {clean_path}: converting query params to body: {path_params}")
             json = path_params
+        # Auto-balance voucher postings at the client level (catches run_python too)
+        if json and "voucher" in clean_path.lower() and "postings" in json:
+            postings = json.get("postings", [])
+            if postings:
+                total = sum(float(p.get("amountGross", p.get("amount", 0)) or 0) for p in postings)
+                if abs(total) > 0.01:
+                    if len(postings) >= 2:
+                        last = postings[-1]
+                        last_amount = float(last.get("amountGross", last.get("amount", 0)) or 0)
+                        last["amountGross"] = round(last_amount - total, 2)
+                        last["amountGrossCurrency"] = round(last_amount - total, 2)
+                        log.warning(f"Client auto-balanced voucher: adjusted last posting by {round(-total, 2)}")
+                    else:
+                        # Single posting: add balancing row to bank 1920
+                        postings.append({
+                            "row": len(postings) + 1,
+                            "account": {"id": 1, "number": 1920},
+                            "amountGross": round(-total, 2),
+                            "amountGrossCurrency": round(-total, 2),
+                            "description": "Motpost",
+                        })
+                        log.warning(f"Client auto-added balancing posting: {round(-total, 2)} to 1920")
         url = f"{self.base_url}{clean_path}"
         log.info(f"POST {clean_path} body_keys={list((json or {}).keys())}")
         resp = await self._client.post(url, json=json)

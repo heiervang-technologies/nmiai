@@ -663,7 +663,10 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
 
 async def action_create_customer(client: TripletexClient, args: dict) -> dict:
     """Create a customer with address."""
-    body = {"name": args["name"]}
+    body = {"name": args["name"], "isCustomer": True}
+    # Default isPrivateIndividual based on org number presence
+    if "isPrivateIndividual" not in args:
+        args["isPrivateIndividual"] = not bool(args.get("organizationNumber"))
     for field in ["email", "phoneNumber", "organizationNumber", "isPrivateIndividual"]:
         if args.get(field) is not None:
             body[field] = args[field]
@@ -1299,6 +1302,32 @@ async def action_create_credit_note(client: TripletexClient, args: dict) -> dict
 
 async def action_create_voucher(client: TripletexClient, args: dict) -> dict:
     """Create a journal entry / voucher. Handles account lookup and posting format."""
+    # Check if this is actually a salary voucher — route to action_process_salary
+    desc_lower = (args.get("description") or "").lower()
+    salary_keywords = ["lønn", "lonn", "lohn", "salary", "payroll", "gehalt", "salaire", "nómina", "salário",
+                       "grunnlønn", "skattetrekk", "lønnskjøring", "bruttolohn", "nettolohn", "grundgehalt"]
+    is_salary = any(kw in desc_lower for kw in salary_keywords)
+    if not is_salary:
+        for p in args.get("postings", []):
+            if any(kw in (p.get("description") or "").lower() for kw in salary_keywords):
+                is_salary = True
+                break
+            # Also detect by account number: 5000-series = salary accounts
+            acct_num = p.get("accountNumber", 0)
+            if isinstance(acct_num, (int, float)) and 5000 <= acct_num <= 5999:
+                is_salary = True
+                break
+    if is_salary:
+        total_debit = sum(float(p.get("amountGross", p.get("amount", 0)))
+                          for p in args.get("postings", [])
+                          if float(p.get("amountGross", p.get("amount", 0))) > 0)
+        if total_debit > 0:
+            log.info(f"Salary voucher detected in create_voucher -> routing to action_process_salary (gross={total_debit})")
+            return await action_process_salary(client, {
+                "baseSalary": total_debit,
+                "bonus": 0,
+                "date": args.get("date", _today()),
+            })
     # Look up accounts if needed
     account_cache = {}
     accounts_resp = await client.get("/ledger/account", params={"count": 1000})
@@ -2672,8 +2701,8 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
         if "/ledger/voucher" in path and body and isinstance(body, dict):
             postings = body.get("postings", [])
             desc_lower = (body.get("description") or "").lower()
-            salary_keywords = ["lønn", "lonn", "salary", "payroll", "gehalt", "salaire", "nómina", "salário",
-                               "grunnlønn", "skattetrekk", "bonus", "lønnskjøring"]
+            salary_keywords = ["lønn", "lonn", "lohn", "salary", "payroll", "gehalt", "salaire", "nómina", "salário",
+                               "grunnlønn", "skattetrekk", "bonus", "lønnskjøring", "bruttolohn", "nettolohn", "grundgehalt"]
             is_salary = any(kw in desc_lower for kw in salary_keywords)
             if not is_salary:
                 # Also check posting descriptions
