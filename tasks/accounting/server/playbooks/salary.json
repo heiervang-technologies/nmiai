@@ -9,7 +9,9 @@
     "salaire", "paie", "exécutez la paie",
     "nomina", "nómina",
     "salário", "salario",
-    "process salary", "run payroll"
+    "process salary", "run payroll",
+    "processe o salario", "salario base",
+    "deducao fiscal", "pagamento liquido"
   ],
   "description": "Process salary/payroll via manual voucher postings",
   "preflight": [

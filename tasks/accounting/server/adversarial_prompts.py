@@ -605,6 +605,66 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "planner_timer_prosjektet_issue21",
     },
+
+    # ════════════════════════════════════════════════════════════════
+    #  LIVE FAILURE REPRODUCTIONS (from /tmp/accounting-logs)
+    # ════════════════════════════════════════════════════════════════
+
+    # 25. Issue #27: French supplier invoice misclassified as "invoice"
+    #     Live: 20260322_083514 — planner routes "facture fournisseur" to invoice family.
+    #     Result: POST /incomingInvoice → 403, falls back to voucher. Should be supplier family.
+    {
+        "family": "supplier",
+        "language": "fr",
+        "difficulty": "hard",
+        "prompt": (
+            "Vous avez recu une facture fournisseur (voir PDF ci-joint). "
+            "Enregistrez la facture dans Tripletex. "
+            "Creez le fournisseur s'il n'existe pas. "
+            "Utilisez le bon compte de charges et la TVA deductible."
+        ),
+        "expected_fields": {
+            "supplierName": "Lumière SARL",
+            "supplierOrgNumber": "908587022",
+            "voucherFallback": True,
+            "chargeAccount": "6540",
+        },
+        "failure_mode_tested": "french_supplier_invoice_misclassified_issue27",
+    },
+
+    # 26. Issue #28: Complex project lifecycle — hourlyRateModel enum + incomingInvoice 403 + duplicates
+    #     Live: 20260322_084427 — 4 errors in 22 API calls.
+    #     Errors: hourlyRateModel "FIXED_HOURLY_RATE" → 422, incomingInvoice → 403,
+    #     duplicate hourlyRates retry → 409, duplicate timesheet → 409.
+    {
+        "family": "project",
+        "language": "en",
+        "difficulty": "hard",
+        "prompt": (
+            "Execute the complete project lifecycle for 'System Upgrade Greenfield' "
+            "(Greenfield Ltd, org no. 873288949): "
+            "1) The project has a budget of 206300 NOK. "
+            "2) Log time: Oliver Wilson (project manager, oliver.wilson@example.org) "
+            "36 hours and Victoria Taylor (consultant, victoria.taylor@example.org) 150 hours. "
+            "3) Register supplier cost of 41300 NOK from Ironbridge Ltd (org no. 913777255). "
+            "4) Create a customer invoice for the project."
+        ),
+        "expected_fields": {
+            "projectName": "System Upgrade Greenfield",
+            "customerName": "Greenfield Ltd",
+            "customerOrgNumber": "873288949",
+            "budget": 206300,
+            "employees": [
+                {"email": "oliver.wilson@example.org", "hours": 36, "role": "project_manager"},
+                {"email": "victoria.taylor@example.org", "hours": 150, "role": "consultant"},
+            ],
+            "supplierCost": 41300,
+            "supplierName": "Ironbridge Ltd",
+            "supplierOrgNumber": "913777255",
+            "shouldInvoice": True,
+        },
+        "failure_mode_tested": "project_lifecycle_hourlyrate_enum_incoming403_duplicates_issue28",
+    },
 ]
 
 
