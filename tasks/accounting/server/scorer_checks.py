@@ -253,24 +253,29 @@ SCORER_CHECKS = {
         "tier": 2,
         "max_points": 8,
         "entity_checks": [
-            {"type": "employee", "min": 0, "points": 0, "label": "Employee exists"},  # often pre-existing
+            {"type": "travelExpense", "min": 1, "points": 1, "label": "Travel expense found"},
         ],
         "field_checks": [
-            {"entity": "travelExpense", "field": "employee", "points": 1},
+            # Main travelExpense entity (POST /travelExpense)
+            {"entity": "travelExpense", "field": "employee", "points": 0.5},
             {"entity": "travelExpense", "field": "title", "points": 0.5},
             {"entity": "travelExpense", "field": "travelDetails", "points": 1},
-            {"entity": "perDiemCompensation", "field": "rateCategory", "points": 1},
-            {"entity": "perDiemCompensation", "field": "rateType", "points": 0.5},
+            # Per diem compensation (POST /travelExpense/perDiemCompensation)
+            {"entity": "perDiemCompensation", "field": "count", "points": 0.5},
+            {"entity": "perDiemCompensation", "field": "rate", "points": 0.5},
             {"entity": "perDiemCompensation", "field": "overnightAccommodation", "points": 0.5},
-            {"entity": "cost", "field": "costCategory", "points": 1},
-            {"entity": "cost", "field": "amountCurrencyIncVat", "points": 0.5},
+            {"entity": "perDiemCompensation", "field": "location", "points": 0.5},
+            # Cost lines (POST /travelExpense/cost)
+            {"entity": "travelCost", "field": "amountCurrencyIncVat", "points": 0.5},
+            {"entity": "travelCost", "field": "comments", "points": 0.5},
         ],
         "call_checks": [
             {"pattern": "/:deliver", "condition": "always", "points": 2, "label": "Expense delivered"},
         ],
         "notes": (
-            "Blockers: employee_time_access, rate_category_date_mismatch, travel_expense_kind. "
-            "Missing: delivered_state, per_diem_completion. /expense/ must redirect to /travelExpense/."
+            "action_create_travel_expense POSTs to /travelExpense, then /travelExpense/perDiemCompensation, "
+            "then /travelExpense/cost, then PUT /:deliver. rateCategory/rateType are conditionally set "
+            "(omitted for domestic NO trips). Delivery is 2 points — biggest single check."
         ),
     },
 
@@ -436,24 +441,30 @@ def estimate_score(family: str, prompt: str, mock_state) -> dict:
             continue
         path = (c.get("path") or "").lower()
         body = c.get("body") or {}
-        for etype in entities:
-            if etype in path or etype.replace("_", "") in path:
-                post_bodies.setdefault(etype, []).append(body)
-                break
+
+        # Travel expense subpaths first (most specific to least)
+        if "perdiemcompensation" in path:
+            post_bodies.setdefault("perDiemCompensation", []).append(body)
+        elif "travelexpense/cost" in path or "travel_expense/cost" in path:
+            post_bodies.setdefault("travelCost", []).append(body)
+        elif "travelexpense" in path or "travel_expense" in path:
+            post_bodies.setdefault("travelExpense", []).append(body)
+        elif "voucher" in path:
+            post_bodies.setdefault("voucher", []).append(body)
+        elif "activity" in path:
+            post_bodies.setdefault("activity", []).append(body)
+        elif "invoice" in path and "incoming" not in path:
+            post_bodies.setdefault("invoice", []).append(body)
+        elif "order" in path:
+            post_bodies.setdefault("order", []).append(body)
+        elif "timesheet" in path:
+            post_bodies.setdefault("timesheet", []).append(body)
         else:
-            # Special paths
-            if "voucher" in path:
-                post_bodies.setdefault("voucher", []).append(body)
-            elif "activity" in path:
-                post_bodies.setdefault("activity", []).append(body)
-            elif "invoice" in path and "incoming" not in path:
-                post_bodies.setdefault("invoice", []).append(body)
-            elif "order" in path:
-                post_bodies.setdefault("order", []).append(body)
-            elif "perdiem" in path:
-                post_bodies.setdefault("perDiemCompensation", []).append(body)
-            elif "cost" in path and "travelexpense" in path:
-                post_bodies.setdefault("cost", []).append(body)
+            # Generic: match against entity type names
+            for etype in entities:
+                if etype.lower() in path or etype.replace("_", "").lower() in path:
+                    post_bodies.setdefault(etype, []).append(body)
+                    break
 
     # Also use entities from mock_state.entities (created via create_handler)
     for etype, elist in entities.items():
@@ -680,14 +691,16 @@ def _family_semantic_checks(
         if not has_deliver:
             issues.append("Travel expense not delivered (missing /:deliver)")
 
-        # Check: isForeignTravel derived from country
-        for body in post_bodies.get("travelExpense", entities.get("travel_expense", [])):
+        # Check: isForeignTravel derived from country (lives inside travelDetails)
+        for body in post_bodies.get("travelExpense", entities.get("travelExpense", [])):
             details = body.get("travelDetails", {})
             if isinstance(details, dict):
-                country = details.get("departureCountryCode") or details.get("returnCountryCode")
-                is_foreign = body.get("isForeignTravel")
-                if country and country != "NO" and not is_foreign:
-                    issues.append(f"Foreign travel (country={country}) but isForeignTravel not set")
+                is_foreign = details.get("isForeignTravel", False)
+                # Also check per diem for country code
+                for pd in post_bodies.get("perDiemCompensation", []):
+                    cc = pd.get("countryCode", "NO")
+                    if cc and cc.upper() != "NO" and not is_foreign:
+                        issues.append(f"Foreign travel (country={cc}) but isForeignTravel not set in travelDetails")
 
     elif family == "salary":
         # Check: postings have salary accounts (5000-series)

@@ -40,6 +40,9 @@ class MockState:
             "voucher": [],
             "activity": [],
             "timesheet": [],
+            "travelExpense": [],
+            "perDiemCompensation": [],
+            "travelCost": [],
         }
         # Pre-populate company
         self.company = {
@@ -187,9 +190,30 @@ async def list_handler(request):
     params = _extract_params(request)
     path = request.url.path
     state.log_call("GET", path, params=params)
+    path_lower = path.lower()
+    # Travel expense sub-resources
+    if "travelexpense/paymenttype" in path_lower:
+        return JSONResponse(_wrap_list([
+            {"id": 1, "description": "Reiseforskudd", "showOnTravelExpenses": True},
+            {"id": 2, "description": "Utlegg av ansatt", "showOnTravelExpenses": True},
+        ]))
+    if "travelexpense/costcategory" in path_lower:
+        return JSONResponse(_wrap_list([
+            {"id": 1, "description": "Fly", "number": "7140"},
+            {"id": 2, "description": "Taxi", "number": "7160"},
+            {"id": 3, "description": "Hotell", "number": "7130"},
+            {"id": 4, "description": "Annet", "number": "7170"},
+        ]))
+    if "travelexpense/ratecategory" in path_lower:
+        return JSONResponse(_wrap_list([
+            {"id": 1, "name": "Innland", "amountDomestic": 1012.0, "type": "PER_DIEM"},
+            {"id": 2, "name": "Utland", "amountForeign": 700.0, "type": "PER_DIEM"},
+        ]))
+    if "perdiemcompensation" in path_lower:
+        return JSONResponse(_wrap_list(state.entities.get("perDiemCompensation", [])))
     # Figure out entity type from path
     for etype in state.entities:
-        if etype in path.lower() or etype.replace("_", "") in path.lower():
+        if etype.lower() in path_lower or etype.replace("_", "").lower() in path_lower:
             return JSONResponse(_wrap_list(state.entities[etype]))
     # Ledger posting
     if "/ledger/posting" in path:
@@ -278,15 +302,30 @@ async def create_handler(request):
     entity["id"] = _id()
     entity.setdefault("name", "Created Entity")
 
-    # Store in appropriate bucket
-    for etype in state.entities:
-        if etype in path.lower() or etype.replace("_", "") in path.lower():
-            state.entities[etype].append(entity)
-            break
-    else:
-        if "voucher" in path.lower():
+    # Store in appropriate bucket — travel expense subpaths first (most specific)
+    path_lower = path.lower()
+    stored = False
+    if "perdiemcompensation" in path_lower:
+        state.entities["perDiemCompensation"].append(entity)
+        stored = True
+    elif "travelexpense/cost" in path_lower or "travel_expense/cost" in path_lower:
+        state.entities["travelCost"].append(entity)
+        stored = True
+    elif "travelexpense" in path_lower or "travel_expense" in path_lower:
+        state.entities["travelExpense"].append(entity)
+        stored = True
+
+    if not stored:
+        for etype in state.entities:
+            if etype.lower() in path_lower or etype.replace("_", "").lower() in path_lower:
+                state.entities[etype].append(entity)
+                stored = True
+                break
+
+    if not stored:
+        if "voucher" in path_lower:
             state.entities["voucher"].append(entity)
-        elif "activity" in path.lower():
+        elif "activity" in path_lower:
             state.entities["activity"].append(entity)
 
     return JSONResponse(_wrap(entity), status_code=201)
