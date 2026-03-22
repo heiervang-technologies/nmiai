@@ -1186,6 +1186,8 @@ async def action_register_payment(client: TripletexClient, args: dict) -> dict:
                 }
                 reversal_result = await client.put(f"/invoice/{invoice_id}/:payment", params=rev_params)
                 log.info(f"Reversal: reversed payment on invoice {invoice_id}")
+                # Set flag to block duplicate invoice creation by the LLM
+                client._reversal_invoice_id = invoice_id
                 return {
                     "COMPLETE": True,
                     "message": "ALREADY DONE — invoice created, payment registered, reversal complete. Do NOT create another invoice or payment.",
@@ -1633,9 +1635,11 @@ async def action_create_accounting_dimension(client: TripletexClient, args: dict
     # Step 3: If voucher posting requested, create it with the dimension
     if args.get("voucherPostings"):
         account_cache = {}
+        account_obj_cache = {}
         accounts_resp = await client.get("/ledger/account", params={"count": 1000})
         for acc in accounts_resp.get("values", []):
             account_cache[acc["number"]] = acc["id"]
+            account_obj_cache[acc["id"]] = acc
 
         # Map dimensionIndex to the correct field name
         # Tripletex uses: freeAccountingDimension1, freeAccountingDimension2, freeAccountingDimension3
@@ -1674,8 +1678,17 @@ async def action_create_accounting_dimension(client: TripletexClient, args: dict
                 "amountGross": _money(amount),
                 "amountGrossCurrency": _money(amount),
             }
-            # Auto-add vatType=3 (25% standard) on expense posting if not specified
-            if p.get("vatTypeId"):
+            
+            # Auto-add vatType:
+            # 1. Use the account's locked vatType if it exists
+            locked_vat = None
+            if account_id and account_id in account_obj_cache:
+                acct_obj = account_obj_cache[account_id]
+                locked_vat = acct_obj.get("vatType")
+            
+            if locked_vat and isinstance(locked_vat, dict) and locked_vat.get("id") is not None:
+                posting["vatType"] = {"id": locked_vat["id"]}
+            elif p.get("vatTypeId"):
                 posting["vatType"] = {"id": int(p["vatTypeId"])}
             elif is_expense:
                 posting["vatType"] = {"id": 3}  # 25% standard MVA

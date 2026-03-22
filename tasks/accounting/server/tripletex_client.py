@@ -56,6 +56,8 @@ class TripletexClient:
         self.calls_log = []
         # Simple GET cache to avoid duplicate reads within same request
         self._get_cache: dict[str, dict] = {}
+        # Track if a reversal flow was completed (prevents duplicate invoice creation)
+        self._reversal_invoice_id: int | None = None
 
     async def close(self):
         await self._client.aclose()
@@ -144,6 +146,19 @@ class TripletexClient:
         if path_params and not json:
             log.warning(f"POST {clean_path}: converting query params to body: {path_params}")
             json = path_params
+        # Block duplicate invoice creation after reversal flow completed
+        if self._reversal_invoice_id and clean_path.rstrip("/").endswith("/invoice"):
+            log.warning(f"Blocked duplicate POST /invoice — reversal already created invoice {self._reversal_invoice_id}")
+            return {"value": {"id": self._reversal_invoice_id}, "message": "Invoice already created during reversal flow"}
+        # Auto-inject invoiceDueDate on POST /invoice if missing (LLM forgets via run_python)
+        if json and clean_path.rstrip("/").endswith("/invoice") and "invoiceDueDate" not in json:
+            inv_date = json.get("invoiceDate", __import__("datetime").date.today().isoformat())
+            from datetime import timedelta
+            try:
+                json["invoiceDueDate"] = (__import__("datetime").date.fromisoformat(inv_date) + timedelta(days=30)).isoformat()
+                log.warning(f"Auto-injected invoiceDueDate={json['invoiceDueDate']} on POST /invoice")
+            except Exception:
+                pass
         # Strip employmentType from /employee/employment — Tripletex rejects it
         # ("Feltet eksisterer ikke i objektet"). employmentType belongs on employment/details only.
         if json and "/employee/employment" in clean_path and "employmentType" in json:
