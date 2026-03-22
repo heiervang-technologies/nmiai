@@ -2714,7 +2714,9 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
             if "activityType" not in body:
                 body["activityType"] = "GENERAL_ACTIVITY"
             if "name" not in body or not body["name"]:
-                body["name"] = body.get("description", "Activity")[:100] or "Activity"
+                import random
+                rand_suffix = random.randint(1000, 9999)
+                body["name"] = f"{body.get('description', 'Activity')[:90]} {rand_suffix}".strip()
         # Intercept salary vouchers: if LLM POSTs a voucher with salary-like
         # descriptions but no 5000-series account, re-route to action_process_salary
         # so the scorer sees the correct account numbers.
@@ -2881,13 +2883,13 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                     log.warning("Retrying voucher without vatType (locked accounts detected)")
                     return await client.post(path, json=body)
                 raise
-        # Handle 409 Duplicate on /project/projectActivity: fetch existing instead of failing
-        if "/project/projectActivity" in path:
-            try:
-                return await client.post(path, json=body)
-            except Exception as e:
-                if hasattr(e, 'response') and e.response.status_code == 409:
-                    # Duplicate — find existing activity for this project
+        # Handle 409 Duplicate generally for POST: fetch existing instead of failing
+        try:
+            return await client.post(path, json=body)
+        except Exception as e:
+            if hasattr(e, 'response') and e.response.status_code == 409:
+                log.info(f"Caught 409 Duplicate on POST {path}, trying to fetch existing")
+                if "/project/projectActivity" in path:
                     project_id = (body or {}).get("project", {}).get("id")
                     if project_id:
                         try:
@@ -2900,8 +2902,30 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                                 return {"value": vals[0], "duplicate_resolved": True}
                         except Exception:
                             pass
-                raise
-        return await client.post(path, json=body)
+                elif "/project/hourlyRates" in path:
+                    project_id = (body or {}).get("project", {}).get("id")
+                    if project_id:
+                        try:
+                            existing = await client.get("/project/hourlyRates", params={"projectId": project_id, "count": 1})
+                            vals = existing.get("values", [])
+                            if vals:
+                                return {"value": vals[0], "duplicate_resolved": True}
+                        except Exception:
+                            pass
+                elif "/timesheet/entry" in path:
+                    emp_id = (body or {}).get("employee", {}).get("id")
+                    date = body.get("date")
+                    if emp_id and date:
+                        try:
+                            existing = await client.get("/timesheet/entry", params={
+                                "employeeId": emp_id, "dateFrom": date, "dateTo": date, "count": 10
+                            })
+                            vals = existing.get("values", [])
+                            if vals:
+                                return {"value": vals[0], "duplicate_resolved": True}
+                        except Exception:
+                            pass
+            raise
     elif method == "PUT":
         # Intercept fixed-price updates attempted via hourlyRates and route to typed action
         # This avoids fragile hourlyRates payloads and enforces the fixed-price project flow.
@@ -2961,7 +2985,8 @@ async def action_generic_api_call(client: TripletexClient, args: dict) -> dict:
                 params["invoiceDate"] = _today()
             if "invoiceDueDate" not in params:
                 from datetime import timedelta
-                params["invoiceDueDate"] = (date.fromisoformat(_today()) + timedelta(days=30)).isoformat()
+                from datetime import date as dt_date
+                params["invoiceDueDate"] = (dt_date.fromisoformat(_today()) + timedelta(days=30)).isoformat()
             # Ensure bank account is set up before converting to invoice
             try:
                 await action_setup_bank_account(client, {})

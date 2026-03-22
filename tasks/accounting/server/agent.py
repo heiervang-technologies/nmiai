@@ -644,7 +644,7 @@ MULTI-STEP TASK PATTERNS:
 - "Create ORDER then convert to invoice" / "Crie um pedido" / "opprett ordre" / "créer une commande" / "Auftrag erstellen": FIRST call create_order to create a standalone order, THEN call generic_api_call PUT /order/{orderId}/:invoice to convert the order into an invoice. The order ID is in the create_order response. Do NOT skip the order step — the scorer checks that the order exists.
 - "Credit note / nota de crédito / kreditnota / Gutschrift": ALWAYS call create_invoice FIRST (with customerName, customerOrgNumber, amount, product description from the prompt), THEN call create_credit_note (with customerName to match). The sandbox is FRESH — the invoice does NOT exist yet. You must create it before crediting.
 - "Create invoice + register payment": call create_invoice, note the amount, THEN call register_payment with that amount
-- "Register payment on existing invoice": call register_payment. CRITICAL: the payment amount must be the FULL invoice amount INCLUDING VAT, not the excl-VAT amount from the prompt. If the prompt says "12700 NOK excl VAT", the payment is 12700 × 1.25 = 15875 NOK. The tool auto-corrects by reading the invoice's outstanding balance.
+- "Register payment on existing invoice" / "outstanding invoice" / "utestående faktura" / "offene Rechnung" / "facture impayée" / "factura pendiente": The sandbox is FRESH — you must create_invoice FIRST. CRITICAL DATES: Set invoiceDate to 60 days ago (e.g. 2026-01-22) and invoiceDueDate to 14 days ago (e.g. 2026-03-08) to make it genuinely overdue. Do NOT use today's date. Then call register_payment. The payment amount must be the FULL amount INCLUDING VAT.
 - "Payment was returned/reversed" / "retourné par la banque" / "zurückgebucht" / "devuelto por el banco" / "devolvido pelo banco" / "returnert av banken": The sandbox is FRESH. EXACT 3-step sequence: 1) create_invoice (customer+amount+product from prompt — amount INCL VAT = excl × 1.25), 2) register_payment with POSITIVE paidAmount (= invoice total incl VAT), 3) register_payment with NEGATIVE paidAmount on the SAME invoice (= same amount but negative). CRITICAL: Do NOT create a second invoice. Steps 2 and 3 use the SAME invoiceId from step 1. Only call create_invoice ONCE.
 - "Foreign currency invoice + payment + agio": create_invoice with currencyCode (e.g. "EUR"), then register_payment with BOTH amount (NOK = foreign × payment_rate) AND paidAmountCurrency (the foreign amount, e.g. EUR). CRITICAL: paidAmountCurrency is REQUIRED for foreign currency payments or it will fail. Then create_voucher to book the exchange rate difference (agio): debit account 8060 (agio gain) or credit 8160 (agio loss), balanced against 1500 (customer receivables). Agio = (payment_rate - invoice_rate) × foreign_amount. IMPORTANT: accounts 1500, 8060, 8160 are locked to VAT code 0 (no VAT) — do NOT pass vatTypeId on these postings, or use vatTypeId for 0% rate.
 - "Overdue invoice + reminder fee": use discover_sandbox to find the overdue invoice, then: 1) generic_api_call PUT /invoice/{id}/:createReminder with params type=REMINDER, date=today, includeCharge=true. 2) Book the fee via create_voucher: debit 1500 (receivables), credit 3400 (reminder income), amount from prompt. Use vatType 0% (id=5 or 6) on the fee — reminder fees have NO VAT.
@@ -821,8 +821,17 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
     elapsed = time.time() - start_time
     stats = api_client.get_stats()
 
-    # Extract output - try .output first (newer pydantic-ai), then .data
+    # Extract output and conversation history for post-mortem
     output = getattr(result, 'output', None) or getattr(result, 'data', None) or str(result) if result else "Task completed (partial)"
+
+    # Capture model's conversation for debugging
+    messages = []
+    if result:
+        try:
+            all_msgs = result.all_messages()
+            messages = [str(m)[:500] for m in all_msgs[-10:]]  # Last 10 messages, truncated
+        except Exception:
+            pass
 
     return {
         "iterations": stats["total_calls"],
@@ -830,4 +839,5 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
         "api_calls": stats["total_calls"],
         "api_errors": stats["errors_4xx"],
         "final_message": output if isinstance(output, str) else str(output),
+        "conversation_tail": messages,
     }

@@ -127,6 +127,10 @@ def classify_by_keywords(prompt: str) -> tuple[str | None, str]:
                 if family == "employee" and kw in ["tilbudsbrev", "contrato", "offer letter", "angebotsschreiben", "contrato de trabalho"]:
                     score += 50.0
 
+                # HIGH-WEIGHT keywords for project lifecycle to override false supplier matches
+                if family == "project" and kw in ["project lifecycle", "complete project lifecycle", "prosjektsyklusen", "heile prosjektsyklusen", "projektzyklus"]:
+                    score += 50.0
+
         if score:
             matches[family] = score
 
