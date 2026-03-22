@@ -1932,14 +1932,25 @@ async def action_register_timesheet(client: TripletexClient, args: dict) -> dict
                         pass
 
     if not activity_id:
+        # Check if "General" activity already exists before creating
         try:
-            act_result = await client.post(
-                "/activity",
-                json={"name": "General", "activityType": "GENERAL_ACTIVITY"},
-            )
-            activity_id = act_result.get("value", {}).get("id")
+            existing_acts = await client.get("/activity", params={"count": 100})
+            for act in existing_acts.get("values", []):
+                if (act.get("name") or "").lower() == "general":
+                    activity_id = act["id"]
+                    log.info(f"Reusing existing 'General' activity id={activity_id}")
+                    break
         except Exception:
             pass
+        if not activity_id:
+            try:
+                act_result = await client.post(
+                    "/activity",
+                    json={"name": "General", "activityType": "GENERAL_ACTIVITY"},
+                )
+                activity_id = act_result.get("value", {}).get("id")
+            except Exception:
+                pass
 
     # Link activity to project if both exist and not already linked
     if activity_id and project_id:
