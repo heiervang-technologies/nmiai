@@ -378,10 +378,13 @@ def load_adversarial_prompts(family: str = None, limit: int = None) -> list[dict
     adv = get_prompts(family=family)
     prompts = []
     for i, ap in enumerate(adv):
+        # Resolve file generators (callables) to actual file dicts
+        raw_files = ap.get("files", [])
+        files = [f() if callable(f) else f for f in raw_files]
         prompts.append({
             "ts": f"adversarial_{i:03d}",
             "prompt": ap["prompt"],
-            "files": [],
+            "files": files,
             "expected_family": ap["family"],
             "expected_confidence": "high",
             "logged_api_calls": 0,

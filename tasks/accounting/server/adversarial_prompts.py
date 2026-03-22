@@ -4,6 +4,13 @@ Each prompt has extractable ground truth for scorer validation.
 Languages: nb (Norwegian Bokmål), nn (Nynorsk), en, de, fr, es, pt
 """
 
+from generate_test_pdfs import (
+    employee_contract_pt,
+    employee_contract_es,
+    employee_contract_nb,
+    supplier_invoice_fr,
+)
+
 ADVERSARIAL_PROMPTS = [
     # ════════════════════════════════════════════════════════════════
     #  TRAVEL EXPENSE  (scoring 38%)
@@ -715,9 +722,8 @@ ADVERSARIAL_PROMPTS = [
         "failure_mode_tested": "multi_vat_rate_portuguese_all_lines_got_25pct",
     },
 
-    # 29. Portuguese employee from PDF — planner misclassifies as "department"
-    #     Live: 20260322_091356 — "departamento" in prompt triggers department family.
-    #     Execution succeeded anyway, but planner should route to employee.
+    # 29. Portuguese employee from PDF — with actual PDF attached
+    #     Live: 20260322_091356 — tests full PDF extraction pipeline.
     {
         "family": "employee",
         "language": "pt",
@@ -728,6 +734,7 @@ ADVERSARIAL_PROMPTS = [
             "numero de identidade nacional, data de nascimento, departamento, "
             "codigo de ocupacao, salario, percentagem de emprego e data de inicio."
         ),
+        "files": [employee_contract_pt],  # Lazy callable — resolved at load time
         "expected_fields": {
             "firstName": "Mariana",
             "lastName": "Costa",
@@ -740,7 +747,7 @@ ADVERSARIAL_PROMPTS = [
             "employmentPercentage": 100,
             "startDate": "2026-06-08",
         },
-        "failure_mode_tested": "portuguese_employee_misclassified_as_department",
+        "failure_mode_tested": "portuguese_employee_pdf_extraction",
     },
 
     # 30. Cost analysis activity duplicate name "General" — 422 x3
@@ -789,10 +796,8 @@ ADVERSARIAL_PROMPTS = [
         "failure_mode_tested": "bank_recon_supplier_invoice_missing_date_params",
     },
 
-    # 32. Employee from PDF — Spanish, 0 errors but only 3/8 score
-    #     Live: 20260322_094937 — all fields extracted correctly but scorer expects more.
-    #     Agent created: employee, department, employment, employment/details, standardTime.
-    #     Scored 3/8 despite doing everything right. Scorer gap investigation needed.
+    # 32. Employee from PDF — Spanish, with actual PDF attached
+    #     Tests full PDF extraction of all employment fields.
     {
         "family": "employee",
         "language": "es",
@@ -803,6 +808,7 @@ ADVERSARIAL_PROMPTS = [
             "numero de identidad, fecha de nacimiento, departamento, "
             "codigo de ocupacion, salario, porcentaje de empleo y fecha de inicio."
         ),
+        "files": [employee_contract_es],
         "expected_fields": {
             "firstName": "Lucía",
             "lastName": "Martínez",
@@ -815,9 +821,8 @@ ADVERSARIAL_PROMPTS = [
             "employmentPercentage": 100,
             "startDate": "2026-06-15",
             "hoursPerDay": 7.5,
-            "userType": "EXTENDED",
         },
-        "failure_mode_tested": "employee_pdf_spanish_all_fields_but_low_score",
+        "failure_mode_tested": "employee_pdf_spanish_full_extraction",
     },
 
     # 33. Simple employee — English, 0 errors but only 2/7 score
@@ -855,15 +860,17 @@ ADVERSARIAL_PROMPTS = [
             "Creez le fournisseur s'il n'existe pas. "
             "Utilisez le bon compte de charges et la TVA deductible."
         ),
+        "files": [supplier_invoice_fr],
         "expected_fields": {
             "supplierName": "Forêt SARL",
             "supplierOrgNumber": "900969147",
+            "supplierEmail": "facture@foretsarl.fr",
             "invoiceNumber": "INV-2026-1881",
             "chargeAccount": "6540",
             "amountIncludingVat": 30562,
             "voucherFallback": True,
         },
-        "failure_mode_tested": "supplier_invoice_403_voucher_fallback_partial_score",
+        "failure_mode_tested": "supplier_invoice_pdf_extraction_voucher_fallback",
     },
 
     # 35. German supplier invoice — planner misroutes "Lieferantenrechnung" to invoice
