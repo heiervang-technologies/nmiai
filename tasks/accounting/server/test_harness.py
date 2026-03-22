@@ -367,10 +367,38 @@ async def run_replay(prompts: list[dict], mock_port: int = 9876):
     return results
 
 
+def load_adversarial_prompts(family: str = None, limit: int = None) -> list[dict]:
+    """Load adversarial prompts and convert to replay format."""
+    from adversarial_prompts import get_prompts
+    adv = get_prompts(family=family)
+    prompts = []
+    for i, ap in enumerate(adv):
+        prompts.append({
+            "ts": f"adversarial_{i:03d}",
+            "prompt": ap["prompt"],
+            "files": [],
+            "expected_family": ap["family"],
+            "expected_confidence": "high",
+            "logged_api_calls": 0,
+            "logged_api_errors": 0,
+            "logged_elapsed": 0,
+            "adversarial_meta": {
+                "language": ap["language"],
+                "difficulty": ap["difficulty"],
+                "failure_mode_tested": ap["failure_mode_tested"],
+                "expected_fields": ap.get("expected_fields", {}),
+            },
+        })
+        if limit and len(prompts) >= limit:
+            break
+    return prompts
+
+
 def main():
     parser = argparse.ArgumentParser(description="Accounting agent validation harness")
     parser.add_argument("--planner-only", action="store_true", help="Only test planner (no LLM)")
     parser.add_argument("--replay", action="store_true", help="Full replay with LLM + mock Tripletex")
+    parser.add_argument("--replay-adversarial", action="store_true", help="Replay adversarial prompts")
     parser.add_argument("--list", action="store_true", help="List families and counts")
     parser.add_argument("--family", type=str, help="Filter to single family")
     parser.add_argument("--limit", type=int, help="Max prompts to test")
@@ -388,6 +416,15 @@ def main():
         os.environ["LLM_MODEL"] = args.model
     if args.base_url:
         os.environ["LLM_BASE_URL"] = args.base_url
+
+    if args.replay_adversarial:
+        prompts = load_adversarial_prompts(family=args.family, limit=args.limit)
+        if not prompts:
+            print("No adversarial prompts found.")
+            return
+        print(f"Loaded {len(prompts)} adversarial prompts" + (f" (family={args.family})" if args.family else ""))
+        asyncio.run(run_replay(prompts, mock_port=args.mock_port))
+        return
 
     ts_list = args.timestamps.split(",") if args.timestamps else None
     prompts = load_prompts(family=args.family, limit=args.limit, timestamps=ts_list)
