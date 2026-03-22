@@ -237,10 +237,19 @@ class TripletexClient:
             merged_params.setdefault("type", "REMINDER")
             merged_params.setdefault("date", __import__("datetime").date.today().isoformat())
             merged_params.setdefault("includeCharge", "true")
-            # Tripletex requires at least one dispatch type ("Minst én sendetype må oppgis")
-            # The param name is dispatchType for createReminder, not sendType
+            # Tripletex requires at least one send type ("Minst én sendetype må oppgis")
+            # Try ALL known param names to ensure at least one works
+            merged_params.setdefault("sendType", "EMAIL")
             merged_params.setdefault("dispatchType", "EMAIL")
-            log.warning(f"Auto-fixed createReminder params: {merged_params}")
+            merged_params.setdefault("sendMethod", "EMAIL")
+            # Also remove any wrong-cased or None values
+            merged_params = {k: v for k, v in merged_params.items() if v is not None}
+            # Ensure body has sendType too in case API expects it there
+            if not json:
+                json = {}
+            json.setdefault("sendType", "EMAIL")
+            json.setdefault("overrideEmailAddress", "")
+            log.warning(f"Auto-fixed createReminder params: {merged_params} body: {json}")
         # Auto-fix invoice send: ensure sendType param
         if "/:send" in clean_path and "/invoice/" in clean_path:
             merged_params = merged_params or {}
