@@ -865,6 +865,28 @@ ADVERSARIAL_PROMPTS = [
         },
         "failure_mode_tested": "supplier_invoice_403_voucher_fallback_partial_score",
     },
+
+    # 35. German supplier invoice — planner misroutes "Lieferantenrechnung" to invoice
+    #     Live: 20260322_100606 — "Rechnung" keyword wins for invoice over "Lieferant" for supplier.
+    #     FIXED: added "Lieferantenrechnung" as compound supplier keyword.
+    {
+        "family": "supplier",
+        "language": "de",
+        "difficulty": "hard",
+        "prompt": (
+            "Sie haben eine Lieferantenrechnung erhalten (siehe beigefügte PDF). "
+            "Registrieren Sie die Rechnung in Tripletex. "
+            "Erstellen Sie den Lieferanten, falls er nicht existiert. "
+            "Verwenden Sie das richtige Aufwandskonto und die abzugsfähige Mehrwertsteuer."
+        ),
+        "expected_fields": {
+            "supplierCreated": True,
+            "chargeAccount": True,
+            "vatDeductible": True,
+            "voucherFallback": True,
+        },
+        "failure_mode_tested": "german_supplier_invoice_lieferantenrechnung_misroute",
+    },
 ]
 
 

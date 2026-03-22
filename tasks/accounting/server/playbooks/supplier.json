@@ -19,6 +19,10 @@
     "recebemos a fatura",
     "hemos recibido la factura",
     "Rechnung vom Lieferanten",
+    "Lieferantenrechnung",
+    "facture fournisseur",
+    "fatura de fornecedor",
+    "factura de proveedor",
     "facture du fournisseur",
     "Registrieren Sie den Lieferanten",
     "registrer leverandør",
@@ -42,5 +46,5 @@
     "Do NOT use generic_api_call for supplier invoices — always use register_supplier_invoice",
     "Do NOT try POST /incomingInvoice or POST /supplierInvoice directly"
   ],
-  "tips": "ALWAYS use the register_supplier_invoice tool for received/incoming invoices. Provide supplierName, supplierOrgNumber, amountIncludingVat, accountNumber (from prompt), and invoiceNumber."
+  "tips": "ALWAYS use the register_supplier_invoice tool for received/incoming invoices. Provide supplierName, supplierOrgNumber, amountIncludingVat, accountNumber (from prompt), and invoiceNumber. When creating a supplier (not an invoice), ALWAYS include email, phoneNumber, organizationNumber, and postalAddress (addressLine1, postalCode, city) if mentioned in the prompt."
 }
