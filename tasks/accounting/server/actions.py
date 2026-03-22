@@ -616,7 +616,6 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
             employment_body = {
                 "employee": {"id": employee_id},
                 "startDate": args["startDate"],
-                "employmentType": args.get("employmentType") or "ORDINARY",
             }
             if args.get("endDate"):
                 employment_body["endDate"] = args["endDate"]
@@ -637,7 +636,6 @@ async def action_create_employee(client: TripletexClient, args: dict) -> dict:
                 salary_body = {
                     "employment": {"id": emp_record_id},
                     "date": args.get("startDate", _today()),
-                    "employmentType": args.get("employmentType") or "ORDINARY",
                 }
                 if args.get("annualSalary") is not None:
                     salary_body["annualSalary"] = float(args["annualSalary"])
