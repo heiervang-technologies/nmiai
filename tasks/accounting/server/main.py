@@ -27,6 +27,8 @@ app = FastAPI(title="Tripletex AI Agent", version="0.2.0")
 EXPECTED_API_KEY = os.environ.get("AGENT_API_KEY")
 LOG_DIR = Path(os.environ.get("LOG_DIR", "/tmp/accounting-logs"))
 LOG_DIR.mkdir(parents=True, exist_ok=True)
+ARTIFACTS_DIR = Path(os.environ.get("ARTIFACTS_DIR", "/tmp/accounting-artifacts"))
+ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class FileAttachment(BaseModel):
@@ -108,10 +110,20 @@ async def solve(req: SolveRequest, request: Request):
         # Phase 2: Execute — run agent with playbook context
         files = None
         if req.files:
-            files = [
-                {"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64}
-                for f in req.files
-            ]
+            import base64
+            files = []
+            for i, f in enumerate(req.files):
+                files.append({"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64})
+                # Save artifact for debugging/reproduction
+                try:
+                    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+                    safe_name = f.filename.replace("/", "_").replace("\\", "_")
+                    artifact_path = ARTIFACTS_DIR / f"{ts}_{i}_{safe_name}"
+                    raw_bytes = base64.b64decode(f.content_base64 or "")
+                    artifact_path.write_bytes(raw_bytes)
+                    log.info(f"Saved artifact: {artifact_path}")
+                except Exception as ex:
+                    log.error(f"Failed to save artifact {f.filename}: {ex}")
 
         result = await run_agent(client, req.prompt, files, playbook=plan.get("playbook"))
         log.info(f"Agent result: iterations={result.get('iterations')}, "
@@ -147,10 +159,20 @@ async def solve_test(req: SolveRequest, request: Request):
 
         files = None
         if req.files:
-            files = [
-                {"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64}
-                for f in req.files
-            ]
+            import base64
+            files = []
+            for i, f in enumerate(req.files):
+                files.append({"filename": f.filename, "mime_type": f.mime_type, "content_base64": f.content_base64})
+                # Save artifact for debugging/reproduction
+                try:
+                    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+                    safe_name = f.filename.replace("/", "_").replace("\\", "_")
+                    artifact_path = ARTIFACTS_DIR / f"{ts}_{i}_{safe_name}"
+                    raw_bytes = base64.b64decode(f.content_base64 or "")
+                    artifact_path.write_bytes(raw_bytes)
+                    log.info(f"Saved artifact: {artifact_path}")
+                except Exception as ex:
+                    log.error(f"Failed to save artifact {f.filename}: {ex}")
 
         result = await run_agent(client, req.prompt, files, playbook=plan.get("playbook"),
                                  model_override="openai/gpt-oss-120b")
