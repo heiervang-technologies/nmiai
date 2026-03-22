@@ -255,6 +255,10 @@ class RegisterSupplierInvoiceArgs(BaseModel):
     supplierOrgNumber: Optional[str] = None
     supplierEmail: Optional[str] = None
     supplierPhone: Optional[str] = None
+    supplierAddressLine1: Optional[str] = None
+    supplierPostalCode: Optional[str] = None
+    supplierCity: Optional[str] = None
+    supplierPostalAddress: Optional[dict] = Field(default=None, description="Address dict with addressLine1, postalCode, city")
     supplierId: Optional[int] = None
     invoiceNumber: Optional[str] = None
     amountIncludingVat: float = Field(description="Total amount including VAT")
@@ -740,8 +744,18 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
     start_time = time.time()
 
     # Swap model if override specified (for /solve-test endpoint)
+    # Use a separate agent instance to avoid race conditions with production
+    run_agent_instance = agent
     if model_override:
-        agent._model = OpenRouterModel(model_override)
+        run_agent_instance = Agent(
+            OpenRouterModel(model_override),
+            deps_type=AgentDeps,
+            system_prompt="",
+            retries=1,
+            model_settings={"max_tokens": 4096},
+        )
+        # Copy tool registrations from main agent
+        run_agent_instance._function_tools = agent._function_tools
         log.info(f"Using override model: {model_override}")
 
     system_prompt = build_system_prompt(playbook)
@@ -778,9 +792,9 @@ async def run_agent(api_client: TripletexClient, prompt: str, files: list = None
     deps = AgentDeps(client=api_client)
 
     # Override system prompt for this run
-    agent._system_prompts = (system_prompt,)
+    run_agent_instance._system_prompts = (system_prompt,)
 
-    result = await agent.run(user_content, deps=deps)
+    result = await run_agent_instance.run(user_content, deps=deps)
 
     elapsed = time.time() - start_time
     stats = api_client.get_stats()

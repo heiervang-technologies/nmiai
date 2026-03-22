@@ -2019,6 +2019,19 @@ async def action_register_supplier_invoice(client: TripletexClient, args: dict) 
                 sup_body["email"] = args.get("supplierEmail") or args.get("email")
             if args.get("supplierPhone") or args.get("phoneNumber"):
                 sup_body["phoneNumber"] = args.get("supplierPhone") or args.get("phoneNumber")
+
+            # Handle postal address
+            addr = args.get("supplierPostalAddress") or {}
+            addr_line = addr.get("addressLine1") or args.get("supplierAddressLine1") or args.get("addressLine1")
+            postal_code = addr.get("postalCode") or args.get("supplierPostalCode") or args.get("postalCode")
+            city = addr.get("city") or args.get("supplierCity") or args.get("city")
+            if addr_line or postal_code or city:
+                sup_body["postalAddress"] = {
+                    "addressLine1": addr_line or "",
+                    "postalCode": postal_code or "",
+                    "city": city or "",
+                }
+
             sup_result = await client.post("/supplier", json=sup_body)
             supplier_id = sup_result.get("value", {}).get("id")
 

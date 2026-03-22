@@ -120,11 +120,22 @@ SCORER_CHECKS = {
             {"entity": "employee", "field": "firstName", "points": 1},
             {"entity": "employee", "field": "lastName", "points": 1},
             {"entity": "employee", "field": "email", "points": 1},
-            # Tripletex admin = userType "EXTENDED" + allowInformationRegistration=true
-            {"entity": "employee", "field": "userType", "expected": "EXTENDED", "points": 5},
+            # 10-point variant: admin role check (5pts)
+            # 8-point variant: employment details replace admin check
+            # We check admin conditionally — only award if userType=EXTENDED is set
+            {"entity": "employee", "field": "userType", "expected": "EXTENDED", "points": 5, "conditional": True},
         ],
-        "call_checks": [],
-        "notes": "Admin role (userType=EXTENDED) is 50% of points. Never downgrade to NO_ACCESS.",
+        "call_checks": [
+            # Employment sub-entity creation (for 8-point PDF/onboarding variant)
+            {"pattern": "/employee/employment", "points": 1, "label": "Employment record created"},
+            {"pattern": "/employee/employment/details", "points": 1, "label": "Employment details set (salary/FTE)"},
+            {"pattern": "/employee/standardTime", "points": 1, "label": "Standard work time configured"},
+        ],
+        "notes": (
+            "Two variants: 10-point (basic + admin role = 5pts) and 8-point (PDF/onboarding + employment details). "
+            "Admin role only awarded when prompt asks for it. Employment details checks: "
+            "startDate, annualSalary, percentageOfFullTimeEquivalent, occupationCode, hoursPerDay."
+        ),
     },
 
     "customer": {
@@ -164,12 +175,14 @@ SCORER_CHECKS = {
         "max_points": 8,
         "entity_checks": [
             {"type": "supplier", "min": 1, "points": 2, "label": "Supplier found"},
+            {"type": "voucher", "min": 1, "points": 1, "label": "Voucher fallback created"},
         ],
         "field_checks": [
             {"entity": "supplier", "field": "name", "points": 1},
             {"entity": "supplier", "field": "organizationNumber", "points": 1},
             {"entity": "supplier", "field": "email", "points": 1},
             {"entity": "supplier", "field": "postalAddress", "points": 1},
+            {"entity": "voucher", "field": "postings", "points": 1},
         ],
         "call_checks": [],
         "notes": "Supplier invoice (POST /incomingInvoice) returns 403. Use voucher fallback.",
@@ -534,9 +547,13 @@ def estimate_score(family: str, prompt: str, mock_state) -> dict:
                     found = True
                     break
 
+        is_conditional = fc.get("conditional", False)
         if found:
             points += fc_points
             checks.append({"label": f"{etype}.{field}", "passed": True, "points": fc_points, "detail": "present"})
+        elif is_conditional:
+            # Conditional check: don't penalize if not present (variant-dependent)
+            checks.append({"label": f"{etype}.{field}", "passed": False, "points": 0, "detail": "conditional — not applicable"})
         else:
             detail = f"missing from {len(bodies)} {etype} bodies"
             if expected:
