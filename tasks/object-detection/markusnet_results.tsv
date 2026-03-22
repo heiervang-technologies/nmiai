@@ -8,3 +8,6 @@ timestamp	tag	combined	det_map50	cls_map50	data	description
 2026-03-22T20:45:00Z	exp005_lora_r4	0.814000	0.000000	0.814000	external_crops	LoRA r=4 attention-only (too weak)
 2026-03-22T21:00:00Z	exp005_lora_r128_all	0.003000	0.000000	0.003000	external_crops	LoRA r=128 all layers BROKEN (head corruption)
 2026-03-22T21:10:00Z	exp005_lora_r128_bb	0.116000	0.000000	0.116000	external_crops	LoRA r=128 backbone-only UNSTABLE (collapsed)
+2026-03-22T21:30:00Z	exp004_unfreeze_bb1e4	0.834000	0.000000	0.834000	external_crops	DINOv2 unfreeze bb_lr=1e-4 (too high)
+2026-03-22T21:35:00Z	exp006_markusnet_vision_linear_textinit	0.005000	0.000000	0.005000	external_crops	MarkusNet vision-only + text init (RANDOM - features not suitable)
+2026-03-22T21:35:00Z	exp006_markusnet_vision_mlp	0.008000	0.000000	0.008000	external_crops	MarkusNet vision-only + MLP (RANDOM - need decoder)
