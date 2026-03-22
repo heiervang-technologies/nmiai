@@ -36,7 +36,18 @@
     "prosjektfaktura",
     "Projektrechnung",
     "facture de projet",
-    "fatura de projeto"
+    "fatura de projeto",
+    "timer for",
+    "timer på",
+    "timar for",
+    "timar på",
+    "timer på prosjektet",
+    "registrer timer for",
+    "log hours for",
+    "hours for",
+    "heures pour",
+    "stunden für",
+    "horas para"
   ],
   "description": "Register hours on projects and invoice from logged time",
   "preflight": [
