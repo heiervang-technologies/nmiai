@@ -12,3 +12,5 @@ timestamp	tag	combined	det_map50	cls_map50	data	description
 2026-03-22T21:35:00Z	exp006_markusnet_vision_linear_textinit	0.005000	0.000000	0.005000	external_crops	MarkusNet vision-only + text init (RANDOM - features not suitable)
 2026-03-22T21:35:00Z	exp006_markusnet_vision_mlp	0.008000	0.000000	0.008000	external_crops	MarkusNet vision-only + MLP (RANDOM - need decoder)
 2026-03-22T22:00:00Z	exp004_unfreeze_bb1e4_FINAL	0.843000	0.000000	0.843000	external_crops	DINOv2 unfreeze bb_lr=1e-4 FINAL (too high)
+2026-03-23T01:00:00Z	exp008_siglip_base_frozen_mlp	0.870000	0.000000	0.870000	external_crops	SigLIP Base frozen + MLP lr=1e-3
+2026-03-23T01:10:00Z	exp008_siglip_base_finetuned	0.891000	0.000000	0.891000	external_crops	SigLIP Base fine-tuned bb_lr=1e-5 (ep14)
