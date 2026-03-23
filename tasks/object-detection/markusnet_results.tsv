@@ -20,3 +20,5 @@ timestamp	tag	combined	det_map50	cls_map50	data	description
 2026-03-23T03:15:00Z	exp010_uniform_soup	0.200000	0.000000	0.200000	external_crops	Uniform soup of 3 LR configs (COLLAPSED)
 2026-03-23T03:15:00Z	exp010_top2_soup	0.899000	0.000000	0.899000	external_crops	Top-2 soup (90.5% + 88.2%)
 2026-03-23T03:15:00Z	exp010_slerp_025	0.902000	0.000000	0.902000	external_crops	SLERP α=0.25 between top 2
+2026-03-23T05:00:00Z	exp011_dinov2b_frozen	0.845000	0.000000	0.845000	external_crops	DINOv2 ViT-B/14 frozen MLP (bigger but worse)
+2026-03-23T05:30:00Z	exp011_dinov2b_finetuned	0.897000	0.000000	0.897000	external_crops	DINOv2 ViT-B/14 fine-tuned bb_lr=1e-5
