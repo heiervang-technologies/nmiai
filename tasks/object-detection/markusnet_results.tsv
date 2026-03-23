@@ -14,3 +14,4 @@ timestamp	tag	combined	det_map50	cls_map50	data	description
 2026-03-22T22:00:00Z	exp004_unfreeze_bb1e4_FINAL	0.843000	0.000000	0.843000	external_crops	DINOv2 unfreeze bb_lr=1e-4 FINAL (too high)
 2026-03-23T01:00:00Z	exp008_siglip_base_frozen_mlp	0.870000	0.000000	0.870000	external_crops	SigLIP Base frozen + MLP lr=1e-3
 2026-03-23T01:10:00Z	exp008_siglip_base_finetuned	0.891000	0.000000	0.891000	external_crops	SigLIP Base fine-tuned bb_lr=1e-5 (ep14)
+2026-03-23T01:30:00Z	exp008_siglip_so400m	0.000000	0.000000	0.000000	external_crops	SigLIP SO400M OOM (llama server using 15GB)
