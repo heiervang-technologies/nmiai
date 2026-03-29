@@ -1,7 +1,7 @@
 """Tests for tasks/astar-island/neurosymbolic_predictor.py — pure helper functions.
 
-Covers: cell_type_str, make_keys.
-Both are pure classification/key-building functions with no I/O or GPU.
+Covers: cell_type_str, make_keys, cell_code_to_class, bucket_lookup.
+All are pure classification/key-building/lookup functions with no I/O or GPU.
 """
 
 from __future__ import annotations
@@ -9,12 +9,16 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 _ASTAR = str(Path(__file__).resolve().parent.parent / "tasks" / "astar-island")
 sys.path.insert(0, _ASTAR)
 
-from neurosymbolic_predictor import cell_type_str, make_keys
+from neurosymbolic_predictor import (
+    cell_type_str, make_keys, cell_code_to_class, bucket_lookup,
+    N_CLASSES, MIN_SUPPORT,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -107,3 +111,92 @@ class TestMakeKeys:
         result = make_keys(4, 5.0, 0, 0, 0, False)
         # Last key should be just the type tuple ("F",)
         assert result[-1] == ("F",)
+
+
+# ---------------------------------------------------------------------------
+# cell_code_to_class
+# ---------------------------------------------------------------------------
+
+class TestCellCodeToClass:
+    @pytest.mark.parametrize("code,expected", [
+        (0, 0), (10, 0), (11, 0),
+        (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
+    ])
+    def test_known_codes(self, code, expected):
+        assert cell_code_to_class(code) == expected
+
+    def test_unknown_returns_zero(self):
+        assert cell_code_to_class(99) == 0
+
+
+# ---------------------------------------------------------------------------
+# bucket_lookup
+# ---------------------------------------------------------------------------
+
+def _make_tables(key, prob, count):
+    """Build minimal tables dict for bucket_lookup tests."""
+    n = 6  # N_LEVELS
+    means = [{} for _ in range(n)]
+    counts = [{} for _ in range(n)]
+    means[0][key] = prob
+    counts[0][key] = count
+    return {"means": means, "counts": counts}
+
+
+class TestBucketLookup:
+    def _uniform(self):
+        return np.ones(N_CLASSES) / N_CLASSES
+
+    def test_no_match_returns_none_zero(self):
+        tables = {"means": [{} for _ in range(6)], "counts": [{} for _ in range(6)]}
+        keys = make_keys(1, 2.0, 0, 0, 0, False)
+        prob, c = bucket_lookup(tables, keys)
+        assert prob is None
+        assert c == 0
+
+    def test_sufficient_support_returns_prob(self):
+        fine_key = make_keys(1, 2.0, 0, 0, 0, False)[0]
+        p = self._uniform()
+        tables = _make_tables(fine_key, p, MIN_SUPPORT[0] + 1)
+        keys = make_keys(1, 2.0, 0, 0, 0, False)
+        prob, c = bucket_lookup(tables, keys)
+        assert prob is not None
+        assert c == MIN_SUPPORT[0] + 1
+
+    def test_insufficient_support_skips_level(self):
+        # count=1 is below MIN_SUPPORT[0]=5, so lookup should skip level 0
+        fine_key = make_keys(1, 2.0, 0, 0, 0, False)[0]
+        p = self._uniform()
+        # Only level 0 populated but with insufficient support
+        tables = _make_tables(fine_key, p, 1)
+        keys = make_keys(1, 2.0, 0, 0, 0, False)
+        prob, c = bucket_lookup(tables, keys)
+        # Falls through to the second pass (any-match loop) → returns it anyway
+        assert prob is not None
+
+    def test_result_sums_to_one(self):
+        fine_key = make_keys(1, 2.0, 0, 0, 0, False)[0]
+        p = self._uniform()
+        tables = _make_tables(fine_key, p, MIN_SUPPORT[0] + 10)
+        keys = make_keys(1, 2.0, 0, 0, 0, False)
+        prob, _ = bucket_lookup(tables, keys)
+        np.testing.assert_allclose(prob.sum(), 1.0, atol=1e-9)
+
+    def test_all_positive_with_shrinkage(self):
+        # count=50 triggers shrinkage path (c < 200), add a coarser level
+        fine_key = make_keys(1, 2.0, 0, 0, 0, False)[0]
+        coarse_key = make_keys(1, 2.0, 0, 0, 0, False)[1]
+        p_fine = np.array([0.8, 0.05, 0.05, 0.04, 0.03, 0.03])
+        p_coarse = self._uniform()
+        n = 6
+        means = [{} for _ in range(n)]
+        counts = [{} for _ in range(n)]
+        means[0][fine_key] = p_fine
+        counts[0][fine_key] = 50
+        means[1][coarse_key] = p_coarse
+        counts[1][coarse_key] = 200
+        tables = {"means": means, "counts": counts}
+        keys = make_keys(1, 2.0, 0, 0, 0, False)
+        prob, c = bucket_lookup(tables, keys)
+        assert prob is not None
+        assert (prob > 0).all()
